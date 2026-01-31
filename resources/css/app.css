@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    --font-open-sans: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-montserrat: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    --font-inter: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    /* Custom breakpoints for permission-based responsive behavior */
+    --breakpoint-user-desktop: 1300px;
+    --breakpoint-admin-desktop: 1500px;
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-text-primary: var(--text-primary);
+    --color-text-primary-foreground: var(--text-primary-foreground);
+    --color-text-secondary: var(--text-secondary);
+    --color-text-secondary-foreground: var(--text-secondary-foreground);
+    --color-text-muted: var(--text-muted);
+
+    --shadow-card: var(--shadow-card);
+}
+
+:root {
+    --background: #F9FAFB;
+    --foreground: #121711;
+
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+
+    --primary: #D02738;
+    --primary-foreground: oklch(0.985 0 0);
+
+    --secondary: #0D9488;
+    --secondary-foreground: #121711;
+
+    --muted: #F3F3F3;
+    --muted-foreground: #9B9B9F;
+
+    --accent: #FAF5FF;
+    --accent-foreground: #D02738;
+
+    --destructive: #D02738;
+    --destructive-foreground: #FEF2F2;
+
+    --border: #F3F3F3;
+    --input: #F3F3F3;
+    --ring: #2467E3;
+
+    --chart-1: #9747FF;
+    --chart-2: #;
+    --chart-3: #2467E3;
+    --chart-4: #9B9B9F;
+    --chart-5: #FDF5E6;
+
+    --radius: 0.625rem;
+
+    --sidebar: #121711;
+    --sidebar-foreground: #F3F3F3;
+
+    --sidebar-primary: #D02738;
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: #D02738;
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.87 0 0);
+
+    --text-primary: #121711;
+    --text-secondary: #085952;
+    --text-muted: #9B9B9F;
+
+    --shadow-card: 0 7px 29px 0px #64646F33;
+}
+
+@utility container {
+    margin-inline: auto;
+
+
+    @media (width >=40rem) {
+        max-width: 100%;
+    }
+
+    @media (width >=48rem) {
+        max-width: 100%;
+    }
+
+    @media (width >=64rem) {
+        max-width: 100%;
+    }
+
+    @media (width >=80rem) {
+        max-width: 100%;
+    }
+
+    @media (width >=96rem) {
+        max-width: 100%;
+    }
+
+    @media (width >=1300px) {
+        max-width: 100%;
+    }
+
+    @media (width >=1500px) {
+        max-width: 100%;
+    }
+
+    @media (width >=1700px) {
+        max-width: 1700px;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border font-open-sans;
+    }
+
+    body {
+        @apply bg-background text-foreground font-open-sans;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    button {
+        @apply font-montserrat;
+    }
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari and Opera */
+}
+
+/* Left scrollbar utility */
+.scrollbar-left {
+    direction: rtl;
+}
+
+.scrollbar-left>* {
+    direction: ltr;
+}
+
+
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.2);
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.4);
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.2) transparent;
+}
+
+.custom-scrollbar:hover {
+    scrollbar-color: hsl(var(--muted-foreground) / 0.4) transparent;
+}
+
+/* Prevent horizontal scrolling */
+.custom-scrollbar {
+    overflow-x: hidden !important;
+}
+
+/* Smooth transitions for sidebar */
+@supports (backdrop-filter: blur(12px)) {
+    .sidebar-blur {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+}
