@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AvailabilityController;
-use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\UserSelectionController;
 use Illuminate\Support\Facades\Route;
 
