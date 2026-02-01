@@ -31,7 +31,7 @@ export default function banner() {
             {/* Content */}
             <div className="mx-auto max-w-6xl px-6 py-24 sm:py-28 lg:py-32">
                 <div className="max-w-xl">
-                    <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-[56px]">
+                    <h1 className="text-4xl font-semibold leading-tight text-primary-50 sm:text-5xl lg:text-[56px]">
                         Protect your assets.
                         <br />
                         Wills &amp; Trusts made simple.
@@ -76,7 +76,7 @@ export default function banner() {
                     <div className="mt-9">
                         <a
                             href="#"
-                            className="inline-flex items-center justify-center rounded-full border border-sky-400/60 bg-sky-500/90 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-900/40 transition duration-300 hover:border-white/80 hover:bg-transparent"
+                            className="inline-flex items-center justify-center rounded-full border border-sky-400/60 bg-primary px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-900/40 transition duration-300 hover:border-white/80 hover:bg-transparent"
                         >
                             Explore Options
                         </a>

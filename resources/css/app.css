@@ -34,8 +34,35 @@
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
 
-    --color-primary: var(--primary);
+    --color-primary: var(--primary-500);
     --color-primary-foreground: var(--primary-foreground);
+
+    --color-primary-50: var(--primary-50);
+    --color-primary-100: var(--primary-100);
+    --color-primary-200: var(--primary-200);
+    --color-primary-300: var(--primary-300);
+    --color-primary-400: var(--primary-400);
+    --color-primary-500: var(--primary-500);
+    --color-primary-600: var(--primary-600);
+    --color-primary-700: var(--primary-700);
+    --color-primary-800: var(--primary-800);
+    --color-primary-900: var(--primary-900);
+    --color-primary-950: var(--primary-950);
+
+    --color-slate-50: var(--slate-50);
+    --color-slate-100: var(--slate-100);
+    --color-slate-200: var(--slate-200);
+    --color-slate-300: var(--slate-300);
+    --color-slate-400: var(--slate-400);
+    --color-slate-500: var(--slate-500);
+    --color-slate-600: var(--slate-600);
+    --color-slate-700: var(--slate-700);
+    --color-slate-800: var(--slate-800);
+    --color-slate-900: var(--slate-900);
+    --color-slate-950: var(--slate-950);
+
+    --color-cream: var(--cream);
+    --color-sand: var(--sand);
 
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
@@ -139,6 +166,7 @@
     --primary-700: #003f5d;
     --primary-800: #002a3e;
     --primary-900: #00151f;
+    --primary-950: #000000;
 
     --slate-50: #f8fafc;
     --slate-100: #f1f5f9;
@@ -150,6 +178,7 @@
     --slate-700: #334e68;
     --slate-800: #243b53;
     --slate-900: #1e293b;
+    --slate-950: #121711;
 
     --accent-pink: #ec4899;
     --accent-blue: #3b82f6;
@@ -219,13 +248,19 @@
 }
 
 @layer utilities {
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
 }
 
 
