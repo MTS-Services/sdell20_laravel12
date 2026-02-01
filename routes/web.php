@@ -1,13 +1,15 @@
 <?php
 
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\UserSelectionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+// Route::get('/login', function () {
+//     return redirect()->route('login');
+// });
 
+Route::get("/", [HomeController::class, "index"])->name("home");
 Route::middleware(['auth', 'verified'])->group(function () {
     // Availability Routes
     Route::get('/dashboard', [AvailabilityController::class, 'index'])->name('dashboard');
