@@ -23,7 +23,7 @@ export function FrontendHeader() {
         <header className="sticky top-0 z-50">
             {/* Navigation */}
             <nav className="w-full bg-slate-800 text-white z-50 shadow-lg">
-                <div className="container mx-auto px-6 py-4">
+                <div className="container mx-auto py-4">
                     <div className="flex items-center justify-between">
                         {/* Logo */}
                         <a href="/" className="flex items-center space-x-3">
