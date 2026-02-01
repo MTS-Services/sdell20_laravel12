@@ -4,7 +4,7 @@ import React from 'react'
 
 export default function home() {
     return <FrontendLayout>
-        <section className='bg-white'>
+        <section >
             <Banner />
         </section>
     </FrontendLayout>;
