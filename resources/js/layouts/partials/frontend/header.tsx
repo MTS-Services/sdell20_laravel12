@@ -48,60 +48,65 @@ export function FrontendHeader() {
                                 </button>
 
                                 <div className="about-dropdown-wrapper">
-                                    <div className="about-dropdown absolute left-1/2 top-full mt-4 w-max -translate-x-1/2 opacity-0 invisible transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
-                                        <div className="about-dropdown__menu">
-                                            <p className="about-dropdown__menu-title">About us</p>
-                                            <ul className="about-dropdown__list">
-                                                <li>
-                                                    <a href="/" className="about-dropdown__item">
-                                                        <span className="about-dropdown__icon">
-                                                            <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path d="M9 4a1 1 0 112 0v2h2a1 1 0 110 2h-2v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2h-2a1 1 0 110-2h2V8H7a1 1 0 110-2h2V4z" />
-                                                            </svg>
-                                                        </span>
-                                                        <span className="about-dropdown__label">HORIZON WILLS</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="/" className="about-dropdown__item">
-                                                        <span className="about-dropdown__icon">
-                                                            <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path d="M4 3a2 2 0 00-2 2v9a2 2 0 002 2h5v-2H4V9h6v2l4-3-4-3v2H4V5h10V3H4z" />
-                                                            </svg>
-                                                        </span>
-                                                        <span className="about-dropdown__label">Guides</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="/" className="about-dropdown__item">
-                                                        <span className="about-dropdown__icon">
-                                                            <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path
-                                                                    fillRule="evenodd"
-                                                                    clipRule="evenodd"
-                                                                    d="M10 3a1 1 0 01.894.553l2 4A1 1 0 0112 9H8a1 1 0 01-.894-1.447l2-4A1 1 0 0110 3zm-4.382 5.447A1 1 0 015.618 9H7v7a1 1 0 002 0v-3h2v3a1 1 0 002 0V9h1.382a1 1 0 00.894-1.447l-2-4a1 1 0 00-1.788 0l-2 4a1 1 0 01-.894.447H5.618z"
-                                                                />
-                                                            </svg>
-                                                        </span>
-                                                        <span className="about-dropdown__label">Careers</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="/" className="about-dropdown__item">
-                                                        <span className="about-dropdown__icon">
-                                                            <svg className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v3l-8 4-8-4V5z" />
-                                                                <path d="M2 10l8 4 8-4v5a2 2 0 01-2 2H4a2 2 0 01-2-2v-5z" />
-                                                            </svg>
-                                                        </span>
-                                                        <span className="about-dropdown__label">Contact Us</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="about-dropdown__prompt">
-                                            <div className="about-dropdown__prompt-title">Not sure where to start?</div>
-                                            <p className="about-dropdown__prompt-text">Take the 1 min quiz to discover the right estate plan for you.</p>
+                                    <div className="about-dropdown absolute left-1/2 top-full mt-4 w-110 -translate-x-1/2 opacity-0 invisible transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0">
+                                        <div className="flex overflow-hidden rounded-4xl border border-slate-700/30 bg-white shadow-2xl">
+                                            <div className="w-1/2 bg-slate-900/95 p-4 text-white">
+                                                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-slate-300">About us</p>
+                                                <ul className="mt-4 space-y-2">
+                                                    <li>
+                                                        <Link
+                                                            href={route('horizon-wills')}
+                                                            className="group/item flex items-center gap-3 rounded-2xl px-2 py-2 transition hover:bg-white/10"
+                                                        >
+                                                            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10">
+                                                                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path d="M9 4a1 1 0 112 0v2h2a1 1 0 110 2h-2v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H7a1 1 0 110-2h2V8H7a1 1 0 110-2h2V4z" />
+                                                                </svg>
+                                                            </span>
+                                                            <span className="text-sm font-semibold tracking-wide group-hover/item:text-white">HORIZON WILLS</span>
+                                                        </Link>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/" className="group/item flex items-center gap-3 rounded-2xl px-3 py-2 transition hover:bg-white/10">
+                                                            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10">
+                                                                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path d="M4 3a2 2 0 00-2 2v9a2 2 0 002 2h5v-2H4V9h6v2l4-3-4-3v2H4V5h10V3H4z" />
+                                                                </svg>
+                                                            </span>
+                                                            <span className="text-sm font-semibold tracking-wide">Guides</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/" className="group/item flex items-center gap-3 rounded-2xl px-3 py-2 transition hover:bg-white/10">
+                                                            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10">
+                                                                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path
+                                                                        fillRule="evenodd"
+                                                                        clipRule="evenodd"
+                                                                        d="M10 3a1 1 0 01.894.553l2 4A1 1 0 0112 9H8a1 1 0 01-.894-1.447l2-4A1 1 0 0110 3zm-4.382 5.447A1 1 0 015.618 9H7v7a1 1 0 002 0v-3h2v3a1 1 0 002 0V9h1.382a1 1 0 00.894-1.447l-2-4a1 1 0 00-1.788 0l-2 4a1 1 0 01-.894.447H5.618z"
+                                                                    />
+                                                                </svg>
+                                                            </span>
+                                                            <span className="text-sm font-semibold tracking-wide">Careers</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/" className="group/item flex items-center gap-3 rounded-2xl px-3 py-2 transition hover:bg-white/10">
+                                                            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10">
+                                                                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                    <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v3l-8 4-8-4V5z" />
+                                                                    <path d="M2 10l8 4 8-4v5a2 2 0 01-2 2H4a2 2 0 01-2-2v-5z" />
+                                                                </svg>
+                                                            </span>
+                                                            <span className="text-sm font-semibold tracking-wide">Contact Us</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div className="flex w-1/2 flex-col justify-start gap-3 bg-white p-6 text-slate-900">
+                                                <p className="text-sm font-semibold text-primary-700">Not sure where to start?</p>
+                                                <p className="text-sm text-slate-600">Take the 1 min quiz to discover the right estate plan for you.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
