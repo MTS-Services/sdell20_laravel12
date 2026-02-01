@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import { useReveal } from '@/hooks/use-reveal';
 
 export function FindingSupportSection() {
-    const sectionRef = useScrollReveal<HTMLElement>();
+    const [headerRef, headerVisible] = useReveal<HTMLDivElement>();
+    const [cardsRef, cardsVisible] = useReveal<HTMLDivElement>(0.1);
     const cards = [
         {
             title: 'Grief Resources',
@@ -35,30 +36,28 @@ export function FindingSupportSection() {
     ];
 
     return (
-        <section
-            id="support"
-            ref={sectionRef}
-            className="relative overflow-hidden bg-linear-to-br from-slate-900 via-primary-800 to-primary-900 py-24 text-white"
-        >
+        <section id="support" className="relative overflow-hidden bg-linear-to-br from-slate-900 via-primary-800 to-primary-900 py-24 text-white">
             <div className="absolute inset-0 opacity-5">
                 <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-slate-500 blur-3xl" />
                 <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-blue-400 blur-3xl" />
             </div>
 
             <div className="relative z-10 mx-auto max-w-6xl px-6">
-                <div className="mb-16 space-y-4 text-center" data-animate data-animate-direction="up">
+                <div
+                    ref={headerRef}
+                    className={`mb-16 space-y-4 text-center transition-all duration-700 ease-out ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                >
                     <h2 className="font-serif text-5xl font-bold md:text-6xl">Finding Support After a Loss</h2>
                     <p className="mx-auto max-w-2xl font-body text-xl text-slate-200">Resources and guidance to help you navigate grief and handle practical matters</p>
                 </div>
 
-                <div
-                    className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-                    data-animate
-                    data-animate-direction="up"
-                    data-animate-delay="0.1s"
-                >
+                <div ref={cardsRef} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {cards.map((card) => (
-                        <div key={card.title} className="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-lg transition-all hover:bg-white/15">
+                        <div
+                            key={card.title}
+                            className={`rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-lg transition-all duration-700 ease-out ${cardsVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+                                } hover:-translate-y-2 hover:bg-white/15 hover:border-white/40`}
+                        >
                             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-slate-500/30">{card.icon}</div>
                             <h3 className="mb-4 font-serif text-2xl font-semibold">{card.title}</h3>
                             <p className="leading-relaxed text-slate-100">{card.desc}</p>

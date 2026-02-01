@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+import { useReveal } from '@/hooks/use-reveal';
 
 export function DashboardPreviewSection() {
-    const sectionRef = useScrollReveal<HTMLElement>();
+    const [copyRef, copyVisible] = useReveal<HTMLDivElement>();
+    const [cardRef, cardVisible] = useReveal<HTMLDivElement>(0.1);
     const checklist = [
         {
             title: 'About You - 1 minute',
@@ -44,10 +45,13 @@ export function DashboardPreviewSection() {
     ];
 
     return (
-        <section ref={sectionRef} className="bg-slate-900 py-24 text-white">
+        <section className="bg-slate-900 py-24 text-white">
             <div className="container mx-auto px-6">
                 <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
-                    <div className="order-2 space-y-6 md:order-1" data-animate data-animate-direction="right">
+                    <div
+                        ref={copyRef}
+                        className={`order-2 space-y-6 md:order-1 transition-all duration-700 ease-out ${copyVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'}`}
+                    >
                         <h2 className="font-serif text-4xl font-bold md:text-5xl">My Will Dashboard</h2>
                         <p className="font-body text-xl leading-relaxed text-slate-200">
                             Welcome to your online will writing service. It can take as little as 15 minutes to create your will through our simple, step-by-step process.
@@ -75,7 +79,10 @@ export function DashboardPreviewSection() {
                             </div>
                         </div>
                     </div>
-                    <div className="order-1 md:order-2" data-animate data-animate-direction="left" data-animate-delay="0.15s">
+                    <div
+                        ref={cardRef}
+                        className={`order-1 md:order-2 transition-all duration-700 ease-out ${cardVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'}`}
+                    >
                         <div className="rounded-3xl bg-white p-8 shadow-2xl">
                             <div className="rounded-2xl border-2 border-slate-100 bg-cream p-8">
                                 <h3 className="mb-4 font-serif text-3xl font-bold text-primary-900">Welcome John Arnold, to your online will writing service</h3>

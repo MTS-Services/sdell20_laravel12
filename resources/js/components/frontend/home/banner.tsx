@@ -1,6 +1,14 @@
-import React from 'react'
+import React from 'react';
 
-export default function banner() {
+import { useReveal } from '@/hooks/use-reveal';
+
+const checklist = ['Protect loved ones', 'Safeguard assets', 'Plan with ease'];
+
+export default function Banner() {
+    const [headingRef, headingVisible] = useReveal<HTMLDivElement>();
+    const [listRef, listVisible] = useReveal<HTMLUListElement>(0.1);
+    const [ctaRef, ctaVisible] = useReveal<HTMLDivElement>(0.1);
+
     return (
         <section className="relative isolate min-h-screen overflow-hidden bg-slate-900">
             {/* Background Image */}
@@ -30,52 +38,47 @@ export default function banner() {
 
             {/* Content */}
             <div className="mx-auto max-w-6xl px-6 py-24 sm:py-28 lg:py-32">
-                <div className="max-w-xl">
-                    <h1 className="text-4xl font-semibold leading-tight text-primary-50 sm:text-5xl lg:text-[56px]">
-                        Protect your assets.
-                        <br />
-                        Wills &amp; Trusts made simple.
-                    </h1>
+                <div className="max-w-xl space-y-6">
+                    <div
+                        ref={headingRef}
+                        className={`space-y-4 transition-all duration-700 ease-out ${headingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                    >
+                        <h1 className="text-4xl font-semibold leading-tight text-primary-50 sm:text-5xl lg:text-[56px]">
+                            Protect your assets.
+                            <br />
+                            Wills &amp; Trusts made simple.
+                        </h1>
 
-                    <p className="mt-5 max-w-md text-base leading-7 text-slate-100/80">
-                        From wills to trusts and lasting powers of attorney, we make estate planning simple,
-                        affordable, and personal – so you can protect the people who matter most.
-                    </p>
+                        <p className="max-w-md text-base leading-7 text-slate-100/80">
+                            From wills to trusts and lasting powers of attorney, we make estate planning simple, affordable, and personal – so you can protect the
+                            people who matter most.
+                        </p>
+                    </div>
 
                     {/* checklist */}
-                    <ul className="mt-8 space-y-4 text-white">
-                        <li className="flex items-center gap-3 text-base">
-                            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/50 bg-white/10">
-                                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg>
-                            </span>
-                            <span className="font-medium">Protect loved ones</span>
-                        </li>
-
-                        <li className="flex items-center gap-3 text-base">
-                            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/50 bg-white/10">
-                                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg>
-                            </span>
-                            <span className="font-medium">Safeguard assets</span>
-                        </li>
-
-                        <li className="flex items-center gap-3 text-base">
-                            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/50 bg-white/10">
-                                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg>
-                            </span>
-                            <span className="font-medium">Plan with ease</span>
-                        </li>
+                    <ul
+                        ref={listRef}
+                        className={`space-y-4 text-white transition-all duration-700 ease-out ${listVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                    >
+                        {checklist.map((item) => (
+                            <li key={item} className="flex items-center gap-3 text-base">
+                                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/50 bg-white/10">
+                                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M20 6L9 17l-5-5" />
+                                    </svg>
+                                </span>
+                                <span className="font-medium">{item}</span>
+                            </li>
+                        ))}
                     </ul>
 
                     {/* CTA */}
-                    <div className="mt-9">
+                    <div
+                        ref={ctaRef}
+                        className={`pt-3 transition-all duration-700 ease-out ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                    >
                         <a
-                            href="#"
+                            href="#planning"
                             className="inline-flex items-center justify-center rounded-full border border-sky-400/60 bg-primary px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-900/40 transition duration-300 hover:border-white/80 hover:bg-transparent"
                         >
                             Explore Options
@@ -84,5 +87,5 @@ export default function banner() {
                 </div>
             </div>
         </section>
-    )
+    );
 }

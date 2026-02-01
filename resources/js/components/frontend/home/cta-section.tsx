@@ -1,15 +1,20 @@
 import React from 'react';
-import { useScrollReveal } from '@/hooks/use-scroll-reveal';
+
+import { useReveal } from '@/hooks/use-reveal';
+
 export function CTASection() {
-    const sectionRef = useScrollReveal<HTMLElement>();
+    const [contentRef, contentVisible] = useReveal<HTMLDivElement>();
     return (
-        <section ref={sectionRef} className="relative overflow-hidden bg-linear-to-br from-primary-900 via-primary-700 to-primary-900 py-24 text-white">
+        <section className="relative overflow-hidden bg-linear-to-br from-primary-900 via-primary-700 to-primary-900 py-24 text-white">
             <div className="absolute inset-0 opacity-10">
                 <div className="animate-float absolute right-10 top-10 h-96 w-96 rounded-full bg-blue-500 blur-3xl" />
                 <div className="animate-float absolute bottom-10 left-10 h-96 w-96 rounded-full bg-blue-400 blur-3xl" style={{ animationDelay: '3s' }} />
             </div>
 
-            <div className="relative z-10 mx-auto max-w-4xl px-6" data-animate data-animate-direction="up">
+            <div
+                ref={contentRef}
+                className={`relative z-10 mx-auto max-w-4xl px-6 transition-all duration-700 ease-out ${contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            >
                 <div className="space-y-8 text-center">
                     <h2 className="font-serif text-5xl font-bold md:text-6xl">Start Protecting Your Legacy Today</h2>
                     <p className="font-body text-xl text-blue-200 md:text-2xl">
