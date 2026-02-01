@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\UserSelectionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+// Route::get('/login', function () {
+//     return redirect()->route('login');
+// });
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Availability Routes
@@ -21,3 +23,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
+require __DIR__.'/frontend.php';
