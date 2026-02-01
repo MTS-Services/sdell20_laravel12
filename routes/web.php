@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 //     return redirect()->route('login');
 // });
 
-Route::get("/", [HomeController::class, "index"])->name("home");
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Availability Routes
     Route::get('/dashboard', [AvailabilityController::class, 'index'])->name('dashboard');
@@ -23,3 +23,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
+require __DIR__.'/frontend.php';
