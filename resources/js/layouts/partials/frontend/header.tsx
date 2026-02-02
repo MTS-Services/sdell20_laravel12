@@ -118,18 +118,29 @@ export function FrontendHeader() {
                                         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500">Estate Planning</p>
 
                                         <ul className="space-y-3 text-sm">
-                                            <li className="rounded-2xl p-3 transition hover:bg-primary-50">
-                                                <a href="#" className="block">
+                                            <li className="flex items-start gap-3 rounded-2xl p-3 transition hover:bg-primary-50">
+                                                <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary-100 bg-primary-50 text-primary-600">
+                                                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                        <path d="M5 5h14v14H5z" strokeLinecap="round" strokeLinejoin="round" />
+                                                        <path d="M9 3v4m6-4v4m-9 4h12" strokeLinecap="round" />
+                                                    </svg>
+                                                </span>
+                                                <div>
                                                     <p className="font-semibold text-slate-900">Will Writing</p>
                                                     <p className="text-xs text-slate-500">Write a will tailored to you</p>
-                                                </a>
+                                                </div>
                                             </li>
 
-                                            <li className="rounded-2xl p-3 transition hover:bg-primary-50">
-                                                <a href="#" className="block">
+                                            <li className="flex items-start gap-3 rounded-2xl p-3 transition hover:bg-primary-50">
+                                                <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary-100 bg-primary-50 text-primary-600">
+                                                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                        <path d="M12 21s8-4.5 8-10.5S15.5 3 12 6.5C8.5 3 4 4.5 4 10.5S12 21 12 21z" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </span>
+                                                <div>
                                                     <p className="font-semibold text-slate-900">Lasting Power of Attorney</p>
                                                     <p className="text-xs text-slate-500">Choose who makes decisions for you</p>
-                                                </a>
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
@@ -151,11 +162,17 @@ export function FrontendHeader() {
                                         <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500">Get Support After Loss</p>
 
                                         <ul className="space-y-3 text-sm">
-                                            <li className="rounded-2xl p-3 transition hover:bg-primary-50">
-                                                <a href="#" className="block">
+                                            <li className="flex items-start gap-3 rounded-2xl p-3 transition hover:bg-primary-50">
+                                                <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-primary-100 bg-primary-50 text-primary-600">
+                                                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                                        <path d="M4 6h16v12H4z" strokeLinecap="round" strokeLinejoin="round" />
+                                                        <path d="M8 10h8m-8 4h5" strokeLinecap="round" />
+                                                    </svg>
+                                                </span>
+                                                <div>
                                                     <p className="font-semibold text-slate-900">Probate</p>
                                                     <p className="text-xs text-slate-500">Guidance through probate</p>
-                                                </a>
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
