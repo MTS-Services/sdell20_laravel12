@@ -224,9 +224,12 @@ export function FrontendHeader() {
                                 </div>
                             </div>
 
-                            <button className="font-sans font-semibold text-pink-400 transition-all hover:text-primary-100">
+                            <Link
+                                href={route('login')}
+                                className="font-sans font-semibold text-pink-400 transition-all hover:text-primary-100"
+                            >
                                 Sign in
-                            </button>
+                            </Link>
                         </div>
 
                         {/* Mobile Menu Button */}
