@@ -125,10 +125,10 @@ export function FrontendHeader() {
                                                         <path d="M9 3v4m6-4v4m-9 4h12" strokeLinecap="round" />
                                                     </svg>
                                                 </span>
-                                                <div>
+                                                <Link href={route('will-writing')} className="block">
                                                     <p className="font-semibold text-slate-900">Will Writing</p>
                                                     <p className="text-xs text-slate-500">Write a will tailored to you</p>
-                                                </div>
+                                                </Link>
                                             </li>
 
                                             <li className="flex items-start gap-3 rounded-2xl p-3 transition hover:bg-primary-50">
@@ -225,9 +225,9 @@ export function FrontendHeader() {
                             </button>
                             {openMobileSection === 'estate' && (
                                 <div className="space-y-2 rounded-2xl border border-white/10 bg-slate-900/30 p-3">
-                                    <a href="#" className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
+                                    <Link href={route('will-writing')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Will Writing
-                                    </a>
+                                    </Link>
                                     <a href="#" className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Lasting Power of Attorney
                                     </a>
