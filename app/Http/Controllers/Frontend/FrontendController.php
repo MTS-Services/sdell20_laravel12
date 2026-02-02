@@ -22,4 +22,9 @@ class FrontendController extends Controller
     {
         return Inertia::render('frontend/contact');
     }
+
+    public function willWriting(): Response
+    {
+        return Inertia::render('frontend/will-writing');
+    }
 }
