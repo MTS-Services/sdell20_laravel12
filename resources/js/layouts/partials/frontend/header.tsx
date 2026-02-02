@@ -73,7 +73,7 @@ export function FrontendHeader() {
                                                 </li>
 
                                                 <li className="rounded-xl px-2 py-2 transition-colors duration-200 hover:bg-white/10">
-                                                    <a href="#" className="flex items-center gap-3 text-white">
+                                                    <Link href={route('contact')} className="flex items-center gap-3 text-white">
                                                         <span className="flex h-8 w-8 items-center justify-center rounded-2xl border border-white/30 bg-white/10">
                                                             <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                                                                 <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v3l-8 4-8-4V5z" />
@@ -81,7 +81,7 @@ export function FrontendHeader() {
                                                             </svg>
                                                         </span>
                                                         <span className="text-sm font-semibold">Contact Us</span>
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </div>
@@ -205,15 +205,12 @@ export function FrontendHeader() {
                             </button>
                             {openMobileSection === 'about' && (
                                 <div className="space-y-2 rounded-2xl border border-white/10 bg-slate-900/30 p-3">
-                                    <Link
-                                        href={route('horizon-wills')}
-                                        className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10"
-                                    >
+                                    <Link href={route('horizon-wills')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         HORIZON WILLS
                                     </Link>
-                                    <a href="#" className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
+                                    <Link href={route('contact')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Contact Us
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
 
