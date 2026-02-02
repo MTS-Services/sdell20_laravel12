@@ -5,6 +5,7 @@ import { FindingSupportSection } from '@/components/frontend/home/finding-suppor
 import { HowItWorksSection } from '@/components/frontend/home/how-it-works-section';
 import { LoveOnesSection } from '@/components/frontend/home/love-ones-section';
 import { ManagingAffairsSection } from '@/components/frontend/home/managing-affairs-section';
+import { EstateApproachSection } from '@/components/frontend/home/estate-approach-section';
 import { WhyCreateWillSection } from '@/components/frontend/home/why-create-will-section';
 import FrontendLayout from '@/layouts/frontend-layout';
 import React from 'react';
@@ -14,6 +15,7 @@ export default function Home() {
         <FrontendLayout>
             <Banner />
             <WhyCreateWillSection />
+            <EstateApproachSection />
             <HowItWorksSection />
             <DashboardPreviewSection />
             <ManagingAffairsSection />
