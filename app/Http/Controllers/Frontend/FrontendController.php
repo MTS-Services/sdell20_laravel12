@@ -32,4 +32,9 @@ class FrontendController extends Controller
     {
         return Inertia::render('frontend/lpa');
     }
+
+    public function probate(): Response
+    {
+        return Inertia::render('frontend/probate');
+    }
 }
