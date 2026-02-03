@@ -53,7 +53,7 @@ export function WillWritingPricingSection() {
                     ))}
                 </div>
                 <div className="mt-8 flex justify-center animate-fadeInUp delay-200">
-                    <button className="inline-flex items-center gap-2 rounded-full bg-primary-900 px-8 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5">
+                    <button className="inline-flex items-center gap-2 rounded-full border border-primary-600 bg-primary-600 hover:text-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-transparent">
                         Get started
                         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M5 12h14" />
