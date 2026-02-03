@@ -20,8 +20,8 @@ export function FrontendHeader() {
     ];
 
     const estateLinks = [
-        { label: 'Will Writing', type: 'hash' as const, href: '#' },
-        { label: 'Lasting Power of Attorney', type: 'hash' as const, href: '#' },
+        { label: 'Will Writing', type: 'route' as const, href: 'will-writing' },
+        { label: 'Lasting Power of Attorney', type: 'route' as const, href: 'lpa' },
     ];
 
     const supportLinks = [{ label: 'Probate', type: 'hash' as const, href: '#' }];
@@ -137,10 +137,10 @@ export function FrontendHeader() {
                                                         <path d="M12 21s8-4.5 8-10.5S15.5 3 12 6.5C8.5 3 4 4.5 4 10.5S12 21 12 21z" strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
                                                 </span>
-                                                <div>
+                                                <Link href={route('lpa')} className="block">
                                                     <p className="font-semibold text-slate-900">Lasting Power of Attorney</p>
                                                     <p className="text-xs text-slate-500">Choose who makes decisions for you</p>
-                                                </div>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -228,9 +228,9 @@ export function FrontendHeader() {
                                     <Link href={route('will-writing')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Will Writing
                                     </Link>
-                                    <a href="#" className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
+                                    <Link href={route('lpa')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Lasting Power of Attorney
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
 
