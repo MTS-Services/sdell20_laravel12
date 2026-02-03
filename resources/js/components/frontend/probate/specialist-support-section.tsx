@@ -1,21 +1,27 @@
 import React from 'react';
 
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
+
 export function SpecialistSupportSection() {
+    const [sectionRef, isVisible] = useScrollAnimation<HTMLDivElement>();
+    const animatedBase = 'transition-all duration-700 ease-out';
+    const animatedState = isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6';
+
     return (
-        <section className="bg-gradient-to-br from-slate-200 to-slate-300 py-20 px-4 relative overflow-hidden wavy-bottom">
+        <section ref={sectionRef} className="bg-gradient-to-br from-slate-200 to-slate-300 py-20 px-4 relative overflow-hidden wavy-bottom">
             <div className="absolute right-0 top-0 w-1/3 h-full slate-dots opacity-50"></div>
 
-            <div className="max-w-6xl mx-auto text-center relative z-10">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <div className="max-w-6xl mx-auto text-center relative z-10 space-y-6">
+                <h2 className={`text-3xl md:text-4xl font-bold text-gray-900 ${animatedBase} ${animatedState}`} style={{ transitionDelay: '0ms' }}>
                     Get specialist probate support
                 </h2>
-                <p className="text-lg text-gray-800 mb-12 max-w-3xl mx-auto">
+                <p className={`text-lg text-gray-800 max-w-3xl mx-auto ${animatedBase} ${animatedState}`} style={{ transitionDelay: '150ms' }}>
                     Whether you&apos;re applying for probate or need support to handle the estate of someone who&apos;s died, our
                     specialists and legal partners are here to help.
                 </p>
 
                 {/* Two Cards */}
-                <div className="grid md:grid-cols-2 gap-8 mb-12">
+                <div className={`grid md:grid-cols-2 gap-8 ${animatedBase} ${animatedState}`} style={{ transitionDelay: '250ms' }}>
                     {/* Grant of Probate Card */}
                     <div className="bg-white rounded-2xl p-8 text-left shadow-lg card-hover">
                         <h3 className="text-2xl font-bold text-gray-900 mb-4">Grant of probate application</h3>
@@ -84,7 +90,7 @@ export function SpecialistSupportSection() {
                     </div>
                 </div>
 
-                <div className="rounded-xl p-6 max-w-xl mx-auto">
+                <div className={`rounded-xl p-6 max-w-xl mx-auto ${animatedBase} ${animatedState}`} style={{ transitionDelay: '400ms' }}>
                     <h4 className="font-bold text-gray-900 mb-3">Get your free quote online</h4>
                     <button className="bg-slate-500 border-2 border-slate-400 px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
                         Get a quote in 5 minutes
