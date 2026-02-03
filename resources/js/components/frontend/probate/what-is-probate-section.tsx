@@ -1,28 +1,37 @@
 import React from 'react';
 
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
+
 export function WhatIsProbateSection() {
+    const [sectionRef, isVisible] = useScrollAnimation<HTMLDivElement>();
+    const base = 'transition-all duration-700 ease-out';
+    const state = isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6';
+
     return (
-        <section className="bg-white py-20 px-4">
+        <section ref={sectionRef} className="bg-white py-20 px-4">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-4xl font-bold text-center text-gray-900 mb-12">What is probate?</h2>
+                <h2 className={`text-4xl font-bold text-center text-gray-900 mb-12 ${base} ${state}`} style={{ transitionDelay: '0ms' }}>
+                    What is probate?
+                </h2>
 
                 <div className="grid md:grid-cols-2 gap-12 items-center">
-                    <div>
+                    <div className={`space-y-6 ${base} ${state}`} style={{ transitionDelay: '150ms' }}>
                         <h3 className="text-2xl font-bold text-gray-900 mb-4">Probate is a legal document</h3>
-                        <p className="text-gray-700 mb-6">
+                        <p className="text-gray-700">
                             It gives you the authority to handle the estate, property, and personal possessions (the
                             assets) of the person who died.
                         </p>
 
-                        <h3 className="text-2xl font-bold text-gray-900 mb-4">You may need to apply for probate even if
-                            there is a will</h3>
+                        <h3 className="text-2xl font-bold text-gray-900">
+                            You may need to apply for probate even if there is a will
+                        </h3>
                         <p className="text-gray-700">
                             If someone has died and you&apos;ve named as an executor in their will, or you&apos;re their next of
                             kin (administrators), you may need to apply for probate.
                         </p>
                     </div>
 
-                    <div className="flex justify-center">
+                    <div className={`flex justify-center ${base} ${state}`} style={{ transitionDelay: '250ms' }}>
                         <div className="w-64 h-64 bg-gray-100 rounded-lg flex items-center justify-center">
                             <svg className="w-40 h-40 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1"
@@ -32,7 +41,7 @@ export function WhatIsProbateSection() {
                     </div>
                 </div>
 
-                <div className="text-center mt-12">
+                <div className={`text-center mt-12 ${base} ${state}`} style={{ transitionDelay: '350ms' }}>
                     <h3 className="text-2xl font-bold text-gray-900 mb-6">Find out if you need probate</h3>
                     <button className="text-slate-500 px-8 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

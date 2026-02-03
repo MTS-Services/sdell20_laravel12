@@ -1,13 +1,23 @@
 import React from 'react';
 
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
+
 export function HowWeHelpSection() {
+    const [ref, visible] = useScrollAnimation<HTMLDivElement>();
+    const base = 'transition-all duration-700 ease-out';
+    const state = visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6';
+
+    const tileClass = (delay: number) => `${base} ${state}`;
+
     return (
-        <section className="bg-slate-50 py-20 px-4">
+        <section ref={ref} className="bg-slate-50 py-20 px-4">
             <div className="max-w-6xl mx-auto">
-                <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">How we help you save</h2>
+                <h2 className={`text-4xl font-bold text-center text-gray-900 mb-16 ${base} ${state}`} style={{ transitionDelay: '0ms' }}>
+                    How we help you save
+                </h2>
 
                 <div className="grid md:grid-cols-4 gap-8 mb-12">
-                    <div className="text-center">
+                    <div className={`text-center ${tileClass(0)}`} style={{ transitionDelay: '100ms' }}>
                         <div className="w-24 h-24 mx-auto mb-4 bg-slate-200 rounded-full flex items-center justify-center">
                             <svg className="w-12 h-12 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -18,7 +28,7 @@ export function HowWeHelpSection() {
                         <p className="text-sm text-gray-600">We use technology to cut down on paperwork and admin time</p>
                     </div>
 
-                    <div className="text-center">
+                    <div className={`text-center ${tileClass(200)}`} style={{ transitionDelay: '200ms' }}>
                         <div className="w-24 h-24 mx-auto mb-4 bg-slate-200 rounded-full flex items-center justify-center">
                             <svg className="w-12 h-12 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -30,7 +40,7 @@ export function HowWeHelpSection() {
                             hidden costs or hourly rates</p>
                     </div>
 
-                    <div className="text-center">
+                    <div className={`text-center ${tileClass(300)}`} style={{ transitionDelay: '300ms' }}>
                         <div className="w-24 h-24 mx-auto mb-4 bg-slate-200 rounded-full flex items-center justify-center">
                             <svg className="w-12 h-12 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -55,7 +65,7 @@ export function HowWeHelpSection() {
                     </div>
                 </div>
 
-                <div className="text-center">
+                <div className={`text-center ${base} ${state}`} style={{ transitionDelay: '500ms' }}>
                     <div className="rounded-xl p-6 inline-block">
                         <h4 className="font-bold text-gray-900 mb-3">Get a free quote online</h4>
                         <button className="bg-slate-500 hover:bg-slate-600 border-2 border-slate-400 px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
