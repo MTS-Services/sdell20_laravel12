@@ -8,3 +8,4 @@ Route::get("/horizon-wills", [FrontendController::class, "horizonWills"])->name(
 Route::get("/contact", [FrontendController::class, "contact"])->name("contact");
 Route::get("/will-writing", [FrontendController::class, "willWriting"])->name("will-writing");
 Route::get("/lpa", [FrontendController::class, "lpa"])->name("lpa");
+Route::get("/probate", [FrontendController::class, "probate"])->name("probate");

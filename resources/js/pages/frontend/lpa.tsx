@@ -14,7 +14,7 @@ import { QuoteSection } from '@/components/frontend/horizon-wills/team-section';
 export default function Lpa() {
     return (
         <FrontendLayout>
-            <main className="bg-primary-50">
+            <main >
                 <LpaHeroSection />
                 <LpaFeaturedLogosSection />
                 <LpaCtaSection />
