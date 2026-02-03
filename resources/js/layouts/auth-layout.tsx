@@ -1,7 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import * as React from 'react';
 
-import AppLogo from '@/components/app-logo';
 import { login } from '@/routes';
 
 interface AuthLayoutProps {
@@ -18,38 +17,50 @@ export default function AuthLayout({
     description,
 }: AuthLayoutProps) {
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 relative bg-background overflow-hidden">
+        <div className="relative min-h-screen overflow-hidden bg-slate-400 text-white">
+            <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -top-24 -right-16 h-72 w-72 rounded-full bg-fuchsia-500/40 blur-[150px]" />
+                <div className="absolute -bottom-24 -left-10 h-96 w-96 rounded-full bg-cyan-500/30 blur-[170px]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_60%)]" />
+                <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'linear-gradient(120deg, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(300deg, rgba(255,255,255,0.04) 1px, transparent 1px)', backgroundSize: '120px 120px' }} />
+            </div>
 
-            {/* Top Left Ellipse */}
-            <span
-                className='absolute blur-3xl pointer-events-none -top-[15%] -left-[35%] w-115 h-65 sm:w-150 sm:h-90 md:w-200 md:h-105 xl:-top-[30%] xl:-left-[35%] xl:w-300 xl:h-150 2xl:-top-[45%] 2xl:-left-[40%] 2xl:w-400 2xl:h-200 bg-radial from-[hsla(354,63%,84%,0.9)] from-0% to-transparent to-70%  opacity-80 xl:opacity-100'
-            ></span>
+            <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10">
+                <main className="relative w-full max-w-6xl overflow-hidden rounded-4xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
+                    <Head title={title} />
 
-            {/* Bottom Right Ellipse */}
-            <span
-                className='absolute blur-3xl pointer-events-none -bottom-[15%] -right-[35%] w-115 h-65 sm:w-150 sm:h-90 md:w-200 md:h-105 xl:-bottom-[30%] xl:-right-[35%] xl:w-300 xl:h-150 2xl:-bottom-[45%] 2xl:-right-[40%] 2xl:w-400 2xl:h-200 bg-radial from-[hsla(354,63%,84%,0.9)] from-0% to-transparent to-70%  opacity-80 xl:opacity-100'
-            ></span>
+                    <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-cyan-400 via-fuchsia-400 to-amber-300" />
 
-            <main className='flex flex-col w-full max-w-115 shadow-card rounded-[8px] p-6 md:p-7.5 bg-white/80 dark:bg-transparent backdrop-blur-sm relative z-1'>
-                <Head title={title} />
+                    <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+                        <div className="rounded-3xl bg-white/5 p-8 text-white">
+                            <div className="mt-10 space-y-5">
+                                <p className="text-xs uppercase tracking-[0.4em] text-white/60">{title ? 'Welcome back' : 'Secure access'}</p>
+                                <h1 className="text-3xl font-semibold leading-tight md:text-4xl">
+                                    {title || 'Availability Scheduler'}
+                                </h1>
+                                <p className="text-base text-white/80">
+                                    {description || 'Sign in to manage shifts, authorize requests, and keep your team coordinated from any device.'}
+                                </p>
+                            </div>
 
-                <Link href={login()} className="flex flex-col items-center">
-                    <AppLogo className="fill-current text-foreground h-12 w-auto md:h-auto" />
-                </Link>
+                            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+                                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                                    <p className="text-3xl font-semibold">24/7</p>
+                                    <p className="text-sm text-white/70">Scheduling visibility</p>
+                                </div>
+                                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                                    <p className="text-3xl font-semibold">99.9%</p>
+                                    <p className="text-sm text-white/70">Platform uptime</p>
+                                </div>
+                            </div>
+                        </div>
 
-                <div className="space-y-2 text-center mt-6">
-                    <h1 className="font-montserrat font-semibold text-2xl md:text-4xl leading-tight md:leading-[130%] text-[#595959]">
-                        {title || "Availability Scheduler"}
-                    </h1>
-                    <p className="text-base md:text-xl leading-relaxed md:leading-[150%] text-center text-[#595959]">
-                        {description || "Sign in to manage your availability"}
-                    </p>
-                </div>
-
-                <div className="mt-8 w-full">
-                    {children}
-                </div>
-            </main>
+                        <div className="rounded-3xl bg-white p-8 shadow-xl">
+                            {children}
+                        </div>
+                    </div>
+                </main>
+            </div>
         </div>
     );
 }

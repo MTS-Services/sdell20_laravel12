@@ -179,10 +179,9 @@ export function FrontendHeader() {
                                 </div>
                             </div>
 
-                            {/* Sign in (route not available => #) */}
-                            <a href="#" className="font-sans font-semibold text-pink-400 transition-all hover:text-primary-100">
+                            <Link href={route('login')} className="font-sans font-semibold text-pink-400 transition-all hover:text-primary-100">
                                 Sign in
-                            </a>
+                            </Link>
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -251,12 +250,12 @@ export function FrontendHeader() {
                                 </div>
                             )}
 
-                            <a
-                                href="#"
+                            <Link
+                                href={route('login')}
                                 className="block rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-pink-300 hover:bg-white/10"
                             >
                                 Sign in
-                            </a>
+                            </Link>
 
                             <button className="w-full rounded-full bg-white px-6 py-2 text-slate-800 transition-colors hover:bg-slate-100">
                                 Take the Quiz
