@@ -29,7 +29,19 @@ export default function Login({ status }: LoginProps) {
         >
             <Head title="Log in" />
 
-            <div className="w-full">
+            <div className="w-full space-y-6">
+                {features.canRegister && (
+                    <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
+                        <span className="text-sm text-slate-600">New to Horizon?</span>
+                        <TextLink
+                            href={register()}
+                            className="rounded-full bg-slate-900 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white"
+                        >
+                            Create account
+                        </TextLink>
+                    </div>
+                )}
+
                 <Form
                     {...store.form()}
                     resetOnSuccess={['password']}
@@ -38,8 +50,8 @@ export default function Login({ status }: LoginProps) {
                     {({ processing, errors }) => (
                         <>
                             <div className="space-y-4">
-                                <div className="grid gap-1.5">
-                                    <Label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-1">
+                                <div className="group rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-3 transition hover:border-slate-400">
+                                    <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
                                         Email address
                                     </Label>
                                     <Input
@@ -49,43 +61,50 @@ export default function Login({ status }: LoginProps) {
                                         required
                                         autoFocus
                                         placeholder="name@company.com"
-                                        className="h-11 bg-white/50 border-gray-200 focus:ring-violet-500 focus:border-violet-500 transition-all"
+                                        className="mt-1 h-12 border-none bg-transparent text-slate-50 focus-visible:ring-0"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
 
-                                <div className="grid gap-1.5">
-                                    <div className="flex items-center justify-between ml-1">
-                                        <Label htmlFor="password" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <div className="group rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-3 transition hover:border-slate-400">
+                                    <div className="mb-1 flex items-center justify-between">
+                                        <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
                                             Password
                                         </Label>
                                         {features.canResetPassword && (
                                             <TextLink
                                                 href={request()}
-                                                className="text-xs font-semibold text-violet-600 hover:text-violet-500 transition-colors"
+                                                className="text-xs font-semibold text-slate-50"
                                             >
-                                                Forgot password?
+                                                Forgot?
                                             </TextLink>
                                         )}
-                                    </div> 
+                                    </div>
                                     <PasswordInput
                                         id="password"
                                         name="password"
                                         required
-                                        placeholder="********"
-                                        className="h-11 bg-white/50 border-gray-200 focus:ring-violet-500 focus:border-violet-500 transition-all"
+                                        placeholder="••••••••"
+                                        className="h-12 border-none bg-transparent text-slate-50 focus-visible:ring-0"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
                             </div>
 
-                            <Button
-                                type="submit"
-                                className={`w-full py-6 text-lg ${processing ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                                disabled={processing}
-                            >
-                                {processing ? <Spinner className="h-4 w-4" /> : 'Login With When I Work'}
-                            </Button>
+                            <div className="space-y-3">
+                                <div className="flex items-center gap-3 text-xs text-slate-500">
+                                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900/5 text-slate-900">🔐</span>
+                                    Encrypted single sign-on powered by When I Work
+                                </div>
+
+                                <Button
+                                    type="submit"
+                                    className="w-full rounded-2xl bg-slate-600 py-5 text-base font-semibold tracking-wide text-white transition hover:bg-slate-700"
+                                    disabled={processing}
+                                >
+                                    {processing ? <Spinner className="h-4 w-4" /> : 'Log in'}
+                                </Button>
+                            </div>
                         </>
                     )}
                 </Form>
@@ -96,8 +115,9 @@ export default function Login({ status }: LoginProps) {
                     </p>
                 )}
 
+
                 {status && (
-                    <div className="mt-4 rounded-xl bg-emerald-50 border border-emerald-100 p-3 text-center text-sm font-medium text-emerald-600 animate-in fade-in slide-in-from-top-2">
+                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-center text-sm font-medium text-emerald-700">
                         {status}
                     </div>
                 )}
