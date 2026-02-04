@@ -26,6 +26,7 @@ export default function Login({ status }: LoginProps) {
         <AuthLayout
             title="Welcome back"
             description="Enter your credentials to access your account"
+            context="login"
         >
             <Head title="Log in" />
 
@@ -134,27 +135,11 @@ export default function Login({ status }: LoginProps) {
                     )}
                 </Form>
 
-                <div className="space-y-4 animate-fadeInUp delay-300">
-                    {features.canRegister && (
-                        <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/15 bg-white/5 px-5 py-4 text-sm text-white/80">
-                            <div>
-                                <p className="text-xs uppercase tracking-[0.35em] text-white/60">New to Horizon?</p>
-                                <p className="text-white">Create a workspace in minutes.</p>
-                            </div>
-                            <TextLink
-                                href={register()}
-                                className="rounded-full border border-white/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-white"
-                            >
-                                Create account
-                            </TextLink>
-                        </div>
-                    )}
-
-                    {status && (
-                        <div className="rounded-3xl border border-emerald-200/40 bg-emerald-500/10 p-4 text-center text-sm font-medium text-emerald-200">
-                            {status}
-                        </div>
-                    )}
+                <div className="text-center text-xs uppercase tracking-[0.3em] text-primary-500">
+                    Ready to join us?{' '}
+                    <TextLink href={register()} className="font-semibold text-primary-500 border-none hover:text-primary-200">
+                        Create your account
+                    </TextLink>
                 </div>
             </div>
         </AuthLayout>
