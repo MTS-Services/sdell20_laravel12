@@ -52,7 +52,6 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
-            'role' => UserRole::class,
             'is_admin' => 'boolean',
             'is_payroll' => 'boolean',
             'is_trusted' => 'boolean',
@@ -77,7 +76,17 @@ class User extends Authenticatable
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn () => trim($this->first_name.' '.$this->last_name),
+            get: function ($value, array $attributes) {
+                $storedName = $attributes['name'] ?? $value;
+
+                if (! empty($storedName)) {
+                    return $storedName;
+                }
+
+                $composed = trim(($attributes['first_name'] ?? '').' '.($attributes['last_name'] ?? ''));
+
+                return $composed !== '' ? $composed : ($attributes['email'] ?? '');
+            },
         );
     }
 
@@ -93,27 +102,17 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === UserRole::ADMIN;
+        return $this->role === UserRole::ADMIN || $this->is_admin === true;
     }
 
-    public function isManager(): bool
+    public function isUser(): bool
     {
-        return $this->role === UserRole::MANAGER;
-    }
-
-    public function isEmployee(): bool
-    {
-        return $this->role === UserRole::EMPLOYEE;
-    }
-
-    public function isSupervisor(): bool
-    {
-        return $this->role === UserRole::SUPERVISOR;
+        return $this->role === UserRole::USER;
     }
 
     public function canManageUsers(): bool
     {
-        return $this->role?->canManageUsers() ?? false;
+        return $this->isAdmin();
     }
 
     public function getCanManageUsersAttribute(): bool
