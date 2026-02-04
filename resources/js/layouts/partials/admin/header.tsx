@@ -28,10 +28,17 @@ export function AdminHeader() {
                     <AppLogo />
                 </Link>
                 <div className='hidden md:flex items-center gap-4'>
-                    <div className='flex items-center justify-end gap-2 w-full min-w-32'>
-                        <UserInfo user={auth.user} showRole={true} />
-                    </div>
-                    <Link
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="flex items-center gap-2 h-auto p-2 hover:bg-transparent hover:scale-105 transition-transform focus-visible:ring-0 focus-visible:ring-offset-0">
+                                <UserInfo user={auth.user}  />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
+                            <UserMenuContent user={auth.user} />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    {/* <Link
                         className="flex gap-1 items-center w-full cursor-pointer font-open-sans"
                         href={logout()}
                         as="button"
@@ -40,7 +47,7 @@ export function AdminHeader() {
                     >
                         <LogOut />
                         Sign Out
-                    </Link>
+                    </Link> */}
                 </div>
                 <div className='md:hidden'>
                     <DropdownMenu>

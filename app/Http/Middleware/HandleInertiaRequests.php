@@ -36,27 +36,28 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user() ? array_merge(
-                    $request->user()->only([
+                'user' => $user ? array_merge(
+                    $user->only([
                         'id',
                         'email',
-                        'first_name',
-                        'last_name',
+                        'name',
                         'phone_number',
                         'employee_code',
                         'avatar',
                     ]),
                     [
-                        'name' => $request->user()->name,
-                        'role' => $request->user()->role?->value,
-                        'role_label' => $request->user()->role_label,
-                        'is_admin' => $request->user()->isAdmin(),
-                        'can_manage_users' => $request->user()->canManageUsers(),
-                        'avatar_url' => $request->user()->avatar_url,
+                        'name' => $this->displayName($user),
+                        'role' => $user->role?->value,
+                        'role_label' => $user->role_label,
+                        'is_admin' => $user->isAdmin(),
+                        'can_manage_users' => $user->canManageUsers(),
+                        'avatar_url' => $user->avatar_url,
                     ]
                 ) : null,
             ],
@@ -72,5 +73,10 @@ class HandleInertiaRequests extends Middleware
                 'canUseTwoFactorAuthentication' => false,
             ],
         ];
+    }
+
+    private function displayName($user): string
+    {
+        return ! empty($user->name) ? $user->name : $user->email;
     }
 }
