@@ -1,13 +1,13 @@
 import { Head, Link } from '@inertiajs/react';
 import * as React from 'react';
 
-import AppLogo from '@/components/app-logo';
-import { login } from '@/routes';
+import { login, register } from '@/routes';
 
 interface AuthLayoutProps {
     children: React.ReactNode;
     title: string;
     description: string;
+    context?: 'login' | 'register';
     showHeader?: boolean;
     showFooter?: boolean;
 }
@@ -16,40 +16,108 @@ export default function AuthLayout({
     children,
     title,
     description,
+    context = 'login',
 }: AuthLayoutProps) {
+    const heroTitle = title || 'Secure workforce access';
+    const heroDescription =
+        description || 'Manage shifts, authorize requests, and sync your people from anywhere in the world.';
+
+    const isRegisterView = context === 'register';
+    const ctaHref = isRegisterView ? login() : register();
+    const ctaLabel = isRegisterView ? 'Return to login' : 'Create account';
+    const ctaPrompt = isRegisterView ? 'Already onboard?' : 'Need a seat?';
+
+
+    const highlights = [
+        {
+            title: 'When I Work sync',
+            description: 'Shift approvals, availability blocks, and payroll roles stay mirrored in real time.',
+        },
+        {
+            title: 'Coverage intelligence',
+            description: 'Cross-location dashboards surface open needs before they become overtime emergencies.',
+        },
+        {
+            title: 'Availability autopilot',
+            description: 'Managers publish templates; teams confirm on mobile and Horizon handles the API sync.',
+        },
+    ];
+
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 relative bg-background overflow-hidden">
+        <div className="relative min-h-screen overflow-hidden bg-[#030712] text-white">
+            <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -left-32 top-12 h-80 w-80 rounded-full bg-(--accent-blue)/25 blur-[180px] animate-float" />
+                <div className="absolute -right-24 bottom-0 h-125 w-125 rounded-full bg-(--accent-purple)/25 blur-[220px] animate-float delay-200" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,var(--primary-700)/35,transparent_60%)]" />
+                <div
+                    className="absolute inset-0 opacity-40"
+                    style={{
+                        backgroundImage:
+                            'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 45%), linear-gradient(120deg, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(300deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+                        backgroundSize: '160px 160px, 140px 140px, 140px 140px',
+                    }}
+                />
+            </div>
 
-            {/* Top Left Ellipse */}
-            <span
-                className='absolute blur-3xl pointer-events-none -top-[15%] -left-[35%] w-115 h-65 sm:w-150 sm:h-90 md:w-200 md:h-105 xl:-top-[30%] xl:-left-[35%] xl:w-300 xl:h-150 2xl:-top-[45%] 2xl:-left-[40%] 2xl:w-400 2xl:h-200 bg-radial from-[hsla(354,63%,84%,0.9)] from-0% to-transparent to-70%  opacity-80 xl:opacity-100'
-            ></span>
+            <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12 lg:px-10">
+                <main className="relative w-full max-w-6xl overflow-hidden rounded-[48px] border border-white/10 bg-white/5 shadow-[0_30px_120px_rgba(2,6,23,0.75)] backdrop-blur-2xl">
+                    <Head title={title} />
 
-            {/* Bottom Right Ellipse */}
-            <span
-                className='absolute blur-3xl pointer-events-none -bottom-[15%] -right-[35%] w-115 h-65 sm:w-150 sm:h-90 md:w-200 md:h-105 xl:-bottom-[30%] xl:-right-[35%] xl:w-300 xl:h-150 2xl:-bottom-[45%] 2xl:-right-[40%] 2xl:w-400 2xl:h-200 bg-radial from-[hsla(354,63%,84%,0.9)] from-0% to-transparent to-70%  opacity-80 xl:opacity-100'
-            ></span>
+                    <div className="absolute inset-x-10 top-0 h-px bg-linear-to-r from-(--accent-blue) via-white/70 to-(--accent-purple) opacity-70" />
 
-            <main className='flex flex-col w-full max-w-115 shadow-card rounded-[8px] p-6 md:p-7.5 bg-white/80 dark:bg-transparent backdrop-blur-sm relative z-1'>
-                <Head title={title} />
+                    <div className="grid gap-10 px-6 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-14 lg:py-16">
+                        <section className="flex flex-col gap-10 rounded-4xl border border-white/10 bg-white/5 p-8 shadow-inner shadow-white/5 backdrop-blur-2xl animate-fadeInLeft">
+                            <header className="space-y-6">
+                                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
+                                    <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[0.65rem]">
+                                        Horizon SSO
+                                    </span>
+                                    Always-on access
+                                </div>
+                                <div className="space-y-3 text-balance">
+                                    <h1 className="text-3xl font-semibold leading-tight md:text-4xl">{heroTitle}</h1>
+                                    <p className="text-lg text-white/80">{heroDescription}</p>
+                                </div>
+                            </header>
 
-                <Link href={login()} className="flex flex-col items-center">
-                    <AppLogo className="fill-current text-foreground h-12 w-auto md:h-auto" />
-                </Link>
 
-                <div className="space-y-2 text-center mt-6">
-                    <h1 className="font-montserrat font-semibold text-2xl md:text-4xl leading-tight md:leading-[130%] text-[#595959]">
-                        {title || "Availability Scheduler"}
-                    </h1>
-                    <p className="text-base md:text-xl leading-relaxed md:leading-[150%] text-center text-[#595959]">
-                        {description || "Sign in to manage your availability"}
-                    </p>
-                </div>
+                            <div className="space-y-4">
+                                {highlights.map((highlight) => (
+                                    <div
+                                        key={highlight.title}
+                                        className="group rounded-2xl border border-white/10 bg-white/5 p-5 transition duration-300 hover:border-white/40"
+                                    >
+                                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+                                            {highlight.title}
+                                        </p>
+                                        <p className="mt-2 text-base text-white/85">{highlight.description}</p>
+                                    </div>
+                                ))}
+                            </div>
 
-                <div className="mt-8 w-full">
-                    {children}
-                </div>
-            </main>
+                            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-white/80">
+                                <p className="text-xs uppercase tracking-[0.35em]">{ctaPrompt}</p>
+                                <Link
+                                    href={ctaHref}
+                                    className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-primary-700"
+                                >
+                                    {ctaLabel}
+                                </Link>
+                            </div>
+                        </section>
+
+                        <section className="relative animate-fadeInUp">
+                            <div className="rounded-4xl bg-white text-foreground shadow-(--shadow-card)">
+                                <div className="p-8">{children}</div>
+                            </div>
+
+                            <div className="pointer-events-none absolute -top-7 right-0 hidden rounded-2xl border border-white/10 bg-primary-500/50 px-5 py-4 text-sm font-semibold text-white shadow-2xl backdrop-blur lg:block animate-fadeInDown delay-200">
+                                Real-time collaboration · Team presence active
+                            </div>
+                        </section>
+                    </div>
+                </main>
+            </div>
         </div>
     );
 }

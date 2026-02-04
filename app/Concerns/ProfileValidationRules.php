@@ -15,30 +15,52 @@ trait ProfileValidationRules
     protected function profileRules(?int $userId = null): array
     {
         return [
-            'first_name' => $this->firstNameRules(),
-            'last_name' => $this->lastNameRules(),
+            'name' => $this->nameRules(),
             'email' => $this->emailRules($userId),
+            'avatar' => $this->avatarRules(),
+            'password' => $this->passwordRules(),
+            'password_confirmation' => $this->passwordConfirmationRules(),
         ];
     }
 
     /**
-     * Get the validation rules used to validate user first names.
+     * Get the validation rules used to validate user avatars.
      *
      * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
      */
-    protected function firstNameRules(): array
+    protected function avatarRules(): array
     {
-        return ['required', 'string', 'max:255'];
+        return ['nullable', 'image', 'mimes:jpeg,jpg,png,gif,webp', 'max:2048'];
     }
 
     /**
-     * Get the validation rules used to validate user last names.
+     * Get the validation rules used to validate new password.
      *
      * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
      */
-    protected function lastNameRules(): array
+    protected function passwordRules(): array
     {
-        return ['nullable', 'string', 'max:255'];
+        return ['nullable', 'string', 'min:8', 'confirmed'];
+    }
+
+    /**
+     * Get the validation rules used to validate password confirmation.
+     *
+     * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
+     */
+    protected function passwordConfirmationRules(): array
+    {
+        return ['nullable'];
+    }
+
+    /**
+     * Get the validation rules used to validate user names.
+     *
+     * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
+     */
+    protected function nameRules(): array
+    {
+        return ['required', 'string', 'max:255'];
     }
 
     /**

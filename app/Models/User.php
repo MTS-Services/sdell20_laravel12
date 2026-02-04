@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -13,7 +12,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,41 +20,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'wheniwork_id',
-        'account_id',
-        'login_id',
-        'wheniwork_token',
+        'name',
         'email',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'phone_number',
-        'employee_code',
-        'role',
-        'employment_type',
-        'is_payroll',
-        'is_trusted',
-        'is_private',
-        'is_hidden',
-        'activated',
-        'is_active',
-        'hours_preferred',
-        'hours_max',
-        'hourly_rate',
-        'notes',
-        'uuid',
-        'timezone_name',
-        'start_date',
-        'hired_on',
-        'terminated_at',
-        'last_login',
-        'alert_settings',
-        'positions',
-        'locations',
-        'avatar_urls',
-        'is_admin',
         'avatar',
         'password',
+        'is_admin',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -65,10 +36,18 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'wheniwork_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'avatar_url',
     ];
 
     /**
@@ -82,7 +61,6 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
-            'role' => UserRole::class,
             'is_admin' => 'boolean',
             'is_payroll' => 'boolean',
             'is_trusted' => 'boolean',
@@ -107,7 +85,17 @@ class User extends Authenticatable
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn () => trim($this->first_name.' '.$this->last_name),
+            get: function ($value, array $attributes) {
+                $storedName = $attributes['name'] ?? $value;
+
+                if (! empty($storedName)) {
+                    return $storedName;
+                }
+
+                $composed = trim(($attributes['first_name'] ?? '').' '.($attributes['last_name'] ?? ''));
+
+                return $composed !== '' ? $composed : ($attributes['email'] ?? '');
+            },
         );
     }
 
@@ -123,27 +111,17 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === UserRole::ADMIN;
+        return $this->role === UserRole::ADMIN || $this->is_admin === true;
     }
 
-    public function isManager(): bool
+    public function isUser(): bool
     {
-        return $this->role === UserRole::MANAGER;
-    }
-
-    public function isEmployee(): bool
-    {
-        return $this->role === UserRole::EMPLOYEE;
-    }
-
-    public function isSupervisor(): bool
-    {
-        return $this->role === UserRole::SUPERVISOR;
+        return $this->role === UserRole::USER;
     }
 
     public function canManageUsers(): bool
     {
-        return $this->role?->canManageUsers() ?? false;
+        return $this->isAdmin();
     }
 
     public function getCanManageUsersAttribute(): bool
@@ -162,7 +140,11 @@ class User extends Authenticatable
             return str_replace('%s', 'medium', $this->avatar_urls['url']);
         }
 
-        return $this->avatar;
+        if ($this->avatar) {
+            return asset('storage/' . $this->avatar);
+        }
+
+        return null;
     }
 
     public static function syncFromWhenIWorkData(array $userData, string $token): self

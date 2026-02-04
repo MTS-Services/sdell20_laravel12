@@ -20,11 +20,11 @@ export function FrontendHeader() {
     ];
 
     const estateLinks = [
-        { label: 'Will Writing', type: 'hash' as const, href: '#' },
-        { label: 'Lasting Power of Attorney', type: 'hash' as const, href: '#' },
+        { label: 'Will Writing', type: 'route' as const, href: 'will-writing' },
+        { label: 'Lasting Power of Attorney', type: 'route' as const, href: 'lpa' },
     ];
 
-    const supportLinks = [{ label: 'Probate', type: 'hash' as const, href: '#' }];
+    const supportLinks = [{ label: 'Probate', type: 'route' as const, href: 'probate' }];
 
     return (
         <header className="sticky top-0 z-50">
@@ -137,10 +137,10 @@ export function FrontendHeader() {
                                                         <path d="M12 21s8-4.5 8-10.5S15.5 3 12 6.5C8.5 3 4 4.5 4 10.5S12 21 12 21z" strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
                                                 </span>
-                                                <div>
+                                                <Link href={route('lpa')} className="block">
                                                     <p className="font-semibold text-slate-900">Lasting Power of Attorney</p>
                                                     <p className="text-xs text-slate-500">Choose who makes decisions for you</p>
-                                                </div>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -169,20 +169,19 @@ export function FrontendHeader() {
                                                         <path d="M8 10h8m-8 4h5" strokeLinecap="round" />
                                                     </svg>
                                                 </span>
-                                                <div>
+                                                <Link href={route('probate')} className="block">
                                                     <p className="font-semibold text-slate-900">Probate</p>
                                                     <p className="text-xs text-slate-500">Guidance through probate</p>
-                                                </div>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Sign in (route not available => #) */}
-                            <a href="#" className="font-sans font-semibold text-pink-400 transition-all hover:text-primary-100">
+                            <Link href={route('login')} className="font-sans font-semibold text-pink-400 transition-all hover:text-primary-100">
                                 Sign in
-                            </a>
+                            </Link>
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -228,9 +227,9 @@ export function FrontendHeader() {
                                     <Link href={route('will-writing')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Will Writing
                                     </Link>
-                                    <a href="#" className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
+                                    <Link href={route('lpa')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Lasting Power of Attorney
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
 
@@ -245,18 +244,18 @@ export function FrontendHeader() {
                             </button>
                             {openMobileSection === 'support' && (
                                 <div className="space-y-2 rounded-2xl border border-white/10 bg-slate-900/30 p-3">
-                                    <a href="#" className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
+                                    <Link href={route('probate')} className="block rounded-xl px-3 py-2 text-sm text-slate-100/90 hover:bg-white/10">
                                         Probate
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
 
-                            <a
-                                href="#"
+                            <Link
+                                href={route('login')}
                                 className="block rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-pink-300 hover:bg-white/10"
                             >
                                 Sign in
-                            </a>
+                            </Link>
 
                             <button className="w-full rounded-full bg-white px-6 py-2 text-slate-800 transition-colors hover:bg-slate-100">
                                 Take the Quiz
