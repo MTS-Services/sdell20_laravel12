@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, router } from '@inertiajs/react';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { type User } from '@/types';
@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UserHeader } from '@/layouts/partials/user/header';
 import { AdminHeader } from '@/layouts/partials/admin/header';
 import { useInitials } from '@/hooks/use-initials';
-import { Camera } from 'lucide-react';
+import { Camera, Eye, EyeOff } from 'lucide-react';
 
 interface Props {
     user: User;
@@ -21,8 +21,12 @@ export default function EditProfile({ user }: Props) {
         name: user.name,
         email: user.email,
         avatar: null as File | null,
+        password: '',
+        password_confirmation: '',
     });
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
     const getInitials = useInitials();
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +47,8 @@ export default function EditProfile({ user }: Props) {
             forceFormData: true,
             onSuccess: () => {
                 toast.success('Profile updated successfully!');
-                setPreviewUrl(null);
+                setData('password', '');
+                setData('password_confirmation', '');
             },
             onError: () => {
                 toast.error('Failed to update profile. Please try again.');
@@ -120,6 +125,67 @@ export default function EditProfile({ user }: Props) {
                                 {errors.email && (
                                     <p className="text-sm text-red-500">{errors.email}</p>
                                 )}
+                            </div>
+
+                            <div className="space-y-4 border-t pt-6">
+                                <h3 className="text-lg font-medium">Change Password</h3>
+                                <p className="text-sm text-muted-foreground">Leave blank if you don't want to change your password</p>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="password">New Password</Label>
+                                    <div className="relative">
+                                        <Input
+                                            id="password"
+                                            type={showPassword ? 'text' : 'password'}
+                                            value={data.password}
+                                            onChange={e => setData('password', e.target.value)}
+                                            autoComplete="new-password"
+                                            className="pr-10"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                        >
+                                            {showPassword ? (
+                                                <EyeOff className="h-4 w-4" />
+                                            ) : (
+                                                <Eye className="h-4 w-4" />
+                                            )}
+                                        </button>
+                                    </div>
+                                    {errors.password && (
+                                        <p className="text-sm text-red-500">{errors.password}</p>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="password_confirmation">Confirm New Password</Label>
+                                    <div className="relative">
+                                        <Input
+                                            id="password_confirmation"
+                                            type={showPasswordConfirmation ? 'text' : 'password'}
+                                            value={data.password_confirmation}
+                                            onChange={e => setData('password_confirmation', e.target.value)}
+                                            autoComplete="new-password"
+                                            className="pr-10"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPasswordConfirmation(!showPasswordConfirmation)}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                                        >
+                                            {showPasswordConfirmation ? (
+                                                <EyeOff className="h-4 w-4" />
+                                            ) : (
+                                                <Eye className="h-4 w-4" />
+                                            )}
+                                        </button>
+                                    </div>
+                                    {errors.password_confirmation && (
+                                        <p className="text-sm text-red-500">{errors.password_confirmation}</p>
+                                    )}
+                                </div>
                             </div>
 
                             <Button type="submit" disabled={processing}>
