@@ -20,41 +20,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'wheniwork_id',
-        'account_id',
-        'login_id',
-        'wheniwork_token',
+        'name',
         'email',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'phone_number',
-        'employee_code',
-        'role',
-        'employment_type',
-        'is_payroll',
-        'is_trusted',
-        'is_private',
-        'is_hidden',
-        'activated',
-        'is_active',
-        'hours_preferred',
-        'hours_max',
-        'hourly_rate',
-        'notes',
-        'uuid',
-        'timezone_name',
-        'start_date',
-        'hired_on',
-        'terminated_at',
-        'last_login',
-        'alert_settings',
-        'positions',
-        'locations',
-        'avatar_urls',
-        'is_admin',
         'avatar',
         'password',
+        'is_admin',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -64,7 +36,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'wheniwork_token',
         'two_factor_secret',
         'two_factor_recovery_codes',
         'remember_token',
