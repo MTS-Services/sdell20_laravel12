@@ -131,7 +131,11 @@ class User extends Authenticatable
             return str_replace('%s', 'medium', $this->avatar_urls['url']);
         }
 
-        return $this->avatar;
+        if ($this->avatar) {
+            return asset('storage/' . $this->avatar);
+        }
+
+        return null;
     }
 
     public static function syncFromWhenIWorkData(array $userData, string $token): self
