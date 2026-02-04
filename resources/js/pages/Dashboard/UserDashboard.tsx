@@ -16,7 +16,7 @@ export default function UserDashboard({ user }: Props) {
                     <Card>
                         <CardHeader>
                             <CardTitle>Welcome back, {user.name}!</CardTitle>
-                            <CardDescription>This is your personal dashboard - Role: {user.is_admin ? 'Admin' : 'User'}</CardDescription>
+                            <CardDescription>This is your personal dashboard : {user.is_admin ? 'Admin' : 'User'}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-6">
