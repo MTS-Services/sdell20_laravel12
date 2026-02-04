@@ -18,6 +18,8 @@ trait ProfileValidationRules
             'name' => $this->nameRules(),
             'email' => $this->emailRules($userId),
             'avatar' => $this->avatarRules(),
+            'password' => $this->passwordRules(),
+            'password_confirmation' => $this->passwordConfirmationRules(),
         ];
     }
 
@@ -29,6 +31,26 @@ trait ProfileValidationRules
     protected function avatarRules(): array
     {
         return ['nullable', 'image', 'mimes:jpeg,jpg,png,gif,webp', 'max:2048'];
+    }
+
+    /**
+     * Get the validation rules used to validate new password.
+     *
+     * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
+     */
+    protected function passwordRules(): array
+    {
+        return ['nullable', 'string', 'min:8', 'confirmed'];
+    }
+
+    /**
+     * Get the validation rules used to validate password confirmation.
+     *
+     * @return array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>
+     */
+    protected function passwordConfirmationRules(): array
+    {
+        return ['nullable'];
     }
 
     /**

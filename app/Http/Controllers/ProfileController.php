@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Concerns\ProfileValidationRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class ProfileController extends Controller
@@ -29,11 +30,20 @@ class ProfileController extends Controller
             $validated['avatar'] = $avatarPath;
         }
 
+        if ($request->filled('password')) {
+            if (Hash::check($request->password, $user->password)) {
+                return back()->withErrors([
+                    'password' => 'New password cannot be the same as your current password.',
+                ])->withInput();
+            }
+            $validated['password'] = bcrypt($request->password);
+        } else {
+            unset($validated['password'], $validated['password_confirmation']);
+        }
+
         $user->update($validated);
         $user->refresh();
 
-        return Inertia::render('Profile/Edit', [
-            'user' => $user->fresh(),
-        ])->with('success', 'Profile updated successfully.');
+        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
     }
 }
