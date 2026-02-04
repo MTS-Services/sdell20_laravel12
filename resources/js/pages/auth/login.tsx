@@ -29,29 +29,27 @@ export default function Login({ status }: LoginProps) {
         >
             <Head title="Log in" />
 
-            <div className="w-full space-y-6">
-                {features.canRegister && (
-                    <div className="flex items-center justify-between rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-                        <span className="text-sm text-slate-600">New to Horizon?</span>
-                        <TextLink
-                            href={register()}
-                            className="rounded-full bg-slate-900 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white"
-                        >
-                            Create account
-                        </TextLink>
-                    </div>
-                )}
+            <div className="w-full space-y-10 py-4">
+                <div className="animate-fadeInDown rounded-3xl border border-primary-50/40 bg-primary-50/20 px-5 py-4 text-sm text-primary-600">
+                    <p className="text-xs uppercase tracking-[0.35em] text-primary-600">Trusted access</p>
+                    <p className="mt-1 text-base font-medium text-primary-600">
+                        Sign in with your Horizon credentials or approved hardware key.
+                    </p>
+                </div>
 
                 <Form
                     {...store.form()}
                     resetOnSuccess={['password']}
-                    className="space-y-5"
+                    className="space-y-6"
                 >
                     {({ processing, errors }) => (
                         <>
                             <div className="space-y-4">
-                                <div className="group rounded-2xl border border-slate-200/80 bg-slate-50/80 px-4 py-3 transition hover:border-slate-400">
-                                    <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                    >
                                         Email address
                                     </Label>
                                     <Input
@@ -61,20 +59,23 @@ export default function Login({ status }: LoginProps) {
                                         required
                                         autoFocus
                                         placeholder="name@company.com"
-                                        className="mt-1 h-12 border-none bg-transparent text-slate-50 focus-visible:ring-0"
+                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
 
-                                <div className="group rounded-2xl border border-slate-200/80 bg-slate-50/50 px-4 py-3 transition hover:border-slate-400">
-                                    <div className="mb-1 flex items-center justify-between">
-                                        <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp delay-100">
+                                    <div className="mb-2 flex items-center justify-between">
+                                        <Label
+                                            htmlFor="password"
+                                            className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                        >
                                             Password
                                         </Label>
                                         {features.canResetPassword && (
                                             <TextLink
                                                 href={request()}
-                                                className="text-xs font-semibold text-slate-50"
+                                                className="text-xs font-semibold text-primary-600"
                                             >
                                                 Forgot?
                                             </TextLink>
@@ -85,42 +86,76 @@ export default function Login({ status }: LoginProps) {
                                         name="password"
                                         required
                                         placeholder="••••••••"
-                                        className="h-12 border-none bg-transparent text-slate-50 focus-visible:ring-0"
+                                        className="h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
                             </div>
 
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3 text-xs text-slate-500">
-                                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-900/5 text-slate-900">🔐</span>
-                                    Encrypted single sign-on powered by When I Work
+                            <div className="space-y-4">
+                                <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-primary-50/40 bg-primary-50/20 px-4 py-3 text-xs text-primary-500/80 animate-fadeInUp delay-200">
+                                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-white/15 text-lg">
+                                        🔐
+                                    </span>
+                                    End-to-end encrypted · Adaptive multi-factor · SOC2 compliant
                                 </div>
 
                                 <Button
                                     type="submit"
-                                    className="w-full rounded-2xl bg-slate-600 py-5 text-base font-semibold tracking-wide text-white transition hover:bg-slate-700"
+                                    className="group relative w-full overflow-hidden rounded-3xl bg-linear-to-r from-primary-500 via-primary-400 to-primary-600 py-5 text-base font-semibold tracking-wide text-white shadow-lg transition hover:brightness-110"
                                     disabled={processing}
                                 >
-                                    {processing ? <Spinner className="h-4 w-4" /> : 'Log in'}
+                                    <span className="relative flex items-center justify-center gap-2">
+                                        {processing ? (
+                                            <Spinner className="h-4 w-4" />
+                                        ) : (
+                                            <>
+                                                <span>Log in securely</span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth={1.5}
+                                                    stroke="currentColor"
+                                                    className="h-5 w-5 transition group-hover:translate-x-1"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M13.5 4.5 21 12l-7.5 7.5M21 12H3"
+                                                    />
+                                                </svg>
+                                            </>
+                                        )}
+                                    </span>
                                 </Button>
                             </div>
                         </>
                     )}
                 </Form>
 
-                {features.canRegister && (
-                    <p className="text-center text-sm text-muted-foreground mt-4">
-                        New here? <TextLink href={register()} className="text-violet-600 font-semibold hover:text-violet-500 underline-offset-4 hover:underline">Create an account</TextLink>
-                    </p>
-                )}
+                <div className="space-y-4 animate-fadeInUp delay-300">
+                    {features.canRegister && (
+                        <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/15 bg-white/5 px-5 py-4 text-sm text-white/80">
+                            <div>
+                                <p className="text-xs uppercase tracking-[0.35em] text-white/60">New to Horizon?</p>
+                                <p className="text-white">Create a workspace in minutes.</p>
+                            </div>
+                            <TextLink
+                                href={register()}
+                                className="rounded-full border border-white/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-white"
+                            >
+                                Create account
+                            </TextLink>
+                        </div>
+                    )}
 
-
-                {status && (
-                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-center text-sm font-medium text-emerald-700">
-                        {status}
-                    </div>
-                )}
+                    {status && (
+                        <div className="rounded-3xl border border-emerald-200/40 bg-emerald-500/10 p-4 text-center text-sm font-medium text-emerald-200">
+                            {status}
+                        </div>
+                    )}
+                </div>
             </div>
         </AuthLayout>
     );
