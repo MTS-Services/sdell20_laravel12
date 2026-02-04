@@ -22,36 +22,38 @@ export function AdminHeader() {
     };
 
     return (
-        <header className='container mx-auto flex items-center justify-between py-4 px-4'>
-            <Link href={dashboard()} className='flex items-center gap-2'>
-                <AppLogo />
-            </Link>
-            <div className='hidden md:flex items-center gap-4'>
-                <div className='flex items-center justify-end gap-2 w-full min-w-32'>
-                    <UserInfo user={auth.user} showRole={true} />
-                </div>
-                <Link
-                    className="flex gap-1 items-center w-full cursor-pointer font-open-sans"
-                    href={logout()}
-                    as="button"
-                    onClick={handleLogout}
-                    data-test="logout-button"
-                >
-                    <LogOut />
-                    Sign Out
+        <header className='bg-primary-50'>
+            <div className='container mx-auto flex items-center justify-between py-4 px-4  text-primary-500'>
+                <Link href={dashboard()} className='flex text-primary-500  items-center gap-2'>
+                    <AppLogo />
                 </Link>
-            </div>
-            <div className='md:hidden'>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="relative h-9 w-9 rounded-md ring-offset-background transition-all hover:ring-2 hover:ring-ring">
-                            <Menu className="size-6" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
-                        <UserMenuContent user={auth.user} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className='hidden md:flex items-center gap-4'>
+                    <div className='flex items-center justify-end gap-2 w-full min-w-32'>
+                        <UserInfo user={auth.user} showRole={true} />
+                    </div>
+                    <Link
+                        className="flex gap-1 items-center w-full cursor-pointer font-open-sans"
+                        href={logout()}
+                        as="button"
+                        onClick={handleLogout}
+                        data-test="logout-button"
+                    >
+                        <LogOut />
+                        Sign Out
+                    </Link>
+                </div>
+                <div className='md:hidden'>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="relative h-9 w-9 rounded-md ring-offset-background transition-all hover:ring-2 hover:ring-ring">
+                                <Menu className="size-6" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
+                            <UserMenuContent user={auth.user} />
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </div>
         </header>
     );
