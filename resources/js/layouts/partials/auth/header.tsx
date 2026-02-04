@@ -110,7 +110,7 @@ export function AuthHeader() {
                                         </Link>
                                     ))}
                                 </nav>
-
+                                    
                                 <div className="space-y-3">
                                     {!auth.user ? (
                                         <>
