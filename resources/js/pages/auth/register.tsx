@@ -4,6 +4,7 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { PasswordInput } from '@/components/ui/password-input';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
@@ -14,55 +15,134 @@ export default function Register() {
         <AuthLayout
             title="Create an account"
             description="Join thousands of teams shipping faster today."
+            context="register"
         >
             <Head title="Register" />
 
-            <div className="mx-auto w-full max-w-md rounded-2xl border border-border/50 bg-card/50 p-8 shadow-xl backdrop-blur-sm">
+            <div className="w-full space-y-2">
+                <div className="animate-fadeInDown rounded-3xl border border-primary-50/40 bg-primary-50/20 px-5 py-4 text-sm text-primary-600">
+                    <p className="text-xs uppercase tracking-[0.35em] text-primary-600">New horizons</p>
+                    <p className="mt-1 text-base font-medium text-primary-600">
+                        Create your Horizon workspace and invite your crew in minutes.
+                    </p>
+                </div>
+
                 <Form
                     {...store.form()}
                     resetOnSuccess={['password', 'password_confirmation']}
                     disableWhileProcessing
-                    className="space-y-5"
+                    className="space-y-6"
                 >
                     {({ processing, errors }) => (
                         <>
-                            <div className="grid gap-4">
-                                <div className="grid gap-1.5">
-                                    <Label htmlFor="name">Full Name</Label>
-                                    <Input id="name" type="text" required autoFocus name="name" placeholder="John Doe" className="bg-background/50" />
+                            <div className="space-y-2">
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp">
+                                    <Label
+                                        htmlFor="name"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                    >
+                                        Full name
+                                    </Label>
+                                    <Input
+                                        id="name"
+                                        name="name"
+                                        type="text"
+                                        required
+                                        autoFocus
+                                        placeholder="Avery Jensen"
+                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                    />
                                     <InputError message={errors.name} />
                                 </div>
 
-                                <div className="grid gap-1.5">
-                                    <Label htmlFor="email">Email address</Label>
-                                    <Input id="email" type="email" required name="email" placeholder="name@company.com" className="bg-background/50" />
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp delay-100">
+                                    <Label
+                                        htmlFor="email"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                    >
+                                        Email address
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        required
+                                        placeholder="team@horizon.io"
+                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                    />
                                     <InputError message={errors.email} />
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="grid gap-1.5">
-                                        <Label htmlFor="password">Password</Label>
-                                        <Input id="password" type="password" required name="password" placeholder="••••••••" className="bg-background/50" />
-                                    </div>
-                                    <div className="grid gap-1.5">
-                                        <Label htmlFor="password_confirmation">Confirm</Label>
-                                        <Input id="password_confirmation" type="password" required name="password_confirmation" placeholder="••••••••" className="bg-background/50" />
-                                    </div>
+
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp delay-150">
+                                    <Label
+                                        htmlFor="password"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                    >
+                                        Password
+                                    </Label>
+                                    <PasswordInput
+                                        id="password"
+                                        name="password"
+                                        required
+                                        placeholder="Create a passphrase"
+                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                    />
+                                </div>
+
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp delay-200">
+                                    <Label
+                                        htmlFor="password_confirmation"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                    >
+                                        Confirm password
+                                    </Label>
+                                    <PasswordInput
+                                        id="password_confirmation"
+                                        name="password_confirmation"
+                                        required
+                                        placeholder="Re-enter password"
+                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                    />
                                 </div>
                                 <InputError message={errors.password} />
+                            </div>
 
-                                <Button type="submit" className="w-full bg-violet-600 font-semibold text-white shadow-md transition-all hover:bg-violet-700 hover:shadow-violet-500/20 active:scale-[0.98]" disabled={processing}>
-                                    {processing && <Spinner className="mr-2 h-4 w-4" />}
-                                    Create Account
+                            <div className="space-y-4">
+                                <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-primary-50/40 bg-primary-50/20 px-4 py-3 text-xs text-primary-500/80 animate-fadeInUp delay-250">
+                                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-white/15 text-lg">
+                                        🚀
+                                    </span>
+                                    Collaborative workspaces · SOC2 aligned · Adaptive security layers
+                                </div>
+
+                                <Button
+                                    type="submit"
+                                    className="group relative w-full overflow-hidden rounded-3xl bg-linear-to-r from-primary-500 via-primary-400 to-primary-600 py-5 text-base font-semibold tracking-wide text-white shadow-lg transition hover:brightness-110"
+                                    disabled={processing}
+                                >
+                                    <span className="relative flex items-center justify-center gap-2">
+                                        {processing ? (
+                                            <Spinner className="h-4 w-4" />
+                                        ) : (
+                                            <>
+                                                <span>Launch workspace</span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth={1.5}
+                                                    stroke="currentColor"
+                                                    className="h-5 w-5 transition group-hover:translate-x-1"
+                                                >
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M21 12H3" />
+                                                </svg>
+                                            </>
+                                        )}
+                                    </span>
                                 </Button>
                             </div>
 
-                            <div className="text-center text-sm text-muted-foreground">
-                                Already have an account?{' '}
-                                <Link href={login()} className="font-medium text-violet-600 hover:text-violet-500 transition-colors">
-                                    Log in
-                                </Link>
-                            </div>
                         </>
                     )}
                 </Form>

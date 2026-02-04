@@ -1,12 +1,13 @@
 import { Head, Link } from '@inertiajs/react';
 import * as React from 'react';
 
-import { login } from '@/routes';
+import { login, register } from '@/routes';
 
 interface AuthLayoutProps {
     children: React.ReactNode;
     title: string;
     description: string;
+    context?: 'login' | 'register';
     showHeader?: boolean;
     showFooter?: boolean;
 }
@@ -15,10 +16,16 @@ export default function AuthLayout({
     children,
     title,
     description,
+    context = 'login',
 }: AuthLayoutProps) {
     const heroTitle = title || 'Secure workforce access';
     const heroDescription =
         description || 'Manage shifts, authorize requests, and sync your people from anywhere in the world.';
+
+    const isRegisterView = context === 'register';
+    const ctaHref = isRegisterView ? login() : register();
+    const ctaLabel = isRegisterView ? 'Return to login' : 'Create account';
+    const ctaPrompt = isRegisterView ? 'Already onboard?' : 'Need a seat?';
 
 
     const highlights = [
@@ -89,12 +96,12 @@ export default function AuthLayout({
                             </div>
 
                             <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-white/80">
-                                <p className="text-xs uppercase tracking-[0.35em]">Need a seat?</p>
+                                <p className="text-xs uppercase tracking-[0.35em]">{ctaPrompt}</p>
                                 <Link
-                                    href={login()}
+                                    href={ctaHref}
                                     className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-primary-700"
                                 >
-                                    Return to login
+                                    {ctaLabel}
                                 </Link>
                             </div>
                         </section>
@@ -105,7 +112,7 @@ export default function AuthLayout({
                             </div>
 
                             <div className="pointer-events-none absolute -top-7 right-0 hidden rounded-2xl border border-white/10 bg-primary-500/50 px-5 py-4 text-sm font-semibold text-white shadow-2xl backdrop-blur lg:block animate-fadeInDown delay-200">
-                                Live sync · 34 active sessions
+                                Real-time collaboration · Team presence active
                             </div>
                         </section>
                     </div>
