@@ -21,7 +21,6 @@ export default function UserDashboard({ user }: Props) {
                         <CardContent>
                             <div className="space-y-6">
                                 <UserProfileCards user={user} />
-                                <UserQuickActions />
                             </div>
                         </CardContent>
                     </Card>
