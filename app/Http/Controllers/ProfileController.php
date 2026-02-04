@@ -23,8 +23,17 @@ class ProfileController extends Controller
         $validated = $request->validate($this->profileRules($request->user()->id));
 
         $user = Auth::user();
-        $user->update($validated);
 
-        return back()->with('success', 'Profile updated successfully.');
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $validated['avatar'] = $avatarPath;
+        }
+
+        $user->update($validated);
+        $user->refresh();
+
+        return Inertia::render('Profile/Edit', [
+            'user' => $user->fresh(),
+        ])->with('success', 'Profile updated successfully.');
     }
 }
