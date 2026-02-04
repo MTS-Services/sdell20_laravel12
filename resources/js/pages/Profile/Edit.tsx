@@ -1,10 +1,11 @@
 import { useForm } from '@inertiajs/react';
+import { toast } from 'sonner';
 import { type User } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { AuthHeader } from '@/layouts/partials/auth/header';
+import { UserHeader } from '@/layouts/partials/user/header';
 import { AdminHeader } from '@/layouts/partials/admin/header';
 
 interface Props {
@@ -19,12 +20,19 @@ export default function EditProfile({ user }: Props) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('profile.update'));
+        post(route('profile.update'), {
+            onSuccess: () => {
+                toast.success('Profile updated successfully!');
+            },
+            onError: () => {
+                toast.error('Failed to update profile. Please try again.');
+            },
+        });
     };
 
     return (
         <div className="min-h-screen bg-background">
-            {user.is_admin ? <AdminHeader /> : <AuthHeader />}
+            {user.is_admin ? <AdminHeader /> : <UserHeader />}
             <main className="container mx-auto px-4 py-8">
                 <Card>
                     <CardHeader>
