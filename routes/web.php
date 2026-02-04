@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserSelectionController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Profile Routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [UserProfileController::class, 'edit'])->name('user-profile.edit');
+    Route::post('/profile', [UserProfileController::class, 'update'])->name('user-profile.update');
 });
 
 require __DIR__.'/settings.php';
