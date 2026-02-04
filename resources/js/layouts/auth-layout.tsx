@@ -16,48 +16,98 @@ export default function AuthLayout({
     title,
     description,
 }: AuthLayoutProps) {
+    const heroTitle = title || 'Secure workforce access';
+    const heroDescription =
+        description || 'Manage shifts, authorize requests, and sync your people from anywhere in the world.';
+
+
+    const highlights = [
+        {
+            title: 'When I Work sync',
+            description: 'Shift approvals, availability blocks, and payroll roles stay mirrored in real time.',
+        },
+        {
+            title: 'Coverage intelligence',
+            description: 'Cross-location dashboards surface open needs before they become overtime emergencies.',
+        },
+        {
+            title: 'Availability autopilot',
+            description: 'Managers publish templates; teams confirm on mobile and Horizon handles the API sync.',
+        },
+    ];
+
     return (
-        <div className="relative min-h-screen overflow-hidden bg-slate-400 text-white">
+        <div className="relative min-h-screen overflow-hidden bg-[#030712] text-white">
             <div className="pointer-events-none absolute inset-0">
-                <div className="absolute -top-24 -right-16 h-72 w-72 rounded-full bg-fuchsia-500/40 blur-[150px]" />
-                <div className="absolute -bottom-24 -left-10 h-96 w-96 rounded-full bg-cyan-500/30 blur-[170px]" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_60%)]" />
-                <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'linear-gradient(120deg, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(300deg, rgba(255,255,255,0.04) 1px, transparent 1px)', backgroundSize: '120px 120px' }} />
+                <div className="absolute -left-32 top-12 h-80 w-80 rounded-full bg-(--accent-blue)/25 blur-[180px] animate-float" />
+                <div className="absolute -right-24 bottom-0 h-125 w-125 rounded-full bg-(--accent-purple)/25 blur-[220px] animate-float delay-200" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,var(--primary-700)/35,transparent_60%)]" />
+                <div
+                    className="absolute inset-0 opacity-40"
+                    style={{
+                        backgroundImage:
+                            'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 45%), linear-gradient(120deg, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(300deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+                        backgroundSize: '160px 160px, 140px 140px, 140px 140px',
+                    }}
+                />
             </div>
 
-            <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10">
-                <main className="relative w-full max-w-6xl overflow-hidden rounded-4xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
+            <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12 lg:px-10">
+                <main className="relative w-full max-w-6xl overflow-hidden rounded-[48px] border border-white/10 bg-white/5 shadow-[0_30px_120px_rgba(2,6,23,0.75)] backdrop-blur-2xl">
                     <Head title={title} />
 
-                    <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-cyan-400 via-fuchsia-400 to-amber-300" />
+                    <div className="absolute inset-x-10 top-0 h-px bg-linear-to-r from-(--accent-blue) via-white/70 to-(--accent-purple) opacity-70" />
 
-                    <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-                        <div className="rounded-3xl bg-white/5 p-8 text-white">
-                            <div className="mt-10 space-y-5">
-                                <p className="text-xs uppercase tracking-[0.4em] text-white/60">{title ? 'Welcome back' : 'Secure access'}</p>
-                                <h1 className="text-3xl font-semibold leading-tight md:text-4xl">
-                                    {title || 'Availability Scheduler'}
-                                </h1>
-                                <p className="text-base text-white/80">
-                                    {description || 'Sign in to manage shifts, authorize requests, and keep your team coordinated from any device.'}
-                                </p>
+                    <div className="grid gap-10 px-6 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-14 lg:py-16">
+                        <section className="flex flex-col gap-10 rounded-4xl border border-white/10 bg-white/5 p-8 shadow-inner shadow-white/5 backdrop-blur-2xl animate-fadeInLeft">
+                            <header className="space-y-6">
+                                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
+                                    <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[0.65rem]">
+                                        Horizon SSO
+                                    </span>
+                                    Always-on access
+                                </div>
+                                <div className="space-y-3 text-balance">
+                                    <h1 className="text-3xl font-semibold leading-tight md:text-4xl">{heroTitle}</h1>
+                                    <p className="text-lg text-white/80">{heroDescription}</p>
+                                </div>
+                            </header>
+
+
+                            <div className="space-y-4">
+                                {highlights.map((highlight) => (
+                                    <div
+                                        key={highlight.title}
+                                        className="group rounded-2xl border border-white/10 bg-white/5 p-5 transition duration-300 hover:border-white/40"
+                                    >
+                                        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+                                            {highlight.title}
+                                        </p>
+                                        <p className="mt-2 text-base text-white/85">{highlight.description}</p>
+                                    </div>
+                                ))}
                             </div>
 
-                            <div className="mt-10 grid gap-5 sm:grid-cols-2">
-                                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                                    <p className="text-3xl font-semibold">24/7</p>
-                                    <p className="text-sm text-white/70">Scheduling visibility</p>
-                                </div>
-                                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                                    <p className="text-3xl font-semibold">99.9%</p>
-                                    <p className="text-sm text-white/70">Platform uptime</p>
-                                </div>
+                            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-white/80">
+                                <p className="text-xs uppercase tracking-[0.35em]">Need a seat?</p>
+                                <Link
+                                    href={login()}
+                                    className="rounded-full bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-primary-700"
+                                >
+                                    Return to login
+                                </Link>
                             </div>
-                        </div>
+                        </section>
 
-                        <div className="rounded-3xl bg-white p-8 shadow-xl">
-                            {children}
-                        </div>
+                        <section className="relative animate-fadeInUp">
+                            <div className="rounded-4xl bg-white text-foreground shadow-(--shadow-card)">
+                                <div className="p-8">{children}</div>
+                            </div>
+
+                            <div className="pointer-events-none absolute -top-7 right-0 hidden rounded-2xl border border-white/10 bg-primary-500/50 px-5 py-4 text-sm font-semibold text-white shadow-2xl backdrop-blur lg:block animate-fadeInDown delay-200">
+                                Live sync · 34 active sessions
+                            </div>
+                        </section>
                     </div>
                 </main>
             </div>
