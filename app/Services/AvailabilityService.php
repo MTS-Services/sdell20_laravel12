@@ -6,6 +6,7 @@ use App\Models\Availability;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class AvailabilityService
 {
@@ -17,6 +18,14 @@ class AvailabilityService
 
     public function getAvailabilitiesForMonth(int $userId, int $year, int $month): array
     {
+        if (! $this->availabilityTableExists()) {
+            Log::warning('Availabilities table missing, returning empty selections', [
+                'user_id' => $userId,
+            ]);
+
+            return [];
+        }
+
         $monthStart = Carbon::create($year, $month, 1)->startOfMonth();
         $monthEnd = Carbon::create($year, $month, 1)->endOfMonth();
 
@@ -43,6 +52,18 @@ class AvailabilityService
      */
     public function saveAvailabilities(int $userId, array $selections): array
     {
+        if (! $this->availabilityTableExists()) {
+            Log::warning('Availabilities table missing, skipping save', ['user_id' => $userId]);
+
+            return [
+                'success' => [],
+                'failed' => [],
+                'skipped' => $selections,
+                'has_errors' => true,
+                'error_message' => 'Availability storage unavailable',
+            ];
+        }
+
         $results = [
             'success' => [],
             'failed' => [],
@@ -468,6 +489,22 @@ class AvailabilityService
 
     public function checkRequirements(int $userId): array
     {
+        if (! $this->availabilityTableExists()) {
+            Log::warning('Availabilities table missing, defaulting requirement stats', ['user_id' => $userId]);
+
+            return [
+                'weekday' => [
+                    'total_blocks' => 0,
+                    'is_met' => false,
+                ],
+                'weekend' => [
+                    'total_blocks' => 0,
+                    'is_met' => false,
+                ],
+                'overall_status' => false,
+            ];
+        }
+
         $now = Carbon::now();
 
         // Define the specific boundaries for the current week
@@ -536,6 +573,21 @@ class AvailabilityService
      */
     public function getUserStatistics(int $userId, int $year, int $month, ?string $filterType = 'month', ?string $startDate = null, ?string $endDate = null): array
     {
+        if (! $this->availabilityTableExists()) {
+            Log::warning('Availabilities table missing, defaulting statistics', ['user_id' => $userId]);
+
+            return [
+                'total_duty_days' => 0,
+                'leave_taken' => 0,
+                'upcoming_leave' => 0,
+                'filter_type' => $filterType,
+                'date_range' => [
+                    'start' => null,
+                    'end' => null,
+                ],
+            ];
+        }
+
         // Determine the date range based on filter type
         if ($filterType === 'month' || $filterType === null) {
             $startDate = Carbon::create($year, $month, 1)->startOfMonth();
@@ -600,5 +652,10 @@ class AvailabilityService
                 'end' => $endDate->format('Y-m-d'),
             ],
         ];
+    }
+
+    protected function availabilityTableExists(): bool
+    {
+        return Schema::hasTable('availabilities');
     }
 }
