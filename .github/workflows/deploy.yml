@@ -7,7 +7,15 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Check secrets (safe)
+        run: |
+          test -n "${{ secrets.VPS_HOST }}" || (echo "VPS_HOST missing/empty" && exit 1)
+          test -n "${{ secrets.VPS_USER }}" || (echo "VPS_USER missing/empty" && exit 1)
+          test -n "${{ secrets.VPS_SSH_KEY }}" || (echo "VPS_SSH_KEY missing/empty" && exit 1)
+          echo "Secrets OK"
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -18,20 +26,14 @@ jobs:
           script: |
             set -e
             cd /var/www/willwrite
-
             git fetch --all
             git reset --hard origin/main
-
             composer install --no-dev --optimize-autoloader
-
             php artisan migrate --force
             php artisan optimize:clear
-
             npm ci
             npm run build
-
-            chown -R www-data:www-data storage bootstrap/cache
-            chmod -R 775 storage bootstrap/cache
-
+            sudo chown -R www-data:www-data storage bootstrap/cache
+            sudo chmod -R 775 storage bootstrap/cache
             sudo systemctl reload php8.3-fpm
             sudo systemctl reload nginx
