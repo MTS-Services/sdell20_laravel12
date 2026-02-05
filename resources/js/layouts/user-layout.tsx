@@ -2,9 +2,9 @@ import * as React from 'react';
 import { type ReactNode } from 'react';
 
 import { Toaster } from "@/components/ui/sonner"
-import { type BreadcrumbItem } from '@/types';
-import { UserHeader } from '@/layouts/partials/user/header';
 import { UserFooter } from '@/layouts/partials/user/footer';
+import { UserHeader } from '@/layouts/partials/user/header';
+import { type BreadcrumbItem } from '@/types';
 
 interface UserLayoutProps {
     children: ReactNode;

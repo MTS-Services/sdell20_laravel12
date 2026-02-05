@@ -10,22 +10,6 @@ export function FrontendHeader() {
         setOpenMobileSection((prev) => (prev === key ? null : key));
     };
 
-    // ✅ Only these are real:
-    // - Home: "/"
-    // - Horizon Wills: route('horizon-wills')
-    // Everything else => "#"
-    const aboutLinks = [
-        { label: 'HORIZON WILLS', type: 'route' as const, href: 'horizon-wills' },
-        { label: 'Contact Us', type: 'hash' as const, href: '#' },
-    ];
-
-    const estateLinks = [
-        { label: 'Will Writing', type: 'route' as const, href: 'will-writing' },
-        { label: 'Lasting Power of Attorney', type: 'route' as const, href: 'lpa' },
-    ];
-
-    const supportLinks = [{ label: 'Probate', type: 'route' as const, href: 'probate' }];
-
     return (
         <header className="sticky top-0 z-50">
             <nav className="z-50 w-full bg-slate-800 text-white shadow-lg">

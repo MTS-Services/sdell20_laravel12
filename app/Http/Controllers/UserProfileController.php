@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
-class ProfileController extends Controller
+class UserProfileController extends Controller
 {
     use ProfileValidationRules;
 
@@ -44,6 +44,6 @@ class ProfileController extends Controller
         $user->update($validated);
         $user->refresh();
 
-        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
+        return redirect()->route('user-profile.edit')->with('success', 'Profile updated successfully.');
     }
 }

@@ -26,7 +26,7 @@ class User extends Authenticatable
         'password',
         'is_admin',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /**
@@ -141,7 +141,7 @@ class User extends Authenticatable
         }
 
         if ($this->avatar) {
-            return asset('storage/' . $this->avatar);
+            return asset('storage/'.$this->avatar);
         }
 
         return null;
