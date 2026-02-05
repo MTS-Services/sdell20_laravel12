@@ -1,7 +1,3 @@
-import { Link } from '@inertiajs/react';
-
-import AppLogo from '@/components/app-logo';
-
 export function FrontendFooter() {
     return (
         <footer className="bg-slate-900 text-white py-16">
