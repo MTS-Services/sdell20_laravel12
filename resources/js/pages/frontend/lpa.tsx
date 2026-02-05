@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { QuoteSection } from '@/components/frontend/horizon-wills/team-section';
 import { LpaCtaSection } from '@/components/frontend/lpa/lpa-cta-section';
 import { LpaFaqSection } from '@/components/frontend/lpa/lpa-faq-section';
 import { LpaFeaturedLogosSection } from '@/components/frontend/lpa/lpa-featured-logos-section';
@@ -22,7 +21,6 @@ export default function Lpa() {
                 <LpaPricingSection />
                 <LpaSupportSection />
                 <WillWritingAboutSection />
-                <QuoteSection />
                 <LpaFaqSection />
             </main>
         </FrontendLayout>

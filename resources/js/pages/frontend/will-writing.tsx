@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { QuoteSection } from '@/components/frontend/horizon-wills/team-section';
 import { WillWritingAboutSection } from '@/components/frontend/will-writing/will-writing-about-section';
 import { WillWritingCalloutsSection } from '@/components/frontend/will-writing/will-writing-callouts-section';
 import { WillWritingFaqSection } from '@/components/frontend/will-writing/will-writing-faq-section';
@@ -19,7 +18,6 @@ export default function WillWriting() {
                 <WillWritingFaqSection />
                 <WillWritingCalloutsSection />
                 <WillWritingAboutSection />
-                <QuoteSection />
             </main>
         </FrontendLayout>
     );
