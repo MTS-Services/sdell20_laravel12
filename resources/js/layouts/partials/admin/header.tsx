@@ -1,25 +1,17 @@
-import { Link, router, usePage } from '@inertiajs/react';
-import { LogOut, Menu } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { Menu } from 'lucide-react';
 
 import AppLogo from '@/components/app-logo';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { UserMenuContent } from '@/components/user-menu-content';
-import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { logout } from '@/routes';
 import { dashboard } from '@/routes';
 import { type SharedData } from '@/types';
 
 
 export function AdminHeader() {
     const { auth } = usePage<SharedData>().props;
-    const cleanup = useMobileNavigation();
-
-    const handleLogout = () => {
-        cleanup();
-        router.flushAll();
-    };
 
     return (
         <header className='bg-primary-50'>
@@ -31,7 +23,7 @@ export function AdminHeader() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="flex items-center gap-2 h-auto p-2 hover:bg-transparent hover:scale-105 transition-transform focus-visible:ring-0 focus-visible:ring-offset-0">
-                                <UserInfo user={auth.user}  />
+                                <UserInfo user={auth.user} />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
