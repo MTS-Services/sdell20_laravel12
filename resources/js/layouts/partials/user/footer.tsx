@@ -2,11 +2,6 @@ import { Link } from '@inertiajs/react';
 
 export function UserFooter() {
     const currentYear = new Date().getFullYear();
-     const navLinks = [
-        { name: 'Features', href: '#' },
-        { name: 'Pricing', href: '#' },
-        { name: 'About', href: '#' },
-    ];
     return (
         <footer className="border-t border-border/40 bg-muted/50 py-6 mt-auto">
             <div className="container mx-auto px-4">
