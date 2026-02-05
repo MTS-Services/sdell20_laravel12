@@ -15,6 +15,8 @@ trait ProfileValidationRules
     protected function profileRules(?int $userId = null): array
     {
         return [
+            'first_name' => $this->firstNameRules(),
+            'last_name' => $this->lastNameRules(),
             'name' => $this->nameRules(),
             'email' => $this->emailRules($userId),
             'avatar' => $this->avatarRules(),
@@ -31,6 +33,22 @@ trait ProfileValidationRules
     protected function avatarRules(): array
     {
         return ['nullable', 'image', 'mimes:jpeg,jpg,png,gif,webp', 'max:2048'];
+    }
+
+    /**
+     * Get the validation rules used to validate first names.
+     */
+    protected function firstNameRules(): array
+    {
+        return ['nullable', 'string', 'max:255'];
+    }
+
+    /**
+     * Get the validation rules used to validate last names.
+     */
+    protected function lastNameRules(): array
+    {
+        return ['nullable', 'string', 'max:255'];
     }
 
     /**

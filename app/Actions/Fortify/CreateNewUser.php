@@ -10,14 +10,12 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
-    use PasswordValidationRules {
+    use PasswordValidationRules, ProfileValidationRules {
         PasswordValidationRules::passwordRules insteadof ProfileValidationRules;
-        passwordRules as fortifyPasswordRules;
-    }
-    use ProfileValidationRules {
-        profileRules as baseProfileRules;
-        passwordRules as profilePasswordRules;
-        passwordConfirmationRules as profilePasswordConfirmationRules;
+        PasswordValidationRules::passwordRules as fortifyPasswordRules;
+        ProfileValidationRules::passwordRules as profilePasswordRules;
+        ProfileValidationRules::profileRules as baseProfileRules;
+        ProfileValidationRules::passwordConfirmationRules as profilePasswordConfirmationRules;
     }
 
     /**
