@@ -35,8 +35,6 @@ const reviewItems = [
     },
 ];
 
-type ReviewItem = (typeof reviewItems)[number];
-
 export function TeamSection() {
     const [introRef, introVisible] = useReveal<HTMLDivElement>();
     const [photoRef, photoVisible] = useReveal<HTMLDivElement>(0.15);

@@ -13,13 +13,7 @@ import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { SharedData } from '@/types';
 
-interface LoginProps {
-    status?: string;
-    canResetPassword: boolean;
-    canRegister: boolean;
-}
-
-export default function Login({ status }: LoginProps) {
+export default function Login() {
     const { features } = usePage<SharedData>().props;
 
     return (

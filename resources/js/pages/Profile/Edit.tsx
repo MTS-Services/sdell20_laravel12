@@ -1,16 +1,18 @@
-import { useForm, router } from '@inertiajs/react';
-import { toast } from 'sonner';
+import { useForm } from '@inertiajs/react';
+import { Camera, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
-import { type User } from '@/types';
+import { toast } from 'sonner';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { UserHeader } from '@/layouts/partials/user/header';
-import { AdminHeader } from '@/layouts/partials/admin/header';
 import { useInitials } from '@/hooks/use-initials';
-import { Camera, Eye, EyeOff } from 'lucide-react';
+import { AdminHeader } from '@/layouts/partials/admin/header';
+import { UserHeader } from '@/layouts/partials/user/header';
+import { type User } from '@/types';
+
 
 interface Props {
     user: User;
