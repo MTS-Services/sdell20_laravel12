@@ -1,7 +1,9 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, UserIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
+import { Settings, UserIcon } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
 
 export function UserQuickActions() {
     return (

@@ -1,8 +1,8 @@
-import { type User } from '@/types';
+import { AdminRecentActivity } from '@/components/admin-recent-activity';
+import { AdminStatsCards } from '@/components/admin-stats-cards';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
-import { AdminStatsCards } from '@/components/admin-stats-cards';
-import { AdminRecentActivity } from '@/components/admin-recent-activity';
+import { type User } from '@/types';
 
 interface Props {
     user: User;

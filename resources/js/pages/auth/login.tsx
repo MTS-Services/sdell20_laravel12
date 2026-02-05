@@ -13,13 +13,7 @@ import { store } from '@/routes/login';
 import { request } from '@/routes/password';
 import { SharedData } from '@/types';
 
-interface LoginProps {
-    status?: string;
-    canResetPassword: boolean;
-    canRegister: boolean;
-}
-
-export default function Login({ status }: LoginProps) {
+export default function Login() {
     const { features } = usePage<SharedData>().props;
 
     return (
@@ -60,7 +54,7 @@ export default function Login({ status }: LoginProps) {
                                         required
                                         autoFocus
                                         placeholder="name@company.com"
-                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-500 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
@@ -69,7 +63,7 @@ export default function Login({ status }: LoginProps) {
                                     <div className="mb-2 flex items-center justify-between">
                                         <Label
                                             htmlFor="password"
-                                            className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                            className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-900"
                                         >
                                             Password
                                         </Label>
@@ -87,7 +81,7 @@ export default function Login({ status }: LoginProps) {
                                         name="password"
                                         required
                                         placeholder="••••••••"
-                                        className="h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-50 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-900 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                     <InputError message={errors.password} />
                                 </div>

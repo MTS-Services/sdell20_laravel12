@@ -1,8 +1,7 @@
-import { type User } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import UserLayout from '@/layouts/user-layout';
 import { UserProfileCards } from '@/components/user-profile-cards';
-import { UserQuickActions } from '@/components/user-quick-actions';
+import UserLayout from '@/layouts/user-layout';
+import { type User } from '@/types';
 
 interface Props {
     user: User;
@@ -16,7 +15,7 @@ export default function UserDashboard({ user }: Props) {
                     <Card>
                         <CardHeader>
                             <CardTitle>Welcome back, {user.name}!</CardTitle>
-                            <CardDescription>This is your personal dashboard - Role: {user.is_admin ? 'Admin' : 'User'}</CardDescription>
+                            <CardDescription>This is your personal dashboard : {user.is_admin ? 'Admin' : 'User'}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-6">
