@@ -72,7 +72,7 @@ export default function WillQuestionnaire() {
                     description: 'Including separated, divorced or widowed',
                     action: () => {
                         updateData({ hasPartner: 'No' });
-                        setCurrentStep(1);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
@@ -80,7 +80,7 @@ export default function WillQuestionnaire() {
                     description: 'Including engaged or living with a partner',
                     action: () => {
                         updateData({ hasPartner: 'Yes' });
-                        setCurrentStep(1);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
@@ -94,14 +94,14 @@ export default function WillQuestionnaire() {
                     description: 'Including if you only have step children',
                     action: () => {
                         updateData({ hasChildren: 'No' });
-                        setCurrentStep(2);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
                         updateData({ hasChildren: 'Yes' });
-                        setCurrentStep(2);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
@@ -114,7 +114,7 @@ export default function WillQuestionnaire() {
                     label: 'No',
                     action: () => {
                         updateData({ ownsHome: 'No' });
-                        setCurrentStep(3);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
@@ -122,7 +122,7 @@ export default function WillQuestionnaire() {
                     description: 'Including with a mortgage or jointly',
                     action: () => {
                         updateData({ ownsHome: 'Yes' });
-                        setCurrentStep(3);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
@@ -135,14 +135,14 @@ export default function WillQuestionnaire() {
                     label: 'No',
                     action: () => {
                         updateData({ livesInEnglandWales: 'No' });
-                        setCurrentStep(4);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
                         updateData({ livesInEnglandWales: 'Yes' });
-                        setCurrentStep(5);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
@@ -155,14 +155,14 @@ export default function WillQuestionnaire() {
                     label: 'No',
                     action: () => {
                         updateData({ livesInScotlandIreland: 'No' });
-                        setCurrentStep(5);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
                         updateData({ livesInScotlandIreland: 'Yes' });
-                        setCurrentStep(6);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
@@ -184,14 +184,14 @@ export default function WillQuestionnaire() {
                     description: 'Including bank accounts, property, stocks and shares.',
                     action: () => {
                         updateData({ assetsInUK: 'No' });
-                        setCurrentStep(7);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
                         updateData({ assetsInUK: 'Yes' });
-                        setCurrentStep(7);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
@@ -204,7 +204,7 @@ export default function WillQuestionnaire() {
                     label: 'No',
                     action: () => {
                         updateData({ ownsBusiness: 'No' });
-                        setCurrentStep(8);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
@@ -212,7 +212,7 @@ export default function WillQuestionnaire() {
                     description: 'Including sole trader, partnership, LTD and LLP companies.',
                     action: () => {
                         updateData({ ownsBusiness: 'Yes' });
-                        setCurrentStep(8);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
@@ -227,7 +227,7 @@ export default function WillQuestionnaire() {
                     description: 'Just get a will for myself for £99',
                     action: () => {
                         updateData({ partnerNeedsWill: 'No' });
-                        setCurrentStep(9);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
@@ -236,7 +236,7 @@ export default function WillQuestionnaire() {
                     recommended: true,
                     action: () => {
                         updateData({ partnerNeedsWill: 'Yes' });
-                        setCurrentStep(9);
+                        setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
