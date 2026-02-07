@@ -2,7 +2,20 @@ import React from 'react';
 
 import { useReveal } from '@/hooks/use-reveal';
 
-const checklist = ['Protect loved ones', 'Safeguard assets', 'Plan with ease'];
+const checklist = [
+    {
+        title: 'Safeguard Your Family',
+        description: 'Making a Will protects your family, ensuring the right people inherit your estate when you die.',
+    },
+    {
+        title: 'Protect Your Wealth',
+        description: 'Making a Will helps to protect your wealth, minimising any potential claims on your estate that are against your wishes.',
+    },
+    {
+        title: 'Plan For The Future',
+        description: "Making a Will allows you and your family to plan for the future and ensure that your property and financial affairs are managed properly after you're gone.",
+    },
+];
 
 export default function Banner() {
     const [headingRef, headingVisible] = useReveal<HTMLDivElement>();
@@ -60,14 +73,17 @@ export default function Banner() {
                         ref={listRef}
                         className={`space-y-4 text-white transition-all duration-700 ease-out ${listVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
                     >
-                        {checklist.map((item) => (
-                            <li key={item} className="flex items-center gap-3 text-base">
-                                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/50 bg-white/10">
+                        {checklist.map(({ title, description }) => (
+                            <li key={title} className="flex gap-3 text-base">
+                                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/50 bg-white/10">
                                     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M20 6L9 17l-5-5" />
                                     </svg>
                                 </span>
-                                <span className="font-medium">{item}</span>
+                                <div className="space-y-1">
+                                    <p className="font-semibold tracking-wide text-[15px] text-primary-100">{title}</p>
+                                    <p className="text-sm text-white/80">{description}</p>
+                                </div>
                             </li>
                         ))}
                     </ul>
