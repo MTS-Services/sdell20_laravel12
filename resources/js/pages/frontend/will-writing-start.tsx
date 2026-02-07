@@ -134,39 +134,41 @@ export default function WillQuestionnaire() {
                 {
                     label: 'No',
                     action: () => {
-                        updateData({ livesInEnglandWales: 'No' });
+                        updateData({ livesInEnglandWales: 'No', livesInScotlandIreland: '' });
                         setCurrentStep((prev) => prev + 1);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
-                        updateData({ livesInEnglandWales: 'Yes' });
+                        updateData({ livesInEnglandWales: 'Yes', livesInScotlandIreland: '' });
                         setCurrentStep((prev) => prev + 1);
                     },
                 },
             ],
         },
-        {
-            image: 'https://online.zenco.com/images/start/start-location.png',
-            question: 'Do you live in Scotland or Ireland?',
-            options: [
-                {
-                    label: 'No',
-                    action: () => {
-                        updateData({ livesInScotlandIreland: 'No' });
-                        setCurrentStep((prev) => prev + 1);
+        formData.livesInEnglandWales === 'No'
+            ? {
+                image: 'https://online.zenco.com/images/start/start-location.png',
+                question: 'Do you live in Scotland or Ireland?',
+                options: [
+                    {
+                        label: 'No',
+                        action: () => {
+                            updateData({ livesInScotlandIreland: 'No' });
+                            setCurrentStep((prev) => prev + 1);
+                        },
                     },
-                },
-                {
-                    label: 'Yes',
-                    action: () => {
-                        updateData({ livesInScotlandIreland: 'Yes' });
-                        setCurrentStep((prev) => prev + 1);
+                    {
+                        label: 'Yes',
+                        action: () => {
+                            updateData({ livesInScotlandIreland: 'Yes' });
+                            setCurrentStep((prev) => prev + 1);
+                        },
                     },
-                },
-            ],
-        },
+                ],
+            }
+            : null,
         formData.livesInScotlandIreland === 'No'
             ? {
                 image: 'https://online.zenco.com/images/start/start-globe.png',
