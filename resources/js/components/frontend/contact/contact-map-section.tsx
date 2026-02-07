@@ -1,10 +1,8 @@
-import React from 'react';
-
 export function ContactMapSection() {
     return (
-        <section className="pb-20">
-            <div className="overflow-hidden rounded-3xl shadow-2xl">
-                <div className="h-80 w-full md:h-120">
+        <section>
+            <div className="overflow-hidden ">
+                <div className="h-80 w-full md:h-140">
                     <iframe
                         title="Office location map"
                         className="h-full w-full border-0"

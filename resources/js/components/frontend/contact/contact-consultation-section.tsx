@@ -37,7 +37,7 @@ const contactDetails = [
 
 export function ContactConsultationSection() {
     return (
-        <section id="contact-form" className="container mx-auto px-6 py-18 md:py-14">
+        <section id="contact-form" className="container mx-auto px-6 py-18 md:py-14 lg:py-20">
             <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
                 <div className="space-y-4 animate-fadeInUp">
                     <h2 className="text-3xl font-semibold text-primary-600">

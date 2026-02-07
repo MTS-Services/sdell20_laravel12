@@ -27,7 +27,7 @@ export function LpaFaqSection() {
     };
 
     return (
-        <section className="bg-primary-50 px-6 py-20">
+        <section className="bg-primary-100/50 px-6 py-20">
             <div className="mx-auto max-w-5xl">
                 <h2 className="text-center text-4xl font-semibold text-slate-900 animate-fadeInUp">Helping you make the right choice</h2>
                 <div className="mt-10 space-y-0">
