@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 type FormData = {
@@ -11,6 +11,8 @@ type FormData = {
     assetsInUK: string;
     ownsBusiness: string;
     partnerNeedsWill: string;
+    outOfRegionCountry: string;
+    outOfRegionEmail: string;
 };
 
 type StepOption = {
@@ -26,10 +28,12 @@ type StepConfig = {
     subtitle?: string;
     options?: StepOption[];
     isFinalStep?: boolean;
+    variant?: 'outOfRegion';
 };
 
 export default function WillQuestionnaire() {
     const [currentStep, setCurrentStep] = useState(0);
+    const [outOfRegionError, setOutOfRegionError] = useState('');
     const [formData, setFormData] = useState<FormData>({
         hasPartner: '',
         hasChildren: '',
@@ -39,10 +43,22 @@ export default function WillQuestionnaire() {
         assetsInUK: '',
         ownsBusiness: '',
         partnerNeedsWill: '',
+        outOfRegionCountry: '',
+        outOfRegionEmail: '',
     });
 
     const updateData = (data: Partial<FormData>) => {
         setFormData((prev) => ({ ...prev, ...data }));
+    };
+
+    const handleOutOfRegionSubmit = () => {
+        if (!formData.outOfRegionCountry.trim() || !formData.outOfRegionEmail.trim()) {
+            setOutOfRegionError('Please enter both your country and email address.');
+            return;
+        }
+
+        setOutOfRegionError('');
+        router.visit('/');
     };
 
     const steps: StepConfig[] = [
@@ -146,11 +162,18 @@ export default function WillQuestionnaire() {
                     label: 'Yes',
                     action: () => {
                         updateData({ livesInScotlandIreland: 'Yes' });
-                        setCurrentStep(5);
+                        setCurrentStep(6);
                     },
                 },
             ],
         },
+        formData.livesInScotlandIreland === 'No'
+            ? {
+                image: 'https://online.zenco.com/images/start/start-globe.png',
+                question: "Unfortunately, we're not quite right for each other.",
+                variant: 'outOfRegion',
+            }
+            : null,
         {
             image: 'https://online.zenco.com/images/start/start-assets.png',
             question: 'Is everything you own in the UK?',
@@ -161,14 +184,14 @@ export default function WillQuestionnaire() {
                     description: 'Including bank accounts, property, stocks and shares.',
                     action: () => {
                         updateData({ assetsInUK: 'No' });
-                        setCurrentStep(6);
+                        setCurrentStep(7);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
                         updateData({ assetsInUK: 'Yes' });
-                        setCurrentStep(6);
+                        setCurrentStep(7);
                     },
                 },
             ],
@@ -181,7 +204,7 @@ export default function WillQuestionnaire() {
                     label: 'No',
                     action: () => {
                         updateData({ ownsBusiness: 'No' });
-                        setCurrentStep(7);
+                        setCurrentStep(8);
                     },
                 },
                 {
@@ -189,7 +212,7 @@ export default function WillQuestionnaire() {
                     description: 'Including sole trader, partnership, LTD and LLP companies.',
                     action: () => {
                         updateData({ ownsBusiness: 'Yes' });
-                        setCurrentStep(7);
+                        setCurrentStep(8);
                     },
                 },
             ],
@@ -204,7 +227,7 @@ export default function WillQuestionnaire() {
                     description: 'Just get a will for myself for £99',
                     action: () => {
                         updateData({ partnerNeedsWill: 'No' });
-                        setCurrentStep(8);
+                        setCurrentStep(9);
                     },
                 },
                 {
@@ -213,7 +236,7 @@ export default function WillQuestionnaire() {
                     recommended: true,
                     action: () => {
                         updateData({ partnerNeedsWill: 'Yes' });
-                        setCurrentStep(8);
+                        setCurrentStep(9);
                     },
                 },
             ],
@@ -223,7 +246,7 @@ export default function WillQuestionnaire() {
             question: '5 things our phone service can do for you',
             isFinalStep: true,
         },
-    ];
+    ].filter(Boolean) as StepConfig[];
 
     const currentStepData = steps[currentStep];
     const highlightText = currentStepData.question.startsWith('Do you')
@@ -267,7 +290,7 @@ export default function WillQuestionnaire() {
                             </div>
                         </div>
 
-                        {!currentStepData.isFinalStep ? (
+                        {!currentStepData.isFinalStep && currentStepData.variant !== 'outOfRegion' ? (
                             <>
                                 <h2 className="text-2xl md:text-3xl font-semibold text-slate-800">
                                     {currentStepData.question.startsWith('Do you') ? 'Do you ' : ''}
@@ -296,6 +319,45 @@ export default function WillQuestionnaire() {
                                         </button>
                                     ))}
                                 </div>
+                            </>
+                        ) : currentStepData.variant === 'outOfRegion' ? (
+                            <>
+                                <h2 className="text-2xl md:text-3xl font-semibold text-slate-800">{currentStepData.question}</h2>
+                                <p className="mt-3 text-sm text-slate-500">
+                                    If you'd like to know when we're covering your country please enter your email address and country below.
+                                </p>
+                                <div className="mt-8 space-y-5 text-left">
+                                    <label className="block text-sm font-semibold text-slate-600">
+                                        What's the name of your country?
+                                        <input
+                                            type="text"
+                                            value={formData.outOfRegionCountry}
+                                            onChange={(event) => updateData({ outOfRegionCountry: event.target.value })}
+                                            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-base text-slate-800 focus:border-primary-400 focus:outline-none"
+                                            placeholder="Enter country name"
+                                        />
+                                    </label>
+                                    <label className="block text-sm font-semibold text-slate-600">
+                                        What's your email address?
+                                        <input
+                                            type="email"
+                                            value={formData.outOfRegionEmail}
+                                            onChange={(event) => updateData({ outOfRegionEmail: event.target.value })}
+                                            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-base text-slate-800 focus:border-primary-400 focus:outline-none"
+                                            placeholder="name@example.com"
+                                        />
+                                    </label>
+                                    {outOfRegionError && (
+                                        <p className="text-sm font-medium text-rose-600">{outOfRegionError}</p>
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={handleOutOfRegionSubmit}
+                                    className="mt-8 inline-flex items-center justify-center rounded-lg bg-primary-400 px-10 py-3 text-base font-semibold text-white transition hover:bg-primary-500"
+                                >
+                                    Done
+                                </button>
                             </>
                         ) : (
                             <>
