@@ -13,9 +13,9 @@ const heroReviewStars = Array.from({ length: 5 }, (_, index) => index);
 export function WillWritingHeroSection() {
     return (
         <section className="px-4 py-12 sm:px-6 lg:px-10">
-            <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[40px] bg-slate-800 text-white">
-                <img src={heroContent.image} alt="Family planning legacy together" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-                <div className="relative z-10 flex min-h-125 flex-col justify-center gap-6 px-8 py-12 sm:px-16 lg:px-20">
+            <div className="relative mx-auto container overflow-hidden rounded-[40px] bg-slate-800 text-white">
+                <img src={heroContent.image} alt="Family planning legacy together" className="absolute inset-0 h-full w-full object-cover" />
+                <div className="relative z-10 flex min-h-160 flex-col justify-center gap-6 px-8 py-12 sm:px-16 lg:px-20">
                     <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/70 animate-fadeInUp">Will Writing</p>
                     <h1 className="text-4xl font-serif font-semibold leading-tight lg:text-5xl animate-fadeInUp delay-100">{heroContent.heading}</h1>
                     <p className="max-w-2xl text-base text-white/80 animate-fadeInUp delay-200">{heroContent.description}</p>

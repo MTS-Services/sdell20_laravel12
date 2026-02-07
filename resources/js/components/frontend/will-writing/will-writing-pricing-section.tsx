@@ -24,7 +24,7 @@ const pricingOptions = [
 export function WillWritingPricingSection() {
     return (
         <section id="pricing" className="px-4 pb-12 sm:px-6 lg:px-10">
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-7xl">
                 <div className="text-center">
                     <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500 animate-fadeInUp">Plans</p>
                     <h2 className="mt-4 text-3xl font-serif font-semibold text-slate-900 animate-fadeInUp delay-100">
