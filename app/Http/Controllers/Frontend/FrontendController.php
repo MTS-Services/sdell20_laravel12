@@ -28,6 +28,11 @@ class FrontendController extends Controller
         return Inertia::render('frontend/will-writing');
     }
 
+    public function willWritingStart(): Response
+    {
+        return Inertia::render('frontend/will-writing-start');
+    }
+
     public function lpa(): Response
     {
         return Inertia::render('frontend/lpa');
