@@ -135,7 +135,7 @@ export default function WillQuestionnaire() {
             ],
         },
         {
-            image: 'https://online.zenco.com/images/start/start-home.png',
+            image: 'https://online.zenco.com/images/start/start-homeowner.png',
             question: 'Do you own your home?',
             options: [
                 {
@@ -199,13 +199,13 @@ export default function WillQuestionnaire() {
             : null,
         formData.livesInScotlandIreland === 'No'
             ? {
-                image: 'https://online.zenco.com/images/start/start-globe.png',
+                image: 'https://online.zenco.com/images/start/start-wrong-location.png',
                 question: "Unfortunately, we're not quite right for each other.",
                 variant: 'outOfRegion',
             }
             : null,
         {
-            image: 'https://online.zenco.com/images/start/start-assets.png',
+            image: 'https://online.zenco.com/images/start/start-property-ownership.png',
             question: 'Is everything you own in the UK?',
             subtitle: '',
             options: [
@@ -227,7 +227,7 @@ export default function WillQuestionnaire() {
             ],
         },
         {
-            image: 'https://online.zenco.com/images/start/start-business.png',
+            image: 'https://online.zenco.com/images/start/start-business-ownership.png',
             question: 'Do you own a business?',
             options: [
                 {
@@ -272,7 +272,7 @@ export default function WillQuestionnaire() {
             ],
         },
         {
-            image: 'https://online.zenco.com/images/start/start-family.png',
+            image: 'https://online.zenco.com/images/family1.png',
             question: '5 things our phone service can do for you',
             isFinalStep: true,
         },
