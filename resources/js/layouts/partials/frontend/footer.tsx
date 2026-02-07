@@ -1,11 +1,11 @@
 export function FrontendFooter() {
     return (
         <footer className="bg-slate-900 text-white py-16">
-            <div className="container mx-auto ">
-                <div className="grid gap-12 mb-12 md:grid-cols-4">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 pl-14 sm:pl-0">
+                <div className="grid gap-12 mb-12  grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {/* Company Info */}
-                    <div className="space-y-4">
-                        <div className="flex items-center space-x-3">
+                    <div className="space-y-4 text-center md:text-left">
+                        <div className="flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3">
                             <svg
                                 className="w-12 h-12"
                                 viewBox="0 0 100 80"
@@ -45,7 +45,7 @@ export function FrontendFooter() {
                             your family's future.
                         </p>
 
-                        <div className="flex space-x-4 pt-4">
+                        <div className="flex flex-wrap justify-center gap-4 pt-4 md:justify-start">
                             <a href="#" className="hover:text-slate-300 transition-colors" aria-label="Facebook">
                                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -150,12 +150,12 @@ export function FrontendFooter() {
 
                 {/* Bottom Footer */}
                 <div className="border-t border-slate-800 pt-8 mt-8">
-                    <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
-                        <p className="text-slate-300 text-sm">
+                    <div className="flex flex-col items-center justify-between gap-4 text-center text-sm text-slate-300 md:flex-row md:space-y-0 md:text-left">
+                        <p>
                             &copy; 2026 Horizon Wills. All rights reserved.
                         </p>
 
-                        <div className="flex space-x-6 text-sm text-slate-300">
+                        <div className="flex flex-wrap items-center justify-center gap-4 md:justify-end">
                             <a href="#" className="hover:text-white transition-colors">
                                 Privacy Policy
                             </a>
