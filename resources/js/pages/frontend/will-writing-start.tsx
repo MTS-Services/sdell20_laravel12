@@ -6,6 +6,8 @@ type FormData = {
     hasPartner: string;
     hasChildren: string;
     ownsHome: string;
+    livesInEnglandWales: string;
+    livesInScotlandIreland: string;
     assetsInUK: string;
     ownsBusiness: string;
     partnerNeedsWill: string;
@@ -32,6 +34,8 @@ export default function WillQuestionnaire() {
         hasPartner: '',
         hasChildren: '',
         ownsHome: '',
+        livesInEnglandWales: '',
+        livesInScotlandIreland: '',
         assetsInUK: '',
         ownsBusiness: '',
         partnerNeedsWill: '',
@@ -114,15 +118,35 @@ export default function WillQuestionnaire() {
                 {
                     label: 'No',
                     action: () => {
-                        updateData({ assetsInUK: 'No' });
+                        updateData({ livesInEnglandWales: 'No' });
                         setCurrentStep(4);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
-                        updateData({ assetsInUK: 'Yes' });
-                        setCurrentStep(4);
+                        updateData({ livesInEnglandWales: 'Yes' });
+                        setCurrentStep(5);
+                    },
+                },
+            ],
+        },
+        {
+            image: 'https://online.zenco.com/images/start/start-location.png',
+            question: 'Do you live in Scotland or Ireland?',
+            options: [
+                {
+                    label: 'No',
+                    action: () => {
+                        updateData({ livesInScotlandIreland: 'No' });
+                        setCurrentStep(5);
+                    },
+                },
+                {
+                    label: 'Yes',
+                    action: () => {
+                        updateData({ livesInScotlandIreland: 'Yes' });
+                        setCurrentStep(5);
                     },
                 },
             ],
@@ -136,15 +160,15 @@ export default function WillQuestionnaire() {
                     label: 'No',
                     description: 'Including bank accounts, property, stocks and shares.',
                     action: () => {
-                        updateData({ ownsBusiness: 'No' });
-                        setCurrentStep(5);
+                        updateData({ assetsInUK: 'No' });
+                        setCurrentStep(6);
                     },
                 },
                 {
                     label: 'Yes',
                     action: () => {
-                        updateData({ ownsBusiness: 'Yes' });
-                        setCurrentStep(5);
+                        updateData({ assetsInUK: 'Yes' });
+                        setCurrentStep(6);
                     },
                 },
             ],
@@ -157,7 +181,7 @@ export default function WillQuestionnaire() {
                     label: 'No',
                     action: () => {
                         updateData({ ownsBusiness: 'No' });
-                        setCurrentStep(6);
+                        setCurrentStep(7);
                     },
                 },
                 {
@@ -165,7 +189,7 @@ export default function WillQuestionnaire() {
                     description: 'Including sole trader, partnership, LTD and LLP companies.',
                     action: () => {
                         updateData({ ownsBusiness: 'Yes' });
-                        setCurrentStep(6);
+                        setCurrentStep(7);
                     },
                 },
             ],
@@ -180,7 +204,7 @@ export default function WillQuestionnaire() {
                     description: 'Just get a will for myself for £99',
                     action: () => {
                         updateData({ partnerNeedsWill: 'No' });
-                        setCurrentStep(7);
+                        setCurrentStep(8);
                     },
                 },
                 {
@@ -189,7 +213,7 @@ export default function WillQuestionnaire() {
                     recommended: true,
                     action: () => {
                         updateData({ partnerNeedsWill: 'Yes' });
-                        setCurrentStep(7);
+                        setCurrentStep(8);
                     },
                 },
             ],
