@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from '@inertiajs/react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 type FormData = {
     hasPartner: string;
@@ -206,77 +207,67 @@ export default function WillQuestionnaire() {
         : currentStepData.question;
 
     return (
-        <div className="min-h-screen bg-primary-50 py-8 px-4">
-            <div className="mx-auto container space-y-6">
-
-                {/* Header */}
-                <div className="flex items-center justify-between ">
+        <div className="min-h-screen py-8 px-4" style={{ backgroundColor: 'var(--primary-50)' }}>
+            <div className="mx-auto container space-y-8">
+                <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <span className="text-2xl font-bold text-slate-700">zenco</span>
-                        <span className="text-2xl font-light text-cyan-500">legal</span>
+                        <span className="text-2xl font-bold" style={{ color: 'var(--slate-700)' }}>
+                            zenco
+                        </span>
+                        <span className="text-2xl font-light" style={{ color: 'var(--primary-500)' }}>
+                            legal
+                        </span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5" style={{ color: 'var(--accent-green)' }} fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                         </svg>
-                        <span className="text-sm font-semibold">Trustpilot</span>
-                        <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, i) => (
-                                <svg key={i} className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <span className="text-sm font-semibold" style={{ color: 'var(--slate-600)' }}>
+                            Trustpilot
+                        </span>
+                        <div className="flex gap-0.5" style={{ color: 'var(--accent-green)' }}>
+                            {[...Array(5)].map((_, index) => (
+                                <svg key={index} className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                             ))}
                         </div>
                     </div>
                 </div>
-                <div className='max-w-2xl mx-auto'>
-                    {/* Main Content */}
-                    <div className="rounded-3xl text-center ">
-                        {/* Illustration */}
+
+                <div className="mx-auto max-w-2xl space-y-6">
+                    <div className=" text-center ">
                         <div className="mb-6 flex justify-center">
-                            <div className="flex h-70 w-70 items-center justify-center ">
-                                <img
-                                    src={currentStepData.image}
-                                    alt="Step illustration"
-                                    className="h-full w-full object-contain"
-                                />
+                            <div className="flex h-50 w-70 items-center justify-center">
+                                <img src={currentStepData.image} alt="Step illustration" className="h-full w-full object-contain" />
                             </div>
                         </div>
 
                         {!currentStepData.isFinalStep ? (
                             <>
-                                {/* Question */}
-                                <h2 className="text-2xl md:text-3xl font-normal text-gray-800 mb-3">
+                                <h2 className="text-2xl md:text-3xl font-semibold text-slate-800">
                                     {currentStepData.question.startsWith('Do you') ? 'Do you ' : ''}
-                                    <span className="text-cyan-500">{highlightText}</span>
+                                    <span style={{ color: 'primary-500' }}>{highlightText}</span>
                                 </h2>
-
                                 {currentStepData.subtitle && (
-                                    <p className="text-gray-600 text-sm mb-8">{currentStepData.subtitle}</p>
+                                    <p className="mt-3 text-sm text-slate-500">{currentStepData.subtitle}</p>
                                 )}
-
-                                {/* Options */}
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch max-w-2xl mx-auto mb-8">
-                                    {currentStepData.options?.map((option, index) => (
+                                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                                    {currentStepData.options?.map((option) => (
                                         <button
-                                            key={index}
+                                            key={option.label}
+                                            type="button"
                                             onClick={option.action}
-                                            className="flex-1 bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-cyan-400 hover:shadow-md transition-all relative"
+                                            className="flex-1 rounded-lg border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary-400"
                                         >
-                                            <div className="text-xl font-semibold text-gray-800 mb-2">
-                                                {option.label}
-                                            </div>
+                                            <div className="text-lg font-semibold text-slate-800">{option.label}</div>
                                             {option.description && (
-                                                <div className="text-sm text-gray-600">
-                                                    {option.description}
-                                                </div>
+                                                <p className="mt-1 text-sm text-slate-500">{option.description}</p>
                                             )}
                                             {option.recommended && (
-                                                <div className="absolute top-4 right-4">
-                                                    <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                                                        Recommended
-                                                    </span>
-                                                </div>
+                                                <span className="mt-3 inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                                                    Recommended
+                                                </span>
                                             )}
                                         </button>
                                     ))}
@@ -284,73 +275,51 @@ export default function WillQuestionnaire() {
                             </>
                         ) : (
                             <>
-                                <h2 className="text-2xl md:text-3xl font-normal text-gray-800 mb-3">
-                                    5 things our <span className="text-cyan-500">phone</span> service can do for you
+                                <h2 className="text-2xl md:text-3xl font-semibold text-slate-800">
+                                    5 things our <span style={{ color: 'var(--primary-500)' }}>phone</span> service can do for you
                                 </h2>
-
-                                <div className="flex justify-center mb-8">
+                                <div className="mt-6 flex justify-center text-sm text-slate-600">
                                     <div className="flex items-center gap-2">
-                                        <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <svg className="h-5 w-5" style={{ color: 'var(--accent-green)' }} fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                         </svg>
-                                        <span className="text-sm font-semibold">Trustpilot</span>
-                                        <div className="flex gap-0.5">
-                                            {[...Array(5)].map((_, i) => (
-                                                <svg key={i} className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <span>Trustpilot</span>
+                                        <div className="flex gap-0.5" style={{ color: 'var(--accent-green)' }}>
+                                            {[...Array(5)].map((_, index) => (
+                                                <svg key={index} className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                 </svg>
                                             ))}
                                         </div>
-                                        <span className="text-xs text-gray-600">Trustscore 4.8 | 7,341 reviews</span>
+                                        <span className="text-xs text-slate-500">Trustscore 4.8 | 7,341 reviews</span>
                                     </div>
                                 </div>
-
-                                <div className="bg-white border border-gray-200 rounded-lg p-6 text-left max-w-xl mx-auto mb-6">
-                                    <div className="space-y-4">
-                                        {[
-                                            {
-                                                title: 'Protect you and your partner',
-                                                description: 'Make sure both of your wishes are documented and protected.',
-                                            },
-                                            {
-                                                title: 'Plan for your business',
-                                                description: 'Set out what you want to happen to any businesses you own.',
-                                            },
-                                            {
-                                                title: 'Share out your estate',
-                                                description: 'Divide everything up between friends, family and even charities.',
-                                            },
-                                            {
-                                                title: 'Leave gifts and messages',
-                                                description: 'Give your loved ones something to remember you by.',
-                                            },
-                                            {
-                                                title: "Secure your children's future",
-                                                description: "Appoint guardians if they're under 18 and make sure everyone gets a fair share.",
-                                            },
-                                        ].map((item, index) => (
-                                            <div key={index} className="flex gap-3">
-                                                <div className="shrink-0">
-                                                    <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <div>
-                                                    <h4 className="font-semibold text-gray-800 text-sm">{item.title}</h4>
-                                                    <p className="text-sm text-gray-600">{item.description}</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                <div className="mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 text-left text-sm text-slate-600">
+                                    {[
+                                        'Protect you and your partner',
+                                        'Plan for your business',
+                                        'Share out your estate',
+                                        'Leave gifts and messages',
+                                        "Secure your children’s future",
+                                    ].map((item) => (
+                                        <div key={item} className="flex items-start gap-3">
+                                            <span className="text-lg" style={{ color: 'var(--accent-green)' }}>
+                                                ✓
+                                            </span>
+                                            <p className="text-slate-700">{item}</p>
+                                        </div>
+                                    ))}
                                 </div>
-
-                                <button className="w-full bg-cyan-400 hover:bg-cyan-500 text-white font-semibold py-4 px-8 rounded-lg transition-colors mb-6">
-                                    Continue on the phone →
-                                </button>
-
-                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm text-gray-700">
+                                <Link
+                                    href="/will-writing"
+                                    className="mt-8 inline-flex w-full items-center justify-center gap-3 rounded-full bg-primary-400 px-6 py-4 text-lg font-semibold text-white transition hover:bg-primary-500"
+                                >
+                                    Continue on the phone
+                                    <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                                </Link>
+                                <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
                                     Our online service covers everything except specific wishes about your business.{' '}
-                                    <a href="#" className="text-cyan-500 underline">
+                                    <a href="#" className="font-semibold text-primary-500 underline">
                                         Get started online
                                     </a>
                                 </div>
@@ -358,23 +327,22 @@ export default function WillQuestionnaire() {
                         )}
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-start gap-6 text-sm font-semibold">
-                        {currentStep > 0 && (
+                    <div className="flex flex-wrap items-center gap-6 mt-15 text-sm font-semibold text-slate-600">
+                        {currentStep === 0 ? (
+                            <Link href="/will-writing" className="inline-flex items-center gap-2 text-primary-500 text-lg hover:text-primary-600">
+                                <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+                                Back
+                            </Link>
+                        ) : (
                             <button
+                                type="button"
                                 onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 0))}
-                                className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-700"
+                                className="inline-flex items-center text-lg gap-2 hover:text-slate-800"
                             >
-                                <span>←</span>
-                                Previous question
+                                <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+                                Back
                             </button>
                         )}
-                        <Link
-                            href="/will-writing"
-                            className="inline-flex items-center gap-2 text-[#0a96c2] hover:text-[#087ea2]"
-                        >
-                            <span>←</span>
-                            Back to will writing
-                        </Link>
                     </div>
                 </div>
             </div>
