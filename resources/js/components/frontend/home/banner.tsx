@@ -57,9 +57,7 @@ export default function Banner() {
                         className={`space-y-4 transition-all duration-700 ease-out ${headingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     >
                         <h1 className="text-2xl font-semibold leading-tight text-primary-50 sm:text-3xl lg:text-[45px]">
-                            Protecting Your Assets
-                            <br />
-                            And Securing Your Family’s Future
+                            Protecting Your Assets, Securing Your Family's Future!
                         </h1>
                     </div>
 
