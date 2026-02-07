@@ -56,10 +56,12 @@ export default function Banner() {
                         ref={headingRef}
                         className={`space-y-4 transition-all duration-700 ease-out ${headingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     >
-                        <h1 className="text-4xl font-semibold leading-tight text-primary-50 sm:text-5xl lg:text-[56px]">
-                            Protect your assets.
+                        <h1 className="text-2xl font-semibold leading-tight text-primary-50 sm:text-3xl lg:text-[45px]">
+                            {checklist[0]?.title ?? 'Safeguard your family'}
                             <br />
-                            Wills &amp; Trusts made simple.
+                            {checklist[1]?.title ?? 'Protect your wealth'}
+                            <br />
+                            {checklist[2]?.title ?? 'Plan for the future'}
                         </h1>
 
                         <p className="max-w-md text-base leading-7 text-slate-100/80">
