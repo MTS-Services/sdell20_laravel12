@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, CheckCircle2, ChevronDown, Clock3, Mail, MapPin, Phone, ShieldCheck, Star, UserCheck, Users } from 'lucide-react';
+import StepsHeader from '@/components/frontend/will/steps-header';
 
 
 type StepOption = {
@@ -337,303 +338,314 @@ const LpaStartPage: React.FC = () => {
 
     if (showUnderageNotice) {
         return (
-            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
-                <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
-                    <div className="flex justify-center">
-                        <img src={underageIllustration} alt="Age requirement" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
-                    </div>
+            <>
+                <StepsHeader />
+                <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                    <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
+                        <div className="flex justify-center">
+                            <img src={underageIllustration} alt="Age requirement" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
+                        </div>
 
-                    <div className="space-y-4">
-                        <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
-                        <div className="space-y-3 text-sm text-slate-600 lg:text-base">
-                            <p>You have said the people this document is for are not over 18 or do not have the mental capacity to make decisions.</p>
-                            <p>The specialist document is for adults 18 years or over and able to make decisions and understand what this document is for.</p>
-                            <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
+                        <div className="space-y-4">
+                            <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                            <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                                <p>You have said the people this document is for are not over 18 or do not have the mental capacity to make decisions.</p>
+                                <p>The specialist document is for adults 18 years or over and able to make decisions and understand what this document is for.</p>
+                                <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
+                            </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm">
+                            <button
+                                type="button"
+                                onClick={() => setShowHelpPanel((prev) => !prev)}
+                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300 hover:text-primary-500"
+                            >
+                                Need help?
+                                <ChevronDown
+                                    className={`h-4 w-4 text-slate-500 transition ${showHelpPanel ? 'rotate-180' : ''}`}
+                                />
+                            </button>
+
+                            {showHelpPanel ? (
+                                <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
+                                    <div className="flex items-start gap-3">
+                                        <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Call us</p>
+                                            <p>0800 888 6068</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Opening hours</p>
+                                            <p>Monday - Friday · 8:00am - 5:30pm</p>
+                                            <p>Weekends · Closed (Bank holidays hours might differ)</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Email us</p>
+                                            <p>enquiries@zenco.com</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Address</p>
+                                            <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+
+                        <div className="pt-4">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-primary-500 lg:text-base"
+                            >
+                                <ArrowLeft className="h-4 w-4" />
+                                Back
+                            </button>
                         </div>
                     </div>
-
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm">
-                        <button
-                            type="button"
-                            onClick={() => setShowHelpPanel((prev) => !prev)}
-                            className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300 hover:text-primary-500"
-                        >
-                            Need help?
-                            <ChevronDown
-                                className={`h-4 w-4 text-slate-500 transition ${showHelpPanel ? 'rotate-180' : ''}`}
-                            />
-                        </button>
-
-                        {showHelpPanel ? (
-                            <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
-                                <div className="flex items-start gap-3">
-                                    <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Call us</p>
-                                        <p>0800 888 6068</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Opening hours</p>
-                                        <p>Monday - Friday · 8:00am - 5:30pm</p>
-                                        <p>Weekends · Closed (Bank holidays hours might differ)</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Email us</p>
-                                        <p>enquiries@zenco.com</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Address</p>
-                                        <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : null}
-                    </div>
-
-                    <div className="pt-4">
-                        <button
-                            type="button"
-                            onClick={handleBack}
-                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-primary-500 lg:text-base"
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                            Back
-                        </button>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </>
         );
     }
 
     if (showRegionalNotice) {
         return (
-            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
-                <div className="mx-auto w-full max-w-2xl space-y-8 ">
-                    <div className="flex justify-center">
-                        <img src={regionalIllustration} alt="Region confirmation" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
-                    </div>
+            <>
+                <StepsHeader />
+                <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                    <div className="mx-auto w-full max-w-2xl space-y-8 ">
+                        <div className="flex justify-center">
+                            <img src={regionalIllustration} alt="Region confirmation" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
+                        </div>
 
-                    <div className="space-y-4">
-                        <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">
-                            Confirm you wish to continue outside of{' '}
-                            <span className="text-primary-600">England or Wales?</span>
-                        </h1>
-                        <div className="space-y-3 text-sm text-slate-600 lg:text-base">
-                            <p>Some countries will accept a notarised power of attorney.</p>
-                            <p>You will need to register the power of attorney with the Office of the Public Guardian first, which takes approx 16-20 weeks.</p>
-                            <p>You can then take the document to be notarised.</p>
-                            <p>If you wish to continue, it will be at your own risk. We cannot guarantee success.</p>
+                        <div className="space-y-4">
+                            <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">
+                                Confirm you wish to continue outside of{' '}
+                                <span className="text-primary-600">England or Wales?</span>
+                            </h1>
+                            <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                                <p>Some countries will accept a notarised power of attorney.</p>
+                                <p>You will need to register the power of attorney with the Office of the Public Guardian first, which takes approx 16-20 weeks.</p>
+                                <p>You can then take the document to be notarised.</p>
+                                <p>If you wish to continue, it will be at your own risk. We cannot guarantee success.</p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-4 lg:flex-row lg:justify-start">
+                            <button
+                                type="button"
+                                onClick={handleRegionalProceed}
+                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-primary-500 hover:shadow-lg lg:w-auto"
+                            >
+                                I understand and wish to proceed
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleRegionalDecline}
+                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-auto"
+                            >
+                                I do not want to proceed
+                            </button>
+                        </div>
+
+                        <div className="pt-4">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
+                            >
+                                <ArrowLeft className="h-4 w-4" />
+                                Back
+                            </button>
                         </div>
                     </div>
-
-                    <div className="flex flex-col gap-4 lg:flex-row lg:justify-start">
-                        <button
-                            type="button"
-                            onClick={handleRegionalProceed}
-                            className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-primary-500 hover:shadow-lg lg:w-auto"
-                        >
-                            I understand and wish to proceed
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleRegionalDecline}
-                            className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-auto"
-                        >
-                            I do not want to proceed
-                        </button>
-                    </div>
-
-                    <div className="pt-4">
-                        <button
-                            type="button"
-                            onClick={handleBack}
-                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                            Back
-                        </button>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </>
         );
     }
 
     if (showRegionalDecline) {
         return (
-            
-            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
-                <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
-                    <div className="flex justify-center">
-                        <img src={regionalIllustration} alt="Region restriction" className="h-20 w-20 rounded-full border border-slate-200 bg-primary-50 object-cover" />
-                    </div>
+            <>
+                <StepsHeader />
+                <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                    <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
+                        <div className="flex justify-center">
+                            <img src={regionalIllustration} alt="Region restriction" className="h-20 w-20 rounded-full border border-slate-200 bg-primary-50 object-cover" />
+                        </div>
 
-                    <div className="space-y-4">
-                        <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
-                        <div className="space-y-3 text-sm text-slate-600 lg:text-base">
-                            <p>You have said that the people this document is for do not live in England or Wales.</p>
-                            <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
+                        <div className="space-y-4">
+                            <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                            <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                                <p>You have said that the people this document is for do not live in England or Wales.</p>
+                                <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
+                            </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm">
+                            <button
+                                type="button"
+                                onClick={() => setShowRegionalHelpPanel((prev) => !prev)}
+                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300"
+                            >
+                                Need help?
+                                <ChevronDown className={`h-4 w-4 text-slate-500 transition ${showRegionalHelpPanel ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            {showRegionalHelpPanel ? (
+                                <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
+                                    <div className="flex items-start gap-3">
+                                        <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Call us</p>
+                                            <p>0800 888 6068</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Opening hours</p>
+                                            <p>Monday - Friday · 8:00am - 5:30pm</p>
+                                            <p>Weekends · Closed (Bank holidays hours might differ)</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Email us</p>
+                                            <p>enquiries@zenco.com</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
+                                        <div>
+                                            <p className="font-semibold text-slate-900">Address</p>
+                                            <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+
+                        <div className="pt-4">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
+                            >
+                                <ArrowLeft className="h-4 w-4" />
+                                Back
+                            </button>
                         </div>
                     </div>
-
-                    <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm">
-                        <button
-                            type="button"
-                            onClick={() => setShowRegionalHelpPanel((prev) => !prev)}
-                            className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300"
-                        >
-                            Need help?
-                            <ChevronDown className={`h-4 w-4 text-slate-500 transition ${showRegionalHelpPanel ? 'rotate-180' : ''}`} />
-                        </button>
-
-                        {showRegionalHelpPanel ? (
-                            <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
-                                <div className="flex items-start gap-3">
-                                    <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Call us</p>
-                                        <p>0800 888 6068</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Opening hours</p>
-                                        <p>Monday - Friday · 8:00am - 5:30pm</p>
-                                        <p>Weekends · Closed (Bank holidays hours might differ)</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Email us</p>
-                                        <p>enquiries@zenco.com</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
-                                    <div>
-                                        <p className="font-semibold text-slate-900">Address</p>
-                                        <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : null}
-                    </div>
-
-                    <div className="pt-4">
-                        <button
-                            type="button"
-                            onClick={handleBack}
-                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                            Back
-                        </button>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </>
         );
     }
 
     return (
-        <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
-            <div className="mx-auto w-full max-w-2xl">
-                {/* optional progress (hidden to match screenshot) */}
-                <div className="sr-only" aria-hidden="true">
-                    {progress}%
-                </div>
-
-                <div className="space-y-6">
-                    <Illustration src={currentStep.illustrationSrc} icon={currentStep.icon} />
-
-                    <div className="space-y-4 text-left">
-                        <h1 className="text-2xl font-semibold leading-7 text-slate-900 lg:text-3xl lg:leading-9">
-                            {renderQuestion()}
-                        </h1>
-
-                        {currentStep.description ? (
-                            <p className="max-w-2xl text-sm leading-5 text-slate-600 lg:text-base lg:leading-6">
-                                {currentStep.description}
-                            </p>
-                        ) : null}
+        <>
+            <StepsHeader />
+            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                <div className="mx-auto w-full max-w-2xl">
+                    {/* optional progress (hidden to match screenshot) */}
+                    <div className="sr-only" aria-hidden="true">
+                        {progress}%
                     </div>
 
-                    {!currentStep.final ? (
-                        <div className="grid max-w-xl grid-cols-1 gap-4 lg:grid-cols-2">
-                            {currentStep.options?.map((option) => (
-                                <OptionButton
-                                    key={option.value}
-                                    label={option.label}
-                                    selected={answers[currentStep.id] === option.value}
-                                    onClick={() => handleOptionSelect(option.value)}
-                                />
-                            ))}
+                    <div className="space-y-6">
+                        <Illustration src={currentStep.illustrationSrc} icon={currentStep.icon} />
+
+                        <div className="space-y-4 text-left">
+                            <h1 className="text-2xl font-semibold leading-7 text-slate-900 lg:text-3xl lg:leading-9">
+                                {renderQuestion()}
+                            </h1>
+
+                            {currentStep.description ? (
+                                <p className="max-w-2xl text-sm leading-5 text-slate-600 lg:text-base lg:leading-6">
+                                    {currentStep.description}
+                                </p>
+                            ) : null}
                         </div>
-                    ) : (
-                        <div className="space-y-6">
-                            <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
-                                <div className="mb-4 flex items-start gap-3 text-slate-600 lg:gap-4">
-                                    <ShieldCheck className="mt-0.5 h-6 w-6 text-emerald-500 lg:h-7 lg:w-7" />
-                                    <div>
-                                        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 lg:text-sm">
-                                            Trustpilot
-                                        </p>
-                                        <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-slate-800 lg:text-base">
-                                            TrustScore 4.9
-                                            <span className="flex items-center gap-1 text-primary-600">
-                                                {[...Array(5)].map((_, index) => (
-                                                    <Star
-                                                        key={`star-${index}`}
-                                                        className="h-4 w-4 fill-primary-600 text-primary-600 lg:h-5 lg:w-5"
-                                                    />
-                                                ))}
-                                            </span>
-                                        </p>
-                                        <p className="text-xs text-slate-500 lg:text-sm">2,718 reviews</p>
-                                    </div>
-                                </div>
 
-                                <ul className="space-y-3 text-sm text-slate-700 lg:text-base">
-                                    {benefits.map((benefit) => (
-                                        <li key={benefit} className="flex gap-3">
-                                            <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500 lg:h-6 lg:w-6" />
-                                            <span>{benefit}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <Link
-                                    href={route('lpa')}
-                                    className="mt-6 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 hover:text-white lg:py-4 lg:text-base"
-                                >
-                                    Continue online
-                                </Link>
+                        {!currentStep.final ? (
+                            <div className="grid max-w-xl grid-cols-1 gap-4 lg:grid-cols-2">
+                                {currentStep.options?.map((option) => (
+                                    <OptionButton
+                                        key={option.value}
+                                        label={option.label}
+                                        selected={answers[currentStep.id] === option.value}
+                                        onClick={() => handleOptionSelect(option.value)}
+                                    />
+                                ))}
                             </div>
-                        </div>
-                    )}
+                        ) : (
+                            <div className="space-y-6">
+                                <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+                                    <div className="mb-4 flex items-start gap-3 text-slate-600 lg:gap-4">
+                                        <ShieldCheck className="mt-0.5 h-6 w-6 text-emerald-500 lg:h-7 lg:w-7" />
+                                        <div>
+                                            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 lg:text-sm">
+                                                Trustpilot
+                                            </p>
+                                            <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-slate-800 lg:text-base">
+                                                TrustScore 4.9
+                                                <span className="flex items-center gap-1 text-primary-600">
+                                                    {[...Array(5)].map((_, index) => (
+                                                        <Star
+                                                            key={`star-${index}`}
+                                                            className="h-4 w-4 fill-primary-600 text-primary-600 lg:h-5 lg:w-5"
+                                                        />
+                                                    ))}
+                                                </span>
+                                            </p>
+                                            <p className="text-xs text-slate-500 lg:text-sm">2,718 reviews</p>
+                                        </div>
+                                    </div>
 
-                    <div className="pt-6">
-                        <button
-                            type="button"
-                            onClick={handleBack}
-                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-primary-500 lg:text-base"
-                        >
-                            <ArrowLeft className="h-4 w-4" />
-                            Back
-                        </button>
+                                    <ul className="space-y-3 text-sm text-slate-700 lg:text-base">
+                                        {benefits.map((benefit) => (
+                                            <li key={benefit} className="flex gap-3">
+                                                <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500 lg:h-6 lg:w-6" />
+                                                <span>{benefit}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                    <Link
+                                        href={route('lpa')}
+                                        className="mt-6 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 hover:text-white lg:py-4 lg:text-base"
+                                    >
+                                        Continue online
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="pt-6">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-primary-500 lg:text-base"
+                            >
+                                <ArrowLeft className="h-4 w-4" />
+                                Back
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     );
 };
 
