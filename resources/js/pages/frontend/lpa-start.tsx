@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Link, router } from '@inertiajs/react';
-import { ArrowLeft, CheckCircle2, MapPin, ShieldCheck, Star, UserCheck, Users } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, ChevronDown, Clock3, Mail, MapPin, Phone, ShieldCheck, Star, UserCheck, Users } from 'lucide-react';
 
 
 type StepOption = {
@@ -126,15 +126,34 @@ const Illustration: React.FC<{ src?: string; icon: React.ComponentType<{ classNa
     );
 };
 
+const underageIllustration = 'https://online.zenco.com/images/globecaution1.png';
+const regionalIllustration = 'https://online.zenco.com/images/globecaution1.png';
+
 const LpaStartPage: React.FC = () => {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<string, string>>({});
+    const [showUnderageNotice, setShowUnderageNotice] = useState(false);
+    const [showHelpPanel, setShowHelpPanel] = useState(false);
+    const [showRegionalNotice, setShowRegionalNotice] = useState(false);
 
     const currentStep = steps[currentStepIndex];
     const progress = useMemo(() => ((currentStepIndex + 1) / steps.length) * 100, [currentStepIndex]);
 
     const handleOptionSelect = (value: string): void => {
         setAnswers((prev) => ({ ...prev, [currentStep.id]: value }));
+
+        if (currentStep.id === 'adult' && value === 'no') {
+            setShowUnderageNotice(true);
+            setShowHelpPanel(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        if (currentStep.id === 'region' && value === 'no') {
+            setShowRegionalNotice(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
 
         if (!currentStep.final) {
             setTimeout(() => {
@@ -145,6 +164,16 @@ const LpaStartPage: React.FC = () => {
     };
 
     const handleBack = (): void => {
+        if (showUnderageNotice) {
+            setShowUnderageNotice(false);
+            return;
+        }
+
+        if (showRegionalNotice) {
+            setShowRegionalNotice(false);
+            return;
+        }
+
         if (currentStepIndex === 0) {
             router.visit(route('lpa'));
             return;
@@ -153,6 +182,150 @@ const LpaStartPage: React.FC = () => {
         setCurrentStepIndex((prev) => Math.max(prev - 1, 0));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
+    const handleRegionalProceed = (): void => {
+        setShowRegionalNotice(false);
+        setTimeout(() => {
+            setCurrentStepIndex((prev) => Math.min(prev + 1, steps.length - 1));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 120);
+    };
+
+    const handleRegionalDecline = (): void => {
+        router.visit(route('lpa'));
+    };
+
+    if (showUnderageNotice) {
+        return (
+            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
+                    <div className="flex justify-center">
+                        <img src={underageIllustration} alt="Age requirement" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
+                    </div>
+
+                    <div className="space-y-4">
+                        <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                        <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                            <p>You have said the people this document is for are not over 18 or do not have the mental capacity to make decisions.</p>
+                            <p>The specialist document is for adults 18 years or over and able to make decisions and understand what this document is for.</p>
+                            <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm">
+                        <button
+                            type="button"
+                            onClick={() => setShowHelpPanel((prev) => !prev)}
+                            className="flex w-full items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800"
+                        >
+                            Need help?
+                            <ChevronDown
+                                className={`h-4 w-4 text-slate-500 transition ${showHelpPanel ? 'rotate-180' : ''}`}
+                            />
+                        </button>
+
+                        {showHelpPanel ? (
+                            <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
+                                <div className="flex items-start gap-3">
+                                    <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Call us</p>
+                                        <p>0800 888 6068</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Opening hours</p>
+                                        <p>Monday - Friday · 8:00am - 5:30pm</p>
+                                        <p>Weekends · Closed (Bank holidays hours might differ)</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Email us</p>
+                                        <p>enquiries@zenco.com</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Address</p>
+                                        <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
+                    </div>
+
+                    <div className="pt-4">
+                        <button
+                            type="button"
+                            onClick={handleBack}
+                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 lg:text-base"
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (showRegionalNotice) {
+        return (
+            <section className="min-h-screen bg-white px-4 py-20 sm:px-6">
+                <div className="mx-auto w-full max-w-2xl space-y-8 ">
+                    <div className="flex justify-center">
+                        <img src={regionalIllustration} alt="Region confirmation" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
+                    </div>
+
+                    <div className="space-y-4">
+                        <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">
+                            Confirm you wish to continue outside of{' '}
+                            <span className="text-primary-600">England or Wales?</span>
+                        </h1>
+                        <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                            <p>Some countries will accept a notarised power of attorney.</p>
+                            <p>You will need to register the power of attorney with the Office of the Public Guardian first, which takes approx 16-20 weeks.</p>
+                            <p>You can then take the document to be notarised.</p>
+                            <p>If you wish to continue, it will be at your own risk. We cannot guarantee success.</p>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-4 lg:flex-row lg:justify-start">
+                        <button
+                            type="button"
+                            onClick={handleRegionalProceed}
+                            className="w-full  border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition hover:-translate-y-1 hover:shadow-lg lg:w-auto"
+                        >
+                            I understand and wish to proceed
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleRegionalDecline}
+                            className="w-full  border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition hover:-translate-y-1 hover:shadow-lg lg:w-auto"
+                        >
+                            I do not want to proceed
+                        </button>
+                    </div>
+
+                    <div className="pt-4">
+                        <button
+                            type="button"
+                            onClick={handleBack}
+                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 lg:text-base"
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
