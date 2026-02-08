@@ -1,4 +1,5 @@
-import { ArrowRight, BookOpenText, FileEdit, LifeBuoy, ScrollText } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowRight, BookOpenText, CalendarDays, FileEdit, LifeBuoy, Mail, Phone, ScrollText } from 'lucide-react';
 
 import UserLayout from '@/layouts/user-layout';
 import { type User } from '@/types';
@@ -27,10 +28,12 @@ const dashboardActions = [
 ];
 
 export default function UserDashboard({ user }: Props) {
+    const [helpOpen, setHelpOpen] = useState(false);
+
     return (
         <UserLayout>
-            <div className="bg-slate-50 py-10">
-                <div className="container mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+            <div className="bg-slate-50 py-8 sm:py-10">
+                <div className="container mx-auto grid max-w-6xl gap-8 lg:gap-10 px-4 sm:px-6 lg:grid-cols-2">
                     <section className="space-y-6">
                         <div>
                             <p className="text-lg font-semibold text-slate-700">Welcome <span className="text-primary-500">{user.name}</span></p>
@@ -42,13 +45,13 @@ export default function UserDashboard({ user }: Props) {
                                 <button
                                     key={action.title}
                                     type="button"
-                                    className="flex w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-5 py-4 text-left text-slate-700 shadow-sm transition hover:border-primary-200 hover:shadow-md"
+                                    className="flex w-full flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-5 py-6 text-left text-slate-700 shadow-lg transition hover:bg-primary-50 "
                                 >
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex flex-1 min-w-0 items-center gap-4">
                                         <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-200 bg-primary-50 text-primary-500">
                                             <action.icon className="h-5 w-5" />
                                         </span>
-                                        <div className="text-base font-semibold text-slate-800">{action.title}</div>
+                                        <div className="text-base lg:text-xl font-semibold text-slate-800 wrap-break-word">{action.title}</div>
                                     </div>
                                     <ArrowRight className="h-5 w-5 text-slate-400" />
                                 </button>
@@ -57,11 +60,11 @@ export default function UserDashboard({ user }: Props) {
                     </section>
 
                     <section className="">
-                        <div className="mt-6 flex flex-col items-center gap-4 rounded-xl bg-slate-50 p-6">
+                        <div className="mt-4 sm:mt-6 flex flex-col items-center gap-4 rounded-xl bg-slate-50 p-6">
                             <img
                                 src="https://online.zenco.com/images/family1.png"
                                 alt="Family illustration"
-                                className="h-45 w-full object-contain"
+                                className="h-55 w-full object-contain"
                                 loading="lazy"
                             />
                         </div>
@@ -72,11 +75,66 @@ export default function UserDashboard({ user }: Props) {
 
 
 
-                        <div className="mt-6">
-                            <button className="flex w-full items-center justify-between rounded-lg border border-slate-200 px-4 py-3 text-left text-sm font-semibold text-primary-500">
-                                Need help?
-                                <span>&#9662;</span>
+                        <div className="mt-6 rounded-lg border border-slate-200 bg-white">
+                            <button
+                                type="button"
+                                className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-primary-500"
+                                onClick={() => setHelpOpen((prev) => !prev)}
+                                aria-expanded={helpOpen}
+                            >
+                                NEED HELP?
+                                <span className={`text-slate-500 transition-transform ${helpOpen ? 'rotate-180' : ''}`}>
+                                    &#9650;
+                                </span>
                             </button>
+                            <div
+                                className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${helpOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+                            >
+                                <div className="overflow-hidden">
+                                    <div className={`border-t border-slate-200 px-5 py-6 text-sm text-slate-600 transition-all duration-500 ${helpOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-primary-500"><Phone className="h-5 w-5" /></span>
+                                            <div>
+                                                <p className="font-semibold text-slate-700">Call us</p>
+                                                <a href="tel:08008886508" className="text-primary-500 underline">
+                                                    0800 888 6508
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-6 flex items-start gap-3">
+                                            <span className="text-primary-500"><CalendarDays className="h-5 w-5" /></span>
+                                            <div className="space-y-1">
+                                                <p className="font-semibold text-slate-700">Opening hours</p>
+                                                {[
+                                                    ['Monday', '8:00am - 5:30pm'],
+                                                    ['Tuesday', '8:00am - 5:30pm'],
+                                                    ['Wednesday', '8:00am - 5:30pm'],
+                                                    ['Thursday', '8:00am - 5:30pm'],
+                                                    ['Friday', '8:00am - 5:00pm'],
+                                                    ['Weekends', 'CLOSED'],
+                                                ].map(([day, hours]) => (
+                                                    <div key={day} className="flex justify-between gap-6 text-slate-600">
+                                                        <span>{day}</span>
+                                                        <span className="font-medium text-slate-800">{hours}</span>
+                                                    </div>
+                                                ))}
+                                                <p className="pt-2 text-xs text-slate-500">(Bank holiday hours might differ)</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="mt-6 flex items-start gap-3">
+                                            <span className="text-primary-500"><Mail className="h-5 w-5" /></span>
+                                            <div>
+                                                <p className="font-semibold text-slate-700">Email us</p>
+                                                <a href="mailto:enquiries@zenco.com" className="text-primary-500 underline">
+                                                    enquiries@zenco.com
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>
