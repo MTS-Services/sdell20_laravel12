@@ -25,7 +25,7 @@ export function EstateApproachSection() {
         className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
       />
 
-    
+
 
       <div className="container mx-auto px-6">
         <div className="flex min-h-[80vh] items-center py-18 md:py-22">
@@ -39,7 +39,7 @@ export function EstateApproachSection() {
               ].join(" ")}
             >
               <h2 className="mx-auto max-w-4xl text-balance font-sans text-4xl font-semibold leading-tight tracking-tight md:text-5xl lg:text-[3.5rem]">
-                Why Heirkin Estate Planning is the consumer choice for Wills
+                Why Horizon Estate Planning is the consumer choice for Wills
               </h2>
 
               <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-white/80 md:mt-6 md:text-base">
@@ -49,7 +49,7 @@ export function EstateApproachSection() {
               </p>
 
               <h3 className="mt-10 font-sans text-2xl font-semibold md:mt-12 md:text-3xl">
-                Heirkin Estate Approach
+                Horizon Estate Approach
               </h3>
 
               <p className="mx-auto mt-4 max-w-4xl text-sm leading-relaxed text-white/80 md:text-base">
