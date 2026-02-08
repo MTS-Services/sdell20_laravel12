@@ -97,8 +97,8 @@ const OptionButton: React.FC<{
         type="button"
         onClick={onClick}
         className={[
-            'w-full rounded border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 lg:px-8 lg:py-4 lg:text-base',
-            'shadow-[0_2px_8px_rgba(15,23,42,0.12)] transition',
+            'w-full cursor-pointer rounded border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 lg:px-8 lg:py-4 lg:text-base',
+            'shadow-[0_2px_8px_rgba(15,23,42,0.12)] transition duration-300 hover:bg-primary-500 hover:text-primary-50',
             'hover:border-slate-300 hover:shadow-[0_3px_10px_rgba(15,23,42,0.14)]',
             selected ? 'border-primary-400 text-primary-600' : '',
         ].join(' ')}
@@ -225,7 +225,7 @@ const LpaStartPage: React.FC = () => {
                         <button
                             type="button"
                             onClick={() => setShowHelpPanel((prev) => !prev)}
-                            className="flex w-full items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800"
+                            className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300 hover:text-primary-500"
                         >
                             Need help?
                             <ChevronDown
@@ -272,7 +272,7 @@ const LpaStartPage: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleBack}
-                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 lg:text-base"
+                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-primary-500 lg:text-base"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Back
@@ -308,14 +308,14 @@ const LpaStartPage: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleRegionalProceed}
-                            className="w-full  border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition hover:-translate-y-1 hover:shadow-lg lg:w-auto"
+                            className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-primary-500 hover:shadow-lg lg:w-auto"
                         >
                             I understand and wish to proceed
                         </button>
                         <button
                             type="button"
                             onClick={handleRegionalDecline}
-                            className="w-full  border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition hover:-translate-y-1 hover:shadow-lg lg:w-auto"
+                            className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-auto"
                         >
                             I do not want to proceed
                         </button>
@@ -325,7 +325,7 @@ const LpaStartPage: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleBack}
-                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 lg:text-base"
+                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Back
@@ -356,7 +356,7 @@ const LpaStartPage: React.FC = () => {
                         <button
                             type="button"
                             onClick={() => setShowRegionalHelpPanel((prev) => !prev)}
-                            className="flex w-full items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800"
+                            className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300"
                         >
                             Need help?
                             <ChevronDown className={`h-4 w-4 text-slate-500 transition ${showRegionalHelpPanel ? 'rotate-180' : ''}`} />
@@ -401,7 +401,7 @@ const LpaStartPage: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleBack}
-                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 lg:text-base"
+                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Back
@@ -481,7 +481,7 @@ const LpaStartPage: React.FC = () => {
 
                                 <Link
                                     href={route('lpa')}
-                                    className="mt-6 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 lg:py-4 lg:text-base"
+                                    className="mt-6 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 hover:text-white lg:py-4 lg:text-base"
                                 >
                                     Continue online
                                 </Link>
@@ -493,7 +493,7 @@ const LpaStartPage: React.FC = () => {
                         <button
                             type="button"
                             onClick={handleBack}
-                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 lg:text-base"
+                            className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-primary-500 lg:text-base"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             Back
