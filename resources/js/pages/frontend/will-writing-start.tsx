@@ -257,7 +257,7 @@ export default function WillQuestionnaire() {
         : currentStepData.question;
 
     return (
-        <div className="min-h-screen" style={{ backgroundColor: 'var(--primary-50)' }}>
+        <div className="min-h-screen bg-primary-50">
             <StepsHeader />
             <div className="mx-auto container space-y-8 py-8 px-4">
                 <div className="mx-auto max-w-2xl space-y-6">
