@@ -15,7 +15,13 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return Inertia::render('backend/User/UserForm', [
+        if (! $request->user()->has_completed_onboarding) {
+            return Inertia::render('backend/User/UserForm', [
+                'user' => $request->user(),
+            ]);
+        }
+
+        return Inertia::render('backend/User/UserDashboard', [
             'user' => $request->user(),
         ]);
     }
@@ -32,6 +38,17 @@ class DashboardController extends Controller
         return Inertia::render('backend/User/UserDashboard', [
             'user' => $request->user(),
         ]);
+    }
+
+    public function completeOnboarding(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if (! $user->has_completed_onboarding) {
+            $user->forceFill(['has_completed_onboarding' => true])->save();
+        }
+
+        return redirect()->route('dashboard.user');
     }
 
     public function adminDashboard(Request $request): Response
