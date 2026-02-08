@@ -35,7 +35,7 @@ export function LpaHeroSection() {
                         </div>
                         <div className="mt-10 flex flex-wrap gap-4 animate-fadeInUp" style={{ animationDelay: '200ms' }}>
                             <Link
-                                href={route('lpa')}
+                                href={route('lpa.start')}
                                 className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-100"
                             >
                                 Let's get started
