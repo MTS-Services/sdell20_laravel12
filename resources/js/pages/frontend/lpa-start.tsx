@@ -469,6 +469,7 @@ const LpaStartPage: React.FC = () => {
 
     if (showRegionalDecline) {
         return (
+            
             <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
                 <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
                     <div className="flex justify-center">
