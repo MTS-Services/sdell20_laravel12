@@ -1,0 +1,23 @@
+<?php
+
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\UserSelectionController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard Routes
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/form', [DashboardController::class, 'userForm'])->name('dashboard.form');
+    Route::get('/dashboard/user', [DashboardController::class, 'userDashboard'])->name('dashboard.user');
+    
+    // Admin Routes
+    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
+        Route::get('/users/list', [UserSelectionController::class, 'getUsers'])->name('users.list');
+    });
+
+    // Profile Routes
+    Route::get('/profile', [UserProfileController::class, 'edit'])->name('user-profile.edit');
+    Route::post('/profile', [UserProfileController::class, 'update'])->name('user-profile.update');
+});
