@@ -135,6 +135,8 @@ const LpaStartPage: React.FC = () => {
     const [showUnderageNotice, setShowUnderageNotice] = useState(false);
     const [showHelpPanel, setShowHelpPanel] = useState(false);
     const [showRegionalNotice, setShowRegionalNotice] = useState(false);
+    const [showRegionalDecline, setShowRegionalDecline] = useState(false);
+    const [showRegionalHelpPanel, setShowRegionalHelpPanel] = useState(false);
 
     const currentStep = steps[currentStepIndex];
     const progress = useMemo(() => ((currentStepIndex + 1) / steps.length) * 100, [currentStepIndex]);
@@ -174,6 +176,11 @@ const LpaStartPage: React.FC = () => {
             return;
         }
 
+        if (showRegionalDecline) {
+            setShowRegionalDecline(false);
+            return;
+        }
+
         if (currentStepIndex === 0) {
             router.visit(route('lpa'));
             return;
@@ -192,7 +199,9 @@ const LpaStartPage: React.FC = () => {
     };
 
     const handleRegionalDecline = (): void => {
-        router.visit(route('lpa'));
+        setShowRegionalDecline(true);
+        setShowRegionalNotice(false);
+        setShowRegionalHelpPanel(false);
     };
 
     if (showUnderageNotice) {
@@ -276,7 +285,7 @@ const LpaStartPage: React.FC = () => {
 
     if (showRegionalNotice) {
         return (
-            <section className="min-h-screen bg-white px-4 py-20 sm:px-6">
+            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
                 <div className="mx-auto w-full max-w-2xl space-y-8 ">
                     <div className="flex justify-center">
                         <img src={regionalIllustration} alt="Region confirmation" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
@@ -310,6 +319,82 @@ const LpaStartPage: React.FC = () => {
                         >
                             I do not want to proceed
                         </button>
+                    </div>
+
+                    <div className="pt-4">
+                        <button
+                            type="button"
+                            onClick={handleBack}
+                            className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 lg:text-base"
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    if (showRegionalDecline) {
+        return (
+            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
+                    <div className="flex justify-center">
+                        <img src={regionalIllustration} alt="Region restriction" className="h-20 w-20 rounded-full border border-slate-200 bg-primary-50 object-cover" />
+                    </div>
+
+                    <div className="space-y-4">
+                        <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                        <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                            <p>You have said that the people this document is for do not live in England or Wales.</p>
+                            <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm">
+                        <button
+                            type="button"
+                            onClick={() => setShowRegionalHelpPanel((prev) => !prev)}
+                            className="flex w-full items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800"
+                        >
+                            Need help?
+                            <ChevronDown className={`h-4 w-4 text-slate-500 transition ${showRegionalHelpPanel ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {showRegionalHelpPanel ? (
+                            <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
+                                <div className="flex items-start gap-3">
+                                    <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Call us</p>
+                                        <p>0800 888 6068</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Opening hours</p>
+                                        <p>Monday - Friday · 8:00am - 5:30pm</p>
+                                        <p>Weekends · Closed (Bank holidays hours might differ)</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Email us</p>
+                                        <p>enquiries@zenco.com</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
+                                    <div>
+                                        <p className="font-semibold text-slate-900">Address</p>
+                                        <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
 
                     <div className="pt-4">
