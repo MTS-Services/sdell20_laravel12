@@ -8,6 +8,23 @@ type StepOption = {
     value: string;
 };
 
+const PartnerAdultQuestion: React.FC = () => (
+    <>
+        <span>Are you and your partner both </span>
+        <span className="text-primary-500">over 18</span>
+        <span> and have </span>
+        <span className="text-primary-500">mental capacity</span>
+        <span> to make decisions?</span>
+    </>
+);
+
+const PartnerRegionQuestion: React.FC = () => (
+    <>
+        <span>Do you and your partner both live in </span>
+        <span className="text-primary-500">England or Wales?</span>
+    </>
+);
+
 type Step = {
     id: string;
     question: string;
@@ -140,6 +157,19 @@ const LpaStartPage: React.FC = () => {
 
     const currentStep = steps[currentStepIndex];
     const progress = useMemo(() => ((currentStepIndex + 1) / steps.length) * 100, [currentStepIndex]);
+    const isPartnerFlow = answers.who === 'partner';
+
+    const renderQuestion = (): React.ReactNode => {
+        if (isPartnerFlow && currentStep.id === 'adult') {
+            return <PartnerAdultQuestion />;
+        }
+
+        if (isPartnerFlow && currentStep.id === 'region') {
+            return <PartnerRegionQuestion />;
+        }
+
+        return highlightQuestion(currentStep.question, currentStep.highlight);
+    };
 
     const handleOptionSelect = (value: string): void => {
         setAnswers((prev) => ({ ...prev, [currentStep.id]: value }));
@@ -425,7 +455,7 @@ const LpaStartPage: React.FC = () => {
 
                     <div className="space-y-4 text-left">
                         <h1 className="text-2xl font-semibold leading-7 text-slate-900 lg:text-3xl lg:leading-9">
-                            {highlightQuestion(currentStep.question, currentStep.highlight)}
+                            {renderQuestion()}
                         </h1>
 
                         {currentStep.description ? (
