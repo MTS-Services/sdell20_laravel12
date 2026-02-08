@@ -25,6 +25,40 @@ const PartnerRegionQuestion: React.FC = () => (
     </>
 );
 
+const SinglePersonAdultQuestion: React.FC = () => (
+    <>
+        <span>Is the person who these documents are for </span>
+        <span className="text-primary-500">over 18</span>
+        <span> years old and has </span>
+        <span className="text-primary-500">mental capacity</span>
+        <span> to make decisions?</span>
+    </>
+);
+
+const SinglePersonRegionQuestion: React.FC = () => (
+    <>
+        <span>Does the person the documents are for live in </span>
+        <span className="text-primary-500">England or Wales?</span>
+    </>
+);
+
+const MultiPersonAdultQuestion: React.FC = () => (
+    <>
+        <span>Are all the people who these documents are for </span>
+        <span className="text-primary-500">over 18</span>
+        <span> years old and have </span>
+        <span className="text-primary-500">mental capacity</span>
+        <span> to make decisions?</span>
+    </>
+);
+
+const MultiPersonRegionQuestion: React.FC = () => (
+    <>
+        <span>Do all the people who these documents are for live in </span>
+        <span className="text-primary-500">England or Wales?</span>
+    </>
+);
+
 type Step = {
     id: string;
     question: string;
@@ -33,7 +67,7 @@ type Step = {
     icon: React.ComponentType<{ className?: string }>;
     options?: StepOption[];
     final?: boolean;
-    illustrationSrc?: string; // 👈 add this
+    illustrationSrc?: string;
 };
 
 const steps: Step[] = [
@@ -49,6 +83,20 @@ const steps: Step[] = [
             { label: 'Me', value: 'me' },
             { label: 'Me and my partner', value: 'partner' },
             { label: 'Someone else', value: 'someone-else' },
+        ],
+    },
+    {
+        id: 'howMany',
+        question: 'How many people is this for?',
+        highlight: 'How many',
+        description:
+            'You have said that you want documents for someone else, please tell us how many other people do you want these for?',
+        icon: Users,
+        illustrationSrc: 'https://online.zenco.com/images/family1.png',
+        options: [
+            { label: '1 person', value: 'one' },
+            { label: '2 people', value: 'two' },
+            { label: 'More than 2 people', value: 'more' },
         ],
     },
     {
@@ -81,6 +129,34 @@ const steps: Step[] = [
         final: true,
     },
 ];
+
+const isStepVisible = (stepId: string, currentAnswers: Record<string, string>): boolean => {
+    if (stepId === 'howMany') {
+        return currentAnswers.who === 'someone-else';
+    }
+
+    return true;
+};
+
+const getNextVisibleStepIndex = (currentIndex: number, currentAnswers: Record<string, string>): number => {
+    let nextIndex = Math.min(currentIndex + 1, steps.length - 1);
+
+    while (nextIndex < steps.length && !isStepVisible(steps[nextIndex].id, currentAnswers)) {
+        nextIndex += 1;
+    }
+
+    return Math.min(nextIndex, steps.length - 1);
+};
+
+const getPreviousVisibleStepIndex = (currentIndex: number, currentAnswers: Record<string, string>): number => {
+    let prevIndex = Math.max(currentIndex - 1, 0);
+
+    while (prevIndex > 0 && !isStepVisible(steps[prevIndex].id, currentAnswers)) {
+        prevIndex -= 1;
+    }
+
+    return Math.max(prevIndex, 0);
+};
 
 const benefits = [
     'Protect yourself and your family. Ensure everything is in place before it is needed.',
@@ -158,6 +234,9 @@ const LpaStartPage: React.FC = () => {
     const currentStep = steps[currentStepIndex];
     const progress = useMemo(() => ((currentStepIndex + 1) / steps.length) * 100, [currentStepIndex]);
     const isPartnerFlow = answers.who === 'partner';
+    const isSomeoneElseFlow = answers.who === 'someone-else';
+    const isSingleSomeoneElse = isSomeoneElseFlow && answers.howMany === 'one';
+    const isMultiSomeoneElse = isSomeoneElseFlow && answers.howMany !== undefined && answers.howMany !== 'one';
 
     const renderQuestion = (): React.ReactNode => {
         if (isPartnerFlow && currentStep.id === 'adult') {
@@ -168,11 +247,33 @@ const LpaStartPage: React.FC = () => {
             return <PartnerRegionQuestion />;
         }
 
+        if (isSingleSomeoneElse && currentStep.id === 'adult') {
+            return <SinglePersonAdultQuestion />;
+        }
+
+        if (isSingleSomeoneElse && currentStep.id === 'region') {
+            return <SinglePersonRegionQuestion />;
+        }
+
+        if (isMultiSomeoneElse && currentStep.id === 'adult') {
+            return <MultiPersonAdultQuestion />;
+        }
+
+        if (isMultiSomeoneElse && currentStep.id === 'region') {
+            return <MultiPersonRegionQuestion />;
+        }
+
         return highlightQuestion(currentStep.question, currentStep.highlight);
     };
 
     const handleOptionSelect = (value: string): void => {
-        setAnswers((prev) => ({ ...prev, [currentStep.id]: value }));
+        const nextAnswers = { ...answers, [currentStep.id]: value };
+
+        if (currentStep.id === 'who' && value !== 'someone-else') {
+            delete nextAnswers.howMany;
+        }
+
+        setAnswers(nextAnswers);
 
         if (currentStep.id === 'adult' && value === 'no') {
             setShowUnderageNotice(true);
@@ -189,7 +290,7 @@ const LpaStartPage: React.FC = () => {
 
         if (!currentStep.final) {
             setTimeout(() => {
-                setCurrentStepIndex((prev) => Math.min(prev + 1, steps.length - 1));
+                setCurrentStepIndex((prev) => getNextVisibleStepIndex(prev, nextAnswers));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 120);
         }
@@ -216,14 +317,14 @@ const LpaStartPage: React.FC = () => {
             return;
         }
 
-        setCurrentStepIndex((prev) => Math.max(prev - 1, 0));
+        setCurrentStepIndex((prev) => getPreviousVisibleStepIndex(prev, answers));
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleRegionalProceed = (): void => {
         setShowRegionalNotice(false);
         setTimeout(() => {
-            setCurrentStepIndex((prev) => Math.min(prev + 1, steps.length - 1));
+            setCurrentStepIndex((prev) => getNextVisibleStepIndex(prev, answers));
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 120);
     };
