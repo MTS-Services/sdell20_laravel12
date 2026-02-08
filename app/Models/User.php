@@ -25,6 +25,7 @@ class User extends Authenticatable
         'avatar',
         'password',
         'is_admin',
+        'has_completed_onboarding',
         'created_at',
         'updated_at',
     ];
@@ -62,6 +63,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
             'is_admin' => 'boolean',
+            'has_completed_onboarding' => 'boolean',
             'is_payroll' => 'boolean',
             'is_trusted' => 'boolean',
             'is_private' => 'boolean',
