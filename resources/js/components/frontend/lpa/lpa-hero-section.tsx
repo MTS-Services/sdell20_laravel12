@@ -35,17 +35,14 @@ export function LpaHeroSection() {
                         </div>
                         <div className="mt-10 flex flex-wrap gap-4 animate-fadeInUp" style={{ animationDelay: '200ms' }}>
                             <Link
-                                href={route('contact')}
+                                href={route('lpa')}
                                 className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-100"
                             >
-                                Get a quote
+                                Let's get started
                                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 12h14" />
                                 </svg>
                             </Link>
-                            <a href="#support" className="inline-flex items-center rounded-full border border-white/30 px-8 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/10">
-                                Talk to an expert
-                            </a>
                         </div>
                         <p className="mt-10 text-[11px] text-white/70 animate-fadeInUp" style={{ animationDelay: '250ms' }}>
                             Our Head of Technology, Andrea, with his late dad.
