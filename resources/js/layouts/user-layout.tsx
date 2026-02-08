@@ -9,13 +9,14 @@ import { type BreadcrumbItem } from '@/types';
 interface UserLayoutProps {
     children: ReactNode;
     breadcrumbs?: BreadcrumbItem[];
+    showProfileMenu?: boolean;
 }
 
-export default function UserLayout({ children }: UserLayoutProps) {
+export default function UserLayout({ children, showProfileMenu = true }: UserLayoutProps) {
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
-            <UserHeader />
+            <UserHeader showProfileMenu={showProfileMenu} />
             <main className="flex-1">{children}</main>
             <UserFooter />
             <Toaster position="top-right" richColors />
