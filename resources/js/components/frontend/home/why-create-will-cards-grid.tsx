@@ -2,8 +2,6 @@ import React from 'react';
 
 import { PoundSterling } from 'lucide-react';
 
-import { WhyCreateWillHeroSection } from './why-create-will-hero-section';
-import { WhyCreateWillCardsGrid } from './why-create-will-cards-grid';
 import { useReveal } from '@/hooks/use-reveal';
 
 type WhyCard = {
@@ -59,9 +57,7 @@ const cards: WhyCard[] = [
         checkColor: 'text-yellow-700',
         iconColor: 'text-yellow-500',
         delay: 'delay-300',
-        icon: (
-            <PoundSterling className="h-14 w-14" strokeWidth={1.5} aria-hidden="true" />
-        ),
+        icon: <PoundSterling className="h-14 w-14" strokeWidth={1.5} aria-hidden="true" />,
     },
     {
         title: 'Care For Seniors',
@@ -81,22 +77,38 @@ const cards: WhyCard[] = [
     },
 ];
 
-export function WhyCreateWillSection() {
-    const [headerRef, headerVisible] = useReveal<HTMLDivElement>();
-    const [videoRef, videoVisible] = useReveal<HTMLDivElement>(0.1);
+export function WhyCreateWillCardsGrid() {
     const [gridRef, gridVisible] = useReveal<HTMLDivElement>(0.1);
 
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section className="py-20 bg-white overflow-hidden">
             <div className="container mx-auto px-6">
-                <WhyCreateWillHeroSection
-                    headerRef={headerRef}
-                    headerVisible={headerVisible}
-                    videoRef={videoRef}
-                    videoVisible={videoVisible}
-                />
+                <div ref={gridRef} className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+                    {cards.map((card) => (
+                        <div
+                            key={card.title}
+                            className={`group bg-linear-to-br ${card.gradient} border-4 ${card.border} rounded-3xl p-8 text-center shadow-lg cursor-pointer ${card.delay} transition-all duration-700 ease-out ${gridVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95'} hover:-translate-y-3 hover:shadow-2xl hover:scale-105`}
+                        >
+                            <div className="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-md transition-all duration-500 group-hover:scale-125 group-hover:rotate-6 group-hover:shadow-xl group-hover:-translate-y-2">
+                                <span className={`${card.iconColor} transition-all duration-300 group-hover:scale-110 group-hover:animate-float`}>{card.icon}</span>
+                            </div>
 
-                
+                            <div className="flex items-center justify-center gap-2 mb-3">
+                                <svg
+                                    className={`w-6 h-6 ${card.checkColor} transition-all duration-500 group-hover:scale-125 group-hover:rotate-12`}
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    aria-hidden="true"
+                                >
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <h3 className={`text-2xl font-sans font-bold ${card.titleColor}`}>{card.title}</h3>
+                            </div>
+
+                            <p className="text-slate-700 leading-relaxed transition-colors duration-300 group-hover:text-slate-900">{card.desc}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     );

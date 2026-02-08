@@ -47,7 +47,7 @@ export function FindingSupportSection() {
                     ref={headerRef}
                     className={`mb-16 space-y-4 text-center transition-all duration-700 ease-out ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
-                    <h2 className="font-serif text-5xl font-bold md:text-6xl">Finding Support After a Loss</h2>
+                    <h2 className="font-serif text-5xl font-bold md:text-6xl">Probate Services</h2>
                     <p className="mx-auto max-w-2xl font-body text-xl text-slate-200">Resources and guidance to help you navigate grief and handle practical matters</p>
                 </div>
 
