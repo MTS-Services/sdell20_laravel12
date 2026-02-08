@@ -13,14 +13,14 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return Inertia::render('Dashboard/UserDashboard', [
+        return Inertia::render('backend/User/UserDashboard', [
             'user' => $request->user(),
         ]);
     }
 
     public function adminDashboard(Request $request)
     {
-        return Inertia::render('Dashboard/AdminDashboard', [
+        return Inertia::render('backend/Admin/AdminDashboard', [
             'user' => $request->user(),
             'totalUsers' => \App\Models\User::count(),
         ]);
