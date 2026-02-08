@@ -623,7 +623,7 @@ const LpaStartPage: React.FC = () => {
                                     </ul>
 
                                     <Link
-                                        href={route('lpa')}
+                                        href={route('register')}
                                         className="mt-6 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 hover:text-white lg:py-4 lg:text-base"
                                     >
                                         Continue online
