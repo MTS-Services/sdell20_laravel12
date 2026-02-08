@@ -1,19 +1,21 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Backend\Admin\AdminDashboardController;
+use App\Http\Controllers\Backend\User\UserDashboardController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserSelectionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard Routes
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/form', [DashboardController::class, 'userForm'])->name('dashboard.form');
-    Route::get('/dashboard/user', [DashboardController::class, 'userDashboard'])->name('dashboard.user');
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/form', [UserDashboardController::class, 'form'])->name('dashboard.form');
+    Route::get('/dashboard/user', [UserDashboardController::class, 'dashboard'])->name('dashboard.user');
+    Route::post('/dashboard/complete', [UserDashboardController::class, 'complete'])->name('dashboard.complete');
     
     // Admin Routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'adminDashboard'])->name('dashboard');
+        Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
         Route::get('/users/list', [UserSelectionController::class, 'getUsers'])->name('users.list');
     });
 
