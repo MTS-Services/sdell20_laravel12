@@ -15,6 +15,7 @@ export default function Home() {
     return (
         <FrontendLayout>
             <Banner />
+            <CTASection />
             <WhyCreateWillSection />
             <EstateApproachSection />
             <HowItWorksSection />
@@ -22,7 +23,6 @@ export default function Home() {
             <ManagingAffairsSection />
             <LoveOnesSection />
             <FindingSupportSection />
-            <CTASection />
         </FrontendLayout>
     );
 }
