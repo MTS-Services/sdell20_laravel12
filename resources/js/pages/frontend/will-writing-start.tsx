@@ -487,13 +487,15 @@ const WillCreationWizard: React.FC = () => {
     const getProgressPercent = (step: number): number => {
         if (step === 0) return (1 / WIZARD_STEPS.length) * 100;
         if (step === 1) return (1.33 / WIZARD_STEPS.length) * 100;
-        if (step === 2) return (2 / WIZARD_STEPS.length) * 100;
+        if (step === 2) return (1.90 / WIZARD_STEPS.length) * 100;
         if (step === 3) return (2.33 / WIZARD_STEPS.length) * 100;
         if (step === 4) return (2.66 / WIZARD_STEPS.length) * 100;
         if (step === 5) return (3 / WIZARD_STEPS.length) * 100;
-        if (step === 6) return (4 / WIZARD_STEPS.length) * 100;
-        if (step === 7) return (4.5 / WIZARD_STEPS.length) * 100;
-        if (step === 8) return (5 / WIZARD_STEPS.length) * 100;
+        if (step === 6) return (3.50 / WIZARD_STEPS.length) * 100;
+        if (step === 7) return (4 / WIZARD_STEPS.length) * 100;
+        if (step === 8) return (4.66 / WIZARD_STEPS.length) * 100;
+        if (step === 9) return (5.6 / WIZARD_STEPS.length) * 100;
+        if (step === 10) return (6.66 / WIZARD_STEPS.length) * 100;
         const navIdx = step - 4;
         return ((navIdx + 1) / WIZARD_STEPS.length) * 100;
     };
