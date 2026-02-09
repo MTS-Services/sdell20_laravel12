@@ -42,20 +42,27 @@ interface Executor {
     country: string;
 }
 
+interface Child {
+    id: string;
+    fullName: string;
+    isMinor: boolean;
+}
+
 interface Guardian {
     id: string;
-    title: string;
-    firstName: string;
-    lastName: string;
-    relationship: string;
-    address: string;
+    fullName: string;
+    city: string;
+    country: string;
 }
 
 interface WillData {
     personalInfo: PersonalInfo;
     hasChildren: boolean;
-    childrenUnder18: boolean;
+    children: Child[];
+    wantsGuardian: boolean;
     guardians: Guardian[];
+    wantsDelayInheritance: boolean;
+    inheritanceAge: string;
     executors: Executor[];
     wantsAlternateExecutor: boolean;
     alternateExecutors: Executor[];
@@ -120,8 +127,11 @@ const WillCreationWizard: React.FC = () => {
             country: 'United Kingdom'
         },
         hasChildren: false,
-        childrenUnder18: false,
+        children: [],
+        wantsGuardian: false,
         guardians: [],
+        wantsDelayInheritance: false,
+        inheritanceAge: '18',
         executors: [],
         wantsAlternateExecutor: false,
         alternateExecutors: [],
@@ -142,95 +152,106 @@ const WillCreationWizard: React.FC = () => {
 
     interface ChildrenStepProps {
         hasChildren: boolean;
-        childrenUnder18: boolean;
-        guardians: Guardian[];
-        onChangeField: (field: 'hasChildren' | 'childrenUnder18', value: boolean) => void;
-        onAddGuardian: () => void;
-        onChangeGuardians: (guardians: Guardian[]) => void;
+        childRecords: Child[];
+        onChangeField: (field: 'hasChildren', value: boolean) => void;
+        onAddChild: () => void;
+        onChangeChildren: (children: Child[]) => void;
     }
 
-    const ChildrenStep: React.FC<ChildrenStepProps> = ({ hasChildren, childrenUnder18, guardians, onChangeField, onAddGuardian, onChangeGuardians }) => {
-        const updateGuardian = (index: number, field: keyof Guardian, value: string) => {
-            const updated = [...guardians];
-            updated[index] = { ...updated[index], [field]: value };
-            onChangeGuardians(updated);
+    const CHILDREN_FAQ = [
+        { question: 'Should I list step-children?', answer: 'Yes. Any child or dependent you want covered by your will should be listed so the document can reference them explicitly.' },
+        { question: 'When is a child considered dependent?', answer: 'Anyone under 18, or anyone financially dependent on you regardless of age, should be marked as a minor/dependent.' }
+    ];
+
+    const ChildrenStep: React.FC<ChildrenStepProps> = ({ hasChildren, childRecords, onChangeField, onAddChild, onChangeChildren }) => {
+        const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
+
+        const updateChild = (index: number, fields: Partial<Child>) => {
+            const updated = [...childRecords];
+            updated[index] = { ...updated[index], ...fields };
+            onChangeChildren(updated);
         };
 
-        const removeGuardian = (index: number) => {
-            onChangeGuardians(guardians.filter((_, i) => i !== index));
+        const removeChild = (index: number) => {
+            onChangeChildren(childRecords.filter((_, i) => i !== index));
+        };
+
+        const handleHasChildrenToggle = (value: boolean) => {
+            onChangeField('hasChildren', value);
+            if (value) {
+                if (childRecords.length === 0) {
+                    onAddChild();
+                }
+            } else {
+                onChangeChildren([]);
+            }
         };
 
         return (
-            <div className="max-w-2xl">
-                <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-4">Do you have children?</h2>
-                <p className="text-sm text-slate-500 mb-8 max-w-md">We use this to determine guardianship preferences.</p>
+            <div>
+                <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Children</h2>
+                <p className="text-sm md:text-base text-secondary mb-8">Do you have any living children?</p>
 
-                <div className="flex gap-4 mb-8">
-                    <button
-                        type="button"
-                        onClick={() => onChangeField('hasChildren', true)}
-                        className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
-                    >
-                        Yes
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => { onChangeField('hasChildren', false); onChangeField('childrenUnder18', false); onChangeGuardians([]); }}
-                        className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
-                    >
-                        No
-                    </button>
-                </div>
-
-                {hasChildren && (
-                    <div className="space-y-8">
-                        <div>
-                            <h3 className="text-lg font-medium text-slate-700 mb-3">Are any under 18?</h3>
-                            <div className="flex gap-4">
-                                <button
-                                    type="button"
-                                    onClick={() => onChangeField('childrenUnder18', true)}
-                                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
-                                >
-                                    Yes
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => onChangeField('childrenUnder18', false)}
-                                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover-border-slate-300'}`}
-                                >
-                                    No
-                                </button>
-                            </div>
+                <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                    <div className="space-y-6">
+                        <div className="flex gap-4">
+                            <button
+                                type="button"
+                                onClick={() => handleHasChildrenToggle(true)}
+                                className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                            >
+                                YES
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => handleHasChildrenToggle(false)}
+                                className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                            >
+                                NO
+                            </button>
                         </div>
 
-                        {childrenUnder18 && (
-                            <div>
-                                <h3 className="text-lg font-medium text-slate-700 mb-4">Guardians</h3>
-                                {guardians.map((guardian, index) => (
-                                    <div key={guardian.id} className="border border-slate-200 rounded-lg p-5 mb-4">
+                        {hasChildren && (
+                            <>
+                                {childRecords.map((child, index) => (
+                                    <div key={child.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
                                         <div className="flex items-center justify-between mb-4">
-                                            <p className="text-base font-semibold text-slate-700">Guardian {index + 1}</p>
-                                            <button type="button" onClick={() => removeGuardian(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
-                                                Remove
-                                            </button>
+                                            <p className="text-base font-semibold text-secondary">Child</p>
+                                            {childRecords.length > 1 && (
+                                                <button type="button" onClick={() => removeChild(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                                    Remove
+                                                </button>
+                                            )}
                                         </div>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div className="space-y-5">
                                             <div>
-                                                <label className={LABEL_CLASS}>First Name *</label>
-                                                <input type="text" value={guardian.firstName} onChange={(e) => updateGuardian(index, 'firstName', e.target.value)} className={INPUT_CLASS} />
+                                                <label className="block text-sm text-secondary mb-1">Full Name:</label>
+                                                <input
+                                                    type="text"
+                                                    value={child.fullName}
+                                                    onChange={(e) => updateChild(index, { fullName: e.target.value })}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    placeholder="e.g. William Timothy Smith"
+                                                />
                                             </div>
                                             <div>
-                                                <label className={LABEL_CLASS}>Last Name *</label>
-                                                <input type="text" value={guardian.lastName} onChange={(e) => updateGuardian(index, 'lastName', e.target.value)} className={INPUT_CLASS} />
-                                            </div>
-                                            <div>
-                                                <label className={LABEL_CLASS}>Relationship *</label>
-                                                <input type="text" value={guardian.relationship} onChange={(e) => updateGuardian(index, 'relationship', e.target.value)} className={INPUT_CLASS} />
-                                            </div>
-                                            <div>
-                                                <label className={LABEL_CLASS}>Address *</label>
-                                                <input type="text" value={guardian.address} onChange={(e) => updateGuardian(index, 'address', e.target.value)} className={INPUT_CLASS} />
+                                                <p className="text-sm md:text-base text-slate-600 mb-3">Is this child either a minor or a dependant?</p>
+                                                <div className="flex gap-4">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => updateChild(index, { isMinor: true })}
+                                                        className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${child.isMinor ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                                    >
+                                                        YES
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => updateChild(index, { isMinor: false })}
+                                                        className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!child.isMinor ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                                    >
+                                                        NO
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -238,15 +259,47 @@ const WillCreationWizard: React.FC = () => {
 
                                 <button
                                     type="button"
-                                    onClick={onAddGuardian}
-                                    className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors"
+                                    onClick={onAddChild}
+                                    className="text-secondary text-sm font-semibold hover:underline"
                                 >
-                                    + Add Guardian
+                                    + Add another child
                                 </button>
-                            </div>
+                            </>
                         )}
                     </div>
-                )}
+
+                    <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
+                        <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                        <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
+                            <ul className="space-y-3 text-sm text-slate-600">
+                                {CHILDREN_FAQ.map((item) => (
+                                    <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
+                                        <button
+                                            type="button"
+                                            onMouseEnter={(e) => {
+                                                const offsetTop = e.currentTarget.parentElement?.offsetTop ?? 0;
+                                                setFaqTooltip({ text: item.answer, top: offsetTop });
+                                            }}
+                                            className="font-medium text-secondary hover:underline"
+                                        >
+                                            {item.question}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                            {faqTooltip && (
+                                <div
+                                    className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                    style={{ top: faqTooltip.top }}
+                                >
+                                    <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />
+                                    <div className="absolute -left-3.5 top-4 h-0 w-0 border-y-7 border-y-transparent border-r-7 border-r-white" />
+                                    {faqTooltip.text}
+                                </div>
+                            )}
+                        </div>
+                    </aside>
+                </div>
             </div>
         );
     };
@@ -301,14 +354,24 @@ const WillCreationWizard: React.FC = () => {
         });
     };
 
+    const addChild = () => {
+        const newChild: Child = {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+            fullName: '',
+            isMinor: false
+        };
+        setWillData({
+            ...willData,
+            children: [...willData.children, newChild]
+        });
+    };
+
     const addGuardian = () => {
         const newGuardian: Guardian = {
-            id: Date.now().toString(),
-            title: '',
-            firstName: '',
-            lastName: '',
-            relationship: '',
-            address: ''
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+            fullName: '',
+            city: '',
+            country: 'England'
         };
         setWillData({
             ...willData,
@@ -323,8 +386,11 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
+    // Total internal steps: 0=GetStarted, 1=Executor, 2=BackupExecutor, 3=Children, 4=Guardian, 5=DelayInheritance, 6=Gifts, 7=Remainder, 8=FinalDetails, 9=Signing, 10=PrintDownload
+    const TOTAL_INTERNAL_STEPS = 11;
+
     const handleSaveAndContinue = () => {
-        if (currentStep < WIZARD_STEPS.length - 1) {
+        if (currentStep < TOTAL_INTERNAL_STEPS - 1) {
             setCurrentStep(currentStep + 1);
         }
     };
@@ -338,15 +404,36 @@ const WillCreationWizard: React.FC = () => {
     };
 
     const handleSkip = () => {
-        if (currentStep < WIZARD_STEPS.length - 1) {
+        if (currentStep < TOTAL_INTERNAL_STEPS - 1) {
             setCurrentStep(currentStep + 1);
         }
     };
 
-    // 8 visible nav steps, executor split into 2 internal steps (1 & 2)
-    // Map internal step to nav position: 0→0, 1→0.5, 2→1, 3→2, 4→3, 5→4, 6→5, 7→6, 8→7
-    const navPosition = currentStep <= 2 ? currentStep * 0.5 : currentStep - 1;
-    const progressPercent = ((navPosition + 1) / WIZARD_STEPS.length) * 100;
+    // 8 visible nav steps. Executor has 2 internal sub-steps (1,2). Children has 3 internal sub-steps (3,4,5).
+    // Internal → nav index mapping:
+    // 0→0(GetStarted), 1,2→1(Executor), 3,4,5→2(Children), 6→3(Gifts), 7→4(Remainder), 8→5(FinalDetails), 9→6(Signing), 10→7(Print)
+    const getNavIndex = (step: number): number => {
+        if (step <= 0) return 0;
+        if (step <= 2) return 1;
+        if (step <= 5) return 2;
+        return step - 3;
+    };
+
+    const currentNavIndex = getNavIndex(currentStep);
+
+    // Progress: sub-steps within a group advance the bar fractionally
+    const getProgressPercent = (step: number): number => {
+        if (step === 0) return (1 / WIZARD_STEPS.length) * 100;
+        if (step === 1) return (1.33 / WIZARD_STEPS.length) * 100;
+        if (step === 2) return (2 / WIZARD_STEPS.length) * 100;
+        if (step === 3) return (2.33 / WIZARD_STEPS.length) * 100;
+        if (step === 4) return (2.66 / WIZARD_STEPS.length) * 100;
+        if (step === 5) return (3 / WIZARD_STEPS.length) * 100;
+        const navIdx = step - 3;
+        return ((navIdx + 1) / WIZARD_STEPS.length) * 100;
+    };
+
+    const progressPercent = getProgressPercent(currentStep);
 
     useEffect(() => {
         if (phase === 'wizard' && currentStep === 1 && willData.executors.length === 0) {
@@ -355,7 +442,10 @@ const WillCreationWizard: React.FC = () => {
         if (phase === 'wizard' && currentStep === 2 && willData.wantsAlternateExecutor && willData.alternateExecutors.length === 0) {
             addAlternateExecutor();
         }
-    }, [phase, currentStep, willData.executors.length, willData.wantsAlternateExecutor, willData.alternateExecutors.length]);
+        if (phase === 'wizard' && currentStep === 4 && willData.wantsGuardian && willData.guardians.length === 0) {
+            addGuardian();
+        }
+    }, [phase, currentStep, willData.executors.length, willData.wantsAlternateExecutor, willData.alternateExecutors.length, willData.wantsGuardian, willData.guardians.length]);
 
     const renderWizardStepContent = () => {
         switch (currentStep) {
@@ -406,21 +496,43 @@ const WillCreationWizard: React.FC = () => {
                 return (
                     <ChildrenStep
                         hasChildren={willData.hasChildren}
-                        childrenUnder18={willData.childrenUnder18}
-                        guardians={willData.guardians}
+                        childRecords={willData.children}
                         onChangeField={(field, value) => setWillData({ ...willData, [field]: value })}
-                        onAddGuardian={addGuardian}
-                        onChangeGuardians={(guardians) => setWillData({ ...willData, guardians })}
+                        onAddChild={addChild}
+                        onChangeChildren={(children) => setWillData({ ...willData, children })}
                     />
                 );
             case 4:
+                return (
+                    <GuardianStep
+                        wantsGuardian={willData.wantsGuardian}
+                        guardians={willData.guardians}
+                        onToggleGuardian={(value: boolean) => setWillData({
+                            ...willData,
+                            wantsGuardian: value,
+                            guardians: value ? (willData.guardians.length ? willData.guardians : []) : []
+                        })}
+                        onAddGuardian={addGuardian}
+                        onChangeGuardians={(guardians: Guardian[]) => setWillData({ ...willData, guardians })}
+                    />
+                );
+            case 5:
+                return (
+                    <DelayInheritanceStep
+                        wantsDelay={willData.wantsDelayInheritance}
+                        inheritanceAge={willData.inheritanceAge}
+                        onToggleDelay={(value: boolean) => setWillData({ ...willData, wantsDelayInheritance: value })}
+                        onChangeAge={(age: string) => setWillData({ ...willData, inheritanceAge: age })}
+                    />
+                );
+            case 6:
                 return (
                     <GiftsStep
                         gifts={willData.specificGifts}
                         onChange={(gifts) => setWillData({ ...willData, specificGifts: gifts })}
                     />
                 );
-            case 5:
+            case 7:
                 return (
                     <RemainderStep
                         distributionType={willData.distributionType}
@@ -430,7 +542,7 @@ const WillCreationWizard: React.FC = () => {
                         onChangeBeneficiaries={(beneficiaries) => setWillData({ ...willData, beneficiaries })}
                     />
                 );
-            case 6:
+            case 8:
                 return (
                     <FinalDetailsStep
                         data={willData.personalInfo}
@@ -441,9 +553,9 @@ const WillCreationWizard: React.FC = () => {
                         onChangeWishes={(field, value) => setWillData({ ...willData, [field]: value })}
                     />
                 );
-            case 7:
+            case 9:
                 return <SigningStep />;
-            case 8:
+            case 10:
                 return <PrintDownloadStep data={willData} />;
             default:
                 return null;
@@ -540,21 +652,23 @@ const WillCreationWizard: React.FC = () => {
                     {/* Step Tabs - Show all steps but highlight current logical step */}
                     <div className="flex flex-wrap gap-2.5">
                         {WIZARD_STEPS.map((step, index) => {
-                            // Handle executor step - show as active for both step 1 and 2
-                            const isActive = (step.key === 'executor' && (currentStep === 1 || currentStep === 2)) ||
-                                (step.key !== 'executor' && index === (currentStep > 1 ? currentStep - 1 : currentStep));
-                            const isCompleted = (step.key === 'executor' && currentStep > 2) ||
-                                (step.key !== 'executor' && index < (currentStep > 1 ? currentStep - 1 : currentStep));
+                            const isActive = index === currentNavIndex;
+                            const isCompleted = index < currentNavIndex;
+
+                            const navToInternal = (navIdx: number): number => {
+                                if (navIdx === 0) return 0;
+                                if (navIdx === 1) return 1;
+                                if (navIdx === 2) return 3;
+                                return navIdx + 3;
+                            };
 
                             return (
                                 <button
                                     key={step.key}
                                     type="button"
                                     onClick={() => {
-                                        if (step.key === 'executor') {
-                                            setCurrentStep(1); // Always go to primary executor first
-                                        } else if (isCompleted) {
-                                            setCurrentStep(index > 1 ? index + 1 : index);
+                                        if (isCompleted) {
+                                            setCurrentStep(navToInternal(index));
                                         }
                                     }}
                                     className={`px-3 py-2 text-sm md:text-base lg:text-lg font-normal transition-colors duration-200 ${isActive
@@ -921,6 +1035,244 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                     <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
                         <ul className="space-y-3 text-sm text-slate-600">
                             {FAQ_ITEMS.map((item) => (
+                                <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
+                                    <button
+                                        type="button"
+                                        onMouseEnter={(e) => {
+                                            const offsetTop = e.currentTarget.parentElement?.offsetTop ?? 0;
+                                            setFaqTooltip({ text: item.answer, top: offsetTop });
+                                        }}
+                                        className="font-medium text-secondary hover:underline"
+                                    >
+                                        {item.question}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        {faqTooltip && (
+                            <div
+                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                style={{ top: faqTooltip.top }}
+                            >
+                                <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />
+                                <div className="absolute -left-3.5 top-4 h-0 w-0 border-y-7 border-y-transparent border-r-7 border-r-white" />
+                                {faqTooltip.text}
+                            </div>
+                        )}
+                    </div>
+                </aside>
+            </div>
+        </div>
+    );
+};
+
+interface GuardianStepProps {
+    wantsGuardian: boolean;
+    guardians: Guardian[];
+    onToggleGuardian: (value: boolean) => void;
+    onAddGuardian: () => void;
+    onChangeGuardians: (guardians: Guardian[]) => void;
+}
+
+const GUARDIAN_FAQ = [
+    { question: 'Who can be a guardian?', answer: 'Any responsible adult over 18 who is willing to take on the role. It is best to discuss this with them before naming them.' },
+    { question: 'What is a guardian?', answer: 'A guardian is someone you appoint to look after your minor or dependent children if you pass away.' }
+];
+
+const GuardianStep: React.FC<GuardianStepProps> = ({ wantsGuardian, guardians, onToggleGuardian, onAddGuardian, onChangeGuardians }) => {
+    const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
+
+    const updateGuardian = (index: number, fields: Partial<Guardian>) => {
+        const updated = [...guardians];
+        updated[index] = { ...updated[index], ...fields };
+        onChangeGuardians(updated);
+    };
+
+    const removeGuardian = (index: number) => {
+        onChangeGuardians(guardians.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div>
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Appoint a Guardian</h2>
+            <p className="text-sm md:text-base text-secondary mb-8">Do you want to appoint a guardian for your minor or dependent child?</p>
+
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div className="space-y-6">
+                    <div className="flex gap-4">
+                        <button
+                            type="button"
+                            onClick={() => onToggleGuardian(true)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${wantsGuardian ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            YES
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => onToggleGuardian(false)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!wantsGuardian ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            NO
+                        </button>
+                    </div>
+
+                    {wantsGuardian && (
+                        <>
+                            {guardians.map((guardian, index) => (
+                                <div key={guardian.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <p className="text-base font-semibold text-slate-700">Guardian Details</p>
+                                        {guardians.length > 1 && (
+                                            <button type="button" onClick={() => removeGuardian(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="space-y-5">
+                                        <div>
+                                            <label className="block text-sm text-secondary mb-1">Full Name:</label>
+                                            <input
+                                                type="text"
+                                                value={guardian.fullName}
+                                                onChange={(e) => updateGuardian(index, { fullName: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                placeholder="e.g. William Timothy Smith"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                            <input
+                                                type="text"
+                                                value={guardian.city}
+                                                onChange={(e) => updateGuardian(index, { city: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                placeholder="e.g. London"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm text-secondary mb-1">Country:</label>
+                                            <select
+                                                value={guardian.country}
+                                                onChange={(e) => updateGuardian(index, { country: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                            >
+                                                <option value="England">England</option>
+                                                <option value="Wales">Wales</option>
+                                                <option value="Scotland">Scotland</option>
+                                                <option value="Northern Ireland">Northern Ireland</option>
+                                                <option value="United Kingdom">United Kingdom</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <button
+                                type="button"
+                                onClick={onAddGuardian}
+                                className="text-secondary text-sm font-semibold hover:underline"
+                            >
+                                + Add another guardian
+                            </button>
+                        </>
+                    )}
+                </div>
+
+                <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
+                    <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                    <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
+                        <ul className="space-y-3 text-sm text-slate-600">
+                            {GUARDIAN_FAQ.map((item) => (
+                                <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
+                                    <button
+                                        type="button"
+                                        onMouseEnter={(e) => {
+                                            const offsetTop = e.currentTarget.parentElement?.offsetTop ?? 0;
+                                            setFaqTooltip({ text: item.answer, top: offsetTop });
+                                        }}
+                                        className="font-medium text-secondary hover:underline"
+                                    >
+                                        {item.question}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        {faqTooltip && (
+                            <div
+                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                style={{ top: faqTooltip.top }}
+                            >
+                                <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />
+                                <div className="absolute -left-3.5 top-4 h-0 w-0 border-y-7 border-y-transparent border-r-7 border-r-white" />
+                                {faqTooltip.text}
+                            </div>
+                        )}
+                    </div>
+                </aside>
+            </div>
+        </div>
+    );
+};
+
+interface DelayInheritanceStepProps {
+    wantsDelay: boolean;
+    inheritanceAge: string;
+    onToggleDelay: (value: boolean) => void;
+    onChangeAge: (age: string) => void;
+}
+
+const DELAY_INHERITANCE_FAQ = [
+    { question: 'How will the property be held?', answer: 'If you delay inheritance, the assets will be held in trust by your executors or guardians until the child reaches the specified age.' }
+];
+
+const DelayInheritanceStep: React.FC<DelayInheritanceStepProps> = ({ wantsDelay, inheritanceAge, onToggleDelay, onChangeAge }) => {
+    const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
+
+    return (
+        <div>
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Delay Inheritance</h2>
+            <p className="text-sm md:text-base text-secondary mb-8">Do you want your minor beneficiaries to wait until a certain age before they receive their inheritance?</p>
+
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div className="space-y-6">
+                    <div className="flex gap-4">
+                        <button
+                            type="button"
+                            onClick={() => onToggleDelay(true)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${wantsDelay ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            YES
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => onToggleDelay(false)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!wantsDelay ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            NO
+                        </button>
+                    </div>
+
+                    {wantsDelay && (
+                        <div>
+                            <label className="block text-sm text-secondary mb-1">Receive inheritance at age:</label>
+                            <select
+                                value={inheritanceAge}
+                                onChange={(e) => onChangeAge(e.target.value)}
+                                className="w-full max-w-xs border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                            >
+                                {Array.from({ length: 8 }, (_, i) => String(18 + i)).map((age) => (
+                                    <option key={age} value={age}>{age}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                </div>
+
+                <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
+                    <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                    <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
+                        <ul className="space-y-3 text-sm text-slate-600">
+                            {DELAY_INHERITANCE_FAQ.map((item) => (
                                 <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
                                     <button
                                         type="button"
