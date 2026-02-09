@@ -85,6 +85,11 @@ export interface AdditionalClause {
 
 export interface WillData {
     personalInfo: PersonalInfo;
+    spouse: {
+        fullName: string;
+        executorId: string | null;
+    };
+    spouseIsExecutor: boolean;
     hasPets: boolean;
     pets: Pet[];
     wantsAdditionalClauses: boolean;
