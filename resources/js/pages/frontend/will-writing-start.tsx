@@ -57,6 +57,8 @@ interface WillData {
     childrenUnder18: boolean;
     guardians: Guardian[];
     executors: Executor[];
+    wantsAlternateExecutor: boolean;
+    alternateExecutors: Executor[];
     beneficiaries: Beneficiary[];
     distributionType: 'percentage' | 'specific' | 'residuary';
     specificGifts: Array<{ item: string; recipient: string }>;
@@ -100,6 +102,7 @@ const MaritalStatusCard: React.FC<{
     </button>
 );
 
+
 const WillCreationWizard: React.FC = () => {
     const [phase, setPhase] = useState<'landing' | 'wizard'>('landing');
     const [currentStep, setCurrentStep] = useState(0);
@@ -120,8 +123,10 @@ const WillCreationWizard: React.FC = () => {
         childrenUnder18: false,
         guardians: [],
         executors: [],
+        wantsAlternateExecutor: false,
+        alternateExecutors: [],
         beneficiaries: [],
-        distributionType: 'percentage',
+        distributionType: 'percentage' as const,
         specificGifts: [],
         funeralWishes: '',
         burialPreference: '',
@@ -156,9 +161,9 @@ const WillCreationWizard: React.FC = () => {
         };
 
         return (
-            <div>
+            <div className="max-w-2xl">
                 <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-4">Do you have children?</h2>
-                <p className="text-sm text-slate-500 mb-8">We use this to determine guardianship preferences.</p>
+                <p className="text-sm text-slate-500 mb-8 max-w-md">We use this to determine guardianship preferences.</p>
 
                 <div className="flex gap-4 mb-8">
                     <button
@@ -246,7 +251,7 @@ const WillCreationWizard: React.FC = () => {
         );
     };
 
-    const addExecutor = () => {
+    const addAlternateExecutor = () => {
         const newExecutor: Executor = {
             id: Date.now().toString(),
             title: '',
@@ -258,6 +263,26 @@ const WillCreationWizard: React.FC = () => {
             city: '',
             country: 'England'
         };
+        setWillData({
+            ...willData,
+            alternateExecutors: [...willData.alternateExecutors, newExecutor]
+        });
+    };
+
+    const createExecutor = (): Executor => ({
+        id: Date.now().toString(),
+        title: '',
+        firstName: '',
+        lastName: '',
+        relationship: '',
+        address: '',
+        dateOfBirth: '',
+        city: '',
+        country: 'England'
+    });
+
+    const addExecutor = () => {
+        const newExecutor = createExecutor();
         setWillData({
             ...willData,
             executors: [...willData.executors, newExecutor]
@@ -318,13 +343,19 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
-    const progressPercent = ((currentStep + 1) / WIZARD_STEPS.length) * 100;
+    // 8 visible nav steps, executor split into 2 internal steps (1 & 2)
+    // Map internal step to nav position: 0→0, 1→0.5, 2→1, 3→2, 4→3, 5→4, 6→5, 7→6, 8→7
+    const navPosition = currentStep <= 2 ? currentStep * 0.5 : currentStep - 1;
+    const progressPercent = ((navPosition + 1) / WIZARD_STEPS.length) * 100;
 
     useEffect(() => {
         if (phase === 'wizard' && currentStep === 1 && willData.executors.length === 0) {
             addExecutor();
         }
-    }, [phase, currentStep, willData.executors.length]);
+        if (phase === 'wizard' && currentStep === 2 && willData.wantsAlternateExecutor && willData.alternateExecutors.length === 0) {
+            addAlternateExecutor();
+        }
+    }, [phase, currentStep, willData.executors.length, willData.wantsAlternateExecutor, willData.alternateExecutors.length]);
 
     const renderWizardStepContent = () => {
         switch (currentStep) {
@@ -339,11 +370,39 @@ const WillCreationWizard: React.FC = () => {
                 return (
                     <ExecutorsStep
                         executors={willData.executors}
-                        onAdd={addExecutor}
-                        onChange={(executors) => setWillData({ ...willData, executors })}
+                        wantsAlternateExecutor={willData.wantsAlternateExecutor}
+                        alternateExecutors={willData.alternateExecutors}
+                        onAddExecutor={addExecutor}
+                        onChangeExecutors={(executors: Executor[]) => setWillData({ ...willData, executors })}
+                        onToggleAlternate={(value: boolean) => setWillData({
+                            ...willData,
+                            wantsAlternateExecutor: value,
+                            alternateExecutors: value ? (willData.alternateExecutors.length ? willData.alternateExecutors : [createExecutor()]) : []
+                        })}
+                        onAddAlternate={addAlternateExecutor}
+                        onChangeAlternates={(alternateExecutors: Executor[]) => setWillData({ ...willData, alternateExecutors })}
+                        showBackupSection={false}
                     />
                 );
             case 2:
+                return (
+                    <ExecutorsStep
+                        executors={willData.executors}
+                        wantsAlternateExecutor={willData.wantsAlternateExecutor}
+                        alternateExecutors={willData.alternateExecutors}
+                        onAddExecutor={addExecutor}
+                        onChangeExecutors={(executors: Executor[]) => setWillData({ ...willData, executors })}
+                        onToggleAlternate={(value: boolean) => setWillData({
+                            ...willData,
+                            wantsAlternateExecutor: value,
+                            alternateExecutors: value ? (willData.alternateExecutors.length ? willData.alternateExecutors : [createExecutor()]) : []
+                        })}
+                        onAddAlternate={addAlternateExecutor}
+                        onChangeAlternates={(alternateExecutors: Executor[]) => setWillData({ ...willData, alternateExecutors })}
+                        showBackupSection={true}
+                    />
+                );
+            case 3:
                 return (
                     <ChildrenStep
                         hasChildren={willData.hasChildren}
@@ -354,14 +413,14 @@ const WillCreationWizard: React.FC = () => {
                         onChangeGuardians={(guardians) => setWillData({ ...willData, guardians })}
                     />
                 );
-            case 3:
+            case 4:
                 return (
                     <GiftsStep
                         gifts={willData.specificGifts}
                         onChange={(gifts) => setWillData({ ...willData, specificGifts: gifts })}
                     />
                 );
-            case 4:
+            case 5:
                 return (
                     <RemainderStep
                         distributionType={willData.distributionType}
@@ -371,7 +430,7 @@ const WillCreationWizard: React.FC = () => {
                         onChangeBeneficiaries={(beneficiaries) => setWillData({ ...willData, beneficiaries })}
                     />
                 );
-            case 5:
+            case 6:
                 return (
                     <FinalDetailsStep
                         data={willData.personalInfo}
@@ -382,9 +441,9 @@ const WillCreationWizard: React.FC = () => {
                         onChangeWishes={(field, value) => setWillData({ ...willData, [field]: value })}
                     />
                 );
-            case 6:
-                return <SigningStep />;
             case 7:
+                return <SigningStep />;
+            case 8:
                 return <PrintDownloadStep data={willData} />;
             default:
                 return null;
@@ -478,21 +537,37 @@ const WillCreationWizard: React.FC = () => {
                         FREE LAST WILL AND TESTAMENT
                     </h1>
 
-                    {/* Step Tabs */}
+                    {/* Step Tabs - Show all steps but highlight current logical step */}
                     <div className="flex flex-wrap gap-2.5">
-                        {WIZARD_STEPS.map((step, index) => (
-                            <button
-                                key={step.key}
-                                type="button"
-                                onClick={() => setCurrentStep(index)}
-                                className={`px-3 py-2 text-sm md:text-base lg:text-lg font-normal transition-colors duration-200 cursor-pointer ${index === currentStep
-                                    ? 'text-white'
-                                    : 'text-white/60 hover:text-white/80'
-                                    }`}
-                            >
-                                {step.title}
-                            </button>
-                        ))}
+                        {WIZARD_STEPS.map((step, index) => {
+                            // Handle executor step - show as active for both step 1 and 2
+                            const isActive = (step.key === 'executor' && (currentStep === 1 || currentStep === 2)) ||
+                                (step.key !== 'executor' && index === (currentStep > 1 ? currentStep - 1 : currentStep));
+                            const isCompleted = (step.key === 'executor' && currentStep > 2) ||
+                                (step.key !== 'executor' && index < (currentStep > 1 ? currentStep - 1 : currentStep));
+
+                            return (
+                                <button
+                                    key={step.key}
+                                    type="button"
+                                    onClick={() => {
+                                        if (step.key === 'executor') {
+                                            setCurrentStep(1); // Always go to primary executor first
+                                        } else if (isCompleted) {
+                                            setCurrentStep(index > 1 ? index + 1 : index);
+                                        }
+                                    }}
+                                    className={`px-3 py-2 text-sm md:text-base lg:text-lg font-normal transition-colors duration-200 ${isActive
+                                        ? 'text-white cursor-default'
+                                        : isCompleted
+                                            ? 'text-white/80 hover:text-white cursor-pointer'
+                                            : 'text-white/60 hover:text-white/80 cursor-pointer'
+                                        }`}
+                                >
+                                    {step.title}
+                                </button>
+                            );
+                        })}
                     </div>
                     {/* Progress Bar */}
                     <div className="h-3.5 mt-3 bg-slate-800">
@@ -603,8 +678,14 @@ const GetStartedStep: React.FC<{
 
 interface ExecutorsStepProps {
     executors: Executor[];
-    onAdd: () => void;
-    onChange: (executors: Executor[]) => void;
+    wantsAlternateExecutor: boolean;
+    alternateExecutors: Executor[];
+    onAddExecutor: () => void;
+    onChangeExecutors: (executors: Executor[]) => void;
+    onToggleAlternate: (value: boolean) => void;
+    onAddAlternate: () => void;
+    onChangeAlternates: (executors: Executor[]) => void;
+    showBackupSection: boolean;
 }
 
 const FAQ_ITEMS = [
@@ -622,108 +703,217 @@ const FAQ_ITEMS = [
     }
 ];
 
-const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, onAdd, onChange }) => {
+const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternateExecutor, alternateExecutors, onAddExecutor, onChangeExecutors, onToggleAlternate, onAddAlternate, onChangeAlternates, showBackupSection }) => {
     const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
-    const setExecutorFields = (index: number, fields: Partial<Executor>) => {
-        const updated = [...executors];
+
+    const setExecutorFields = (index: number, fields: Partial<Executor>, isAlternate: boolean = false) => {
+        const updated = [...(isAlternate ? alternateExecutors : executors)];
         updated[index] = { ...updated[index], ...fields };
-        onChange(updated);
+        if (isAlternate) {
+            onChangeAlternates(updated);
+        } else {
+            onChangeExecutors(updated);
+        }
     };
 
-    const handleFullNameChange = (index: number, value: string) => {
+    const handleFullNameChange = (index: number, value: string, isAlternate: boolean = false) => {
         const trimmed = value.trim();
         if (!trimmed) {
-            setExecutorFields(index, { firstName: '', lastName: '' });
+            setExecutorFields(index, { firstName: '', lastName: '' }, isAlternate);
             return;
         }
 
         const parts = trimmed.split(/\s+/);
         const firstName = parts.shift() ?? '';
         const lastName = parts.join(' ');
-        setExecutorFields(index, { firstName, lastName });
+        setExecutorFields(index, { firstName, lastName }, isAlternate);
     };
 
-    const removeExecutor = (index: number) => {
-        onChange(executors.filter((_, i) => i !== index));
+    const removeExecutor = (index: number, isAlternate: boolean = false) => {
+        if (isAlternate) {
+            onChangeAlternates(alternateExecutors.filter((_, i) => i !== index));
+        } else {
+            onChangeExecutors(executors.filter((_, i) => i !== index));
+        }
     };
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">
-                Choose an Executor/Personal Representative
-            </h2>
-            <p className="text-sm md:text-base text-slate-600 mb-10">
-                Executors are responsible for carrying out the instructions in your will. Add trusted individuals below.
-            </p>
+            {!showBackupSection && (
+                <>
+                    <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">
+                        Choose an Executor/Personal Representative
+                    </h2>
+                    <p className="text-sm md:text-base text-slate-600 mb-10">
+                        Executors are responsible for carrying out the instructions in your will. Add trusted individuals below.
+                    </p>
+                </>
+            )}
+
+            {showBackupSection && (
+                <>
+                    <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">
+                        Backup Executor/Personal Representative
+                    </h2>
+                    <p className="text-sm md:text-base text-slate-600 mb-6">
+                        Do you want to name an alternative in case your original executor is unavailable?
+                    </p>
+                </>
+            )}
 
             <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
                 <div className="space-y-6">
-                    {executors.map((executor, index) => {
-                        const orderLabels = ['First', 'Second', 'Third', 'Fourth'];
-                        const cardTitle = orderLabels[index] ? `${orderLabels[index]} Executor Details` : `Executor ${index + 1} Details`;
+                    {!showBackupSection && (
+                        <>
+                            {executors.map((executor, index) => {
+                                const orderLabels = ['First', 'Second', 'Third', 'Fourth'];
+                                const cardTitle = orderLabels[index] ? `${orderLabels[index]} Executor Details` : `Executor ${index + 1} Details`;
 
-                        return (
-                            <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
-                                <div className="flex items-center justify-between mb-4">
-                                    <p className="text-base font-semibold text-slate-700">{cardTitle}</p>
-                                    {executors.length > 1 && (
-                                        <button
-                                            type="button"
-                                            onClick={() => removeExecutor(index)}
-                                            className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600"
-                                        >
-                                            Remove
-                                        </button>
-                                    )}
-                                </div>
+                                return (
+                                    <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <p className="text-base font-semibold text-slate-700">{cardTitle}</p>
+                                            {executors.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeExecutor(index)}
+                                                    className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600"
+                                                >
+                                                    Remove
+                                                </button>
+                                            )}
+                                        </div>
 
-                                <div className="space-y-5">
-                                    <div>
-                                        <label className="block text-sm text-secondary mb-1">Full Name:</label>
-                                        <input
-                                            type="text"
-                                            value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
-                                            onChange={(e) => handleFullNameChange(index, e.target.value)}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                            placeholder="e.g. William Timothy Smith"
-                                        />
+                                        <div className="space-y-5">
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">Full Name:</label>
+                                                <input
+                                                    type="text"
+                                                    value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
+                                                    onChange={(e) => handleFullNameChange(index, e.target.value)}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    placeholder="e.g. William Timothy Smith"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                                <input
+                                                    type="text"
+                                                    value={executor.city}
+                                                    onChange={(e) => setExecutorFields(index, { city: e.target.value })}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    placeholder="e.g. London"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">Country:</label>
+                                                <select
+                                                    value={executor.country}
+                                                    onChange={(e) => setExecutorFields(index, { country: e.target.value })}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                >
+                                                    <option value="England">England</option>
+                                                    <option value="Wales">Wales</option>
+                                                    <option value="Scotland">Scotland</option>
+                                                    <option value="Northern Ireland">Northern Ireland</option>
+                                                    <option value="United Kingdom">United Kingdom</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm text-secondary mb-1">City/Town:</label>
-                                        <input
-                                            type="text"
-                                            value={executor.city}
-                                            onChange={(e) => setExecutorFields(index, { city: e.target.value })}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                            placeholder="e.g. London"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm text-secondary mb-1">Country:</label>
-                                        <select
-                                            value={executor.country}
-                                            onChange={(e) => setExecutorFields(index, { country: e.target.value })}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
-                                        >
-                                            <option value="England">England</option>
-                                            <option value="Wales">Wales</option>
-                                            <option value="Scotland">Scotland</option>
-                                            <option value="Northern Ireland">Northern Ireland</option>
-                                            <option value="United Kingdom">United Kingdom</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                );
+                            })}
+
+                            <button
+                                type="button"
+                                onClick={onAddExecutor}
+                                className="w-full py-4 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-semibold tracking-wide hover:bg-secondary/5 transition-colors"
+                            >
+                                + Add Another Executor
+                            </button>
+                        </>
+                    )}
+
+                    {showBackupSection && (
+                        <>
+                            <div className="flex gap-4 mb-8">
+                                {['yes', 'no'].map((option) => (
+                                    <button
+                                        key={option}
+                                        type="button"
+                                        onClick={() => onToggleAlternate(option === 'yes')}
+                                        className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all ${(option === 'yes' && wantsAlternateExecutor) || (option === 'no' && !wantsAlternateExecutor)
+                                            ? 'border-secondary bg-secondary/5 text-secondary'
+                                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                                            }`}
+                                    >
+                                        {option.toUpperCase()}
+                                    </button>
+                                ))}
                             </div>
-                        );
-                    })}
 
-                    <button
-                        type="button"
-                        onClick={onAdd}
-                        className="w-full py-4 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-semibold tracking-wide hover:bg-secondary/5 transition-colors"
-                    >
-                        + Add Another Executor
-                    </button>
+                            {wantsAlternateExecutor &&
+                                alternateExecutors.map((executor, index) => (
+                                    <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <p className="text-base font-semibold text-slate-700">Alternate Executor {index + 1}</p>
+                                            {alternateExecutors.length > 1 && (
+                                                <button type="button" onClick={() => removeExecutor(index, true)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                                    Remove
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        <div className="space-y-5">
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">Name:</label>
+                                                <input
+                                                    type="text"
+                                                    value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
+                                                    onChange={(e) => handleFullNameChange(index, e.target.value, true)}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    placeholder="e.g. William Timothy Smith"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                                <input
+                                                    type="text"
+                                                    value={executor.city}
+                                                    onChange={(e) => setExecutorFields(index, { city: e.target.value }, true)}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    placeholder="e.g. London"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">Country:</label>
+                                                <select
+                                                    value={executor.country}
+                                                    onChange={(e) => setExecutorFields(index, { country: e.target.value }, true)}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                >
+                                                    <option value="England">England</option>
+                                                    <option value="Wales">Wales</option>
+                                                    <option value="Scotland">Scotland</option>
+                                                    <option value="Northern Ireland">Northern Ireland</option>
+                                                    <option value="United Kingdom">United Kingdom</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                            {wantsAlternateExecutor && (
+                                <button
+                                    type="button"
+                                    onClick={onAddAlternate}
+                                    className="text-secondary text-sm font-semibold hover:underline"
+                                >
+                                    + Add another alternate executor
+                                </button>
+                            )}
+                        </>
+                    )}
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
@@ -745,7 +935,6 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, onAdd, onChang
                                 </li>
                             ))}
                         </ul>
-
                         {faqTooltip && (
                             <div
                                 className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
