@@ -99,10 +99,10 @@ const WillCreationWizard: React.FC = () => {
     });
 
     const updatePersonalInfo = (field: keyof PersonalInfo, value: string) => {
-        setWillData({
-            ...willData,
-            personalInfo: { ...willData.personalInfo, [field]: value }
-        });
+        setWillData((prev) => ({
+            ...prev,
+            personalInfo: { ...prev.personalInfo, [field]: value }
+        }));
     };
 
     const updateSpouseInfo = (fullName: string) => {
