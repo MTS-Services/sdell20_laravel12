@@ -1,0 +1,32 @@
+import React from 'react';
+
+interface SpouseStepProps {
+    spouseName: string;
+    onChange: (value: string) => void;
+}
+
+const SpouseStep: React.FC<SpouseStepProps> = ({ spouseName, onChange }) => {
+    return (
+        <div className="space-y-8 max-w-2xl">
+            <div>
+                <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-2">Your Spouse</h2>
+                <p className="text-sm md:text-base text-slate-600">
+                    What is your spouse's name?
+                </p>
+            </div>
+
+            <div>
+                <label className="block text-sm text-secondary mb-1">Full Name:</label>
+                <input
+                    type="text"
+                    value={spouseName}
+                    onChange={(event) => onChange(event.target.value)}
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                    placeholder="e.g. Alex Taylor"
+                />
+            </div>
+        </div>
+    );
+};
+
+export default SpouseStep;

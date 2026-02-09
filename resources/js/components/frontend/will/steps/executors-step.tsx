@@ -28,10 +28,29 @@ export interface ExecutorsStepProps {
     onAddAlternate: () => void;
     onChangeAlternates: (executors: Executor[]) => void;
     showBackupSection: boolean;
+    showSpouseQuestion?: boolean;
+    spouseName?: string;
+    spouseIsExecutor?: boolean;
+    onToggleSpouseExecutor?: (value: boolean) => void;
 }
 
-const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternateExecutor, alternateExecutors, onAddExecutor, onChangeExecutors, onToggleAlternate, onAddAlternate, onChangeAlternates, showBackupSection }) => {
+const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
+    executors,
+    wantsAlternateExecutor,
+    alternateExecutors,
+    onAddExecutor,
+    onChangeExecutors,
+    onToggleAlternate,
+    onAddAlternate,
+    onChangeAlternates,
+    showBackupSection,
+    showSpouseQuestion = false,
+    spouseName = '',
+    spouseIsExecutor = false,
+    onToggleSpouseExecutor
+}) => {
     const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
+    const spouseFirstName = spouseName?.trim().split(' ')[0] ?? spouseName;
 
     const setExecutorFields = (index: number, fields: Partial<Executor>, isAlternate: boolean = false) => {
         const updated = [...(isAlternate ? alternateExecutors : executors)];
@@ -92,9 +111,33 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                 <div className="space-y-6">
                     {!showBackupSection && (
                         <>
+                            {showSpouseQuestion && onToggleSpouseExecutor && (
+                                <div className="space-y-4">
+                                    <p className="text-sm md:text-base text-slate-600">
+                                        Do you want {spouseFirstName || 'your spouse'} to administer your estate?
+                                    </p>
+                                    <div className="flex gap-4">
+                                        {['yes', 'no'].map((option) => (
+                                            <button
+                                                key={option}
+                                                type="button"
+                                                onClick={() => onToggleSpouseExecutor(option === 'yes')}
+                                                className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all ${(option === 'yes' && spouseIsExecutor) || (option === 'no' && !spouseIsExecutor)
+                                                    ? 'border-secondary text-secondary bg-white shadow-[0_2px_6px_rgba(0,0,0,0.04)]'
+                                                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                                                    }`}
+                                            >
+                                                {option.toUpperCase()}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                             {executors.map((executor, index) => {
                                 const orderLabels = ['First', 'Second', 'Third', 'Fourth'];
-                                const cardTitle = orderLabels[index] ? `${orderLabels[index]} Executor Details` : `Executor ${index + 1} Details`;
+                                const isPrimarySpouseCard = showSpouseQuestion && spouseIsExecutor && index === 0;
+                                const cardTitle = isPrimarySpouseCard ? 'Executor Details' : orderLabels[index] ? `${orderLabels[index]} Executor Details` : `Executor ${index + 1} Details`;
 
                                 return (
                                     <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
@@ -122,30 +165,34 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                                                     placeholder="e.g. William Timothy Smith"
                                                 />
                                             </div>
-                                            <div>
-                                                <label className="block text-sm text-secondary mb-1">City/Town:</label>
-                                                <input
-                                                    type="text"
-                                                    value={executor.city}
-                                                    onChange={(e) => setExecutorFields(index, { city: e.target.value })}
-                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                    placeholder="e.g. London"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm text-secondary mb-1">Country:</label>
-                                                <select
-                                                    value={executor.country}
-                                                    onChange={(e) => setExecutorFields(index, { country: e.target.value })}
-                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
-                                                >
-                                                    {UK_COUNTRY_OPTIONS.map((country) => (
-                                                        <option key={country} value={country}>
-                                                            {country}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
+                                            {!isPrimarySpouseCard && (
+                                                <>
+                                                    <div>
+                                                        <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                                        <input
+                                                            type="text"
+                                                            value={executor.city}
+                                                            onChange={(e) => setExecutorFields(index, { city: e.target.value })}
+                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                            placeholder="e.g. London"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm text-secondary mb-1">Country:</label>
+                                                        <select
+                                                            value={executor.country}
+                                                            onChange={(e) => setExecutorFields(index, { country: e.target.value })}
+                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                        >
+                                                            {UK_COUNTRY_OPTIONS.map((country) => (
+                                                                <option key={country} value={country}>
+                                                                    {country}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -156,8 +203,9 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                                 onClick={onAddExecutor}
                                 className="w-full py-4 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-semibold tracking-wide hover:bg-secondary/5 transition-colors"
                             >
-                                + Add Another Executor
+                                + Add another executor
                             </button>
+
                         </>
                     )}
 

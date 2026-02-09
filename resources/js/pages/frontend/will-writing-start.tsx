@@ -19,6 +19,7 @@ import SigningStep from '@/components/frontend/will/steps/signing-step';
 import PrintDownloadStep from '@/components/frontend/will/steps/print-download-step';
 import SavingOverlay from '@/components/frontend/will/steps/saving-overlay';
 import { TOTAL_INTERNAL_STEPS, WIZARD_STEPS } from '@/components/frontend/will/steps/wizard-constants';
+import SpouseStep from '@/components/frontend/will/steps/spouse-step';
 
 const MaritalStatusCard: React.FC<{
     icon: React.ReactNode;
@@ -49,6 +50,8 @@ const WillCreationWizard: React.FC = () => {
     const [phase, setPhase] = useState<'landing' | 'wizard'>('landing');
     const [currentStep, setCurrentStep] = useState(0);
     const [isSaving, setIsSaving] = useState(false);
+    const [isSpouseStage, setIsSpouseStage] = useState(false);
+    const [spouseStageCompleted, setSpouseStageCompleted] = useState(false);
     const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('left');
     const [isAnimating, setIsAnimating] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -65,6 +68,11 @@ const WillCreationWizard: React.FC = () => {
             postcode: '',
             country: 'United Kingdom'
         },
+        spouse: {
+            fullName: '',
+            executorId: null
+        },
+        spouseIsExecutor: true,
         hasChildren: false,
         children: [],
         wantsGuardian: false,
@@ -95,6 +103,13 @@ const WillCreationWizard: React.FC = () => {
             ...willData,
             personalInfo: { ...willData.personalInfo, [field]: value }
         });
+    };
+
+    const updateSpouseInfo = (fullName: string) => {
+        setWillData((prev) => ({
+            ...prev,
+            spouse: { ...prev.spouse, fullName }
+        }));
     };
 
     const addAlternateExecutor = () => {
@@ -236,9 +251,72 @@ const WillCreationWizard: React.FC = () => {
 
     const handleCreateDocument = () => {
         if (willData.personalInfo.maritalStatus) {
+            setIsSpouseStage(false);
+            setSpouseStageCompleted(false);
             setPhase('wizard');
             setCurrentStep(0);
         }
+    };
+
+    const shouldShowSpouseStep = willData.personalInfo.maritalStatus === 'married';
+
+    const ensureSpouseExecutorPrefill = () => {
+        const spouseName = willData.spouse.fullName.trim();
+        if (!spouseName) {
+            return;
+        }
+
+        setWillData((prev) => {
+            const [firstName, ...rest] = spouseName.split(' ');
+            const fallbackFirst = firstName || prev.executors[0]?.firstName || '';
+            const lastName = rest.join(' ');
+            const executors = prev.executors.length ? [...prev.executors] : [createExecutor()];
+            const primaryExecutor = {
+                ...executors[0],
+                firstName: fallbackFirst,
+                lastName,
+                relationship: executors[0].relationship || 'Spouse'
+            };
+            executors[0] = primaryExecutor;
+
+            return {
+                ...prev,
+                executors,
+                spouse: {
+                    ...prev.spouse,
+                    executorId: primaryExecutor.id
+                },
+                spouseIsExecutor: true
+            };
+        });
+    };
+
+    const handleSpouseExecutorToggle = (value: boolean) => {
+        if (value) {
+            ensureSpouseExecutorPrefill();
+            return;
+        }
+
+        setWillData((prev) => {
+            const executors = prev.executors.length ? [...prev.executors] : [createExecutor()];
+            if (executors.length === 0) {
+                executors.push(createExecutor());
+            }
+
+            executors[0] = {
+                ...executors[0],
+                firstName: executors[0].firstName && executors[0].firstName !== prev.spouse.fullName ? executors[0].firstName : '',
+                lastName: executors[0].lastName && executors[0].lastName !== prev.spouse.fullName ? executors[0].lastName : '',
+                relationship: executors[0].relationship === 'Spouse' ? '' : executors[0].relationship
+            };
+
+            return {
+                ...prev,
+                executors,
+                spouseIsExecutor: false,
+                spouse: { ...prev.spouse, executorId: null }
+            };
+        });
     };
 
     const animateTransition = (direction: 'left' | 'right', callback: () => void) => {
@@ -251,18 +329,46 @@ const WillCreationWizard: React.FC = () => {
     };
 
     const handleSaveAndContinue = () => {
-        if (currentStep < TOTAL_INTERNAL_STEPS - 1) {
+        if (phase !== 'wizard') {
+            return;
+        }
+
+        const isLastStep = currentStep === TOTAL_INTERNAL_STEPS - 1;
+
+        if (currentStep === 0 && shouldShowSpouseStep) {
+            if (!spouseStageCompleted) {
+                if (!isSpouseStage) {
+                    setIsSpouseStage(true);
+                    return;
+                }
+
+                if (isSpouseStage && !willData.spouse.fullName.trim()) {
+                    return;
+                }
+
+                ensureSpouseExecutorPrefill();
+                setIsSpouseStage(false);
+                setSpouseStageCompleted(true);
+            }
+        }
+
+        if (!isLastStep) {
             setIsSaving(true);
             setTimeout(() => {
                 setIsSaving(false);
                 animateTransition('left', () => {
-                    setCurrentStep(currentStep + 1);
+                    setCurrentStep((prev) => Math.min(prev + 1, TOTAL_INTERNAL_STEPS - 1));
                 });
             }, 800);
         }
     };
 
     const handleBack = () => {
+        if (currentStep === 0 && isSpouseStage) {
+            setIsSpouseStage(false);
+            return;
+        }
+
         if (currentStep > 0) {
             animateTransition('right', () => {
                 setCurrentStep(currentStep - 1);
@@ -273,6 +379,12 @@ const WillCreationWizard: React.FC = () => {
     };
 
     const handleSkip = () => {
+        if (currentStep === 0 && isSpouseStage) {
+            setIsSpouseStage(false);
+            setSpouseStageCompleted(true);
+            return;
+        }
+
         if (currentStep < TOTAL_INTERNAL_STEPS - 1) {
             animateTransition('left', () => {
                 setCurrentStep(currentStep + 1);
@@ -331,6 +443,15 @@ const WillCreationWizard: React.FC = () => {
     }, [phase, currentStep, willData.executors.length, willData.wantsAlternateExecutor, willData.alternateExecutors.length, willData.wantsGuardian, willData.guardians.length, willData.beneficiaries.length]);
 
     const renderWizardStepContent = () => {
+        if (currentStep === 0 && shouldShowSpouseStep && isSpouseStage) {
+            return (
+                <SpouseStep
+                    spouseName={willData.spouse.fullName}
+                    onChange={updateSpouseInfo}
+                />
+            );
+        }
+
         switch (currentStep) {
             case 0:
                 return (
@@ -355,6 +476,10 @@ const WillCreationWizard: React.FC = () => {
                         onAddAlternate={addAlternateExecutor}
                         onChangeAlternates={(alternateExecutors: Executor[]) => setWillData({ ...willData, alternateExecutors })}
                         showBackupSection={false}
+                        showSpouseQuestion={shouldShowSpouseStep && Boolean(willData.spouse.fullName.trim())}
+                        spouseName={willData.spouse.fullName}
+                        spouseIsExecutor={willData.spouseIsExecutor}
+                        onToggleSpouseExecutor={handleSpouseExecutorToggle}
                     />
                 );
             case 2:
@@ -641,10 +766,10 @@ const WillCreationWizard: React.FC = () => {
             <div
                 ref={contentRef}
                 className={`max-w-5xl mx-auto px-4 py-12 md:px-8 transition-all duration-300 ease-in-out ${isAnimating
-                        ? slideDirection === 'left'
-                            ? 'opacity-0 translate-x-8'
-                            : 'opacity-0 -translate-x-8'
-                        : 'opacity-100 translate-x-0'
+                    ? slideDirection === 'left'
+                        ? 'opacity-0 translate-x-8'
+                        : 'opacity-0 -translate-x-8'
+                    : 'opacity-100 translate-x-0'
                     }`}
             >
                 {renderWizardStepContent()}
