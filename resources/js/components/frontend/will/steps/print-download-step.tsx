@@ -95,7 +95,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data }) => {
                         type="button"
                         onClick={handlePreview}
                         disabled={isGenerating}
-                        className="px-6 py-2 border border-accent-green text-accent-green rounded font-semibold text-xs uppercase tracking-wide hover:bg-accent-green/5 transition-colors cursor-pointer"
+                        className="px-6 py-2 border border-emerald-600 text-accent-green rounded font-semibold text-xs uppercase tracking-wide hover:bg-accent-green/5 transition-colors cursor-pointer"
                     >
                         {isGenerating ? 'LOADING…' : 'PREVIEW PDF'}
                     </button>
@@ -103,7 +103,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data }) => {
                         type="button"
                         onClick={handleDownload}
                         disabled={isGenerating}
-                        className="px-10 py-3 bg-accent-green text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-600 transition-colors cursor-pointer"
+                        className="px-10 py-3 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-600 transition-colors cursor-pointer"
                     >
                         {isGenerating ? 'PREPARING PDF…' : 'DOWNLOAD WILL DOCUMENT'}
                     </button>

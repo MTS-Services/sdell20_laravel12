@@ -430,6 +430,7 @@ const WillCreationWizard: React.FC = () => {
 
     const progressPercent = getProgressPercent(currentStep);
     const isWizardComplete = currentStep === TOTAL_INTERNAL_STEPS - 1;
+    const shouldShowNavActions = phase === 'wizard' && !isWizardComplete;
 
     useEffect(() => {
         if (phase === 'wizard' && currentStep === 1 && willData.executors.length === 0) {
@@ -781,32 +782,34 @@ const WillCreationWizard: React.FC = () => {
                 {renderWizardStepContent()}
 
                 {/* Action Buttons */}
-                <div className="mt-10 flex items-center gap-4">
-                    <button
-                        type="button"
-                        onClick={handleBack}
-                        disabled={isSaving}
-                        className="px-6 py-2.5 rounded border border-slate-300 bg-slate-100 text-slate-700 text-sm font-semibold uppercase tracking-wide hover:bg-slate-200 transition-colors duration-200 cursor-pointer disabled:opacity-50"
-                    >
-                        BACK
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handleSaveAndContinue}
-                        disabled={isSaving}
-                        className="px-8 py-2.5 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wide hover:bg-emerald-700 transition-colors duration-200 cursor-pointer disabled:opacity-50"
-                    >
-                        {isSaving ? 'SAVING...' : 'SAVE AND CONTINUE'}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handleSkip}
-                        disabled={isSaving}
-                        className="text-secondary text-sm font-medium hover:text-secondary/80 transition-colors cursor-pointer bg-transparent border-none disabled:opacity-50"
-                    >
-                        Skip this step for now
-                    </button>
-                </div>
+                {shouldShowNavActions && (
+                    <div className="mt-10 flex items-center gap-4">
+                        <button
+                            type="button"
+                            onClick={handleBack}
+                            disabled={isSaving}
+                            className="px-6 py-2.5 rounded border border-slate-300 bg-slate-100 text-slate-700 text-sm font-semibold uppercase tracking-wide hover:bg-slate-200 transition-colors duration-200 cursor-pointer disabled:opacity-50"
+                        >
+                            BACK
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSaveAndContinue}
+                            disabled={isSaving}
+                            className="px-8 py-2.5 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wide hover:bg-emerald-700 transition-colors duration-200 cursor-pointer disabled:opacity-50"
+                        >
+                            {isSaving ? 'SAVING...' : 'SAVE AND CONTINUE'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSkip}
+                            disabled={isSaving}
+                            className="text-secondary text-sm font-medium hover:text-secondary/80 transition-colors cursor-pointer bg-transparent border-none disabled:opacity-50"
+                        >
+                            Skip this step for now
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );
