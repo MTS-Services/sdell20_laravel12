@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Users, FileText, Clock, User, Heart } from 'lucide-react';
 import StepsHeader from '@/components/frontend/will/steps-header';
 
@@ -38,6 +38,8 @@ interface Executor {
     relationship: string;
     address: string;
     dateOfBirth: string;
+    city: string;
+    country: string;
 }
 
 interface Guardian {
@@ -133,6 +135,117 @@ const WillCreationWizard: React.FC = () => {
         });
     };
 
+    interface ChildrenStepProps {
+        hasChildren: boolean;
+        childrenUnder18: boolean;
+        guardians: Guardian[];
+        onChangeField: (field: 'hasChildren' | 'childrenUnder18', value: boolean) => void;
+        onAddGuardian: () => void;
+        onChangeGuardians: (guardians: Guardian[]) => void;
+    }
+
+    const ChildrenStep: React.FC<ChildrenStepProps> = ({ hasChildren, childrenUnder18, guardians, onChangeField, onAddGuardian, onChangeGuardians }) => {
+        const updateGuardian = (index: number, field: keyof Guardian, value: string) => {
+            const updated = [...guardians];
+            updated[index] = { ...updated[index], [field]: value };
+            onChangeGuardians(updated);
+        };
+
+        const removeGuardian = (index: number) => {
+            onChangeGuardians(guardians.filter((_, i) => i !== index));
+        };
+
+        return (
+            <div>
+                <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-4">Do you have children?</h2>
+                <p className="text-sm text-slate-500 mb-8">We use this to determine guardianship preferences.</p>
+
+                <div className="flex gap-4 mb-8">
+                    <button
+                        type="button"
+                        onClick={() => onChangeField('hasChildren', true)}
+                        className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                    >
+                        Yes
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => { onChangeField('hasChildren', false); onChangeField('childrenUnder18', false); onChangeGuardians([]); }}
+                        className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                    >
+                        No
+                    </button>
+                </div>
+
+                {hasChildren && (
+                    <div className="space-y-8">
+                        <div>
+                            <h3 className="text-lg font-medium text-slate-700 mb-3">Are any under 18?</h3>
+                            <div className="flex gap-4">
+                                <button
+                                    type="button"
+                                    onClick={() => onChangeField('childrenUnder18', true)}
+                                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => onChangeField('childrenUnder18', false)}
+                                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover-border-slate-300'}`}
+                                >
+                                    No
+                                </button>
+                            </div>
+                        </div>
+
+                        {childrenUnder18 && (
+                            <div>
+                                <h3 className="text-lg font-medium text-slate-700 mb-4">Guardians</h3>
+                                {guardians.map((guardian, index) => (
+                                    <div key={guardian.id} className="border border-slate-200 rounded-lg p-5 mb-4">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <p className="text-base font-semibold text-slate-700">Guardian {index + 1}</p>
+                                            <button type="button" onClick={() => removeGuardian(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                                Remove
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className={LABEL_CLASS}>First Name *</label>
+                                                <input type="text" value={guardian.firstName} onChange={(e) => updateGuardian(index, 'firstName', e.target.value)} className={INPUT_CLASS} />
+                                            </div>
+                                            <div>
+                                                <label className={LABEL_CLASS}>Last Name *</label>
+                                                <input type="text" value={guardian.lastName} onChange={(e) => updateGuardian(index, 'lastName', e.target.value)} className={INPUT_CLASS} />
+                                            </div>
+                                            <div>
+                                                <label className={LABEL_CLASS}>Relationship *</label>
+                                                <input type="text" value={guardian.relationship} onChange={(e) => updateGuardian(index, 'relationship', e.target.value)} className={INPUT_CLASS} />
+                                            </div>
+                                            <div>
+                                                <label className={LABEL_CLASS}>Address *</label>
+                                                <input type="text" value={guardian.address} onChange={(e) => updateGuardian(index, 'address', e.target.value)} className={INPUT_CLASS} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                <button
+                                    type="button"
+                                    onClick={onAddGuardian}
+                                    className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors"
+                                >
+                                    + Add Guardian
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    };
+
     const addExecutor = () => {
         const newExecutor: Executor = {
             id: Date.now().toString(),
@@ -141,7 +254,9 @@ const WillCreationWizard: React.FC = () => {
             lastName: '',
             relationship: '',
             address: '',
-            dateOfBirth: ''
+            dateOfBirth: '',
+            city: '',
+            country: 'England'
         };
         setWillData({
             ...willData,
@@ -204,6 +319,12 @@ const WillCreationWizard: React.FC = () => {
     };
 
     const progressPercent = ((currentStep + 1) / WIZARD_STEPS.length) * 100;
+
+    useEffect(() => {
+        if (phase === 'wizard' && currentStep === 1 && willData.executors.length === 0) {
+            addExecutor();
+        }
+    }, [phase, currentStep, willData.executors.length]);
 
     const renderWizardStepContent = () => {
         switch (currentStep) {
@@ -487,10 +608,23 @@ interface ExecutorsStepProps {
 }
 
 const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, onAdd, onChange }) => {
-    const updateExecutor = (index: number, field: keyof Executor, value: string) => {
+    const setExecutorFields = (index: number, fields: Partial<Executor>) => {
         const updated = [...executors];
-        updated[index] = { ...updated[index], [field]: value };
+        updated[index] = { ...updated[index], ...fields };
         onChange(updated);
+    };
+
+    const handleFullNameChange = (index: number, value: string) => {
+        const trimmed = value.trim();
+        if (!trimmed) {
+            setExecutorFields(index, { firstName: '', lastName: '' });
+            return;
+        }
+
+        const parts = trimmed.split(/\s+/);
+        const firstName = parts.shift() ?? '';
+        const lastName = parts.join(' ');
+        setExecutorFields(index, { firstName, lastName });
     };
 
     const removeExecutor = (index: number) => {
@@ -499,188 +633,99 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, onAdd, onChang
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-4">
-                Appoint Your Executors
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">
+                Choose an Executor/Personal Representative
             </h2>
-            <p className="text-sm text-slate-500 mb-8">
-                Executors are responsible for carrying out the instructions in your will.
+            <p className="text-sm md:text-base text-slate-600 mb-10">
+                Executors are responsible for carrying out the instructions in your will. Add trusted individuals below.
             </p>
 
-            {executors.map((executor, index) => (
-                <div key={executor.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-base font-semibold text-slate-700">
-                            Executor {index + 1}
-                        </h3>
-                        {executors.length > 1 && (
-                            <button
-                                type="button"
-                                onClick={() => removeExecutor(index)}
-                                className="text-red-500 text-sm hover:text-red-700 cursor-pointer"
-                            >
-                                Remove
-                            </button>
-                        )}
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label className={LABEL_CLASS}>First Name *</label>
-                            <input type="text" value={executor.firstName} onChange={(e) => updateExecutor(index, 'firstName', e.target.value)} className={INPUT_CLASS} />
-                        </div>
-                        <div>
-                            <label className={LABEL_CLASS}>Last Name *</label>
-                            <input type="text" value={executor.lastName} onChange={(e) => updateExecutor(index, 'lastName', e.target.value)} className={INPUT_CLASS} />
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label className={LABEL_CLASS}>Relationship *</label>
-                            <input type="text" value={executor.relationship} onChange={(e) => updateExecutor(index, 'relationship', e.target.value)} className={INPUT_CLASS} placeholder="e.g., Spouse, Friend" />
-                        </div>
-                        <div>
-                            <label className={LABEL_CLASS}>Address *</label>
-                            <input type="text" value={executor.address} onChange={(e) => updateExecutor(index, 'address', e.target.value)} className={INPUT_CLASS} placeholder="Full address" />
-                        </div>
-                    </div>
-                </div>
-            ))}
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div className="space-y-6">
+                    {executors.map((executor, index) => {
+                        const orderLabels = ['First', 'Second', 'Third', 'Fourth'];
+                        const cardTitle = orderLabels[index] ? `${orderLabels[index]} Executor Details` : `Executor ${index + 1} Details`;
 
-            <button
-                type="button"
-                onClick={onAdd}
-                className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
-            >
-                + Add Executor
-            </button>
-        </div>
-    );
-};
+                        return (
+                            <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                                <div className="flex items-center justify-between mb-4">
+                                    <p className="text-base font-semibold text-slate-700">{cardTitle}</p>
+                                    {executors.length > 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removeExecutor(index)}
+                                            className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600"
+                                        >
+                                            Remove
+                                        </button>
+                                    )}
+                                </div>
 
-interface ChildrenStepProps {
-    hasChildren: boolean;
-    childrenUnder18: boolean;
-    guardians: Guardian[];
-    onChangeField: (field: string, value: boolean) => void;
-    onAddGuardian: () => void;
-    onChangeGuardians: (guardians: Guardian[]) => void;
-}
-
-const ChildrenStep: React.FC<ChildrenStepProps> = ({
-    hasChildren,
-    childrenUnder18,
-    guardians,
-    onChangeField,
-    onAddGuardian,
-    onChangeGuardians
-}) => {
-    const updateGuardian = (index: number, field: keyof Guardian, value: string) => {
-        const updated = [...guardians];
-        updated[index] = { ...updated[index], [field]: value };
-        onChangeGuardians(updated);
-    };
-
-    const removeGuardian = (index: number) => {
-        onChangeGuardians(guardians.filter((_, i) => i !== index));
-    };
-
-    return (
-        <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-8">
-                Do you have any children?
-            </h2>
-
-            <div className="flex gap-4 mb-8">
-                <button
-                    type="button"
-                    onClick={() => onChangeField('hasChildren', true)}
-                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                        }`}
-                >
-                    Yes
-                </button>
-                <button
-                    type="button"
-                    onClick={() => { onChangeField('hasChildren', false); onChangeField('childrenUnder18', false); }}
-                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                        }`}
-                >
-                    No
-                </button>
-            </div>
-
-            {hasChildren && (
-                <>
-                    <h3 className="text-xl font-normal text-slate-700 mb-4">
-                        Are any of your children under 18?
-                    </h3>
-                    <div className="flex gap-4 mb-8">
-                        <button
-                            type="button"
-                            onClick={() => onChangeField('childrenUnder18', true)}
-                            className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                                }`}
-                        >
-                            Yes
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => onChangeField('childrenUnder18', false)}
-                            className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                                }`}
-                        >
-                            No
-                        </button>
-                    </div>
-
-                    {childrenUnder18 && (
-                        <div>
-                            <h3 className="text-xl font-normal text-slate-700 mb-4">
-                                Appoint Guardians
-                            </h3>
-                            <p className="text-sm text-slate-500 mb-6">
-                                Choose trusted individuals to care for your children.
-                            </p>
-
-                            {guardians.map((guardian, index) => (
-                                <div key={guardian.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                                    <div className="flex justify-between items-center mb-4">
-                                        <h4 className="text-base font-semibold text-slate-700">Guardian {index + 1}</h4>
-                                        {guardians.length > 1 && (
-                                            <button type="button" onClick={() => removeGuardian(index)} className="text-red-500 text-sm hover:text-red-700 cursor-pointer">Remove</button>
-                                        )}
+                                <div className="space-y-5">
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Full Name:</label>
+                                        <input
+                                            type="text"
+                                            value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
+                                            onChange={(e) => handleFullNameChange(index, e.target.value)}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. William Timothy Smith"
+                                        />
                                     </div>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className={LABEL_CLASS}>First Name *</label>
-                                            <input type="text" value={guardian.firstName} onChange={(e) => updateGuardian(index, 'firstName', e.target.value)} className={INPUT_CLASS} />
-                                        </div>
-                                        <div>
-                                            <label className={LABEL_CLASS}>Last Name *</label>
-                                            <input type="text" value={guardian.lastName} onChange={(e) => updateGuardian(index, 'lastName', e.target.value)} className={INPUT_CLASS} />
-                                        </div>
-                                        <div>
-                                            <label className={LABEL_CLASS}>Relationship *</label>
-                                            <input type="text" value={guardian.relationship} onChange={(e) => updateGuardian(index, 'relationship', e.target.value)} className={INPUT_CLASS} />
-                                        </div>
-                                        <div>
-                                            <label className={LABEL_CLASS}>Address *</label>
-                                            <input type="text" value={guardian.address} onChange={(e) => updateGuardian(index, 'address', e.target.value)} className={INPUT_CLASS} />
-                                        </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                        <input
+                                            type="text"
+                                            value={executor.city}
+                                            onChange={(e) => setExecutorFields(index, { city: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. London"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Country:</label>
+                                        <select
+                                            value={executor.country}
+                                            onChange={(e) => setExecutorFields(index, { country: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                        >
+                                            <option value="England">England</option>
+                                            <option value="Wales">Wales</option>
+                                            <option value="Scotland">Scotland</option>
+                                            <option value="Northern Ireland">Northern Ireland</option>
+                                            <option value="United Kingdom">United Kingdom</option>
+                                        </select>
                                     </div>
                                 </div>
-                            ))}
+                            </div>
+                        );
+                    })}
 
-                            <button
-                                type="button"
-                                onClick={onAddGuardian}
-                                className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
-                            >
-                                + Add Guardian
-                            </button>
-                        </div>
-                    )}
-                </>
-            )}
+                    <button
+                        type="button"
+                        onClick={onAdd}
+                        className="w-full py-4 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-semibold tracking-wide hover:bg-secondary/5 transition-colors"
+                    >
+                        + Add Another Executor
+                    </button>
+                </div>
+
+                <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
+                    <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                    <ul className="space-y-3 text-sm text-slate-600">
+                        {[
+                            'Who cannot be my executor?',
+                            'Can my executor also benefit from my will?',
+                            'What does an executor do?',
+                            'Will my executors have to work together?'
+                        ].map((question) => (
+                            <li key={question} className="border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
+                                {question}
+                            </li>
+                        ))}
+                    </ul>
+                </aside>
+            </div>
         </div>
     );
 };
