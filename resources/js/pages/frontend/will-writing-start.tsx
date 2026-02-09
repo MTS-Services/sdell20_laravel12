@@ -74,8 +74,25 @@ interface SpecificGift {
     alternateCountry: string;
 }
 
+interface Pet {
+    id: string;
+    name: string;
+    description: string;
+    fundAmount: string;
+    executorAppointCaretaker: boolean;
+}
+
+interface AdditionalClause {
+    id: string;
+    text: string;
+}
+
 interface WillData {
     personalInfo: PersonalInfo;
+    hasPets: boolean;
+    pets: Pet[];
+    wantsAdditionalClauses: boolean;
+    additionalClauses: AdditionalClause[];
     hasChildren: boolean;
     children: Child[];
     wantsGuardian: boolean;
@@ -91,9 +108,6 @@ interface WillData {
     totalFailureBeneficiaries: Beneficiary[];
     distributionType: 'percentage' | 'specific' | 'residuary';
     specificGifts: SpecificGift[];
-    funeralWishes: string;
-    burialPreference: string;
-    additionalWishes: string;
 }
 
 const WIZARD_STEPS = [
@@ -163,9 +177,10 @@ const WillCreationWizard: React.FC = () => {
         totalFailureBeneficiaries: [],
         distributionType: 'percentage' as const,
         specificGifts: [],
-        funeralWishes: '',
-        burialPreference: '',
-        additionalWishes: ''
+        hasPets: false,
+        pets: [],
+        wantsAdditionalClauses: false,
+        additionalClauses: []
     });
 
     const updatePersonalInfo = (field: keyof PersonalInfo, value: string) => {
@@ -439,6 +454,33 @@ const WillCreationWizard: React.FC = () => {
         });
     };
 
+    const createPet = (): Pet => ({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        name: '',
+        description: '',
+        fundAmount: '',
+        executorAppointCaretaker: true
+    });
+
+    const addPet = () => {
+        setWillData({
+            ...willData,
+            pets: [...willData.pets, createPet()]
+        });
+    };
+
+    const createClause = (): AdditionalClause => ({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        text: ''
+    });
+
+    const addClause = () => {
+        setWillData({
+            ...willData,
+            additionalClauses: [...willData.additionalClauses, createClause()]
+        });
+    };
+
     const handleCreateDocument = () => {
         if (willData.personalInfo.maritalStatus) {
             setPhase('wizard');
@@ -446,8 +488,8 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
-    // Total internal steps: 0=GetStarted, 1=Executor, 2=BackupExecutor, 3=Children, 4=Guardian, 5=DelayInheritance, 6=Gifts, 7=Remainder, 8=TotalFailure, 9=FinalDetails, 10=Signing, 11=PrintDownload
-    const TOTAL_INTERNAL_STEPS = 12;
+    // Total internal steps: 0=GetStarted, 1=Executor, 2=BackupExecutor, 3=Children, 4=Guardian, 5=DelayInheritance, 6=Gifts, 7=Remainder, 8=TotalFailure, 9=Pets, 10=AdditionalDetails, 11=Signing, 12=PrintDownload
+    const TOTAL_INTERNAL_STEPS = 13;
 
     const handleSaveAndContinue = () => {
         if (currentStep < TOTAL_INTERNAL_STEPS - 1) {
@@ -469,16 +511,17 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
-    // 8 visible nav steps. Executor has 2 internal sub-steps (1,2). Children has 3 (3,4,5). Remainder has 2 (7,8).
+    // 8 visible nav steps. Executor has 2 sub-steps (1,2). Children has 3 (3,4,5). Remainder has 2 (7,8). Final Details has 2 (9,10).
     // Internal → nav index mapping:
-    // 0→0(GetStarted), 1,2→1(Executor), 3,4,5→2(Children), 6→3(Gifts), 7,8→4(Remainder), 9→5(FinalDetails), 10→6(Signing), 11→7(Print)
+    // 0→0(GetStarted), 1,2→1(Executor), 3,4,5→2(Children), 6→3(Gifts), 7,8→4(Remainder), 9,10→5(FinalDetails), 11→6(Signing), 12→7(Print)
     const getNavIndex = (step: number): number => {
         if (step <= 0) return 0;
         if (step <= 2) return 1;
         if (step <= 5) return 2;
         if (step === 6) return 3;
         if (step <= 8) return 4;
-        return step - 4;
+        if (step <= 10) return 5;
+        return step - 5;
     };
 
     const currentNavIndex = getNavIndex(currentStep);
@@ -490,12 +533,13 @@ const WillCreationWizard: React.FC = () => {
         if (step === 2) return (1.90 / WIZARD_STEPS.length) * 100;    // Backup Executor
         if (step === 3) return (2.33 / WIZARD_STEPS.length) * 100;    // Children
         if (step === 4) return (2.66 / WIZARD_STEPS.length) * 100;    // Guardian
-        if (step === 5) return (3 / WIZARD_STEPS.length) * 100;       // Delay Inheritance
+        if (step === 5) return (2.80 / WIZARD_STEPS.length) * 100;       // Delay Inheritance
         if (step === 6) return (3.50 / WIZARD_STEPS.length) * 100;    // Gifts
         if (step === 7) return (4 / WIZARD_STEPS.length) * 100;       // Remainder of Estate
         if (step === 8) return (4.66 / WIZARD_STEPS.length) * 100;    // Total Failure Clause
-        if (step === 9) return (5.6 / WIZARD_STEPS.length) * 100;     // Final Details
-        if (step === 10) return (6.66 / WIZARD_STEPS.length) * 100;   // Signing
+        if (step === 9) return (5.33 / WIZARD_STEPS.length) * 100;    // Pets
+        if (step === 10) return (5.66 / WIZARD_STEPS.length) * 100;   // Additional Details
+        if (step === 11) return (6.66 / WIZARD_STEPS.length) * 100;   // Signing
         return (8 / WIZARD_STEPS.length) * 100;                        // Print/Download
     };
 
@@ -634,18 +678,35 @@ const WillCreationWizard: React.FC = () => {
                 );
             case 9:
                 return (
-                    <FinalDetailsStep
-                        data={willData.personalInfo}
-                        funeralWishes={willData.funeralWishes}
-                        burialPreference={willData.burialPreference}
-                        additionalWishes={willData.additionalWishes}
-                        onChange={updatePersonalInfo}
-                        onChangeWishes={(field, value) => setWillData({ ...willData, [field]: value })}
+                    <PetsStep
+                        hasPets={willData.hasPets}
+                        pets={willData.pets}
+                        onToggle={(value: boolean) => setWillData({
+                            ...willData,
+                            hasPets: value,
+                            pets: value ? (willData.pets.length ? willData.pets : [createPet()]) : []
+                        })}
+                        onAddPet={addPet}
+                        onChangePets={(pets: Pet[]) => setWillData({ ...willData, pets })}
                     />
                 );
             case 10:
-                return <SigningStep />;
+                return (
+                    <AdditionalDetailsStep
+                        wantsClauses={willData.wantsAdditionalClauses}
+                        clauses={willData.additionalClauses}
+                        onToggle={(value: boolean) => setWillData({
+                            ...willData,
+                            wantsAdditionalClauses: value,
+                            additionalClauses: value ? (willData.additionalClauses.length ? willData.additionalClauses : [createClause()]) : []
+                        })}
+                        onAddClause={addClause}
+                        onChangeClauses={(clauses: AdditionalClause[]) => setWillData({ ...willData, additionalClauses: clauses })}
+                    />
+                );
             case 11:
+                return <SigningStep />;
+            case 12:
                 return <PrintDownloadStep data={willData} />;
             default:
                 return null;
@@ -1974,113 +2035,261 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
     );
 };
 
-interface FinalDetailsStepProps {
-    data: PersonalInfo;
-    funeralWishes: string;
-    burialPreference: string;
-    additionalWishes: string;
-    onChange: (field: keyof PersonalInfo, value: string) => void;
-    onChangeWishes: (field: string, value: string) => void;
+interface PetsStepProps {
+    hasPets: boolean;
+    pets: Pet[];
+    onToggle: (value: boolean) => void;
+    onAddPet: () => void;
+    onChangePets: (pets: Pet[]) => void;
 }
 
-const FinalDetailsStep: React.FC<FinalDetailsStepProps> = ({
-    data,
-    funeralWishes,
-    burialPreference,
-    additionalWishes,
-    onChange,
-    onChangeWishes
-}) => (
-    <div>
-        <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-4">
-            Final Details
-        </h2>
-        <p className="text-sm text-slate-500 mb-8">
-            Please provide your personal details and any final wishes.
-        </p>
+const PetsStep: React.FC<PetsStepProps> = ({
+    hasPets,
+    pets,
+    onToggle,
+    onAddPet,
+    onChangePets
+}) => {
+    const updatePet = (index: number, fields: Partial<Pet>) => {
+        const updated = [...pets];
+        updated[index] = { ...updated[index], ...fields };
+        onChangePets(updated);
+    };
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div>
-                <label className={LABEL_CLASS}>Title</label>
-                <select value={data.title} onChange={(e) => onChange('title', e.target.value)} className={INPUT_CLASS}>
-                    <option value="">Select...</option>
-                    <option value="Mr">Mr</option>
-                    <option value="Mrs">Mrs</option>
-                    <option value="Miss">Miss</option>
-                    <option value="Ms">Ms</option>
-                    <option value="Dr">Dr</option>
-                </select>
-            </div>
-            <div>
-                <label className={LABEL_CLASS}>First Name *</label>
-                <input type="text" value={data.firstName} onChange={(e) => onChange('firstName', e.target.value)} className={INPUT_CLASS} />
-            </div>
-            <div>
-                <label className={LABEL_CLASS}>Middle Name(s)</label>
-                <input type="text" value={data.middleName} onChange={(e) => onChange('middleName', e.target.value)} className={INPUT_CLASS} />
-            </div>
-            <div>
-                <label className={LABEL_CLASS}>Last Name *</label>
-                <input type="text" value={data.lastName} onChange={(e) => onChange('lastName', e.target.value)} className={INPUT_CLASS} />
-            </div>
-            <div>
-                <label className={LABEL_CLASS}>Date of Birth *</label>
-                <input type="date" value={data.dateOfBirth} onChange={(e) => onChange('dateOfBirth', e.target.value)} className={INPUT_CLASS} />
-            </div>
-            <div>
-                <label className={LABEL_CLASS}>Address *</label>
-                <input type="text" value={data.address} onChange={(e) => onChange('address', e.target.value)} className={INPUT_CLASS} />
-            </div>
-            <div>
-                <label className={LABEL_CLASS}>City/Town *</label>
-                <input type="text" value={data.city} onChange={(e) => onChange('city', e.target.value)} className={INPUT_CLASS} />
-            </div>
-            <div>
-                <label className={LABEL_CLASS}>Postcode *</label>
-                <input type="text" value={data.postcode} onChange={(e) => onChange('postcode', e.target.value)} className={INPUT_CLASS} />
-            </div>
-        </div>
+    const removePet = (index: number) => {
+        onChangePets(pets.filter((_, i) => i !== index));
+    };
 
-        <div className="mb-6">
-            <label className={LABEL_CLASS}>Burial or Cremation Preference</label>
-            <div className="flex flex-wrap gap-3">
-                {['Burial', 'Cremation', 'Donate to Science', 'No Preference'].map((option) => (
-                    <button
-                        key={option}
-                        type="button"
-                        onClick={() => onChangeWishes('burialPreference', option)}
-                        className={`px-5 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${burialPreference === option
-                            ? 'border-secondary bg-secondary/5 text-secondary'
-                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                            }`}
-                    >
-                        {option}
-                    </button>
-                ))}
-            </div>
-        </div>
-
-        <div className="mb-6">
-            <label className={LABEL_CLASS}>Funeral Wishes</label>
-            <textarea
-                value={funeralWishes}
-                onChange={(e) => onChangeWishes('funeralWishes', e.target.value)}
-                className={INPUT_CLASS + ' min-h-24 resize-y'}
-                placeholder="Any preferences for your funeral service..."
-            />
-        </div>
-
+    return (
         <div>
-            <label className={LABEL_CLASS}>Additional Wishes</label>
-            <textarea
-                value={additionalWishes}
-                onChange={(e) => onChangeWishes('additionalWishes', e.target.value)}
-                className={INPUT_CLASS + ' min-h-24 resize-y'}
-                placeholder="Any other wishes or instructions..."
-            />
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Pets</h2>
+            <p className="text-sm md:text-base text-secondary mb-8">Do you have any pets?</p>
+
+            <div className="flex gap-4 mb-8">
+                <button
+                    type="button"
+                    onClick={() => onToggle(true)}
+                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${hasPets ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                >
+                    YES
+                </button>
+                <button
+                    type="button"
+                    onClick={() => onToggle(false)}
+                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!hasPets ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                >
+                    NO
+                </button>
+            </div>
+
+            {hasPets && (
+                <div className="space-y-6">
+                    {pets.map((pet, index) => (
+                        <div key={pet.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <p className="text-base font-semibold text-secondary">Pet Details</p>
+                                {pets.length > 1 && (
+                                    <button type="button" onClick={() => removePet(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                        Remove
+                                    </button>
+                                )}
+                            </div>
+
+                            <div className="space-y-5">
+                                <div>
+                                    <label className="block text-sm text-secondary mb-1">Pet Name:</label>
+                                    <input
+                                        type="text"
+                                        value={pet.name}
+                                        onChange={(e) => updatePet(index, { name: e.target.value })}
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        placeholder="e.g. Lassie"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-secondary mb-1">Pet Description:</label>
+                                    <input
+                                        type="text"
+                                        value={pet.description}
+                                        onChange={(e) => updatePet(index, { description: e.target.value })}
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        placeholder="e.g. Female German Shepherd"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-secondary mb-1">
+                                        <span className="text-secondary font-medium">£</span> Pet Fund Amount:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={pet.fundAmount}
+                                        onChange={(e) => updatePet(index, { fundAmount: e.target.value })}
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        placeholder="e.g. 500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <p className="text-sm md:text-base text-slate-600 mb-3">Let your executor appoint a pet caretaker?</p>
+                                    <div className="flex gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => updatePet(index, { executorAppointCaretaker: true })}
+                                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${pet.executorAppointCaretaker ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                        >
+                                            YES
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => updatePet(index, { executorAppointCaretaker: false })}
+                                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!pet.executorAppointCaretaker ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                        >
+                                            NO
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={onAddPet}
+                        className="text-secondary text-sm font-semibold hover:underline"
+                    >
+                        + Add another pet
+                    </button>
+                </div>
+            )}
         </div>
-    </div>
-);
+    );
+};
+
+const ADDITIONAL_DETAILS_FAQ = [
+    { question: 'Why should I avoid including funeral instructions?', answer: 'Your will may not be read until after your funeral. It is better to communicate funeral wishes directly to your family or executor.' },
+    { question: 'How should I write my clause?', answer: 'Be as specific as possible. Include full names, amounts, and any conditions. Avoid vague language that could be misinterpreted.' }
+];
+
+interface AdditionalDetailsStepProps {
+    wantsClauses: boolean;
+    clauses: AdditionalClause[];
+    onToggle: (value: boolean) => void;
+    onAddClause: () => void;
+    onChangeClauses: (clauses: AdditionalClause[]) => void;
+}
+
+const AdditionalDetailsStep: React.FC<AdditionalDetailsStepProps> = ({
+    wantsClauses,
+    clauses,
+    onToggle,
+    onAddClause,
+    onChangeClauses
+}) => {
+    const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
+
+    const updateClause = (index: number, text: string) => {
+        const updated = [...clauses];
+        updated[index] = { ...updated[index], text };
+        onChangeClauses(updated);
+    };
+
+    const removeClause = (index: number) => {
+        onChangeClauses(clauses.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div>
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Additional Details</h2>
+            <p className="text-sm md:text-base text-secondary mb-8">Do you want to include any additional instructions?</p>
+
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div className="space-y-6">
+                    <div className="flex gap-4">
+                        <button
+                            type="button"
+                            onClick={() => onToggle(true)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${wantsClauses ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            YES
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => onToggle(false)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!wantsClauses ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            NO
+                        </button>
+                    </div>
+
+                    {wantsClauses && (
+                        <>
+                            {clauses.map((clause, index) => (
+                                <div key={clause.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <p className="text-base font-semibold text-secondary">Additional Clause</p>
+                                        {clauses.length > 1 && (
+                                            <button type="button" onClick={() => removeClause(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                    <textarea
+                                        value={clause.text}
+                                        onChange={(e) => updateClause(index, e.target.value)}
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors min-h-24 resize-y"
+                                        placeholder="e.g. I wish to forgive Jane Smith's debt of £5,000 incurred on January 1, 2017, for the purchase of a vehicle."
+                                    />
+                                </div>
+                            ))}
+
+                            <button
+                                type="button"
+                                onClick={onAddClause}
+                                className="text-secondary text-sm font-semibold hover:underline"
+                            >
+                                + Add another clause
+                            </button>
+                        </>
+                    )}
+                </div>
+
+                <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
+                    <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                    <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
+                        <ul className="space-y-3 text-sm text-slate-600">
+                            {ADDITIONAL_DETAILS_FAQ.map((item) => (
+                                <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
+                                    <button
+                                        type="button"
+                                        onMouseEnter={(e) => {
+                                            const offsetTop = e.currentTarget.parentElement?.offsetTop ?? 0;
+                                            setFaqTooltip({ text: item.answer, top: offsetTop });
+                                        }}
+                                        className="font-medium text-secondary hover:underline"
+                                    >
+                                        {item.question}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        {faqTooltip && (
+                            <div
+                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                style={{ top: faqTooltip.top }}
+                            >
+                                <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />
+                                <div className="absolute -left-3.5 top-4 h-0 w-0 border-y-7 border-y-transparent border-r-7 border-r-white" />
+                                {faqTooltip.text}
+                            </div>
+                        )}
+                    </div>
+                </aside>
+            </div>
+        </div>
+    );
+};
 
 const SigningStep: React.FC = () => (
     <div>
