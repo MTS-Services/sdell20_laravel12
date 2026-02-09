@@ -28,6 +28,12 @@ interface Beneficiary {
     charityNumber?: string;
     percentage?: number;
     specificGift?: string;
+    city?: string;
+    country?: string;
+    allowAlternate?: boolean;
+    alternateName?: string;
+    alternateCity?: string;
+    alternateCountry?: string;
 }
 
 interface Executor {
@@ -81,6 +87,8 @@ interface WillData {
     wantsAlternateExecutor: boolean;
     alternateExecutors: Executor[];
     beneficiaries: Beneficiary[];
+    totalFailureStrategy: 'family' | 'alternate';
+    totalFailureBeneficiaries: Beneficiary[];
     distributionType: 'percentage' | 'specific' | 'residuary';
     specificGifts: SpecificGift[];
     funeralWishes: string;
@@ -151,6 +159,8 @@ const WillCreationWizard: React.FC = () => {
         wantsAlternateExecutor: false,
         alternateExecutors: [],
         beneficiaries: [],
+        totalFailureStrategy: 'family',
+        totalFailureBeneficiaries: [],
         distributionType: 'percentage' as const,
         specificGifts: [],
         funeralWishes: '',
@@ -357,15 +367,29 @@ const WillCreationWizard: React.FC = () => {
         });
     };
 
+    const createBeneficiary = (type: 'person' | 'charity'): Beneficiary => ({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        type,
+        percentage: 0,
+        city: '',
+        country: 'England',
+        allowAlternate: false,
+        alternateName: '',
+        alternateCity: '',
+        alternateCountry: 'England'
+    });
+
     const addBeneficiary = (type: 'person' | 'charity') => {
-        const newBeneficiary: Beneficiary = {
-            id: Date.now().toString(),
-            type,
-            percentage: 0
-        };
         setWillData({
             ...willData,
-            beneficiaries: [...willData.beneficiaries, newBeneficiary]
+            beneficiaries: [...willData.beneficiaries, createBeneficiary(type)]
+        });
+    };
+
+    const addTotalFailureBeneficiary = (type: 'person' | 'charity') => {
+        setWillData({
+            ...willData,
+            totalFailureBeneficiaries: [...willData.totalFailureBeneficiaries, createBeneficiary(type)]
         });
     };
 
@@ -422,8 +446,8 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
-    // Total internal steps: 0=GetStarted, 1=Executor, 2=BackupExecutor, 3=Children, 4=Guardian, 5=DelayInheritance, 6=Gifts, 7=Remainder, 8=FinalDetails, 9=Signing, 10=PrintDownload
-    const TOTAL_INTERNAL_STEPS = 11;
+    // Total internal steps: 0=GetStarted, 1=Executor, 2=BackupExecutor, 3=Children, 4=Guardian, 5=DelayInheritance, 6=Gifts, 7=Remainder, 8=TotalFailure, 9=FinalDetails, 10=Signing, 11=PrintDownload
+    const TOTAL_INTERNAL_STEPS = 12;
 
     const handleSaveAndContinue = () => {
         if (currentStep < TOTAL_INTERNAL_STEPS - 1) {
@@ -445,14 +469,16 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
-    // 8 visible nav steps. Executor has 2 internal sub-steps (1,2). Children has 3 internal sub-steps (3,4,5).
+    // 8 visible nav steps. Executor has 2 internal sub-steps (1,2). Children has 3 (3,4,5). Remainder has 2 (7,8).
     // Internal → nav index mapping:
-    // 0→0(GetStarted), 1,2→1(Executor), 3,4,5→2(Children), 6→3(Gifts), 7→4(Remainder), 8→5(FinalDetails), 9→6(Signing), 10→7(Print)
+    // 0→0(GetStarted), 1,2→1(Executor), 3,4,5→2(Children), 6→3(Gifts), 7,8→4(Remainder), 9→5(FinalDetails), 10→6(Signing), 11→7(Print)
     const getNavIndex = (step: number): number => {
         if (step <= 0) return 0;
         if (step <= 2) return 1;
         if (step <= 5) return 2;
-        return step - 3;
+        if (step === 6) return 3;
+        if (step <= 8) return 4;
+        return step - 4;
     };
 
     const currentNavIndex = getNavIndex(currentStep);
@@ -465,7 +491,10 @@ const WillCreationWizard: React.FC = () => {
         if (step === 3) return (2.33 / WIZARD_STEPS.length) * 100;
         if (step === 4) return (2.66 / WIZARD_STEPS.length) * 100;
         if (step === 5) return (3 / WIZARD_STEPS.length) * 100;
-        const navIdx = step - 3;
+        if (step === 6) return (4 / WIZARD_STEPS.length) * 100;
+        if (step === 7) return (4.5 / WIZARD_STEPS.length) * 100;
+        if (step === 8) return (5 / WIZARD_STEPS.length) * 100;
+        const navIdx = step - 4;
         return ((navIdx + 1) / WIZARD_STEPS.length) * 100;
     };
 
@@ -481,7 +510,10 @@ const WillCreationWizard: React.FC = () => {
         if (phase === 'wizard' && currentStep === 4 && willData.wantsGuardian && willData.guardians.length === 0) {
             addGuardian();
         }
-    }, [phase, currentStep, willData.executors.length, willData.wantsAlternateExecutor, willData.alternateExecutors.length, willData.wantsGuardian, willData.guardians.length]);
+        if (phase === 'wizard' && currentStep === 7 && willData.beneficiaries.length === 0) {
+            addBeneficiary('person');
+        }
+    }, [phase, currentStep, willData.executors.length, willData.wantsAlternateExecutor, willData.alternateExecutors.length, willData.wantsGuardian, willData.guardians.length, willData.beneficiaries.length]);
 
     const renderWizardStepContent = () => {
         switch (currentStep) {
@@ -578,14 +610,28 @@ const WillCreationWizard: React.FC = () => {
             case 7:
                 return (
                     <RemainderStep
-                        distributionType={willData.distributionType}
                         beneficiaries={willData.beneficiaries}
-                        onChangeType={(type) => setWillData({ ...willData, distributionType: type })}
                         onAddBeneficiary={addBeneficiary}
-                        onChangeBeneficiaries={(beneficiaries) => setWillData({ ...willData, beneficiaries })}
+                        onChangeBeneficiaries={(beneficiaries: Beneficiary[]) => setWillData({ ...willData, beneficiaries })}
                     />
                 );
             case 8:
+                return (
+                    <TotalFailureClauseStep
+                        totalFailureStrategy={willData.totalFailureStrategy}
+                        totalFailureBeneficiaries={willData.totalFailureBeneficiaries}
+                        onChangeStrategy={(value: 'family' | 'alternate') => setWillData({
+                            ...willData,
+                            totalFailureStrategy: value,
+                            totalFailureBeneficiaries: value === 'alternate'
+                                ? (willData.totalFailureBeneficiaries.length ? willData.totalFailureBeneficiaries : [createBeneficiary('person')])
+                                : []
+                        })}
+                        onAddBeneficiary={addTotalFailureBeneficiary}
+                        onChangeBeneficiaries={(beneficiaries: Beneficiary[]) => setWillData({ ...willData, totalFailureBeneficiaries: beneficiaries })}
+                    />
+                );
+            case 9:
                 return (
                     <FinalDetailsStep
                         data={willData.personalInfo}
@@ -596,9 +642,9 @@ const WillCreationWizard: React.FC = () => {
                         onChangeWishes={(field, value) => setWillData({ ...willData, [field]: value })}
                     />
                 );
-            case 9:
-                return <SigningStep />;
             case 10:
+                return <SigningStep />;
+            case 11:
                 return <PrintDownloadStep data={willData} />;
             default:
                 return null;
@@ -1580,23 +1626,19 @@ const GiftsStep: React.FC<GiftsStepProps> = ({ wantsGifts, gifts, onToggle, onAd
 };
 
 interface RemainderStepProps {
-    distributionType: 'percentage' | 'specific' | 'residuary';
     beneficiaries: Beneficiary[];
-    onChangeType: (type: 'percentage' | 'specific' | 'residuary') => void;
     onAddBeneficiary: (type: 'person' | 'charity') => void;
     onChangeBeneficiaries: (beneficiaries: Beneficiary[]) => void;
 }
 
 const RemainderStep: React.FC<RemainderStepProps> = ({
-    distributionType,
     beneficiaries,
-    onChangeType,
     onAddBeneficiary,
     onChangeBeneficiaries
 }) => {
-    const updateBeneficiary = (index: number, field: keyof Beneficiary, value: string | number) => {
+    const updateBeneficiary = (index: number, fields: Partial<Beneficiary>) => {
         const updated = [...beneficiaries];
-        updated[index] = { ...updated[index], [field]: value };
+        updated[index] = { ...updated[index], ...fields };
         onChangeBeneficiaries(updated);
     };
 
@@ -1606,89 +1648,327 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-4">
-                How should the remainder of your estate be distributed?
-            </h2>
-            <p className="text-sm text-slate-500 mb-8">
-                Choose how you'd like your estate to be distributed among your beneficiaries.
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-8">Remainder of Estate</h2>
+
+            <div className="space-y-6">
+                {beneficiaries.map((beneficiary, index) => (
+                    <div key={beneficiary.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <p className="text-base font-semibold text-secondary">Recipient Details</p>
+                            {beneficiaries.length > 1 && (
+                                <button type="button" onClick={() => removeBeneficiary(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                    Remove
+                                </button>
+                            )}
+                        </div>
+
+                        <div className="space-y-5">
+                            <div className="flex gap-3">
+                                {(['person', 'charity'] as const).map((type) => (
+                                    <button
+                                        key={type}
+                                        type="button"
+                                        onClick={() => updateBeneficiary(index, { type })}
+                                        className={`flex-1 px-4 py-2 border-2 text-sm font-semibold uppercase tracking-wide transition-all ${beneficiary.type === type
+                                            ? 'border-secondary text-secondary bg-secondary/5'
+                                            : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300'}`}
+                                    >
+                                        {type === 'person' ? 'Individual' : 'Charity or organisation'}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {beneficiary.type === 'person' ? (
+                                <div>
+                                    <label className="block text-sm text-secondary mb-1">Full Name of Recipient:</label>
+                                    <input
+                                        type="text"
+                                        value={`${beneficiary.firstName || ''}${beneficiary.lastName ? ' ' + beneficiary.lastName : ''}`}
+                                        onChange={(e) => {
+                                            const parts = e.target.value.split(' ');
+                                            updateBeneficiary(index, {
+                                                firstName: parts.shift() || '',
+                                                lastName: parts.join(' ')
+                                            });
+                                        }}
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        placeholder="e.g. William Timothy Smith"
+                                    />
+                                </div>
+                            ) : (
+                                <>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Charity/Organisation Name:</label>
+                                        <input
+                                            type="text"
+                                            value={beneficiary.charityName || ''}
+                                            onChange={(e) => updateBeneficiary(index, { charityName: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. Local Animal Shelter"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Registered Charity Number:</label>
+                                        <input
+                                            type="text"
+                                            value={beneficiary.charityNumber || ''}
+                                            onChange={(e) => updateBeneficiary(index, { charityNumber: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. 1089464"
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            <div>
+                                <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                <input
+                                    type="text"
+                                    value={beneficiary.city || ''}
+                                    onChange={(e) => updateBeneficiary(index, { city: e.target.value })}
+                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                    placeholder="e.g. London"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm text-secondary mb-1">Country:</label>
+                                <select
+                                    value={beneficiary.country || 'England'}
+                                    onChange={(e) => updateBeneficiary(index, { country: e.target.value })}
+                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                >
+                                    <option value="England">England</option>
+                                    <option value="Wales">Wales</option>
+                                    <option value="Scotland">Scotland</option>
+                                    <option value="Northern Ireland">Northern Ireland</option>
+                                    <option value="United Kingdom">United Kingdom</option>
+                                </select>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <input
+                                    id={`alt-share-${beneficiary.id}`}
+                                    type="checkbox"
+                                    checked={beneficiary.allowAlternate || false}
+                                    onChange={(e) => updateBeneficiary(index, { allowAlternate: e.target.checked })}
+                                    className="h-4 w-4 border border-slate-300 rounded"
+                                />
+                                <label htmlFor={`alt-share-${beneficiary.id}`} className="text-sm text-slate-600">List an alternate choice for this share</label>
+                            </div>
+
+                            {beneficiary.allowAlternate && (
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Full Name of Alternate Recipient:</label>
+                                        <input
+                                            type="text"
+                                            value={beneficiary.alternateName || ''}
+                                            onChange={(e) => updateBeneficiary(index, { alternateName: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. Sarah Doe"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                        <input
+                                            type="text"
+                                            value={beneficiary.alternateCity || ''}
+                                            onChange={(e) => updateBeneficiary(index, { alternateCity: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. London"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Country:</label>
+                                        <select
+                                            value={beneficiary.alternateCountry || 'England'}
+                                            onChange={(e) => updateBeneficiary(index, { alternateCountry: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                        >
+                                            <option value="England">England</option>
+                                            <option value="Wales">Wales</option>
+                                            <option value="Scotland">Scotland</option>
+                                            <option value="Northern Ireland">Northern Ireland</option>
+                                            <option value="United Kingdom">United Kingdom</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                ))}
+
+                <button
+                    type="button"
+                    onClick={() => onAddBeneficiary('person')}
+                    className="text-secondary text-sm font-semibold hover:underline"
+                >
+                    + Add another recipient
+                </button>
+            </div>
+        </div>
+    );
+};
+
+interface TotalFailureClauseStepProps {
+    totalFailureStrategy: 'family' | 'alternate';
+    totalFailureBeneficiaries: Beneficiary[];
+    onChangeStrategy: (value: 'family' | 'alternate') => void;
+    onAddBeneficiary: (type: 'person' | 'charity') => void;
+    onChangeBeneficiaries: (beneficiaries: Beneficiary[]) => void;
+}
+
+const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
+    totalFailureStrategy,
+    totalFailureBeneficiaries,
+    onChangeStrategy,
+    onAddBeneficiary,
+    onChangeBeneficiaries
+}) => {
+    const updateBeneficiary = (index: number, fields: Partial<Beneficiary>) => {
+        const updated = [...totalFailureBeneficiaries];
+        updated[index] = { ...updated[index], ...fields };
+        onChangeBeneficiaries(updated);
+    };
+
+    const removeBeneficiary = (index: number) => {
+        onChangeBeneficiaries(totalFailureBeneficiaries.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div>
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Total Failure Clause</h2>
+            <p className="text-sm md:text-base text-secondary mb-8">
+                How do you want your estate to be divided if the charity/organisation beneficiary no longer exists after you pass away?
             </p>
 
-            <div className="flex flex-wrap gap-3 mb-8">
-                {(['percentage', 'specific', 'residuary'] as const).map((type) => (
+            <div className="space-y-4 mb-8">
+                {(['family', 'alternate'] as const).map((option) => (
                     <button
-                        key={type}
+                        key={option}
                         type="button"
-                        onClick={() => onChangeType(type)}
-                        className={`px-6 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer capitalize ${distributionType === type
+                        onClick={() => onChangeStrategy(option)}
+                        className={`block w-full max-w-lg text-left px-6 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${totalFailureStrategy === option
                             ? 'border-secondary bg-secondary/5 text-secondary'
-                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
-                            }`}
+                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
                     >
-                        {type === 'percentage' ? 'By Percentage' : type === 'specific' ? 'Specific Amounts' : 'Equal Shares'}
+                        {option === 'family'
+                            ? 'Equally divided among my parents/siblings'
+                            : 'Divided among alternate beneficiaries that I choose'}
                     </button>
                 ))}
             </div>
 
-            {beneficiaries.map((beneficiary, index) => (
-                <div key={beneficiary.id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-base font-semibold text-slate-700">
-                            Beneficiary {index + 1} ({beneficiary.type === 'person' ? 'Individual' : 'Charity'})
-                        </h3>
-                        <button type="button" onClick={() => removeBeneficiary(index)} className="text-red-500 text-sm hover:text-red-700 cursor-pointer">Remove</button>
-                    </div>
-                    {beneficiary.type === 'person' ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div>
-                                <label className={LABEL_CLASS}>First Name *</label>
-                                <input type="text" value={beneficiary.firstName || ''} onChange={(e) => updateBeneficiary(index, 'firstName', e.target.value)} className={INPUT_CLASS} />
+            {totalFailureStrategy === 'alternate' && (
+                <div className="space-y-6">
+                    {totalFailureBeneficiaries.map((beneficiary, index) => (
+                        <div key={beneficiary.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <p className="text-base font-semibold text-slate-800">Wipeout Beneficiary</p>
+                                {totalFailureBeneficiaries.length > 1 && (
+                                    <button type="button" onClick={() => removeBeneficiary(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                        Remove
+                                    </button>
+                                )}
                             </div>
-                            <div>
-                                <label className={LABEL_CLASS}>Last Name *</label>
-                                <input type="text" value={beneficiary.lastName || ''} onChange={(e) => updateBeneficiary(index, 'lastName', e.target.value)} className={INPUT_CLASS} />
-                            </div>
-                            <div>
-                                <label className={LABEL_CLASS}>Relationship *</label>
-                                <input type="text" value={beneficiary.relationship || ''} onChange={(e) => updateBeneficiary(index, 'relationship', e.target.value)} className={INPUT_CLASS} />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label className={LABEL_CLASS}>Charity Name *</label>
-                                <input type="text" value={beneficiary.charityName || ''} onChange={(e) => updateBeneficiary(index, 'charityName', e.target.value)} className={INPUT_CLASS} />
-                            </div>
-                            <div>
-                                <label className={LABEL_CLASS}>Charity Number *</label>
-                                <input type="text" value={beneficiary.charityNumber || ''} onChange={(e) => updateBeneficiary(index, 'charityNumber', e.target.value)} className={INPUT_CLASS} />
-                            </div>
-                        </div>
-                    )}
-                    {distributionType === 'percentage' && (
-                        <div className="mt-4 w-32">
-                            <label className={LABEL_CLASS}>Percentage</label>
-                            <input type="number" min="0" max="100" value={beneficiary.percentage || 0} onChange={(e) => updateBeneficiary(index, 'percentage', Number(e.target.value))} className={INPUT_CLASS + ' text-center'} />
-                        </div>
-                    )}
-                </div>
-            ))}
 
-            <div className="flex gap-3">
-                <button
-                    type="button"
-                    onClick={() => onAddBeneficiary('person')}
-                    className="flex-1 py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
-                >
-                    + Add Person
-                </button>
-                <button
-                    type="button"
-                    onClick={() => onAddBeneficiary('charity')}
-                    className="flex-1 py-3 border-2 border-dashed border-gray-400 rounded-lg text-slate-600 text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer"
-                >
-                    + Add Charity
-                </button>
-            </div>
+                            <div className="space-y-5">
+                                <div className="flex gap-3">
+                                    {(['person', 'charity'] as const).map((type) => (
+                                        <button
+                                            key={type}
+                                            type="button"
+                                            onClick={() => updateBeneficiary(index, { type })}
+                                            className={`flex-1 px-4 py-2 border-2 text-sm font-semibold uppercase tracking-wide transition-all ${beneficiary.type === type
+                                                ? 'border-secondary text-secondary bg-secondary/5'
+                                                : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300'}`}
+                                        >
+                                            {type === 'person' ? 'Individual' : 'Charity or organisation'}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {beneficiary.type === 'person' ? (
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Full Name of Recipient:</label>
+                                        <input
+                                            type="text"
+                                            value={`${beneficiary.firstName || ''}${beneficiary.lastName ? ' ' + beneficiary.lastName : ''}`}
+                                            onChange={(e) => {
+                                                const parts = e.target.value.split(' ');
+                                                updateBeneficiary(index, {
+                                                    firstName: parts.shift() || '',
+                                                    lastName: parts.join(' ')
+                                                });
+                                            }}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. William Timothy Smith"
+                                        />
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div>
+                                            <label className="block text-sm text-secondary mb-1">Charity/Organisation Name:</label>
+                                            <input
+                                                type="text"
+                                                value={beneficiary.charityName || ''}
+                                                onChange={(e) => updateBeneficiary(index, { charityName: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                placeholder="e.g. Local Animal Shelter"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm text-secondary mb-1">Registered Charity Number:</label>
+                                            <input
+                                                type="text"
+                                                value={beneficiary.charityNumber || ''}
+                                                onChange={(e) => updateBeneficiary(index, { charityNumber: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                placeholder="e.g. 1089464"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+
+                                <div>
+                                    <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                    <input
+                                        type="text"
+                                        value={beneficiary.city || ''}
+                                        onChange={(e) => updateBeneficiary(index, { city: e.target.value })}
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        placeholder="e.g. London"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm text-secondary mb-1">Country:</label>
+                                    <select
+                                        value={beneficiary.country || 'England'}
+                                        onChange={(e) => updateBeneficiary(index, { country: e.target.value })}
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                    >
+                                        <option value="England">England</option>
+                                        <option value="Wales">Wales</option>
+                                        <option value="Scotland">Scotland</option>
+                                        <option value="Northern Ireland">Northern Ireland</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() => onAddBeneficiary('person')}
+                        className="text-secondary text-sm font-semibold hover:underline"
+                    >
+                        + Add another recipient
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
