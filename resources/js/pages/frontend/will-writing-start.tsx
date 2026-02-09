@@ -189,6 +189,14 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
+    const handleBack = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        } else {
+            setPhase('landing');
+        }
+    };
+
     const handleSkip = () => {
         if (currentStep < WIZARD_STEPS.length - 1) {
             setCurrentStep(currentStep + 1);
@@ -202,8 +210,8 @@ const WillCreationWizard: React.FC = () => {
             case 0:
                 return (
                     <GetStartedStep
-                        maritalStatus={willData.personalInfo.maritalStatus}
-                        onSelect={(value) => updatePersonalInfo('maritalStatus', value)}
+                        personalInfo={willData.personalInfo}
+                        onChange={updatePersonalInfo}
                     />
                 );
             case 1:
@@ -344,19 +352,19 @@ const WillCreationWizard: React.FC = () => {
 
             {/* Dark Header with Step Navigation */}
             <div className="bg-slate-700">
-                <div className="max-w-5xl mx-auto px-4 py-10">
+                <div className="max-w-5xl mx-auto px-4 py-10 lg:py-14">
                     <h1 className="text-lg md:text-xl lg:text-2xl font-semibold text-white uppercase tracking-wider mb-6">
                         FREE LAST WILL AND TESTAMENT
                     </h1>
 
                     {/* Step Tabs */}
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-2.5">
                         {WIZARD_STEPS.map((step, index) => (
                             <button
                                 key={step.key}
                                 type="button"
                                 onClick={() => setCurrentStep(index)}
-                                className={`px-3 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer ${index === currentStep
+                                className={`px-3 py-2 text-sm md:text-base lg:text-lg font-normal transition-colors duration-200 cursor-pointer ${index === currentStep
                                     ? 'text-white'
                                     : 'text-white/60 hover:text-white/80'
                                     }`}
@@ -365,27 +373,34 @@ const WillCreationWizard: React.FC = () => {
                             </button>
                         ))}
                     </div>
-                {/* Progress Bar */}
-                <div className="h-4 mt-3 bg-slate-800">
-                    <div
-                        className="h-full bg-primary-500 transition-all duration-500"
-                        style={{ width: `${progressPercent}%` }}
-                    />
-                </div>
+                    {/* Progress Bar */}
+                    <div className="h-3.5 mt-3 bg-slate-800">
+                        <div
+                            className="h-full bg-primary-200 transition-all duration-500"
+                            style={{ width: `${progressPercent}%` }}
+                        />
+                    </div>
                 </div>
 
             </div>
 
             {/* Main Content */}
-            <div className="max-w-3xl mx-auto px-4 py-12 md:px-8">
+            <div className="max-w-5xl mx-auto px-4 py-12 md:px-8">
                 {renderWizardStepContent()}
 
                 {/* Action Buttons */}
-                <div className="mt-10 flex items-center gap-6">
+                <div className="mt-10 flex items-center gap-4">
+                    <button
+                        type="button"
+                        onClick={handleBack}
+                        className="px-6 py-2.5 rounded border border-slate-300 bg-slate-100 text-slate-700 text-sm font-semibold uppercase tracking-wide hover:bg-slate-200 transition-colors duration-200 cursor-pointer"
+                    >
+                        BACK
+                    </button>
                     <button
                         type="button"
                         onClick={handleSaveAndContinue}
-                        className="px-8 py-3 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-colors duration-200 cursor-pointer"
+                        className="px-8 py-2.5 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wide hover:bg-emerald-700 transition-colors duration-200 cursor-pointer"
                     >
                         SAVE AND CONTINUE
                     </button>
@@ -408,35 +423,59 @@ const INPUT_CLASS = 'w-full px-4 py-3 text-base border border-border rounded foc
 const LABEL_CLASS = 'block text-sm font-medium text-slate-600 mb-2';
 
 const GetStartedStep: React.FC<{
-    maritalStatus: MaritalStatus;
-    onSelect: (value: MaritalStatus) => void;
-}> = ({ maritalStatus, onSelect }) => (
+    personalInfo: PersonalInfo;
+    onChange: (field: keyof PersonalInfo, value: string) => void;
+}> = ({ personalInfo, onChange }) => (
     <div>
-        <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-8">
-            What is your marital status?
+        <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-8">
+            Your Details
         </h2>
-        <div className="flex flex-wrap gap-4">
-            <MaritalStatusCard
-                icon={<User className="w-10 h-10" />}
-                label="Single"
-                value="single"
-                selected={maritalStatus === 'single'}
-                onSelect={onSelect}
-            />
-            <MaritalStatusCard
-                icon={<Users className="w-10 h-10" />}
-                label="Married"
-                value="married"
-                selected={maritalStatus === 'married'}
-                onSelect={onSelect}
-            />
-            <MaritalStatusCard
-                icon={<Heart className="w-10 h-10" />}
-                label="Civil Partner"
-                value="civil-partner"
-                selected={maritalStatus === 'civil-partner'}
-                onSelect={onSelect}
-            />
+        <p className="text-sm md:text-base lg:text-lg text-slate-800 mb-8">
+            Who is this Last Will being created for?
+        </p>
+
+        <div className="space-y-6 max-w-md">
+            <div>
+                <label className="block text-sm md:text-base text-secondary mb-1">Full Name:</label>
+                <input
+                    type="text"
+                    value={`${personalInfo.firstName}${personalInfo.middleName ? ' ' + personalInfo.middleName : ''}${personalInfo.lastName ? ' ' + personalInfo.lastName : ''}`}
+                    onChange={(e) => {
+                        const parts = e.target.value.split(' ');
+                        onChange('firstName', parts[0] || '');
+                        onChange('middleName', parts.length > 2 ? parts.slice(1, -1).join(' ') : '');
+                        onChange('lastName', parts.length > 1 ? parts[parts.length - 1] : '');
+                    }}
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                    placeholder="e.g. William Timothy Smith"
+                />
+            </div>
+
+            <div>
+                <label className="block text-sm md:text-base text-secondary mb-1">City/Town:</label>
+                <input
+                    type="text"
+                    value={personalInfo.city}
+                    onChange={(e) => onChange('city', e.target.value)}
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                    placeholder="e.g. London"
+                />
+            </div>
+
+            <div>
+                <label className="block text-sm md:text-base text-secondary mb-1">Country:</label>
+                <select
+                    value={personalInfo.country}
+                    onChange={(e) => onChange('country', e.target.value)}
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                >
+                    <option value="England">England</option>
+                    <option value="Wales">Wales</option>
+                    <option value="Scotland">Scotland</option>
+                    <option value="Northern Ireland">Northern Ireland</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                </select>
+            </div>
         </div>
     </div>
 );
