@@ -607,7 +607,23 @@ interface ExecutorsStepProps {
     onChange: (executors: Executor[]) => void;
 }
 
+const FAQ_ITEMS = [
+    {
+        question: 'Who cannot be my executor?',
+        answer: 'You cannot choose a minor or someone who has been convicted of a serious offence. Some jurisdictions also restrict executors who live outside of the country.'
+    },
+    {
+        question: 'What does an executor do?',
+        answer: 'Executors gather assets, pay debts and taxes, then distribute the remaining estate exactly as set out in your will.'
+    },
+    {
+        question: 'Do executors work together?',
+        answer: 'If you appoint more than one executor they share legal responsibility and should make key decisions jointly.'
+    }
+];
+
 const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, onAdd, onChange }) => {
+    const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
     const setExecutorFields = (index: number, fields: Partial<Executor>) => {
         const updated = [...executors];
         updated[index] = { ...updated[index], ...fields };
@@ -712,18 +728,35 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, onAdd, onChang
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
                     <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
-                    <ul className="space-y-3 text-sm text-slate-600">
-                        {[
-                            'Who cannot be my executor?',
-                            'Can my executor also benefit from my will?',
-                            'What does an executor do?',
-                            'Will my executors have to work together?'
-                        ].map((question) => (
-                            <li key={question} className="border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
-                                {question}
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
+                        <ul className="space-y-3 text-sm text-slate-600">
+                            {FAQ_ITEMS.map((item) => (
+                                <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
+                                    <button
+                                        type="button"
+                                        onMouseEnter={(e) => {
+                                            const offsetTop = e.currentTarget.parentElement?.offsetTop ?? 0;
+                                            setFaqTooltip({ text: item.answer, top: offsetTop });
+                                        }}
+                                        className="font-medium text-secondary hover:underline"
+                                    >
+                                        {item.question}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+
+                        {faqTooltip && (
+                            <div
+                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                style={{ top: faqTooltip.top }}
+                            >
+                                <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />
+                                <div className="absolute -left-3.5 top-4 h-0 w-0 border-y-7 border-y-transparent border-r-7 border-r-white" />
+                                {faqTooltip.text}
+                            </div>
+                        )}
+                    </div>
                 </aside>
             </div>
         </div>
