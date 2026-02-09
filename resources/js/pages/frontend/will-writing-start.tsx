@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Users, FileText, Clock, User, Heart } from 'lucide-react';
+import StepsHeader from '@/components/frontend/will/steps-header';
 
 type MaritalStatus = 'single' | 'married' | 'civil-partner' | '';
 
@@ -83,15 +84,15 @@ const MaritalStatusCard: React.FC<{
     <button
         type="button"
         onClick={() => onSelect(value)}
-        className={`flex flex-col items-center justify-center w-28 h-28 rounded-md border-2 transition-all duration-200 cursor-pointer ${selected
-            ? 'border-teal-500 bg-teal-50'
+        className={`flex flex-col items-center justify-center w-28 h-28 rounded border-2 transition-all duration-200 cursor-pointer ${selected
+            ? 'border-secondary bg-white'
             : 'border-gray-200 bg-white hover:border-gray-300'
             }`}
     >
-        <div className={`mb-2 ${selected ? 'text-teal-600' : 'text-slate-600'}`}>
+        <div className={`mb-2 ${selected ? 'text-secondary' : 'text-slate-600'}`}>
             {icon}
         </div>
-        <span className={`text-sm font-medium ${selected ? 'text-teal-700' : 'text-slate-600'}`}>
+        <span className={`text-xs font-normal ${selected ? 'text-secondary' : 'text-slate-600'}`}>
             {label}
         </span>
     </button>
@@ -265,36 +266,38 @@ const WillCreationWizard: React.FC = () => {
     if (phase === 'landing') {
         return (
             <div className="min-h-screen bg-gray-100 font-sans">
+                <StepsHeader />
+
                 {/* Dark Header */}
-                <div className="bg-[#5b6770] py-10 px-4">
+                <div className="bg-slate-700 px-4 py-14">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
+                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 leading-tight">
                             Free Last Will and Testament
                         </h1>
-                        <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+                        <div className="flex flex-wrap justify-center gap-12 md:gap-20">
                             <div className="flex items-center gap-3 text-white">
-                                <FileText className="w-6 h-6 text-white/80" />
-                                <span className="text-sm">Answer a few simple<br />questions</span>
+                                <FileText className="w-7 h-7 text-white/70 shrink-0" />
+                                <span className="text-sm leading-snug text-left">Answer a few simple<br />questions</span>
                             </div>
                             <div className="flex items-center gap-3 text-white">
-                                <FileText className="w-6 h-6 text-white/80" />
-                                <span className="text-sm">Print and download<br />instantly</span>
+                                <FileText className="w-7 h-7 text-white/70 shrink-0" />
+                                <span className="text-sm leading-snug text-left">Print and download<br />instantly</span>
                             </div>
                             <div className="flex items-center gap-3 text-white">
-                                <Clock className="w-6 h-6 text-white/80" />
-                                <span className="text-sm">It takes just 5<br />minutes</span>
+                                <Clock className="w-7 h-7 text-white/70 shrink-0" />
+                                <span className="text-sm leading-snug text-left">It takes just 5<br />minutes</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Main Content Card */}
-                <div className="max-w-3xl mx-auto bg-white rounded-b-lg shadow-md px-8 py-12 md:px-16">
-                    <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-8">
+                <div className="max-w-3xl mx-auto mt-8 bg-card rounded shadow-sm border border-border px-10 py-10 md:px-14">
+                    <h2 className="text-2xl md:text-3xl font-light text-slate-500 mb-8 leading-normal">
                         What is your marital status?
                     </h2>
 
-                    <div className="flex flex-wrap gap-4 mb-10">
+                    <div className="flex flex-wrap gap-5 mb-10">
                         <MaritalStatusCard
                             icon={<User className="w-10 h-10" />}
                             label="Single"
@@ -322,9 +325,9 @@ const WillCreationWizard: React.FC = () => {
                         type="button"
                         onClick={handleCreateDocument}
                         disabled={!willData.personalInfo.maritalStatus}
-                        className={`px-8 py-3 rounded font-bold text-sm uppercase tracking-wider transition-all duration-200 ${willData.personalInfo.maritalStatus
-                            ? 'bg-[#4CAF50] text-white hover:bg-[#43A047] cursor-pointer'
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        className={`px-7 py-2.5 rounded text-sm font-bold uppercase tracking-wide transition-all duration-200 ${willData.personalInfo.maritalStatus
+                            ? 'bg-accent-green text-white hover:bg-emerald-600 cursor-pointer'
+                            : 'bg-muted text-muted-foreground cursor-not-allowed'
                             }`}
                     >
                         CREATE MY DOCUMENT
@@ -337,8 +340,10 @@ const WillCreationWizard: React.FC = () => {
     // ── PHASE 2: WIZARD ──
     return (
         <div className="min-h-screen bg-gray-100 font-sans">
+            <StepsHeader />
+
             {/* Dark Header with Step Navigation */}
-            <div className="bg-[#5b6770]">
+            <div className="bg-slate-700">
                 <div className="max-w-5xl mx-auto px-4 pt-8 pb-4">
                     <h1 className="text-lg md:text-xl font-bold text-white uppercase tracking-wider mb-6">
                         FREE LAST WILL AND TESTAMENT
@@ -363,9 +368,9 @@ const WillCreationWizard: React.FC = () => {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-1.5 bg-[#4a5860]">
+                <div className="h-1.5 bg-slate-800">
                     <div
-                        className="h-full bg-[#2196F3] transition-all duration-500"
+                        className="h-full bg-primary-500 transition-all duration-500"
                         style={{ width: `${progressPercent}%` }}
                     />
                 </div>
@@ -380,14 +385,14 @@ const WillCreationWizard: React.FC = () => {
                     <button
                         type="button"
                         onClick={handleSaveAndContinue}
-                        className="px-8 py-3 bg-[#4CAF50] text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-[#43A047] transition-colors duration-200 cursor-pointer"
+                        className="px-8 py-3 bg-accent-green text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-600 transition-colors duration-200 cursor-pointer"
                     >
                         SAVE AND CONTINUE
                     </button>
                     <button
                         type="button"
                         onClick={handleSkip}
-                        className="text-teal-600 text-sm font-medium hover:text-teal-700 transition-colors cursor-pointer bg-transparent border-none"
+                        className="text-secondary text-sm font-medium hover:text-secondary/80 transition-colors cursor-pointer bg-transparent border-none"
                     >
                         Skip this step for now
                     </button>
@@ -399,8 +404,8 @@ const WillCreationWizard: React.FC = () => {
 
 // ── WIZARD STEP COMPONENTS ──
 
-const INPUT_CLASS = 'w-full px-4 py-3 text-base border border-gray-300 rounded focus:border-teal-500 focus:outline-none transition-colors bg-white';
-const LABEL_CLASS = 'block text-sm font-medium text-slate-700 mb-2';
+const INPUT_CLASS = 'w-full px-4 py-3 text-base border border-border rounded focus:border-secondary focus:outline-none transition-colors bg-white';
+const LABEL_CLASS = 'block text-sm font-medium text-slate-600 mb-2';
 
 const GetStartedStep: React.FC<{
     maritalStatus: MaritalStatus;
@@ -504,7 +509,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, onAdd, onChang
             <button
                 type="button"
                 onClick={onAdd}
-                className="w-full py-3 border-2 border-dashed border-teal-400 rounded-lg text-teal-600 text-sm font-medium hover:bg-teal-50 transition-colors cursor-pointer"
+                className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
             >
                 + Add Executor
             </button>
@@ -549,7 +554,7 @@ const ChildrenStep: React.FC<ChildrenStepProps> = ({
                 <button
                     type="button"
                     onClick={() => onChangeField('hasChildren', true)}
-                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${hasChildren ? 'border-teal-500 bg-teal-50 text-teal-700' : 'border-gray-200 bg-white text-slate-600 hover:border-gray-300'
+                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                         }`}
                 >
                     Yes
@@ -557,7 +562,7 @@ const ChildrenStep: React.FC<ChildrenStepProps> = ({
                 <button
                     type="button"
                     onClick={() => { onChangeField('hasChildren', false); onChangeField('childrenUnder18', false); }}
-                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!hasChildren ? 'border-teal-500 bg-teal-50 text-teal-700' : 'border-gray-200 bg-white text-slate-600 hover:border-gray-300'
+                    className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!hasChildren ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                         }`}
                 >
                     No
@@ -573,7 +578,7 @@ const ChildrenStep: React.FC<ChildrenStepProps> = ({
                         <button
                             type="button"
                             onClick={() => onChangeField('childrenUnder18', true)}
-                            className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${childrenUnder18 ? 'border-teal-500 bg-teal-50 text-teal-700' : 'border-gray-200 bg-white text-slate-600 hover:border-gray-300'
+                            className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                                 }`}
                         >
                             Yes
@@ -581,7 +586,7 @@ const ChildrenStep: React.FC<ChildrenStepProps> = ({
                         <button
                             type="button"
                             onClick={() => onChangeField('childrenUnder18', false)}
-                            className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!childrenUnder18 ? 'border-teal-500 bg-teal-50 text-teal-700' : 'border-gray-200 bg-white text-slate-600 hover:border-gray-300'
+                            className={`px-8 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${!childrenUnder18 ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                                 }`}
                         >
                             No
@@ -629,7 +634,7 @@ const ChildrenStep: React.FC<ChildrenStepProps> = ({
                             <button
                                 type="button"
                                 onClick={onAddGuardian}
-                                className="w-full py-3 border-2 border-dashed border-teal-400 rounded-lg text-teal-600 text-sm font-medium hover:bg-teal-50 transition-colors cursor-pointer"
+                                className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
                             >
                                 + Add Guardian
                             </button>
@@ -688,7 +693,7 @@ const GiftsStep: React.FC<GiftsStepProps> = ({ gifts, onChange }) => {
             <button
                 type="button"
                 onClick={addGift}
-                className="w-full py-3 border-2 border-dashed border-teal-400 rounded-lg text-teal-600 text-sm font-medium hover:bg-teal-50 transition-colors cursor-pointer"
+                className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
             >
                 + Add Specific Gift
             </button>
@@ -737,8 +742,8 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                         type="button"
                         onClick={() => onChangeType(type)}
                         className={`px-6 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer capitalize ${distributionType === type
-                            ? 'border-teal-500 bg-teal-50 text-teal-700'
-                            : 'border-gray-200 bg-white text-slate-600 hover:border-gray-300'
+                            ? 'border-secondary bg-secondary/5 text-secondary'
+                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                             }`}
                     >
                         {type === 'percentage' ? 'By Percentage' : type === 'specific' ? 'Specific Amounts' : 'Equal Shares'}
@@ -794,7 +799,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                 <button
                     type="button"
                     onClick={() => onAddBeneficiary('person')}
-                    className="flex-1 py-3 border-2 border-dashed border-teal-400 rounded-lg text-teal-600 text-sm font-medium hover:bg-teal-50 transition-colors cursor-pointer"
+                    className="flex-1 py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
                 >
                     + Add Person
                 </button>
@@ -886,8 +891,8 @@ const FinalDetailsStep: React.FC<FinalDetailsStepProps> = ({
                         type="button"
                         onClick={() => onChangeWishes('burialPreference', option)}
                         className={`px-5 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${burialPreference === option
-                            ? 'border-teal-500 bg-teal-50 text-teal-700'
-                            : 'border-gray-200 bg-white text-slate-600 hover:border-gray-300'
+                            ? 'border-secondary bg-secondary/5 text-secondary'
+                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
                             }`}
                     >
                         {option}
@@ -929,19 +934,19 @@ const SigningStep: React.FC = () => (
 
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 space-y-4">
             <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                <span className="w-6 h-6 bg-secondary text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
                 <p className="text-sm text-slate-700">Sign your will in the presence of <strong>two witnesses</strong> who are both present at the same time.</p>
             </div>
             <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                <span className="w-6 h-6 bg-secondary text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
                 <p className="text-sm text-slate-700">Witnesses must be over 18 and <strong>cannot be beneficiaries</strong> or their spouses/civil partners.</p>
             </div>
             <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                <span className="w-6 h-6 bg-secondary text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
                 <p className="text-sm text-slate-700">Both witnesses must then sign the will in your presence.</p>
             </div>
             <div className="flex items-start gap-3">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
+                <span className="w-6 h-6 bg-secondary text-white rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</span>
                 <p className="text-sm text-slate-700">Store your signed will in a safe place and let your executor know where it is.</p>
             </div>
         </div>
@@ -999,13 +1004,13 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data }) => (
             </div>
         )}
 
-        <div className="bg-teal-50 border border-teal-200 rounded-lg p-6 text-center">
+        <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-6 text-center">
             <p className="text-slate-700 text-sm mb-4">
                 Once you're satisfied, download your will and sign it with two witnesses.
             </p>
             <button
                 type="button"
-                className="px-10 py-3 bg-[#4CAF50] text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-[#43A047] transition-colors cursor-pointer"
+                className="px-10 py-3 bg-accent-green text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-600 transition-colors cursor-pointer"
             >
                 DOWNLOAD WILL DOCUMENT
             </button>
