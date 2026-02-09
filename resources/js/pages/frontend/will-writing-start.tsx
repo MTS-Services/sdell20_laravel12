@@ -55,6 +55,19 @@ interface Guardian {
     country: string;
 }
 
+interface SpecificGift {
+    id: string;
+    giftType: 'individual' | 'charity';
+    description: string;
+    recipientName: string;
+    city: string;
+    country: string;
+    allowAlternate: boolean;
+    alternateRecipientName: string;
+    alternateCity: string;
+    alternateCountry: string;
+}
+
 interface WillData {
     personalInfo: PersonalInfo;
     hasChildren: boolean;
@@ -63,12 +76,13 @@ interface WillData {
     guardians: Guardian[];
     wantsDelayInheritance: boolean;
     inheritanceAge: string;
+    wantsSpecificGifts: boolean;
     executors: Executor[];
     wantsAlternateExecutor: boolean;
     alternateExecutors: Executor[];
     beneficiaries: Beneficiary[];
     distributionType: 'percentage' | 'specific' | 'residuary';
-    specificGifts: Array<{ item: string; recipient: string }>;
+    specificGifts: SpecificGift[];
     funeralWishes: string;
     burialPreference: string;
     additionalWishes: string;
@@ -132,6 +146,7 @@ const WillCreationWizard: React.FC = () => {
         guardians: [],
         wantsDelayInheritance: false,
         inheritanceAge: '18',
+        wantsSpecificGifts: false,
         executors: [],
         wantsAlternateExecutor: false,
         alternateExecutors: [],
@@ -379,6 +394,27 @@ const WillCreationWizard: React.FC = () => {
         });
     };
 
+    const createSpecificGift = (): SpecificGift => ({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        giftType: 'individual',
+        description: '',
+        recipientName: '',
+        city: '',
+        country: 'England',
+        allowAlternate: false,
+        alternateRecipientName: '',
+        alternateCity: '',
+        alternateCountry: 'England'
+    });
+
+    const addSpecificGift = () => {
+        const newGift = createSpecificGift();
+        setWillData({
+            ...willData,
+            specificGifts: [...willData.specificGifts, newGift]
+        });
+    };
+
     const handleCreateDocument = () => {
         if (willData.personalInfo.maritalStatus) {
             setPhase('wizard');
@@ -528,8 +564,15 @@ const WillCreationWizard: React.FC = () => {
             case 6:
                 return (
                     <GiftsStep
+                        wantsGifts={willData.wantsSpecificGifts}
                         gifts={willData.specificGifts}
-                        onChange={(gifts) => setWillData({ ...willData, specificGifts: gifts })}
+                        onToggle={(value) => setWillData({
+                            ...willData,
+                            wantsSpecificGifts: value,
+                            specificGifts: value ? (willData.specificGifts.length ? willData.specificGifts : [createSpecificGift()]) : []
+                        })}
+                        onAddGift={addSpecificGift}
+                        onChangeGifts={(gifts) => setWillData({ ...willData, specificGifts: gifts })}
                     />
                 );
             case 7:
@@ -1305,56 +1348,233 @@ const DelayInheritanceStep: React.FC<DelayInheritanceStepProps> = ({ wantsDelay,
 };
 
 interface GiftsStepProps {
-    gifts: Array<{ item: string; recipient: string }>;
-    onChange: (gifts: Array<{ item: string; recipient: string }>) => void;
+    wantsGifts: boolean;
+    gifts: SpecificGift[];
+    onToggle: (value: boolean) => void;
+    onAddGift: () => void;
+    onChangeGifts: (gifts: SpecificGift[]) => void;
 }
 
-const GiftsStep: React.FC<GiftsStepProps> = ({ gifts, onChange }) => {
-    const addGift = () => onChange([...gifts, { item: '', recipient: '' }]);
+const GIFT_FAQ = [
+    { question: 'Is there anything I cannot give away?', answer: 'Certain jointly owned assets or property held in trust may have restrictions. If in doubt, list the item but speak to a solicitor.' },
+    { question: 'Should I add sentimental items?', answer: 'Yes. Listing keepsakes ensures they reach the right person and avoids confusion later.' }
+];
 
-    const updateGift = (index: number, field: 'item' | 'recipient', value: string) => {
+const GiftsStep: React.FC<GiftsStepProps> = ({ wantsGifts, gifts, onToggle, onAddGift, onChangeGifts }) => {
+    const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
+
+    const updateGift = (index: number, fields: Partial<SpecificGift>) => {
         const updated = [...gifts];
-        updated[index] = { ...updated[index], [field]: value };
-        onChange(updated);
+        updated[index] = { ...updated[index], ...fields };
+        onChangeGifts(updated);
     };
 
-    const removeGift = (index: number) => onChange(gifts.filter((_, i) => i !== index));
+    const removeGift = (index: number) => {
+        onChangeGifts(gifts.filter((_, i) => i !== index));
+    };
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-700 mb-4">
-                Specific Gifts
-            </h2>
-            <p className="text-sm text-slate-500 mb-8">
-                Leave particular items or amounts of money to specific people or organisations.
-            </p>
+            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Gifts</h2>
+            <p className="text-sm md:text-base text-secondary mb-8">Do you want to leave any specific gifts in your will?</p>
 
-            {gifts.map((gift, index) => (
-                <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-4">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-base font-semibold text-slate-700">Gift {index + 1}</h3>
-                        <button type="button" onClick={() => removeGift(index)} className="text-red-500 text-sm hover:text-red-700 cursor-pointer">Remove</button>
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <div className="space-y-6">
+                    <div className="flex gap-4">
+                        <button
+                            type="button"
+                            onClick={() => onToggle(true)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${wantsGifts ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            YES
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => onToggle(false)}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!wantsGifts ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                        >
+                            NO
+                        </button>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label className={LABEL_CLASS}>Item or Amount *</label>
-                            <input type="text" value={gift.item} onChange={(e) => updateGift(index, 'item', e.target.value)} className={INPUT_CLASS} placeholder="e.g., My gold watch, £10,000" />
-                        </div>
-                        <div>
-                            <label className={LABEL_CLASS}>Recipient *</label>
-                            <input type="text" value={gift.recipient} onChange={(e) => updateGift(index, 'recipient', e.target.value)} className={INPUT_CLASS} placeholder="Full name" />
-                        </div>
-                    </div>
+
+                    {wantsGifts && (
+                        <>
+                            {gifts.map((gift, index) => (
+                                <div key={gift.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <p className="text-base font-semibold text-secondary">{index === 0 ? 'First Gift' : `Gift ${index + 1}`}</p>
+                                        {gifts.length > 1 && (
+                                            <button type="button" onClick={() => removeGift(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-5">
+                                        <div className="flex gap-3">
+                                            {(['individual', 'charity'] as const).map((type) => (
+                                                <button
+                                                    key={type}
+                                                    type="button"
+                                                    onClick={() => updateGift(index, { giftType: type })}
+                                                    className={`flex-1 px-4 py-2 border-2 text-sm font-semibold uppercase tracking-wide transition-all ${gift.giftType === type
+                                                        ? 'border-secondary text-secondary bg-secondary/5'
+                                                        : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300'}`}
+                                                >
+                                                    {type === 'individual' ? 'Individual' : 'Charity or organisation'}
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-secondary mb-1">Gift Description:</label>
+                                            <input
+                                                type="text"
+                                                value={gift.description}
+                                                onChange={(e) => updateGift(index, { description: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                placeholder="e.g. My set of golf clubs"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-secondary mb-1">Full Name of Recipient:</label>
+                                            <input
+                                                type="text"
+                                                value={gift.recipientName}
+                                                onChange={(e) => updateGift(index, { recipientName: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                placeholder="e.g. William Timothy Smith"
+                                            />
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                                <input
+                                                    type="text"
+                                                    value={gift.city}
+                                                    onChange={(e) => updateGift(index, { city: e.target.value })}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    placeholder="e.g. London"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-secondary mb-1">Country:</label>
+                                                <select
+                                                    value={gift.country}
+                                                    onChange={(e) => updateGift(index, { country: e.target.value })}
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                >
+                                                    <option value="England">England</option>
+                                                    <option value="Wales">Wales</option>
+                                                    <option value="Scotland">Scotland</option>
+                                                    <option value="Northern Ireland">Northern Ireland</option>
+                                                    <option value="United Kingdom">United Kingdom</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                id={`alternate-${gift.id}`}
+                                                type="checkbox"
+                                                checked={gift.allowAlternate}
+                                                onChange={(e) => updateGift(index, { allowAlternate: e.target.checked })}
+                                                className="h-4 w-4 border border-slate-300 rounded"
+                                            />
+                                            <label htmlFor={`alternate-${gift.id}`} className="text-sm text-slate-600">
+                                                List an alternate choice for this gift
+                                            </label>
+                                        </div>
+
+                                        {gift.allowAlternate && (
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="block text-sm text-secondary mb-1">Full Name of Alternate Recipient:</label>
+                                                    <input
+                                                        type="text"
+                                                        value={gift.alternateRecipientName}
+                                                        onChange={(e) => updateGift(index, { alternateRecipientName: e.target.value })}
+                                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                        placeholder="e.g. Sarah Doe"
+                                                    />
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                                        <input
+                                                            type="text"
+                                                            value={gift.alternateCity}
+                                                            onChange={(e) => updateGift(index, { alternateCity: e.target.value })}
+                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                            placeholder="e.g. London"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm text-secondary mb-1">Country:</label>
+                                                        <select
+                                                            value={gift.alternateCountry}
+                                                            onChange={(e) => updateGift(index, { alternateCountry: e.target.value })}
+                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                        >
+                                                            <option value="England">England</option>
+                                                            <option value="Wales">Wales</option>
+                                                            <option value="Scotland">Scotland</option>
+                                                            <option value="Northern Ireland">Northern Ireland</option>
+                                                            <option value="United Kingdom">United Kingdom</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+
+                            <button
+                                type="button"
+                                onClick={onAddGift}
+                                className="text-secondary text-sm font-semibold hover:underline"
+                            >
+                                + Add another gift
+                            </button>
+                        </>
+                    )}
                 </div>
-            ))}
 
-            <button
-                type="button"
-                onClick={addGift}
-                className="w-full py-3 border-2 border-dashed border-secondary/60 rounded-lg text-secondary text-sm font-medium hover:bg-secondary/5 transition-colors cursor-pointer"
-            >
-                + Add Specific Gift
-            </button>
+                <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
+                    <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                    <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
+                        <ul className="space-y-3 text-sm text-slate-600">
+                            {GIFT_FAQ.map((item) => (
+                                <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
+                                    <button
+                                        type="button"
+                                        onMouseEnter={(e) => {
+                                            const offsetTop = e.currentTarget.parentElement?.offsetTop ?? 0;
+                                            setFaqTooltip({ text: item.answer, top: offsetTop });
+                                        }}
+                                        className="font-medium text-secondary hover:underline"
+                                    >
+                                        {item.question}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        {faqTooltip && (
+                            <div
+                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                style={{ top: faqTooltip.top }}
+                            >
+                                <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />
+                                <div className="absolute -left-3.5 top-4 h-0 w-0 border-y-7 border-y-transparent border-r-7 border-r-white" />
+                                {faqTooltip.text}
+                            </div>
+                        )}
+                    </div>
+                </aside>
+            </div>
         </div>
     );
 };
