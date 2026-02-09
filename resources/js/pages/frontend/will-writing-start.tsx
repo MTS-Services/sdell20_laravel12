@@ -258,7 +258,11 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
-    const shouldShowSpouseStep = willData.personalInfo.maritalStatus === 'married';
+    const isMarried = willData.personalInfo.maritalStatus === 'married';
+    const isCivilPartner = willData.personalInfo.maritalStatus === 'civil-partner';
+    const partnerRelationshipLabel = isCivilPartner ? 'Civil Partner' : 'Spouse';
+    const partnerQuestionLabel = isCivilPartner ? 'your civil partner' : 'your spouse';
+    const shouldShowSpouseStep = isMarried || isCivilPartner;
 
     const ensureSpouseExecutorPrefill = () => {
         const spouseName = willData.spouse.fullName.trim();
@@ -275,7 +279,7 @@ const WillCreationWizard: React.FC = () => {
                 ...executors[0],
                 firstName: fallbackFirst,
                 lastName,
-                relationship: executors[0].relationship || 'Spouse'
+                relationship: executors[0].relationship || partnerRelationshipLabel
             };
             executors[0] = primaryExecutor;
 
@@ -307,7 +311,7 @@ const WillCreationWizard: React.FC = () => {
                 ...executors[0],
                 firstName: executors[0].firstName && executors[0].firstName !== prev.spouse.fullName ? executors[0].firstName : '',
                 lastName: executors[0].lastName && executors[0].lastName !== prev.spouse.fullName ? executors[0].lastName : '',
-                relationship: executors[0].relationship === 'Spouse' ? '' : executors[0].relationship
+                relationship: executors[0].relationship === 'Spouse' || executors[0].relationship === 'Civil Partner' ? '' : executors[0].relationship
             };
 
             return {
@@ -448,6 +452,7 @@ const WillCreationWizard: React.FC = () => {
                 <SpouseStep
                     spouseName={willData.spouse.fullName}
                     onChange={updateSpouseInfo}
+                    partnerType={isCivilPartner ? 'civil-partner' : 'spouse'}
                 />
             );
         }
@@ -479,6 +484,7 @@ const WillCreationWizard: React.FC = () => {
                         showSpouseQuestion={shouldShowSpouseStep && Boolean(willData.spouse.fullName.trim())}
                         spouseName={willData.spouse.fullName}
                         spouseIsExecutor={willData.spouseIsExecutor}
+                        partnerLabel={partnerQuestionLabel}
                         onToggleSpouseExecutor={handleSpouseExecutorToggle}
                     />
                 );

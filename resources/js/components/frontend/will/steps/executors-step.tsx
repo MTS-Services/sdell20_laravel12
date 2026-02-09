@@ -32,6 +32,7 @@ export interface ExecutorsStepProps {
     spouseName?: string;
     spouseIsExecutor?: boolean;
     onToggleSpouseExecutor?: (value: boolean) => void;
+    partnerLabel?: string;
 }
 
 const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
@@ -47,7 +48,8 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
     showSpouseQuestion = false,
     spouseName = '',
     spouseIsExecutor = false,
-    onToggleSpouseExecutor
+    onToggleSpouseExecutor,
+    partnerLabel = 'your spouse'
 }) => {
     const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
     const spouseFirstName = spouseName?.trim().split(' ')[0] ?? spouseName;
@@ -114,7 +116,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                             {showSpouseQuestion && onToggleSpouseExecutor && (
                                 <div className="space-y-4">
                                     <p className="text-sm md:text-base text-slate-600">
-                                        Do you want {spouseFirstName || 'your spouse'} to administer your estate?
+                                        Do you want {spouseFirstName || partnerLabel} to administer your estate?
                                     </p>
                                     <div className="flex gap-4">
                                         {['yes', 'no'].map((option) => (
