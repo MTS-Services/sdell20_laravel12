@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Child } from './will-types';
+import SmoothCollapse from './smooth-collapse';
 
 const CHILDREN_FAQ = [
     { question: 'Should I list step-children?', answer: 'Yes. Any child or dependent you want covered by your will should be listed so the document can reference them explicitly.' },
@@ -62,61 +63,59 @@ const ChildrenStep: React.FC<ChildrenStepProps> = ({ hasChildren, childRecords, 
                         </button>
                     </div>
 
-                    {hasChildren && (
-                        <>
-                            {childRecords.map((child, index) => (
-                                <div key={child.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <p className="text-base font-semibold text-secondary">Child</p>
-                                        {childRecords.length > 1 && (
-                                            <button type="button" onClick={() => removeChild(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
-                                                Remove
-                                            </button>
-                                        )}
+                    <SmoothCollapse isOpen={hasChildren}>
+                        {childRecords.map((child, index) => (
+                            <div key={child.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6 last:mb-0">
+                                <div className="flex items-center justify-between mb-4">
+                                    <p className="text-base font-semibold text-secondary">Child</p>
+                                    {childRecords.length > 1 && (
+                                        <button type="button" onClick={() => removeChild(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                            Remove
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="space-y-5">
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Full Name:</label>
+                                        <input
+                                            type="text"
+                                            value={child.fullName}
+                                            onChange={(e) => updateChild(index, { fullName: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. William Timothy Smith"
+                                        />
                                     </div>
-                                    <div className="space-y-5">
-                                        <div>
-                                            <label className="block text-sm text-secondary mb-1">Full Name:</label>
-                                            <input
-                                                type="text"
-                                                value={child.fullName}
-                                                onChange={(e) => updateChild(index, { fullName: e.target.value })}
-                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                placeholder="e.g. William Timothy Smith"
-                                            />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm md:text-base text-slate-600 mb-3">Is this child either a minor or a dependant?</p>
-                                            <div className="flex gap-4">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => updateChild(index, { isMinor: true })}
-                                                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${child.isMinor ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
-                                                >
-                                                    YES
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => updateChild(index, { isMinor: false })}
-                                                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!child.isMinor ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
-                                                >
-                                                    NO
-                                                </button>
-                                            </div>
+                                    <div>
+                                        <p className="text-sm md:text-base text-slate-600 mb-3">Is this child either a minor or a dependant?</p>
+                                        <div className="flex gap-4">
+                                            <button
+                                                type="button"
+                                                onClick={() => updateChild(index, { isMinor: true })}
+                                                className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${child.isMinor ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                            >
+                                                YES
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => updateChild(index, { isMinor: false })}
+                                                className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!child.isMinor ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                            >
+                                                NO
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            </div>
+                        ))}
 
-                            <button
-                                type="button"
-                                onClick={onAddChild}
-                                className="text-secondary text-sm font-semibold hover:underline"
-                            >
-                                + Add another child
-                            </button>
-                        </>
-                    )}
+                        <button
+                            type="button"
+                            onClick={onAddChild}
+                            className="text-secondary text-sm font-semibold hover:underline"
+                        >
+                            + Add another child
+                        </button>
+                    </SmoothCollapse>
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">

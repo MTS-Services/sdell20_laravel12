@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import type { SpecificGift } from './will-types';
+import { UK_COUNTRY_OPTIONS } from './wizard-constants';
+import SmoothCollapse from './smooth-collapse';
 
 const GIFT_FAQ = [
     { question: 'Is there anything I cannot give away?', answer: 'Certain jointly owned assets or property held in trust may have restrictions. If in doubt, list the item but speak to a solicitor.' },
@@ -51,150 +53,148 @@ const GiftsStep: React.FC<GiftsStepProps> = ({ wantsGifts, gifts, onToggle, onAd
                         </button>
                     </div>
 
-                    {wantsGifts && (
-                        <>
-                            {gifts.map((gift, index) => (
-                                <div key={gift.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <p className="text-base font-semibold text-secondary">{index === 0 ? 'First Gift' : `Gift ${index + 1}`}</p>
-                                        {gifts.length > 1 && (
-                                            <button type="button" onClick={() => removeGift(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
-                                                Remove
+                    <SmoothCollapse isOpen={wantsGifts}>
+                        {gifts.map((gift, index) => (
+                            <div key={gift.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6 last:mb-0">
+                                <div className="flex items-center justify-between mb-4">
+                                    <p className="text-base font-semibold text-secondary">{index === 0 ? 'First Gift' : `Gift ${index + 1}`}</p>
+                                    {gifts.length > 1 && (
+                                        <button type="button" onClick={() => removeGift(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                            Remove
+                                        </button>
+                                    )}
+                                </div>
+
+                                <div className="space-y-5">
+                                    <div className="flex gap-3">
+                                        {(['individual', 'charity'] as const).map((type) => (
+                                            <button
+                                                key={type}
+                                                type="button"
+                                                onClick={() => updateGift(index, { giftType: type })}
+                                                className={`flex-1 px-4 py-2 border-2 text-sm font-semibold uppercase tracking-wide transition-all ${gift.giftType === type
+                                                    ? 'border-secondary text-secondary bg-secondary/5'
+                                                    : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300'}`}
+                                            >
+                                                {type === 'individual' ? 'Individual' : 'Charity or organisation'}
                                             </button>
-                                        )}
+                                        ))}
                                     </div>
 
-                                    <div className="space-y-5">
-                                        <div className="flex gap-3">
-                                            {(['individual', 'charity'] as const).map((type) => (
-                                                <button
-                                                    key={type}
-                                                    type="button"
-                                                    onClick={() => updateGift(index, { giftType: type })}
-                                                    className={`flex-1 px-4 py-2 border-2 text-sm font-semibold uppercase tracking-wide transition-all ${gift.giftType === type
-                                                        ? 'border-secondary text-secondary bg-secondary/5'
-                                                        : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300'}`}
-                                                >
-                                                    {type === 'individual' ? 'Individual' : 'Charity or organisation'}
-                                                </button>
-                                            ))}
-                                        </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Gift Description:</label>
+                                        <input
+                                            type="text"
+                                            value={gift.description}
+                                            onChange={(e) => updateGift(index, { description: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. My set of golf clubs"
+                                        />
+                                    </div>
 
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Full Name of Recipient:</label>
+                                        <input
+                                            type="text"
+                                            value={gift.recipientName}
+                                            onChange={(e) => updateGift(index, { recipientName: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. William Timothy Smith"
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm text-secondary mb-1">Gift Description:</label>
+                                            <label className="block text-sm text-secondary mb-1">City/Town:</label>
                                             <input
                                                 type="text"
-                                                value={gift.description}
-                                                onChange={(e) => updateGift(index, { description: e.target.value })}
+                                                value={gift.city}
+                                                onChange={(e) => updateGift(index, { city: e.target.value })}
                                                 className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                placeholder="e.g. My set of golf clubs"
+                                                placeholder="e.g. London"
                                             />
                                         </div>
-
                                         <div>
-                                            <label className="block text-sm text-secondary mb-1">Full Name of Recipient:</label>
-                                            <input
-                                                type="text"
-                                                value={gift.recipientName}
-                                                onChange={(e) => updateGift(index, { recipientName: e.target.value })}
-                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                placeholder="e.g. William Timothy Smith"
-                                            />
+                                            <label className="block text-sm text-secondary mb-1">Country:</label>
+                                            <select
+                                                value={gift.country}
+                                                onChange={(e) => updateGift(index, { country: e.target.value })}
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                            >
+                                                {UK_COUNTRY_OPTIONS.map((country) => (
+                                                    <option key={country} value={country}>
+                                                        {country}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
+                                    </div>
 
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            id={`alternate-${gift.id}`}
+                                            type="checkbox"
+                                            checked={gift.allowAlternate}
+                                            onChange={(e) => updateGift(index, { allowAlternate: e.target.checked })}
+                                            className="h-4 w-4 border border-slate-300 rounded"
+                                        />
+                                        <label htmlFor={`alternate-${gift.id}`} className="text-sm text-slate-600">
+                                            List an alternate choice for this gift
+                                        </label>
+                                    </div>
+
+                                    {gift.allowAlternate && (
+                                        <div className="space-y-4">
                                             <div>
-                                                <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                                <label className="block text-sm text-secondary mb-1">Full Name of Alternate Recipient:</label>
                                                 <input
                                                     type="text"
-                                                    value={gift.city}
-                                                    onChange={(e) => updateGift(index, { city: e.target.value })}
+                                                    value={gift.alternateRecipientName}
+                                                    onChange={(e) => updateGift(index, { alternateRecipientName: e.target.value })}
                                                     className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                    placeholder="e.g. London"
+                                                    placeholder="e.g. Sarah Doe"
                                                 />
                                             </div>
-                                            <div>
-                                                <label className="block text-sm text-secondary mb-1">Country:</label>
-                                                <select
-                                                    value={gift.country}
-                                                    onChange={(e) => updateGift(index, { country: e.target.value })}
-                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
-                                                >
-                                                    <option value="England">England</option>
-                                                    <option value="Wales">Wales</option>
-                                                    <option value="Scotland">Scotland</option>
-                                                    <option value="Northern Ireland">Northern Ireland</option>
-                                                    <option value="United Kingdom">United Kingdom</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex items-center gap-2">
-                                            <input
-                                                id={`alternate-${gift.id}`}
-                                                type="checkbox"
-                                                checked={gift.allowAlternate}
-                                                onChange={(e) => updateGift(index, { allowAlternate: e.target.checked })}
-                                                className="h-4 w-4 border border-slate-300 rounded"
-                                            />
-                                            <label htmlFor={`alternate-${gift.id}`} className="text-sm text-slate-600">
-                                                List an alternate choice for this gift
-                                            </label>
-                                        </div>
-
-                                        {gift.allowAlternate && (
-                                            <div className="space-y-4">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 <div>
-                                                    <label className="block text-sm text-secondary mb-1">Full Name of Alternate Recipient:</label>
+                                                    <label className="block text-sm text-secondary mb-1">City/Town:</label>
                                                     <input
                                                         type="text"
-                                                        value={gift.alternateRecipientName}
-                                                        onChange={(e) => updateGift(index, { alternateRecipientName: e.target.value })}
+                                                        value={gift.alternateCity}
+                                                        onChange={(e) => updateGift(index, { alternateCity: e.target.value })}
                                                         className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                        placeholder="e.g. Sarah Doe"
+                                                        placeholder="e.g. London"
                                                     />
                                                 </div>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                    <div>
-                                                        <label className="block text-sm text-secondary mb-1">City/Town:</label>
-                                                        <input
-                                                            type="text"
-                                                            value={gift.alternateCity}
-                                                            onChange={(e) => updateGift(index, { alternateCity: e.target.value })}
-                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                            placeholder="e.g. London"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label className="block text-sm text-secondary mb-1">Country:</label>
-                                                        <select
-                                                            value={gift.alternateCountry}
-                                                            onChange={(e) => updateGift(index, { alternateCountry: e.target.value })}
-                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
-                                                        >
-                                                            <option value="England">England</option>
-                                                            <option value="Wales">Wales</option>
-                                                            <option value="Scotland">Scotland</option>
-                                                            <option value="Northern Ireland">Northern Ireland</option>
-                                                            <option value="United Kingdom">United Kingdom</option>
-                                                        </select>
-                                                    </div>
+                                                <div>
+                                                    <label className="block text-sm text-secondary mb-1">Country:</label>
+                                                    <select
+                                                        value={gift.alternateCountry}
+                                                        onChange={(e) => updateGift(index, { alternateCountry: e.target.value })}
+                                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                    >
+                                                        {UK_COUNTRY_OPTIONS.map((country) => (
+                                                            <option key={country} value={country}>
+                                                                {country}
+                                                            </option>
+                                                        ))}
+                                                    </select>
                                                 </div>
                                             </div>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
-                            ))}
+                            </div>
+                        ))}
 
-                            <button
-                                type="button"
-                                onClick={onAddGift}
-                                className="text-secondary text-sm font-semibold hover:underline"
-                            >
-                                + Add another gift
-                            </button>
-                        </>
-                    )}
+                        <button
+                            type="button"
+                            onClick={onAddGift}
+                            className="text-secondary text-sm font-semibold hover:underline"
+                        >
+                            + Add another gift
+                        </button>
+                    </SmoothCollapse>
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
