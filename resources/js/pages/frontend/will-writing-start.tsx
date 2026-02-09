@@ -552,6 +552,7 @@ const WillCreationWizard: React.FC = () => {
     };
 
     const progressPercent = getProgressPercent(currentStep);
+    const isWizardComplete = currentStep === TOTAL_INTERNAL_STEPS - 1;
 
     useEffect(() => {
         if (phase === 'wizard' && currentStep === 1 && willData.executors.length === 0) {
@@ -854,11 +855,20 @@ const WillCreationWizard: React.FC = () => {
                         })}
                     </div>
                     {/* Progress Bar */}
-                    <div className="h-3.5 mt-3 bg-slate-800">
+                    <div className="relative h-3.5 mt-3 bg-slate-800 rounded-full z-50">
                         <div
-                            className="h-full bg-primary-200 transition-all duration-500"
+                            className="h-full bg-primary-200 rounded-xs transition-all duration-500"
                             style={{ width: `${progressPercent}%` }}
                         />
+                        {isWizardComplete && (
+                            <div className="absolute -right-3 top-1/2 -translate-y-1/2 ">
+                                <img
+                                    src="https://www.lawdepot.co.uk/images/slate/shield.png"
+                                    alt="Completed"
+                                    className="w-6 h-6"
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
 
