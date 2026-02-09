@@ -18,17 +18,7 @@ import AdditionalDetailsStep from '@/components/frontend/will/steps/additional-d
 import SigningStep from '@/components/frontend/will/steps/signing-step';
 import PrintDownloadStep from '@/components/frontend/will/steps/print-download-step';
 import SavingOverlay from '@/components/frontend/will/steps/saving-overlay';
-
-const WIZARD_STEPS = [
-    { key: 'get-started', title: 'Get Started' },
-    { key: 'executor', title: 'Executor' },
-    { key: 'children', title: 'Children' },
-    { key: 'gifts', title: 'Gifts' },
-    { key: 'remainder', title: 'Remainder' },
-    { key: 'final-details', title: 'Final Details' },
-    { key: 'signing', title: 'Signing' },
-    { key: 'print-download', title: 'Print/Download' },
-];
+import { TOTAL_INTERNAL_STEPS, WIZARD_STEPS } from '@/components/frontend/will/steps/wizard-constants';
 
 const MaritalStatusCard: React.FC<{
     icon: React.ReactNode;
@@ -250,9 +240,6 @@ const WillCreationWizard: React.FC = () => {
             setCurrentStep(0);
         }
     };
-
-    // Total internal steps: 0=GetStarted, 1=Executor, 2=BackupExecutor, 3=Children, 4=Guardian, 5=DelayInheritance, 6=Gifts, 7=Remainder, 8=TotalFailure, 9=Pets, 10=AdditionalDetails, 11=Signing, 12=PrintDownload
-    const TOTAL_INTERNAL_STEPS = 13;
 
     const animateTransition = (direction: 'left' | 'right', callback: () => void) => {
         setSlideDirection(direction);
@@ -653,13 +640,12 @@ const WillCreationWizard: React.FC = () => {
             {/* Main Content with step transition animation */}
             <div
                 ref={contentRef}
-                className={`max-w-5xl mx-auto px-4 py-12 md:px-8 transition-all duration-300 ease-in-out ${
-                    isAnimating
+                className={`max-w-5xl mx-auto px-4 py-12 md:px-8 transition-all duration-300 ease-in-out ${isAnimating
                         ? slideDirection === 'left'
                             ? 'opacity-0 translate-x-8'
                             : 'opacity-0 -translate-x-8'
                         : 'opacity-100 translate-x-0'
-                }`}
+                    }`}
             >
                 {renderWizardStepContent()}
 

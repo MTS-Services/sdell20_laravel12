@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import type { Guardian } from './will-types';
+import { UK_COUNTRY_OPTIONS } from './wizard-constants';
+import SmoothCollapse from './smooth-collapse';
 
 const GUARDIAN_FAQ = [
     { question: 'Who can be a guardian?', answer: 'Any responsible adult over 18 who is willing to take on the role. It is best to discuss this with them before naming them.' },
@@ -51,66 +53,64 @@ const GuardianStep: React.FC<GuardianStepProps> = ({ wantsGuardian, guardians, o
                         </button>
                     </div>
 
-                    {wantsGuardian && (
-                        <>
-                            {guardians.map((guardian, index) => (
-                                <div key={guardian.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <p className="text-base font-semibold text-slate-700">Guardian Details</p>
-                                        {guardians.length > 1 && (
-                                            <button type="button" onClick={() => removeGuardian(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
-                                                Remove
-                                            </button>
-                                        )}
+                    <SmoothCollapse isOpen={wantsGuardian}>
+                        {guardians.map((guardian, index) => (
+                            <div key={guardian.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6 last:mb-0">
+                                <div className="flex items-center justify-between mb-4">
+                                    <p className="text-base font-semibold text-slate-700">Guardian Details</p>
+                                    {guardians.length > 1 && (
+                                        <button type="button" onClick={() => removeGuardian(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                            Remove
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="space-y-5">
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Full Name:</label>
+                                        <input
+                                            type="text"
+                                            value={guardian.fullName}
+                                            onChange={(e) => updateGuardian(index, { fullName: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. William Timothy Smith"
+                                        />
                                     </div>
-                                    <div className="space-y-5">
-                                        <div>
-                                            <label className="block text-sm text-secondary mb-1">Full Name:</label>
-                                            <input
-                                                type="text"
-                                                value={guardian.fullName}
-                                                onChange={(e) => updateGuardian(index, { fullName: e.target.value })}
-                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                placeholder="e.g. William Timothy Smith"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm text-secondary mb-1">City/Town:</label>
-                                            <input
-                                                type="text"
-                                                value={guardian.city}
-                                                onChange={(e) => updateGuardian(index, { city: e.target.value })}
-                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
-                                                placeholder="e.g. London"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm text-secondary mb-1">Country:</label>
-                                            <select
-                                                value={guardian.country}
-                                                onChange={(e) => updateGuardian(index, { country: e.target.value })}
-                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
-                                            >
-                                                <option value="England">England</option>
-                                                <option value="Wales">Wales</option>
-                                                <option value="Scotland">Scotland</option>
-                                                <option value="Northern Ireland">Northern Ireland</option>
-                                                <option value="United Kingdom">United Kingdom</option>
-                                            </select>
-                                        </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">City/Town:</label>
+                                        <input
+                                            type="text"
+                                            value={guardian.city}
+                                            onChange={(e) => updateGuardian(index, { city: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            placeholder="e.g. London"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm text-secondary mb-1">Country:</label>
+                                        <select
+                                            value={guardian.country}
+                                            onChange={(e) => updateGuardian(index, { country: e.target.value })}
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                        >
+                                            {UK_COUNTRY_OPTIONS.map((country) => (
+                                                <option key={country} value={country}>
+                                                    {country}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
-                            ))}
+                            </div>
+                        ))}
 
-                            <button
-                                type="button"
-                                onClick={onAddGuardian}
-                                className="text-secondary text-sm font-semibold hover:underline"
-                            >
-                                + Add another guardian
-                            </button>
-                        </>
-                    )}
+                        <button
+                            type="button"
+                            onClick={onAddGuardian}
+                            className="text-secondary text-sm font-semibold hover:underline"
+                        >
+                            + Add another guardian
+                        </button>
+                    </SmoothCollapse>
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">

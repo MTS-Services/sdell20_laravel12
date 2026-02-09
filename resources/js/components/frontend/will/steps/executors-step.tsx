@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import type { Executor } from './will-types';
+import { UK_COUNTRY_OPTIONS } from './wizard-constants';
+import SmoothCollapse from './smooth-collapse';
 
 const FAQ_ITEMS = [
     {
@@ -137,11 +139,11 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                                                     onChange={(e) => setExecutorFields(index, { country: e.target.value })}
                                                     className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                                                 >
-                                                    <option value="England">England</option>
-                                                    <option value="Wales">Wales</option>
-                                                    <option value="Scotland">Scotland</option>
-                                                    <option value="Northern Ireland">Northern Ireland</option>
-                                                    <option value="United Kingdom">United Kingdom</option>
+                                                    {UK_COUNTRY_OPTIONS.map((country) => (
+                                                        <option key={country} value={country}>
+                                                            {country}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             </div>
                                         </div>
@@ -177,9 +179,9 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                                 ))}
                             </div>
 
-                            {wantsAlternateExecutor &&
-                                alternateExecutors.map((executor, index) => (
-                                    <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6">
+                            <SmoothCollapse isOpen={wantsAlternateExecutor}>
+                                {alternateExecutors.map((executor, index) => (
+                                    <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6 last:mb-0">
                                         <div className="flex items-center justify-between mb-4">
                                             <p className="text-base font-semibold text-slate-700">Alternate Executor {index + 1}</p>
                                             {alternateExecutors.length > 1 && (
@@ -217,18 +219,17 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                                                     onChange={(e) => setExecutorFields(index, { country: e.target.value }, true)}
                                                     className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                                                 >
-                                                    <option value="England">England</option>
-                                                    <option value="Wales">Wales</option>
-                                                    <option value="Scotland">Scotland</option>
-                                                    <option value="Northern Ireland">Northern Ireland</option>
-                                                    <option value="United Kingdom">United Kingdom</option>
+                                                    {UK_COUNTRY_OPTIONS.map((country) => (
+                                                        <option key={country} value={country}>
+                                                            {country}
+                                                        </option>
+                                                    ))}
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 ))}
 
-                            {wantsAlternateExecutor && (
                                 <button
                                     type="button"
                                     onClick={onAddAlternate}
@@ -236,7 +237,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({ executors, wantsAlternate
                                 >
                                     + Add another alternate executor
                                 </button>
-                            )}
+                            </SmoothCollapse>
                         </>
                     )}
                 </div>

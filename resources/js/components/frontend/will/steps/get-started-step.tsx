@@ -1,5 +1,6 @@
 import React from 'react';
 import type { PersonalInfo } from './will-types';
+import { UK_COUNTRY_OPTIONS } from './wizard-constants';
 
 interface GetStartedStepProps {
     personalInfo: PersonalInfo;
@@ -50,11 +51,11 @@ const GetStartedStep: React.FC<GetStartedStepProps> = ({ personalInfo, onChange 
                     onChange={(e) => onChange('country', e.target.value)}
                     className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                 >
-                    <option value="England">England</option>
-                    <option value="Wales">Wales</option>
-                    <option value="Scotland">Scotland</option>
-                    <option value="Northern Ireland">Northern Ireland</option>
-                    <option value="United Kingdom">United Kingdom</option>
+                    {UK_COUNTRY_OPTIONS.map((country) => (
+                        <option key={country} value={country}>
+                            {country}
+                        </option>
+                    ))}
                 </select>
             </div>
         </div>

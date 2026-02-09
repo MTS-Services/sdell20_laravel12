@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { AdditionalClause } from './will-types';
+import SmoothCollapse from './smooth-collapse';
 
 const ADDITIONAL_DETAILS_FAQ = [
     { question: 'Why should I avoid including funeral instructions?', answer: 'Your will may not be read until after your funeral. It is better to communicate funeral wishes directly to your family or executor.' },
@@ -57,36 +58,34 @@ const AdditionalDetailsStep: React.FC<AdditionalDetailsStepProps> = ({
                         </button>
                     </div>
 
-                    {wantsClauses && (
-                        <>
-                            {clauses.map((clause, index) => (
-                                <div key={clause.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <p className="text-base font-semibold text-secondary">Additional Clause</p>
-                                        {clauses.length > 1 && (
-                                            <button type="button" onClick={() => removeClause(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
-                                                Remove
-                                            </button>
-                                        )}
-                                    </div>
-                                    <textarea
-                                        value={clause.text}
-                                        onChange={(e) => updateClause(index, e.target.value)}
-                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors min-h-24 resize-y"
-                                        placeholder="e.g. I wish to forgive Jane Smith's debt of £5,000 incurred on January 1, 2017, for the purchase of a vehicle."
-                                    />
+                    <SmoothCollapse isOpen={wantsClauses}>
+                        {clauses.map((clause, index) => (
+                            <div key={clause.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6 last:mb-0">
+                                <div className="flex items-center justify-between mb-4">
+                                    <p className="text-base font-semibold text-secondary">Additional Clause</p>
+                                    {clauses.length > 1 && (
+                                        <button type="button" onClick={() => removeClause(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
+                                            Remove
+                                        </button>
+                                    )}
                                 </div>
-                            ))}
+                                <textarea
+                                    value={clause.text}
+                                    onChange={(e) => updateClause(index, e.target.value)}
+                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors min-h-24 resize-y"
+                                    placeholder="e.g. I wish to forgive Jane Smith's debt of £5,000 incurred on January 1, 2017, for the purchase of a vehicle."
+                                />
+                            </div>
+                        ))}
 
-                            <button
-                                type="button"
-                                onClick={onAddClause}
-                                className="text-secondary text-sm font-semibold hover:underline"
-                            >
-                                + Add another clause
-                            </button>
-                        </>
-                    )}
+                        <button
+                            type="button"
+                            onClick={onAddClause}
+                            className="text-secondary text-sm font-semibold hover:underline"
+                        >
+                            + Add another clause
+                        </button>
+                    </SmoothCollapse>
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SmoothCollapse from './smooth-collapse';
 
 const DELAY_INHERITANCE_FAQ = [
     { question: 'How will the property be held?', answer: 'If you delay inheritance, the assets will be held in trust by your executors or guardians until the child reaches the specified age.' }
@@ -38,7 +39,7 @@ const DelayInheritanceStep: React.FC<DelayInheritanceStepProps> = ({ wantsDelay,
                         </button>
                     </div>
 
-                    {wantsDelay && (
+                    <SmoothCollapse isOpen={wantsDelay}>
                         <div>
                             <label className="block text-sm text-secondary mb-1">Receive inheritance at age:</label>
                             <select
@@ -51,7 +52,7 @@ const DelayInheritanceStep: React.FC<DelayInheritanceStepProps> = ({ wantsDelay,
                                 ))}
                             </select>
                         </div>
-                    )}
+                    </SmoothCollapse>
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
