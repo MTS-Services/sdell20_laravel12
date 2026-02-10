@@ -54,9 +54,9 @@ export default function Banner() {
                 <div className="max-w-xl space-y-6">
                     <div
                         ref={headingRef}
-                        className={`space-y-4 transition-all duration-700 ease-out ${headingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                        className={`space-y-4 mb-15 md:mb-20 lg:mb-25  transition-all duration-700 ease-out ${headingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     >
-                        <h1 className="text-2xl font-semibold leading-tight text-primary-50 sm:text-3xl lg:text-[45px]">
+                        <h1 className="text-2xl font-semibold leading-tight text-primary-50  sm:text-3xl lg:text-[45px]">
                             Protecting Your Assets, Securing Your Family's Future!
                         </h1>
                     </div>
@@ -90,7 +90,7 @@ export default function Banner() {
                             href="#"
                             className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
                         >
-                            Explore Options
+                            Create Your Will Now
                         </a>
                     </div>
                 </div>

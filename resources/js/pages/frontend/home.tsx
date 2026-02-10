@@ -16,15 +16,16 @@ export default function Home() {
     return (
         <FrontendLayout>
             <Banner />
-            <CTASection />
+            {/* <CTASection /> */}
             <WhyCreateWillSection />
             <WhyCreateWillCardsGrid />
             <HowItWorksSection />
-            <DashboardPreviewSection />
+            {/* <DashboardPreviewSection /> */}
             <EstateApproachSection />
+             <FindingSupportSection />
             <ManagingAffairsSection />
             <LoveOnesSection />
-            <FindingSupportSection />
+           
         </FrontendLayout>
     );
 }
