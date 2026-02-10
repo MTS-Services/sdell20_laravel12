@@ -18,10 +18,10 @@ export default function Home() {
             <Banner />
             <CTASection />
             <WhyCreateWillSection />
-            <EstateApproachSection />
             <WhyCreateWillCardsGrid />
             <HowItWorksSection />
             <DashboardPreviewSection />
+            <EstateApproachSection />
             <ManagingAffairsSection />
             <LoveOnesSection />
             <FindingSupportSection />

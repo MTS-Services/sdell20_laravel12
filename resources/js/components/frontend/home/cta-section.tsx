@@ -25,17 +25,17 @@ export function CTASection() {
                         <button className="rounded-full bg-white px-10 py-4 font-sans text-lg font-semibold text-primary-900 shadow-xl transition-all hover:scale-105 hover:bg-blue-100">
                             Create Your Will Now
                         </button>
-                        <button className="rounded-full border-2 border-white px-10 py-4 font-sans text-lg font-semibold transition-all hover:bg-white hover:text-primary-900">
+                        {/* <button className="rounded-full border-2 border-white px-10 py-4 font-sans text-lg font-semibold transition-all hover:bg-white hover:text-primary-900">
                             Contact Us
-                        </button>
+                        </button> */}
                     </div>
 
-                    <p className="text-sm text-blue-200">
+                    {/* <p className="text-sm text-blue-200">
                         Call us:{' '}
                         <a href="tel:02045253605" className="font-semibold hover:underline">
                             020 4525 3605
                         </a>
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </section>
