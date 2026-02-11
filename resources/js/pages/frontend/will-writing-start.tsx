@@ -636,7 +636,7 @@ const WillCreationWizard: React.FC = () => {
                 <div className="bg-slate-700 px-4 py-14">
                     <div className="max-w-5xl mx-auto text-center">
                         <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 leading-tight">
-                            Free Last Will and Testament
+                            Create Your Legally Sound Will Online
                         </h1>
                         <div className="flex flex-wrap justify-center gap-12 md:gap-20">
                             <div className="flex items-center gap-3 text-white">
@@ -712,7 +712,7 @@ const WillCreationWizard: React.FC = () => {
             <div className="bg-slate-700">
                 <div className="max-w-5xl mx-auto px-4 py-10 lg:py-14">
                     <h1 className="text-lg md:text-xl lg:text-2xl font-semibold text-white uppercase tracking-wider mb-6">
-                        FREE LAST WILL AND TESTAMENT
+                        Create Your Legally Sound Will Online
                     </h1>
 
                     {/* Step Tabs - Show all steps but highlight current logical step */}
