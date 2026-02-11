@@ -2,13 +2,12 @@ import React from 'react';
 import { router } from '@inertiajs/react';
 
 const heroContent = {
-    image: 'https://a.storyblok.com/f/309177/x/210759265f/willwriting_hero.avif',
-    heading: 'Professional will writing services, tailored to you.',
-    description: 'Finding the right type of will can feel complex—we make it simple. Trusted by 700,000+ families to plan ahead with confidence and compassion.',
-    primaryCtaLabel: "Let's get started",
+    image: 'https://images.pexels.com/photos/4069291/pexels-photo-4069291.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    heading: 'Save £50 when you start your will online',
+    description: 'Offer ends 15 February. We’ll apply the discount automatically when you finish the online part of our service.',
+    legal: 'This offer is only available in England and Wales. Full terms and conditions apply.',
+    primaryCtaLabel: 'Get started now',
 };
-
-const heroReviewStars = Array.from({ length: 5 }, (_, index) => index);
 
 
 export function WillWritingHeroSection() {
@@ -17,17 +16,17 @@ export function WillWritingHeroSection() {
     };
 
     return (
-        <section className="px-4 py-12 sm:px-6 lg:px-10">
-            <div className="relative mx-auto container overflow-hidden rounded-[40px] bg-slate-800 text-white">
-                <img src={heroContent.image} alt="Family planning legacy together" className="absolute inset-0 h-full w-full object-cover" />
-                <div className="relative z-10 flex min-h-160 flex-col justify-center gap-6 px-8 py-12 sm:px-16 lg:px-20">
-                    <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/70 animate-fadeInUp">Will Writing</p>
-                    <h1 className="text-4xl font-serif font-semibold leading-tight lg:text-5xl animate-fadeInUp delay-100">{heroContent.heading}</h1>
-                    <p className="max-w-2xl text-base text-white/80 animate-fadeInUp delay-200">{heroContent.description}</p>
-                    <div className="flex flex-wrap items-center gap-4 animate-fadeInUp delay-300">
+        <section className=" px-4 py-10 md:py-15 lg:py-20 sm:px-6 lg:px-10">
+            <div className="mx-auto container rounded-4xl bg-white shadow-[0_25px_80px_rgba(15,23,42,0.08)]">
+                <div className="grid gap-10 overflow-hidden p-8 sm:p-12 lg:grid-cols-2">
+                    <div className="flex flex-col justify-center">
+                        <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500">Will Writing</p>
+                        <h1 className="mt-4 text-3xl md:text-4xl lg:text-5xl xl:text-6xl  font-serif font-bold leading-tight text-primary-500">{heroContent.heading}</h1>
+                        <p className="mt-4 text-base md:text-lg lg:text-xl  text-slate-800 font-normal mb-2">{heroContent.description}</p>
+                        <p className="mt-2 text-sm md:text-base lg:text-lg   text-slate-700">{heroContent.legal}</p>
                         <button
                             onClick={handleGetStarted}
-                            className="inline-flex items-center gap-3 rounded-full bg-white px-8 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:bg-slate-50 cursor-pointer"
+                            className="mt-6 inline-flex max-w-50 items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm lg:text-base font-semibold text-slate-900 shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
                         >
                             {heroContent.primaryCtaLabel}
                             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -36,22 +35,9 @@ export function WillWritingHeroSection() {
                             </svg>
                         </button>
                     </div>
-                    <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-white/80 animate-fadeInUp delay-400">
-                        <span className="underline decoration-1 underline-offset-4">Excellent</span>
-                        <div className="flex gap-0.5">
-                            {heroReviewStars.map((_, index) => (
-                                <span key={index} className={`inline-flex h-4 w-6 items-center justify-center ${index < 4 ? 'bg-primary-500 text-white' : 'bg-white/20 text-white/70'}`}>
-                                    ★
-                                </span>
-                            ))}
-                        </div>
-                        <span className="flex items-center gap-1 text-[11px] text-white/70">
-                            <svg className="h-3.5 w-3.5 text-primary-500" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.174L12 18.896 4.664 23.166l1.402-8.174L.132 9.21l8.2-1.192z" />
-                            </svg>
-                            Trustpilot
-                        </span>
-                        <span className="text-[10px] text-white/60">Laura, Head of Legal, with Mamá Inés</span>
+                    <div className="relative image-card rounded-[30px] border border-slate-100">
+                        <div className="absolute left-4 top-4 z-20 rounded-full bg-rose-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white">Save £50</div>
+                        <img src={heroContent.image} alt="Customer completing will online" className="relative z-10 w-full rounded-[28px] object-cover" />
                     </div>
                 </div>
             </div>
