@@ -59,14 +59,14 @@ export default function AuthLayout({
                 />
             </div>
 
-            <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12 lg:px-10">
+            <div className="relative z-10 flex min-h-screen items-center justify-center px-2 py-12 lg:px-10">
                 <main className="relative w-full max-w-6xl overflow-hidden rounded-[48px] border border-white/10 bg-white/5 shadow-[0_30px_120px_rgba(2,6,23,0.75)] backdrop-blur-2xl">
                     <Head title={title} />
 
                     <div className="absolute inset-x-10 top-0 h-px bg-linear-to-r from-(--accent-blue) via-white/70 to-(--accent-purple) opacity-70" />
 
-                    <div className="grid gap-10 px-6 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-14 lg:py-16">
-                        <section className="flex flex-col gap-10 rounded-4xl border border-white/10 bg-white/5 p-8 shadow-inner shadow-white/5 backdrop-blur-2xl animate-fadeInLeft">
+                    <div className="grid gap-10 px-2 py-2 lg:grid-cols-[1.05fr_0.95fr] lg:px-14 lg:py-16">
+                        <section className="flex flex-col gap-10 rounded-4xl border border-white/10 bg-white/5 p-3 shadow-inner shadow-white/5 backdrop-blur-2xl animate-fadeInLeft">
                             <header className="space-y-6">
                                 <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
                                     <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[0.65rem]">
@@ -108,7 +108,7 @@ export default function AuthLayout({
 
                         <section className="relative animate-fadeInUp">
                             <div className="rounded-4xl bg-white text-foreground shadow-(--shadow-card)">
-                                <div className="p-8">{children}</div>
+                                <div className="p-2">{children}</div>
                             </div>
 
                             <div className="pointer-events-none absolute -top-7 right-0 hidden rounded-2xl border border-white/10 bg-primary-500/50 px-5 py-4 text-sm font-semibold text-white shadow-2xl backdrop-blur lg:block animate-fadeInDown delay-200">
