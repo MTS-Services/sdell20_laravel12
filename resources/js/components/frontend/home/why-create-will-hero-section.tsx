@@ -20,7 +20,7 @@ export function WhyCreateWillHeroSection({ headerRef, headerVisible, videoRef, v
 
             <div
                 ref={videoRef}
-                className={`mx-auto mb-16 max-w-4xl overflow-hidden rounded-[28px] border border-slate-200 shadow-2xl shadow-slate-300/40 transition-all duration-700 ease-out ${videoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                className={`mx-auto max-w-4xl overflow-hidden rounded-[28px] border border-slate-200 shadow-2xl shadow-slate-300/40 transition-all duration-700 ease-out ${videoVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
                 <div className="relative w-full pt-[56.25%]">
                     <video
