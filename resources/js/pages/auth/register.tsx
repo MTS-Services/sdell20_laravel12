@@ -30,7 +30,7 @@ export default function Register() {
                     {...store.form()}
                     resetOnSuccess={['password', 'password_confirmation']}
                     disableWhileProcessing
-                    className="space-y-3 sm:space-y-6 p-2!"
+                    className="space-y-3 px-1 sm:space-y-6 sm:px-0"
                 >
                     {({ processing, errors }) => (
                         <>
