@@ -81,7 +81,7 @@ export function WhyCreateWillCardsGrid() {
     const [gridRef, gridVisible] = useReveal<HTMLDivElement>(0.1);
 
     return (
-        <section className="py-20 bg-white overflow-hidden">
+        <section className="pb-20 pt-8 bg-white overflow-hidden">
             <div className="container mx-auto px-6">
                 <div ref={gridRef} className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
                     {cards.map((card) => (

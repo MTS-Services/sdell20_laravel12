@@ -87,7 +87,7 @@ export function WhyCreateWillSection() {
     const [gridRef, gridVisible] = useReveal<HTMLDivElement>(0.1);
 
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section className="pt-24 pb-6 sm:pb-12 md:pb-16 lg:pb-20 bg-white overflow-hidden">
             <div className="container mx-auto px-6">
                 <WhyCreateWillHeroSection
                     headerRef={headerRef}
