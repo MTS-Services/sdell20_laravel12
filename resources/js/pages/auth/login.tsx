@@ -24,8 +24,8 @@ export default function Login() {
         >
             <Head title="Log in" />
 
-            <div className="w-full space-y-10 py-4">
-                <div className="animate-fadeInDown rounded-3xl border border-primary-50/40 bg-primary-50/20 px-5 py-4 text-sm text-primary-600">
+            <div className="w-full space-y-3 md:space-y-6 lg:space-y-10 px-2 py-4 lg:py-10">
+                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 px-4 py-3 text-sm text-primary-600 sm:px-5 sm:py-4 animate-in fade-in slide-in-from-top-2 duration-300">
                     <p className="text-xs uppercase tracking-[0.35em] text-primary-600">Trusted access</p>
                     <p className="mt-1 text-base font-medium text-primary-600">
                         Sign in with your Horizon credentials or approved hardware key.
@@ -35,12 +35,12 @@ export default function Login() {
                 <Form
                     {...store.form()}
                     resetOnSuccess={['password']}
-                    className="space-y-6"
+                    className="space-y-3 px-1 sm:space-y-6 sm:px-0"
                 >
                     {({ processing, errors }) => (
                         <>
-                            <div className="space-y-4">
-                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp">
+                            <div className="space-y-3 sm:space-y-6">
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300 sm:p-5">
                                     <Label
                                         htmlFor="email"
                                         className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
@@ -54,16 +54,16 @@ export default function Login() {
                                         required
                                         autoFocus
                                         placeholder="name@company.com"
-                                        className="mt-2 h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-500 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="mt-2 h-11 rounded-2xl border border-muted/60 bg-white text-sm text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200 sm:h-12 sm:text-base"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
 
-                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-5 text-foreground shadow-(--shadow-card) animate-fadeInUp delay-100">
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300 sm:p-5">
                                     <div className="mb-2 flex items-center justify-between">
                                         <Label
                                             htmlFor="password"
-                                            className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-900"
+                                            className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
                                         >
                                             Password
                                         </Label>
@@ -81,14 +81,14 @@ export default function Login() {
                                         name="password"
                                         required
                                         placeholder="••••••••"
-                                        className="h-12 rounded-2xl border border-muted/60 bg-white text-base text-slate-900 placeholder:text-slate-50 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="h-11 rounded-2xl border border-muted/60 bg-white text-sm text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200 sm:h-12 sm:text-base"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
                             </div>
 
-                            <div className="space-y-4">
-                                <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-primary-50/40 bg-primary-50/20 px-4 py-3 text-xs text-primary-500/80 animate-fadeInUp delay-200">
+                            <div className="space-y-3 sm:space-y-4">
+                                <div className="flex flex-wrap items-center gap-3 rounded-3xl border border-primary-50/40 bg-primary-50/20 px-3 py-3 text-xs text-primary-500/80 animate-in fade-in slide-in-from-bottom-2 duration-300 sm:px-4">
                                     <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-white/15 text-lg">
                                         🔐
                                     </span>
@@ -97,7 +97,7 @@ export default function Login() {
 
                                 <Button
                                     type="submit"
-                                    className="group relative w-full overflow-hidden rounded-3xl bg-linear-to-r from-primary-500 via-primary-400 to-primary-600 py-5 text-base font-semibold tracking-wide text-white shadow-lg transition hover:brightness-110"
+                                    className="group relative w-full overflow-hidden rounded-3xl bg-gradient-to-r from-primary-500 via-primary-400 to-primary-600 py-4 text-sm font-semibold tracking-wide text-white shadow-lg transition hover:brightness-110 sm:py-5 sm:text-base"
                                     disabled={processing}
                                 >
                                     <span className="relative flex items-center justify-center gap-2">
