@@ -21,7 +21,7 @@ const pricingOptions = [
 
 export function WillWritingPricingSection() {
     return (
-        <section id="pricing" className="px-4 pb-16 sm:px-6 lg:px-10">
+        <section id="pricing" className="px-4 pt-6 lg:pt-16 sm:px-6 lg:px-10">
             <div className="mx-auto max-w-4xl">
                 <div className="text-center">
                     <h2 className="text-3xl font-semibold text-slate-900">Choose the will that fits</h2>

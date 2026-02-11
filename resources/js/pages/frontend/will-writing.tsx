@@ -15,7 +15,7 @@ export default function WillWriting() {
         <FrontendLayout>
             <main className="bg-primary-50">
                 <WillWritingHeroSection />
-                <WillWritingProtectedSection />
+                {/* <WillWritingProtectedSection /> */}
                 <WillWritingPricingSection />
                 <WillWritingProcessSection />
                 <LpaFaqSection />
