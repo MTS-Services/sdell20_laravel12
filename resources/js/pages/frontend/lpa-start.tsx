@@ -191,7 +191,7 @@ const OptionButton: React.FC<{
         type="button"
         onClick={onClick}
         className={[
-            'w-full cursor-pointer rounded border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 lg:px-8 lg:py-4 lg:text-base',
+            'w-full cursor-pointer rounded border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 sm:px-6 sm:py-3 lg:px-8 lg:py-4 lg:text-base',
             'shadow-[0_2px_8px_rgba(15,23,42,0.12)] transition duration-300 hover:bg-primary-500 hover:text-primary-50',
             'hover:border-slate-300 hover:shadow-[0_3px_10px_rgba(15,23,42,0.14)]',
             selected ? 'border-primary-400 text-primary-600' : '',
@@ -205,7 +205,7 @@ const Illustration: React.FC<{ src?: string; icon: React.ComponentType<{ classNa
     if (src) {
         return (
             <div className="flex justify-center">
-                <img src={src} alt="" className="h-16 w-40 select-none lg:h-40 lg:w-50" draggable={false} />
+                <img src={src} alt="" className="h-26 w-26 select-none sm:h-33 sm:w-40 lg:h-40 lg:w-50" draggable={false} />
             </div>
         );
     }
@@ -213,8 +213,8 @@ const Illustration: React.FC<{ src?: string; icon: React.ComponentType<{ classNa
     // fallback for other steps
     return (
         <div className="flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-white">
-                <Icon className="h-8 w-8 text-slate-500" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white sm:h-16 sm:w-16">
+                <Icon className="h-6 w-6 text-slate-500 sm:h-8 sm:w-8" />
             </div>
         </div>
     );
@@ -556,30 +556,29 @@ const LpaStartPage: React.FC = () => {
     return (
         <>
             <StepsHeader />
-            <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
-                <div className="mx-auto w-full max-w-2xl">
-                    {/* optional progress (hidden to match screenshot) */}
-                    <div className="sr-only" aria-hidden="true">
-                        {progress}%
+            <section className="min-h-screen bg-primary-50 px-3 py-10 sm:px-6 sm:py-16 md:px-10 md:py-20 lg:px-0">
+                <div className="mx-auto w-full max-w-2xl md:max-w-3xl lg:max-w-2xl">
+                    <div className="mb-4 sm:mb-0 h-1.5 w-full rounded-full bg-slate-200 sm:hidden">
+                        <div className="h-full rounded-full bg-primary-500 transition-[width] duration-300" style={{ width: `${progress}%` }} />
                     </div>
 
-                    <div className="space-y-6">
+                    <div className="space-y-4 sm:space-y-6 md:space-y-8">
                         <Illustration src={currentStep.illustrationSrc} icon={currentStep.icon} />
 
-                        <div className="space-y-4 text-left">
-                            <h1 className="text-2xl font-semibold leading-7 text-slate-900 lg:text-3xl lg:leading-9">
+                        <div className="space-y-3 text-left sm:space-y-4 md:space-y-5">
+                            <h1 className="text-xl font-semibold leading-7 text-slate-900 sm:text-2xl md:text-3xl lg:text-3xl lg:leading-9">
                                 {renderQuestion()}
                             </h1>
 
                             {currentStep.description ? (
-                                <p className="max-w-2xl text-sm leading-5 text-slate-600 lg:text-base lg:leading-6">
+                                <p className="max-w-2xl text-xs leading-5 text-slate-600 sm:text-sm md:text-base lg:text-base lg:leading-6">
                                     {currentStep.description}
                                 </p>
                             ) : null}
                         </div>
 
                         {!currentStep.final ? (
-                            <div className="grid max-w-xl grid-cols-1 gap-4 lg:grid-cols-2">
+                            <div className="grid max-w-xl grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-2">
                                 {currentStep.options?.map((option) => (
                                     <OptionButton
                                         key={option.value}
@@ -591,7 +590,7 @@ const LpaStartPage: React.FC = () => {
                             </div>
                         ) : (
                             <div className="space-y-6">
-                                <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+                                <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 md:p-7 lg:p-8">
                                     <div className="mb-4 flex items-start gap-3 text-slate-600 lg:gap-4">
                                         <ShieldCheck className="mt-0.5 h-6 w-6 text-emerald-500 lg:h-7 lg:w-7" />
                                         <div>
@@ -624,7 +623,7 @@ const LpaStartPage: React.FC = () => {
 
                                     <Link
                                         href={route('register')}
-                                        className="mt-6 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 hover:text-white lg:py-4 lg:text-base"
+                                        className="mt-4 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 hover:text-white sm:mt-6 sm:py-3 md:text-base lg:py-4 lg:text-base"
                                     >
                                         Continue online
                                     </Link>
@@ -632,11 +631,11 @@ const LpaStartPage: React.FC = () => {
                             </div>
                         )}
 
-                        <div className="pt-6">
+                        <div className="pt-4 sm:pt-6 md:pt-8">
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-primary-500 lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-slate-600 transition hover:text-primary-500 sm:text-base md:text-lg"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
