@@ -1,3 +1,4 @@
+import { router } from '@inertiajs/react';
 import { useState } from 'react';
 import { ArrowRight, BookOpenText, CalendarDays, FileEdit, LifeBuoy, Mail, Phone, ScrollText } from 'lucide-react';
 
@@ -10,18 +11,17 @@ interface Props {
 
 const dashboardActions = [
     {
+        id: 'continue-lpa',
         title: 'Continue your Power of Attorney',
         icon: ScrollText,
     },
     {
+        id: 'start-will',
         title: 'Start your Will',
         icon: FileEdit,
     },
-    // {
-    //     title: 'Power of Attorney',
-    //     icon: BookOpenText,
-    // },
     {
+        id: 'help',
         title: 'Help',
         icon: LifeBuoy,
     },
@@ -29,6 +29,17 @@ const dashboardActions = [
 
 export default function UserDashboard({ user }: Props) {
     const [helpOpen, setHelpOpen] = useState(false);
+
+    const handleActionClick = (actionId: string) => {
+        if (actionId === 'continue-lpa') {
+            router.visit('/dashboard/lpa/create');
+            return;
+        }
+
+        if (actionId === 'help') {
+            setHelpOpen(true);
+        }
+    };
 
     return (
         <UserLayout>
@@ -46,6 +57,7 @@ export default function UserDashboard({ user }: Props) {
                                     key={action.title}
                                     type="button"
                                     className="flex w-full flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-5 py-6 text-left text-slate-700 shadow-lg transition hover:bg-primary-50 "
+                                    onClick={() => handleActionClick(action.id)}
                                 >
                                     <div className="flex flex-1 min-w-0 items-center gap-4">
                                         <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-200 bg-primary-50 text-primary-500">

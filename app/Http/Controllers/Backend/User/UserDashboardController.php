@@ -39,6 +39,13 @@ class UserDashboardController extends Controller
         ]);
     }
 
+    public function lpaCreate(Request $request): Response
+    {
+        return Inertia::render('backend/User/LpaCreate', [
+            'user' => $request->user(),
+        ]);
+    }
+
     public function complete(Request $request): RedirectResponse
     {
         $user = $request->user();
