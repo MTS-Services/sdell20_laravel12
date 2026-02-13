@@ -1,4 +1,4 @@
-import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import UserLayout from '@/layouts/user-layout';
@@ -63,7 +63,41 @@ export default function LpaCreate({ user }: Props) {
         email: 'vudud@mailinator.com'
     });
     const [showOtherNames, setShowOtherNames] = useState(false);
+    const [showAttorneyModal, setShowAttorneyModal] = useState(false);
+    const [attorneys, setAttorneys] = useState<Array<{
+        id: string;
+        title: string;
+        firstName: string;
+        lastName: string;
+        middleNames: string;
+        postcode: string;
+        addressLine1: string;
+        addressLine2: string;
+        town: string;
+        county: string;
+        birthDay: string;
+        birthMonth: string;
+        birthYear: string;
+        email: string;
+    }>>([]);
+    const [currentAttorney, setCurrentAttorney] = useState({
+        title: 'Mr',
+        firstName: '',
+        lastName: '',
+        middleNames: '',
+        postcode: '',
+        addressLine1: '',
+        addressLine2: '',
+        town: '',
+        county: '',
+        birthDay: '',
+        birthMonth: '',
+        birthYear: '',
+        email: ''
+    });
+    const [isManualAddress, setIsManualAddress] = useState(false);
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
+    const modalRef = useRef<HTMLDivElement | null>(null);
 
     const getSelectionCopy = (): string => {
         return selectedWhoOption === 'Mirror' ? 'mirror' : 'yourself only';
@@ -75,6 +109,8 @@ export default function LpaCreate({ user }: Props) {
                 return Boolean(selectedWhoOption);
             case 1:
                 return Boolean(selectedDocumentOption);
+            case 4:
+                return attorneys.length > 0;
             default:
                 return true;
         }
@@ -91,6 +127,44 @@ export default function LpaCreate({ user }: Props) {
 
     const handleContactChange = (field: keyof typeof contactDetails, value: string): void => {
         setContactDetails((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleAttorneyChange = (field: keyof typeof currentAttorney, value: string): void => {
+        setCurrentAttorney((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleAddAttorney = (): void => {
+        setShowAttorneyModal(true);
+    };
+
+    const handleSaveAttorney = (): void => {
+        const newAttorney = {
+            ...currentAttorney,
+            id: Date.now().toString()
+        };
+        setAttorneys((prev) => [...prev, newAttorney]);
+        setCurrentAttorney({
+            title: 'Mr',
+            firstName: '',
+            lastName: '',
+            middleNames: '',
+            postcode: '',
+            addressLine1: '',
+            addressLine2: '',
+            town: '',
+            county: '',
+            birthDay: '',
+            birthMonth: '',
+            birthYear: '',
+            email: ''
+        });
+        setIsManualAddress(false);
+        setShowAttorneyModal(false);
+    };
+
+    const handleCloseAttorneyModal = (): void => {
+        setShowAttorneyModal(false);
+        setIsManualAddress(false);
     };
 
     const handleStepChange = (direction: 'next' | 'prev') => {
@@ -124,6 +198,24 @@ export default function LpaCreate({ user }: Props) {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isEditingWho]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!showAttorneyModal) {
+                return;
+            }
+
+            if (modalRef.current && event.target instanceof Node && !modalRef.current.contains(event.target)) {
+                handleCloseAttorneyModal();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showAttorneyModal]);
 
     const renderStepContent = (): ReactElement => {
         if (currentStep === 0) {
@@ -481,6 +573,314 @@ export default function LpaCreate({ user }: Props) {
                 </div>
             );
         }
+
+        if (currentStep === 4) {
+            return (
+                <>
+                    <div className="grid gap-8 lg:grid-cols-6">
+                        {/* Main Content */}
+                        <div className="lg:col-span-3 space-y-6">
+                            <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                                <h2 className="text-3xl font-semibold text-slate-900 mb-4">Attorneys</h2>
+
+                                <p className="text-slate-700 mb-6">
+                                    Attorneys are people a donor appoints to make decisions on their behalf, you need to choose at least one Attorney.
+                                </p>
+
+                                <button
+                                    type="button"
+                                    onClick={handleAddAttorney}
+                                    className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-slate-700 font-medium transition hover:border-primary-400 hover:bg-slate-50"
+                                >
+                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                    </svg>
+                                    Add new attorney
+                                </button>
+
+                                {attorneys.length === 0 ? (
+                                    <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center text-sm text-slate-500">
+                                        You haven’t added any attorneys yet. Click “Add new attorney” to start.
+                                    </div>
+                                ) : (
+                                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                                        {attorneys.map((attorney) => (
+                                            <div key={attorney.id} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                                                <p className="text-base font-semibold text-slate-900">
+                                                    {attorney.title} {attorney.firstName} {attorney.middleNames} {attorney.lastName}
+                                                </p>
+                                                <p className="mt-1 text-sm text-slate-600">
+                                                    Born: {attorney.birthDay || '--'}/{attorney.birthMonth || '--'}/{attorney.birthYear || '----'}
+                                                </p>
+                                                {(attorney.addressLine1 || attorney.postcode) && (
+                                                    <div className="mt-3 text-sm text-slate-600">
+                                                        <p>{attorney.addressLine1}</p>
+                                                        {attorney.addressLine2 && <p>{attorney.addressLine2}</p>}
+                                                        <p>
+                                                            {[attorney.town, attorney.county, attorney.postcode].filter(Boolean).join(', ')}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                {attorney.email && <p className="mt-3 text-sm text-slate-600">Email: {attorney.email}</p>}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Sidebar */}
+                        <div className="lg:col-span-2">
+                            <div className="rounded-2xl bg-white p-6 shadow-sm sticky top-6">
+                                <h3 className="text-xl font-semibold text-slate-900 mb-4">Who can be an Attorney?</h3>
+                                <p className="text-sm text-slate-700 mb-4">The Attorney must be meet the following requirements:</p>
+                                <ul className="space-y-3">
+                                    <li className="flex items-start gap-3">
+                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
+                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm text-slate-700">Aged 18 or over.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
+                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm text-slate-700">Have mental capacity to make decisions.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
+                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm text-slate-700">Must not be bankrupt, or subject to a debt relief order.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Attorney Modal */}
+                    {showAttorneyModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+                            <div
+                                ref={modalRef}
+                                className="relative flex h-[90vh] w-full max-w-2xl max-h-[90vh] flex-col overflow-y-auto rounded-xl bg-white shadow-2xl"
+                            >
+                                <button
+                                    type="button"
+                                    onClick={handleCloseAttorneyModal}
+                                    className="absolute right-4 top-4 rounded-full p-1.5 text-white transition hover:bg-white/10"
+                                    aria-label="Close"
+                                >
+                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+
+                                {/* Modal Header */}
+                                <div className="border-b border-slate-200 bg-primary-600 px-6 py-4 pr-12">
+                                    <h3 className="text-xl font-semibold text-white">Add attorney</h3>
+                                </div>
+
+                                {/* Modal Body */}
+                                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                    {/* Full Legal Name */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">Full legal name</h4>
+
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-600">Title</label>
+                                            <div className="rounded-md border border-slate-300 bg-white px-3 py-2">
+                                                <select
+                                                    className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                                    value={currentAttorney.title}
+                                                    onChange={(e) => handleAttorneyChange('title', e.target.value)}
+                                                >
+                                                    {donorTitleOptions.map((title) => (
+                                                        <option key={title} value={title}>
+                                                            {title}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="grid gap-4 md:grid-cols-2">
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">First Name</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentAttorney.firstName}
+                                                    onChange={(e) => handleAttorneyChange('firstName', e.target.value)}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Last Name</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentAttorney.lastName}
+                                                    onChange={(e) => handleAttorneyChange('lastName', e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-600">Middle names (if any)</label>
+                                            <input
+                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                value={currentAttorney.middleNames}
+                                                onChange={(e) => handleAttorneyChange('middleNames', e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Address */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">What's their address?</h4>
+
+                                        {!isManualAddress ? (
+                                            <>
+                                                <div>
+                                                    <label className="mb-2 block text-sm text-slate-600">Enter postcode to search for address</label>
+                                                    <div className="flex gap-3">
+                                                        <input
+                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            value={currentAttorney.postcode}
+                                                            onChange={(e) => handleAttorneyChange('postcode', e.target.value)}
+                                                            placeholder="Enter postcode"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            className="rounded-md bg-primary-500 px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-600"
+                                                        >
+                                                            Search
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsManualAddress(true)}
+                                                    className="text-sm font-medium text-primary-500 hover:text-primary-600 transition"
+                                                >
+                                                    Enter address manually
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 1</label>
+                                                    <input
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        value={currentAttorney.addressLine1}
+                                                        onChange={(e) => handleAttorneyChange('addressLine1', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 2</label>
+                                                    <input
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        value={currentAttorney.addressLine2}
+                                                        onChange={(e) => handleAttorneyChange('addressLine2', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className="grid gap-4 md:grid-cols-2">
+                                                    <div>
+                                                        <label className="mb-2 block text-sm font-medium text-slate-600">Town</label>
+                                                        <input
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            value={currentAttorney.town}
+                                                            onChange={(e) => handleAttorneyChange('town', e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="mb-2 block text-sm font-medium text-slate-600">County</label>
+                                                        <input
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            value={currentAttorney.county}
+                                                            onChange={(e) => handleAttorneyChange('county', e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Postcode</label>
+                                                    <input
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        value={currentAttorney.postcode}
+                                                        onChange={(e) => handleAttorneyChange('postcode', e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Date of Birth */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">What's their date of birth</h4>
+                                        <div className="grid gap-4 grid-cols-3">
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Day</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentAttorney.birthDay}
+                                                    onChange={(e) => handleAttorneyChange('birthDay', e.target.value)}
+                                                    placeholder="DD"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Month</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentAttorney.birthMonth}
+                                                    onChange={(e) => handleAttorneyChange('birthMonth', e.target.value)}
+                                                    placeholder="MM"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Year</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentAttorney.birthYear}
+                                                    onChange={(e) => handleAttorneyChange('birthYear', e.target.value)}
+                                                    placeholder="YYYY"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Email */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">What's their email address? (optional)</h4>
+                                        <input
+                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                            type="email"
+                                            value={currentAttorney.email}
+                                            onChange={(e) => handleAttorneyChange('email', e.target.value)}
+                                            placeholder="email@example.com"
+                                        />
+                                    </div>
+
+                                    {/* Save Button */}
+                                    <div className="border-t border-slate-200 bg-slate-50 px-6 py-4">
+                                        <button
+                                            type="button"
+                                            onClick={handleSaveAttorney}
+                                            className="w-full rounded-md bg-primary-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-primary-600"
+                                        >
+                                            Save and continue
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </>
+            );
+        }
         const nextStep = lpaSteps[currentStep];
         return (
             <div className="rounded-2xl bg-white p-8 text-slate-700 shadow-sm">
@@ -519,7 +919,7 @@ export default function LpaCreate({ user }: Props) {
                                     {lpaSteps.map((step, index) => {
                                         // Map currentStep to display step
                                         const displayStep = getDisplayStep(currentStep);
-                                        
+
                                         const isActive = displayStep === index;
                                         const isCompleted = displayStep > index;
 
