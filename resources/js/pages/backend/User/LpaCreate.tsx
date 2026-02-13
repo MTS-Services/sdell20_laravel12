@@ -1613,6 +1613,8 @@ export default function LpaCreate({ user }: Props) {
 
         // Step 10: Application Information - Who should receive the document
         if (currentStep === 10) {
+            const selectedAttorney = documentRecipient === 'attorney' && attorneys.length > 0 ? attorneys[0] : null;
+            const selectedDonor = donorDetails;
             return (
                 <div className="mx-auto max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
@@ -1643,6 +1645,59 @@ export default function LpaCreate({ user }: Props) {
                                     <p className="text-sm text-cyan-500">Select the person who should receive the document</p>
                                 )}
                             </div>
+
+                            {documentRecipient === 'attorney' && selectedAttorney && (
+                                <div className="space-y-3">
+                                    <p className="text-sm text-slate-600">You only have one attorney, they will receive the registered document.</p>
+                                    <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
+                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-semibold">
+                                                {selectedAttorney.title} {selectedAttorney.firstName} {selectedAttorney.middleNames} {selectedAttorney.lastName}
+                                            </p>
+                                            <p className="text-sm">{selectedAttorney.email}</p>
+                                        </div>
+                                        <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
+                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {documentRecipient === 'donor' && (
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
+                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-semibold">
+                                                {selectedDonor.title} {selectedDonor.firstName} {selectedDonor.middleNames} {selectedDonor.lastName}
+                                            </p>
+                                            <p className="text-sm">{contactDetails.email}</p>
+                                        </div>
+                                        <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
+                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {documentRecipient === 'other' && (
+                                <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
+                                    You'll be able to provide the recipient's details in the following step.
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -1660,22 +1715,41 @@ export default function LpaCreate({ user }: Props) {
 
     // Helper function to map currentStep to display step for the progress indicator
     const getDisplayStep = (currentStepIndex: number): number => {
-        // Steps 2 and 3 both map to step 2 in the visual progress
+        // Steps 2 and 3 both map to step 2 in the visual progress ("The Donor")
         if (currentStepIndex === 3) {
             return 2;
         }
-        // Steps 5 and 6 (new attorney steps) both map to step 3 (Attorneys) in the visual
+
+        // Steps 5 and 6 are both part of "Attorneys" in the visual progress
         if (currentStepIndex === 5 || currentStepIndex === 6) {
             return 3;
         }
-        // After step 3, we need to offset by -1 because we're "hiding" step 3 in the visual
+
+        // Steps between donor and attorneys (contact details) map back one position
         if (currentStepIndex > 3 && currentStepIndex < 5) {
             return currentStepIndex - 1;
         }
-        // After the new attorney steps (5-6), offset by -3
+
+        // Life-sustaining treatment maps to "Health and Finance Decisions"
+        if (currentStepIndex === 7) {
+            return 4;
+        }
+
+        // People to notify maps to its own step
+        if (currentStepIndex === 8) {
+            return 5;
+        }
+
+        // Both application sub-steps (who applies, who receives) map to the single Application step
+        if (currentStepIndex === 9 || currentStepIndex === 10) {
+            return 6;
+        }
+
+        // Anything beyond application should advance naturally with an offset of -3
         if (currentStepIndex > 6) {
             return currentStepIndex - 3;
         }
+
         return currentStepIndex;
     };
 
@@ -1744,7 +1818,7 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 className="inline-flex items-center gap-2 rounded-full bg-primary-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50"
                                 onClick={() => handleStepChange('next')}
-                                disabled={currentStep === TOTAL_FORM_STEPS - 1 || !canAdvanceFromStep(currentStep)}
+                                disabled={!canAdvanceFromStep(currentStep)}
                             >
                                 {(currentStep === 5 || currentStep === 6 || currentStep === 7 || currentStep === 8 || currentStep === 9 || currentStep === 10) ? 'Save and continue' : 'Continue'}
                                 <ArrowRight className="h-4 w-4" />
