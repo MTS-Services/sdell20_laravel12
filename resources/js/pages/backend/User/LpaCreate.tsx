@@ -1003,7 +1003,7 @@ export default function LpaCreate({ user }: Props) {
         // Step 5: Can attorneys view your legal documents?
         if (currentStep === 5) {
             return (
-                <div className="mx-auto max-w-4xl space-y-6">
+                <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-2xl font-semibold text-slate-900 mb-6">
                             Can attorneys <span className="text-cyan-500">view your legal documents?</span>
@@ -1407,7 +1407,7 @@ export default function LpaCreate({ user }: Props) {
         // Step 7: Life-sustaining Treatment
         if (currentStep === 7) {
             return (
-                <div className="mx-auto max-w-4xl space-y-6">
+                <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-3xl font-semibold text-center text-slate-900 mb-8">
                             Life-sustaining <span className="text-cyan-500">Treatment</span>
@@ -1461,7 +1461,7 @@ export default function LpaCreate({ user }: Props) {
         // Step 8: People To Notify
         if (currentStep === 8) {
             return (
-                <div className="mx-auto max-w-4xl space-y-6">
+                <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-2xl font-semibold text-slate-900 mb-6">
                             People to <span className="text-cyan-500">notify</span>
@@ -1528,7 +1528,7 @@ export default function LpaCreate({ user }: Props) {
             const selectedDonor = donorDetails;
 
             return (
-                <div className="mx-auto max-w-4xl space-y-6">
+                <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-2xl font-semibold text-slate-900 mb-6">
                             Who is <span className="text-cyan-500">applying to register?</span>
@@ -1619,7 +1619,7 @@ export default function LpaCreate({ user }: Props) {
             const selectedAttorney = documentRecipient === 'attorney' && attorneys.length > 0 ? attorneys[0] : null;
             const selectedDonor = donorDetails;
             return (
-                <div className="mx-auto max-w-4xl space-y-6">
+                <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-2xl font-semibold text-slate-900 mb-6">
                             Who should <span className="text-cyan-500">receive the document?</span>
@@ -1701,6 +1701,48 @@ export default function LpaCreate({ user }: Props) {
                                     You'll be able to provide the recipient's details in the following step.
                                 </div>
                             )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Step 11: Certificate Provider
+        if (currentStep === 11) {
+            return (
+                <div className="max-w-4xl space-y-8 rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                    <div className="text-center space-y-3">
+                        <h2 className="text-3xl font-semibold text-slate-900">
+                            The <span className="text-primary-500">Certificate Provider</span>
+                        </h2>
+                        <div className="mx-auto h-px w-full bg-slate-200" />
+                    </div>
+
+                    <p className="text-base text-slate-700">
+                        This person signs to confirm they have discussed the Lasting Power of Attorney with the Donor and that they are fully aware of what they are doing.
+                    </p>
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-slate-900">Do you want to choose your certificate provider now?</h3>
+                        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_30px_rgba(15,23,42,0.08)]">
+                            {[
+                                { value: 'no', label: 'No, I will add them when I sign the documents' },
+                                { value: 'yes', label: 'Yes, I know the details now' }
+                            ].map((option, index) => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    onClick={() => setCertificateChoice(option.value as 'yes' | 'no')}
+                                    className={`w-full px-8 py-5 text-left text-base font-semibold transition ${certificateChoice === option.value
+                                            ? 'bg-slate-800 text-white'
+                                            : index === 0
+                                                ? 'bg-slate-900 text-white hover:bg-slate-800'
+                                                : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        } ${index === 0 ? 'border-b border-slate-200/70' : ''}`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
                         </div>
                     </div>
                 </div>
