@@ -17,10 +17,10 @@ const dashboardActions = [
         title: 'Start your Will',
         icon: FileEdit,
     },
-    {
-        title: 'Power of Attorney',
-        icon: BookOpenText,
-    },
+    // {
+    //     title: 'Power of Attorney',
+    //     icon: BookOpenText,
+    // },
     {
         title: 'Help',
         icon: LifeBuoy,
