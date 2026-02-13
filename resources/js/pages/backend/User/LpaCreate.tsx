@@ -51,6 +51,17 @@ export default function LpaCreate({ user }: Props) {
         birthMonth: '04',
         birthYear: '2002'
     });
+    const [contactDetails, setContactDetails] = useState({
+        addressLine1: 'bashundhara',
+        addressLine2: 'jomonah',
+        town: 'dhaka',
+        county: '',
+        country: 'Bangladesh',
+        postcode: '1362',
+        mobile: '01581088986',
+        landline: '',
+        email: 'vudud@mailinator.com'
+    });
     const [showOtherNames, setShowOtherNames] = useState(false);
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
 
@@ -76,6 +87,10 @@ export default function LpaCreate({ user }: Props) {
 
     const handleDonorChange = (field: keyof typeof donorDetails, value: string): void => {
         setDonorDetails((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleContactChange = (field: keyof typeof contactDetails, value: string): void => {
+        setContactDetails((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleStepChange = (direction: 'next' | 'prev') => {
@@ -161,6 +176,116 @@ export default function LpaCreate({ user }: Props) {
                     </div>
 
                     <p className="text-sm text-slate-500">Need to change your answer later? You can always revisit this step.</p>
+                </div>
+            );
+        }
+
+        if (currentStep === 3) {
+            return (
+                <div className="space-y-8 rounded-2xl max-w-4xl bg-white p-8 text-slate-800 shadow-sm">
+                    <div className="text-left">
+                        <h2 className="text-3xl font-semibold text-slate-900">
+                            Your <span className="text-primary-500">contact details</span>
+                        </h2>
+                        <div className="mt-2 h-px w-full bg-primary-100" />
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-slate-900">What's your address?</h3>
+                            <div className="grid gap-4 md:grid-cols-2">
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 1</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={contactDetails.addressLine1}
+                                        onChange={(event) => handleContactChange('addressLine1', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 2</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={contactDetails.addressLine2}
+                                        onChange={(event) => handleContactChange('addressLine2', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Town</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={contactDetails.town}
+                                        onChange={(event) => handleContactChange('town', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">County</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={contactDetails.county}
+                                        onChange={(event) => handleContactChange('county', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Country</label>
+                                    <div className="rounded-md border border-slate-200 bg-white px-3 py-2">
+                                        <select
+                                            className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                            value={contactDetails.country}
+                                            onChange={(event) => handleContactChange('country', event.target.value)}
+                                        >
+                                            {['Bangladesh', 'United Kingdom', 'United States', 'Canada'].map((country) => (
+                                                <option key={country} value={country}>
+                                                    {country}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Postcode</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={contactDetails.postcode}
+                                        onChange={(event) => handleContactChange('postcode', event.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-lg font-semibold text-slate-900">Contact Number</h3>
+                            <div className="mt-4 grid gap-4 md:grid-cols-2">
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">What's your mobile number?</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={contactDetails.mobile}
+                                        onChange={(event) => handleContactChange('mobile', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">What's your landline number?</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={contactDetails.landline}
+                                        onChange={(event) => handleContactChange('landline', event.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-lg font-semibold text-slate-900">What's your email address?</h3>
+                            <div className="mt-3">
+                                <input
+                                    className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                    value={contactDetails.email}
+                                    onChange={(event) => handleContactChange('email', event.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         }
