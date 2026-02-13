@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import UserLayout from '@/layouts/user-layout';
@@ -22,9 +22,42 @@ const lpaSteps = [
 
 export default function LpaCreate({ user }: Props) {
     const [currentStep, setCurrentStep] = useState(0);
-    const [selectedWhoOption, setSelectedWhoOption] = useState<string | null>(null);
+    const [selectedWhoOption, setSelectedWhoOption] = useState<string>('Me');
+    const [isEditingWho, setIsEditingWho] = useState(false);
+    const dropdownRef = useRef<HTMLSpanElement | null>(null);
 
     const whoOptions = useMemo(() => ['Me', 'Mirror'], []);
+
+    const getSelectionCopy = (): string => {
+        if (selectedWhoOption === 'Mirror') {
+            return 'mirror';
+        }
+
+        return 'yourself only';
+    };
+
+    const handleWhoSelection = (option: string): void => {
+        setSelectedWhoOption(option);
+        setIsEditingWho(false);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!isEditingWho) {
+                return;
+            }
+
+            if (dropdownRef.current && event.target instanceof Node && !dropdownRef.current.contains(event.target)) {
+                setIsEditingWho(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isEditingWho]);
 
     const handleStepChange = (direction: 'next' | 'prev') => {
         if (direction === 'next' && currentStep === 0 && !selectedWhoOption) {
@@ -97,34 +130,53 @@ export default function LpaCreate({ user }: Props) {
                         </div>
 
                         {/* Content Section */}
-                        <div className="space-y-4 p-6 pl-15 text-slate-800">
-                            <div className="flex flex-col items-start gap-6 text-left ">
-                                <img
-                                    src="https://online.zenco.com/images/family1.png"
-                                    alt="Family illustration"
-                                    className="h-32 w-auto"
-                                />
-                                <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.35em] text-primary-500">Step {currentStep + 1}</p>
-                                    <h2 className="mt-3 text-2xl font-semibold text-slate-900">Who are the Lasting Power of Attorney documents for?</h2>
-                                    <p className="mt-2 text-sm text-slate-600">Please tell us if these documents are for you or someone else.</p>
+                        <div className="space-y-4 rounded-2xl p-6 pl-12 text-slate-800">
+                            <div className="space-y-4 text-left">
+                                <h2 className="text-2xl font-semibold text-slate-900">
+                                    Who is the <span className="text-primary-500">Lasting Power of Attorney</span> for?
+                                </h2>
+                                <p className="text-base text-slate-700">
+                                    You have chosen to make documents for <span className="font-semibold text-primary-500">{getSelectionCopy()}.</span>
+                                </p>
+                                <div className="space-y-2 text-base text-slate-700">
+                                    <p className="flex flex-wrap items-center gap-2">
+                                        <span>If you have made a mistake and need these documents for someone else then</span>
+                                        <span ref={dropdownRef} className="relative inline-flex">
+                                            <button
+                                                type="button"
+                                                className="font-semibold text-primary-500 underline decoration-2 underline-offset-2 transition hover:text-primary-600"
+                                                onClick={() => setIsEditingWho((prev) => !prev)}
+                                                aria-haspopup="true"
+                                                aria-expanded={isEditingWho}
+                                            >
+                                                click here to change who these documents are for
+                                            </button>
+                                            <div
+                                                className={`absolute left-0 top-full z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-slate-100 transition duration-200 ease-out ${isEditingWho ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
+                                                    }`}
+                                            >
+                                                {whoOptions.map((option) => (
+                                                    <button
+                                                        key={option}
+                                                        type="button"
+                                                        onClick={() => handleWhoSelection(option)}
+                                                        className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition first:rounded-t-xl last:rounded-b-xl hover:bg-primary-50 ${selectedWhoOption === option ? 'text-primary-600' : 'text-slate-700'
+                                                            }`}
+                                                    >
+                                                        <span>{option === 'Mirror' ? 'Mirror' : 'Me'}</span>
+                                                        {selectedWhoOption === option && <span className="text-primary-500">•</span>}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </span>
+                                    </p>
                                 </div>
-                                <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
-                                    {whoOptions.map((option) => (
-                                        <button
-                                            key={option}
-                                            type="button"
-                                            onClick={() => setSelectedWhoOption(option)}
-                                            className={`rounded-xl border px-6 py-4 text-base font-semibold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md  hover:bg-primary-600 hover:text-white  ${selectedWhoOption === option
-                                                ? 'border-primary-400 bg-primary-50 text-primary-700'
-                                                : 'border-slate-200 bg-white text-slate-700 hover:border-primary-200'
-                                                }`}
-                                        >
-                                            {option}
-                                        </button>
-                                    ))}
-                                </div>
+                                <p className="text-base text-slate-700">Click the continue button to continue making Lasting Power of Attorney documents for yourself.</p>
                             </div>
+
+                            {(
+                                <p className="text-sm text-slate-500">Need to change your answer later? You can always revisit this step.</p>
+                            )}
                         </div>
 
                         {/* Navigation Buttons */}
