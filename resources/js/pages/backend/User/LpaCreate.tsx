@@ -33,11 +33,25 @@ const documentOptions = [
     }
 ];
 
+const donorTitleOptions = ['Mr', 'Mrs', 'Miss', 'Ms', 'Mx', 'Dr'];
+
 export default function LpaCreate({ user }: Props) {
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedWhoOption, setSelectedWhoOption] = useState<'Me' | 'Mirror'>('Me');
     const [isEditingWho, setIsEditingWho] = useState(false);
     const [selectedDocumentOption, setSelectedDocumentOption] = useState<string | null>(null);
+    const [donorDetails, setDonorDetails] = useState({
+        title: 'Mrs',
+        firstName: 'Samson',
+        middleNames: 'Jameson Giles',
+        lastName: 'Lopez',
+        preferredName: 'Mallory Colon',
+        otherNames: '',
+        birthDay: '28',
+        birthMonth: '04',
+        birthYear: '2002'
+    });
+    const [showOtherNames, setShowOtherNames] = useState(false);
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
 
     const getSelectionCopy = (): string => {
@@ -58,6 +72,10 @@ export default function LpaCreate({ user }: Props) {
     const handleWhoSelection = (option: 'Me' | 'Mirror'): void => {
         setSelectedWhoOption(option);
         setIsEditingWho(false);
+    };
+
+    const handleDonorChange = (field: keyof typeof donorDetails, value: string): void => {
+        setDonorDetails((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleStepChange = (direction: 'next' | 'prev') => {
@@ -188,10 +206,151 @@ export default function LpaCreate({ user }: Props) {
                         })}
                     </div>
                     {selectedDocument && (
-                        <p className="text-sm text-primary-600">
+                        <p className="text-base text-primary-600">
                             You have chosen the <span className="font-semibold">{selectedDocument.title}</span>. Click Continue to review the donor details next.
                         </p>
                     )}
+                </div>
+            );
+        }
+
+        if (currentStep === 2) {
+            return (
+                <div className="space-y-8 rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                    <div className="space-y-2 text-left">
+                        <h2 className="text-3xl font-semibold text-slate-900">
+                            About <span className="text-primary-500">You</span> (The Donor)
+                        </h2>
+                        <p className="text-base text-slate-600">
+                            The “Donor” is the person appointing others to make decisions on their behalf and must be:
+                        </p>
+                        <ul className="space-y-2 text-sm text-slate-700">
+                            <li className="flex items-start gap-2">
+                                <span className="text-primary-500">✔</span>
+                                <span>Aged 18 or over.</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-primary-500">✔</span>
+                                <span>Have mental capacity to make decisions at the time their Lasting Power of Attorney is made.</span>
+                            </li>
+                        </ul>
+                        <p className="text-sm text-slate-600">
+                            The Donor is the only one who can make decisions about their LPA and the people it should involve.
+                        </p>
+                    </div>
+
+                    <div className="space-y-6">
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-2 border-b border-primary-100 pb-2">
+                                <h3 className="text-xl font-semibold text-slate-900">Full legal name</h3>
+                            </div>
+                            <div className="grid gap-4 md:grid-cols-4">
+                                <div className="md:col-span-1">
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Title</label>
+                                    <div className="rounded-md border border-slate-200 bg-white px-3 py-2">
+                                        <select
+                                            className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                            value={donorDetails.title}
+                                            onChange={(event) => handleDonorChange('title', event.target.value)}
+                                        >
+                                            {donorTitleOptions.map((title) => (
+                                                <option key={title} value={title}>
+                                                    {title}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="md:col-span-1">
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">First name</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={donorDetails.firstName}
+                                        onChange={(event) => handleDonorChange('firstName', event.target.value)}
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Last name</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={donorDetails.lastName}
+                                        onChange={(event) => handleDonorChange('lastName', event.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid gap-4 md:grid-cols-2">
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Middle names (if any)</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={donorDetails.middleNames}
+                                        onChange={(event) => handleDonorChange('middleNames', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Preferred name (optional)</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={donorDetails.preferredName}
+                                        onChange={(event) => handleDonorChange('preferredName', event.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <button
+                                    type="button"
+                                    className="text-sm font-semibold text-primary-600 underline"
+                                    onClick={() => setShowOtherNames((prev) => !prev)}
+                                >
+                                    Known by any other names? Click here
+                                </button>
+                                {showOtherNames && (
+                                    <div>
+                                        <label className="mb-2 block text-sm font-medium text-slate-600">Other names (optional)</label>
+                                        <input
+                                            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                            value={donorDetails.otherNames}
+                                            onChange={(event) => handleDonorChange('otherNames', event.target.value)}
+                                            placeholder="Add any other names you have been known by"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-2 border-b border-primary-100 pb-2">
+                                <h3 className="text-xl font-semibold text-slate-900">Date of birth</h3>
+                            </div>
+                            <div className="grid gap-4 md:grid-cols-3">
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Day</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={donorDetails.birthDay}
+                                        onChange={(event) => handleDonorChange('birthDay', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Month</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={donorDetails.birthMonth}
+                                        onChange={(event) => handleDonorChange('birthMonth', event.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium text-slate-600">Year</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        value={donorDetails.birthYear}
+                                        onChange={(event) => handleDonorChange('birthYear', event.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         }
