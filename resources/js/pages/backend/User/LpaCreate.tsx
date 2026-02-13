@@ -20,7 +20,7 @@ const lpaSteps = [
     { key: 'fees', title: 'OPG Fees', description: 'Office of the Public Guardian fee' }
 ];
 
-const TOTAL_FORM_STEPS = 11;
+const TOTAL_FORM_STEPS = 12;
 
 const documentOptions = [
     {
@@ -141,6 +141,7 @@ export default function LpaCreate({ user }: Props) {
     const [lifeSustainingTreatment, setLifeSustainingTreatment] = useState<'yes' | 'no' | null>(null);
     const [applicant, setApplicant] = useState<string>('');
     const [documentRecipient, setDocumentRecipient] = useState<string>('');
+    const [certificateChoice, setCertificateChoice] = useState<'yes' | 'no' | null>(null);
 
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
@@ -170,6 +171,8 @@ export default function LpaCreate({ user }: Props) {
                 return Boolean(applicant);
             case 10:
                 return Boolean(documentRecipient);
+            case 11:
+                return Boolean(certificateChoice);
             default:
                 return true;
         }
@@ -1745,6 +1748,11 @@ export default function LpaCreate({ user }: Props) {
             return 6;
         }
 
+        // Certificate provider maps to the certificate step
+        if (currentStepIndex === 11) {
+            return 7;
+        }
+
         // Anything beyond application should advance naturally with an offset of -3
         if (currentStepIndex > 6) {
             return currentStepIndex - 3;
@@ -1820,7 +1828,7 @@ export default function LpaCreate({ user }: Props) {
                                 onClick={() => handleStepChange('next')}
                                 disabled={!canAdvanceFromStep(currentStep)}
                             >
-                                {(currentStep === 5 || currentStep === 6 || currentStep === 7 || currentStep === 8 || currentStep === 9 || currentStep === 10) ? 'Save and continue' : 'Continue'}
+                                {(currentStep === 5 || currentStep === 6 || currentStep === 7 || currentStep === 8 || currentStep === 9 || currentStep === 10 || currentStep === 11) ? 'Save and continue' : 'Continue'}
                                 <ArrowRight className="h-4 w-4" />
                             </button>
                         </div>
