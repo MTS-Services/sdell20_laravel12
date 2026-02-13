@@ -133,6 +133,7 @@ export default function LpaCreate({ user }: Props) {
         email: ''
     });
     const [isManualReplacementAddress, setIsManualReplacementAddress] = useState(false);
+    const [peopleToNotifyChoice, setPeopleToNotifyChoice] = useState<'yes' | 'no' | null>(null);
 
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
@@ -154,6 +155,8 @@ export default function LpaCreate({ user }: Props) {
                 return Boolean(canViewDocuments);
             case 6:
                 return Boolean(wantReplacementAttorneys);
+            case 7:
+                return Boolean(peopleToNotifyChoice);
             default:
                 return true;
         }
@@ -981,6 +984,52 @@ export default function LpaCreate({ user }: Props) {
             );
         }
 
+        if (currentStep === 7) {
+            return (
+                <div className="max-w-4xl space-y-8 rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                    <div>
+                        <h2 className="text-3xl font-semibold text-slate-900">
+                            People to <span className="text-primary-500">notify</span>
+                        </h2>
+                        <div className="mt-4 space-y-3 text-base text-slate-700">
+                            <p>
+                                You can let people know that you’re going to register this document. They can raise any concerns they have about the Lasting Powers of Attorney – for example, if there was any pressure or fraud in making it.
+                            </p>
+                            <p>When the document is registered, the person applying to register must send a notice to each ‘person to notify’.</p>
+                            <p>You can’t put any of the attorneys or replacement attorneys here.</p>
+                            <p>
+                                People to notify can object to the document, but only for certain reasons, after that they are no longer involved in the Lasting Powers of Attorney.
+                            </p>
+                            <p>Choose people who care about your best interests and who would be willing to speak up if they were concerned.</p>
+                            <p className="text-primary-500 font-semibold">Most people choose ‘No’ and do not enter anyone here.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="text-base md:text-lg  font-semibold text-slate-900 mb-4">Are there any people to notify?</p>
+                        <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-3">
+                            {[
+                                { value: 'no', label: 'No, there are no people to notify' },
+                                { value: 'yes', label: 'Yes, there are people to notify' }
+                            ].map((option) => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    onClick={() => setPeopleToNotifyChoice(option.value as 'yes' | 'no')}
+                                    className={`w-full rounded-lg px-6 py-4 text-left text-base font-semibold transition ${peopleToNotifyChoice === option.value
+                                        ? 'bg-slate-700 text-white'
+                                        : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        }`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         // Step 5: Can attorneys view your legal documents?
         if (currentStep === 5) {
             return (
@@ -999,8 +1048,8 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 onClick={() => setCanViewDocuments('yes')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'yes'
-                                        ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                    ? 'bg-slate-700 text-white'
+                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                     }`}
                             >
                                 Yes - give the attorneys authority
@@ -1009,8 +1058,8 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 onClick={() => setCanViewDocuments('no')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'no'
-                                        ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                    ? 'bg-slate-700 text-white'
+                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                     }`}
                             >
                                 No - do not give the attorneys authority
@@ -1061,8 +1110,8 @@ export default function LpaCreate({ user }: Props) {
                                             type="button"
                                             onClick={() => setWantReplacementAttorneys('no')}
                                             className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'no'
-                                                    ? 'bg-slate-700 text-white'
-                                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                                ? 'bg-slate-700 text-white'
+                                                : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                                 }`}
                                         >
                                             No
@@ -1071,8 +1120,8 @@ export default function LpaCreate({ user }: Props) {
                                             type="button"
                                             onClick={() => setWantReplacementAttorneys('yes')}
                                             className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'yes'
-                                                    ? 'bg-slate-700 text-white'
-                                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                                ? 'bg-slate-700 text-white'
+                                                : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                                 }`}
                                         >
                                             Yes
@@ -1480,7 +1529,7 @@ export default function LpaCreate({ user }: Props) {
                                 onClick={() => handleStepChange('next')}
                                 disabled={currentStep === lpaSteps.length - 1 || !canAdvanceFromStep(currentStep)}
                             >
-                                {currentStep === 5 || currentStep === 6 ? 'Save and continue' : 'Continue'}
+                                {currentStep === 5 || currentStep === 6 || currentStep === 7 ? 'Save and continue' : 'Continue'}
                                 <ArrowRight className="h-4 w-4" />
                             </button>
                         </div>
