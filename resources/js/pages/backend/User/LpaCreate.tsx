@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import UserLayout from '@/layouts/user-layout';
@@ -17,28 +17,61 @@ const lpaSteps = [
     { key: 'notify', title: 'People To Notify', description: 'People to notify' },
     { key: 'application', title: 'Application Information', description: 'Application information' },
     { key: 'certificate', title: 'Certificate Provider', description: 'Certification provider' },
-    { key: 'fees', title: 'OPG Fees', description: 'Office of the Public Guardian fee' },
+    { key: 'fees', title: 'OPG Fees', description: 'Office of the Public Guardian fee' }
+];
+
+const documentOptions = [
+    {
+        value: 'property',
+        title: 'Property & Finance LPA',
+        description: 'Manage money, property, and financial decisions.'
+    },
+    {
+        value: 'health',
+        title: 'Health & Welfare LPA',
+        description: 'Make decisions about health, care, and living arrangements.'
+    }
 ];
 
 export default function LpaCreate({ user }: Props) {
     const [currentStep, setCurrentStep] = useState(0);
-    const [selectedWhoOption, setSelectedWhoOption] = useState<string>('Me');
+    const [selectedWhoOption, setSelectedWhoOption] = useState<'Me' | 'Mirror'>('Me');
     const [isEditingWho, setIsEditingWho] = useState(false);
+    const [selectedDocumentOption, setSelectedDocumentOption] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
 
-    const whoOptions = useMemo(() => ['Me', 'Mirror'], []);
-
     const getSelectionCopy = (): string => {
-        if (selectedWhoOption === 'Mirror') {
-            return 'mirror';
-        }
-
-        return 'yourself only';
+        return selectedWhoOption === 'Mirror' ? 'mirror' : 'yourself only';
     };
 
-    const handleWhoSelection = (option: string): void => {
+    const canAdvanceFromStep = (stepIndex: number): boolean => {
+        switch (stepIndex) {
+            case 0:
+                return Boolean(selectedWhoOption);
+            case 1:
+                return Boolean(selectedDocumentOption);
+            default:
+                return true;
+        }
+    };
+
+    const handleWhoSelection = (option: 'Me' | 'Mirror'): void => {
         setSelectedWhoOption(option);
         setIsEditingWho(false);
+    };
+
+    const handleStepChange = (direction: 'next' | 'prev') => {
+        if (direction === 'next' && !canAdvanceFromStep(currentStep)) {
+            return;
+        }
+
+        setCurrentStep((prev) => {
+            if (direction === 'next') {
+                return Math.min(prev + 1, lpaSteps.length - 1);
+            }
+
+            return Math.max(prev - 1, 0);
+        });
     };
 
     useEffect(() => {
@@ -59,18 +92,117 @@ export default function LpaCreate({ user }: Props) {
         };
     }, [isEditingWho]);
 
-    const handleStepChange = (direction: 'next' | 'prev') => {
-        if (direction === 'next' && currentStep === 0 && !selectedWhoOption) {
-            return;
+    const renderStepContent = (): ReactElement => {
+        if (currentStep === 0) {
+            return (
+                <div className="space-y-4 rounded-2xl bg-white p-6 pl-12 text-slate-800 shadow-sm">
+                    <div className="space-y-4 text-left">
+                        <h2 className="text-2xl font-semibold text-slate-900">
+                            Who is the <span className="text-primary-500">Lasting Power of Attorney</span> for?
+                        </h2>
+                        <p className="text-base text-slate-700">
+                            You have chosen to make documents for <span className="font-semibold text-primary-500">{getSelectionCopy()}.</span>
+                        </p>
+                        <div className="space-y-2 text-base text-slate-700">
+                            <p className="flex flex-wrap items-center gap-2">
+                                <span>If you have made a mistake and need these documents for someone else then</span>
+                                <span ref={dropdownRef} className="relative inline-flex">
+                                    <button
+                                        type="button"
+                                        className="font-semibold text-primary-500 underline decoration-2 underline-offset-2 transition hover:text-primary-600"
+                                        onClick={() => setIsEditingWho((prev) => !prev)}
+                                        aria-haspopup="true"
+                                        aria-expanded={isEditingWho}
+                                    >
+                                        click here to change who these documents are for
+                                    </button>
+                                    <div
+                                        className={`absolute left-0 top-full z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-slate-100 transition duration-200 ease-out ${isEditingWho ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
+                                            }`}
+                                    >
+                                        {['Me', 'Mirror'].map((option) => (
+                                            <button
+                                                key={option}
+                                                type="button"
+                                                onClick={() => {
+                                                    setSelectedWhoOption(option as 'Me' | 'Mirror');
+                                                    setIsEditingWho(false);
+                                                }}
+                                                className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition first:rounded-t-xl last:rounded-b-xl hover:bg-primary-50 ${selectedWhoOption === option ? 'text-primary-600' : 'text-slate-700'
+                                                    }`}
+                                            >
+                                                <span>{option === 'Mirror' ? 'Mirror' : 'Me'}</span>
+                                                {selectedWhoOption === option && <span className="text-primary-500">•</span>}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </span>
+                            </p>
+                        </div>
+                        <p className="text-base text-slate-700">Click the continue button to continue making Lasting Power of Attorney documents for yourself.</p>
+                    </div>
+
+                    <p className="text-sm text-slate-500">Need to change your answer later? You can always revisit this step.</p>
+                </div>
+            );
         }
 
-        setCurrentStep((prev) => {
-            if (direction === 'next') {
-                return Math.min(prev + 1, lpaSteps.length - 1);
-            }
+        if (currentStep === 1) {
+            const selectedDocument = selectedDocumentOption ? documentOptions.find((opt) => opt.value === selectedDocumentOption) : null;
 
-            return Math.max(prev - 1, 0);
-        });
+            return (
+                <div className="space-y-5 px-6 text-slate-800 ">
+                    <div className="space-y-3 text-left max-w-3xl">
+                        <h2 className="text-2xl font-semibold text-slate-900 mb-8">
+                            Which <span className="text-primary-500">Lasting Power of Attorney</span> documents do you need?
+                        </h2>
+                        <p className="text-base text-slate-600">
+                            You need to choose which type of documents you want for yourself – select Health &amp; Welfare for health decisions, Property &amp; Finance for
+                            financial decisions, or choose both to stay fully protected.
+                        </p>
+                        <div className="flex items-start gap-3 rounded-xl bg-primary-50/70 px-4 py-3 text-sm text-primary-700">
+                            <span className="mt-0.5 text-lg">💡</span>
+                            <p className="font-medium">
+                                We strongly recommend taking both documents for peace of mind and the best protection.
+                            </p>
+                        </div>
+                        <p className="text-lg font-semibold text-slate-900">
+                            Which documents do <span className="text-primary-500">you</span> need?
+                        </p>
+                    </div>
+                    <div className="overflow-hidden rounded-md text-center max-w-3xl border border-slate-200">
+                        {documentOptions.map((option, index) => {
+                            const isSelected = selectedDocumentOption === option.value;
+
+                            return (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    onClick={() => setSelectedDocumentOption(option.value)}
+                                    className={`flex w-full items-center justify-center gap-2 px-6 py-4 text-center text-base font-semibold transition ${isSelected ? 'bg-primary-600 text-white' : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        } ${index !== documentOptions.length - 1 ? 'border-b border-slate-200' : ''}`}
+                                >
+                                    {option.title}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    {selectedDocument && (
+                        <p className="text-sm text-primary-600">
+                            You have chosen the <span className="font-semibold">{selectedDocument.title}</span>. Click Continue to review the donor details next.
+                        </p>
+                    )}
+                </div>
+            );
+        }
+
+        const nextStep = lpaSteps[currentStep];
+        return (
+            <div className="rounded-2xl bg-white p-8 text-slate-700 shadow-sm">
+                <p className="text-lg font-semibold text-slate-900">{nextStep?.title ?? 'Upcoming Step'}</p>
+                <p className="mt-2 text-sm text-slate-500">This part of the journey will be completed in the next iteration.</p>
+            </div>
+        );
     };
 
     return (
@@ -79,7 +211,7 @@ export default function LpaCreate({ user }: Props) {
                 <div className="container mx-auto">
                     <div className="space-y-6">
                         {/* Updated Stepper Design */}
-                        <div className=" pb-6 ">
+                        <div className="pb-6">
                             <div className="relative">
                                 {/* Connecting Line */}
                                 <div className="absolute inset-x-0 top-3.5 mx-auto h-0.5 bg-slate-200" style={{ width: 'calc(100% - 80px)', left: '12px' }} aria-hidden="true" />
@@ -94,30 +226,18 @@ export default function LpaCreate({ user }: Props) {
                                             <div key={step.key} className="flex flex-col items-center text-center" style={{ minWidth: '80px' }}>
                                                 {/* Circle Indicator */}
                                                 <div
-                                                    className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-white transition-all duration-200 ${isActive
-                                                        ? 'border-primary-500 shadow-md'
-                                                        : isCompleted
-                                                            ? 'border-primary-400'
-                                                            : 'border-slate-300'
+                                                    className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-white transition-all duration-200 ${isActive ? 'border-primary-500 shadow-md' : isCompleted ? 'border-primary-400' : 'border-slate-300'
                                                         }`}
                                                 >
                                                     <span
-                                                        className={`h-3 w-3 rounded-full transition-all duration-200 ${isActive
-                                                            ? 'bg-primary-500'
-                                                            : isCompleted
-                                                                ? 'bg-primary-400'
-                                                                : 'bg-transparent'
+                                                        className={`h-3 w-3 rounded-full transition-all duration-200 ${isActive ? 'bg-primary-500' : isCompleted ? 'bg-primary-400' : 'bg-transparent'
                                                             }`}
                                                     />
                                                 </div>
 
                                                 {/* Step Title */}
                                                 <p
-                                                    className={`mt-3 text-xs font-medium transition-colors duration-200 ${isActive
-                                                        ? 'text-primary-600'
-                                                        : isCompleted
-                                                            ? 'text-slate-600'
-                                                            : 'text-slate-400'
+                                                    className={`mt-3 text-xs font-medium transition-colors duration-200 ${isActive ? 'text-primary-600' : isCompleted ? 'text-slate-600' : 'text-slate-400'
                                                         }`}
                                                 >
                                                     {step.title}
@@ -130,54 +250,7 @@ export default function LpaCreate({ user }: Props) {
                         </div>
 
                         {/* Content Section */}
-                        <div className="space-y-4 rounded-2xl p-6 pl-12 text-slate-800">
-                            <div className="space-y-4 text-left">
-                                <h2 className="text-2xl font-semibold text-slate-900">
-                                    Who is the <span className="text-primary-500">Lasting Power of Attorney</span> for?
-                                </h2>
-                                <p className="text-base text-slate-700">
-                                    You have chosen to make documents for <span className="font-semibold text-primary-500">{getSelectionCopy()}.</span>
-                                </p>
-                                <div className="space-y-2 text-base text-slate-700">
-                                    <p className="flex flex-wrap items-center gap-2">
-                                        <span>If you have made a mistake and need these documents for someone else then</span>
-                                        <span ref={dropdownRef} className="relative inline-flex">
-                                            <button
-                                                type="button"
-                                                className="font-semibold text-primary-500 underline decoration-2 underline-offset-2 transition hover:text-primary-600"
-                                                onClick={() => setIsEditingWho((prev) => !prev)}
-                                                aria-haspopup="true"
-                                                aria-expanded={isEditingWho}
-                                            >
-                                                click here to change who these documents are for
-                                            </button>
-                                            <div
-                                                className={`absolute left-0 top-full z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-slate-100 transition duration-200 ease-out ${isEditingWho ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
-                                                    }`}
-                                            >
-                                                {whoOptions.map((option) => (
-                                                    <button
-                                                        key={option}
-                                                        type="button"
-                                                        onClick={() => handleWhoSelection(option)}
-                                                        className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition first:rounded-t-xl last:rounded-b-xl hover:bg-primary-50 ${selectedWhoOption === option ? 'text-primary-600' : 'text-slate-700'
-                                                            }`}
-                                                    >
-                                                        <span>{option === 'Mirror' ? 'Mirror' : 'Me'}</span>
-                                                        {selectedWhoOption === option && <span className="text-primary-500">•</span>}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </span>
-                                    </p>
-                                </div>
-                                <p className="text-base text-slate-700">Click the continue button to continue making Lasting Power of Attorney documents for yourself.</p>
-                            </div>
-
-                            {(
-                                <p className="text-sm text-slate-500">Need to change your answer later? You can always revisit this step.</p>
-                            )}
-                        </div>
+                        {renderStepContent()}
 
                         {/* Navigation Buttons */}
                         <div className="flex flex-wrap items-center gap-3">
@@ -194,7 +267,7 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 className="inline-flex items-center gap-2 rounded-full bg-primary-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50"
                                 onClick={() => handleStepChange('next')}
-                                disabled={currentStep === lpaSteps.length - 1 || (currentStep === 0 && !selectedWhoOption)}
+                                disabled={currentStep === lpaSteps.length - 1 || !canAdvanceFromStep(currentStep)}
                             >
                                 Continue
                                 <ArrowRight className="h-4 w-4" />
