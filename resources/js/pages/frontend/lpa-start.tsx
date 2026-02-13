@@ -12,9 +12,9 @@ type StepOption = {
 const PartnerAdultQuestion: React.FC = () => (
     <>
         <span>Are you and your partner both </span>
-        <span className="text-primary-500">over 18</span>
+        <span className="text-lpa-step">over 18</span>
         <span> and have </span>
-        <span className="text-primary-500">mental capacity</span>
+        <span className="text-lpa-step">mental capacity</span>
         <span> to make decisions?</span>
     </>
 );
@@ -22,16 +22,16 @@ const PartnerAdultQuestion: React.FC = () => (
 const PartnerRegionQuestion: React.FC = () => (
     <>
         <span>Do you and your partner both live in </span>
-        <span className="text-primary-500">England or Wales?</span>
+        <span className="text-lpa-step">England or Wales?</span>
     </>
 );
 
 const SinglePersonAdultQuestion: React.FC = () => (
     <>
         <span>Is the person who these documents are for </span>
-        <span className="text-primary-500">over 18</span>
+        <span className="text-lpa-step">over 18</span>
         <span> years old and has </span>
-        <span className="text-primary-500">mental capacity</span>
+        <span className="text-lpa-step">mental capacity</span>
         <span> to make decisions?</span>
     </>
 );
@@ -39,16 +39,16 @@ const SinglePersonAdultQuestion: React.FC = () => (
 const SinglePersonRegionQuestion: React.FC = () => (
     <>
         <span>Does the person the documents are for live in </span>
-        <span className="text-primary-500">England or Wales?</span>
+        <span className="text-lpa-step">England or Wales?</span>
     </>
 );
 
 const MultiPersonAdultQuestion: React.FC = () => (
     <>
         <span>Are all the people who these documents are for </span>
-        <span className="text-primary-500">over 18</span>
+        <span className="text-lpa-step">over 18</span>
         <span> years old and have </span>
-        <span className="text-primary-500">mental capacity</span>
+        <span className="text-lpa-step">mental capacity</span>
         <span> to make decisions?</span>
     </>
 );
@@ -56,7 +56,7 @@ const MultiPersonAdultQuestion: React.FC = () => (
 const MultiPersonRegionQuestion: React.FC = () => (
     <>
         <span>Do all the people who these documents are for live in </span>
-        <span className="text-primary-500">England or Wales?</span>
+        <span className="text-lpa-step">England or Wales?</span>
     </>
 );
 
@@ -173,7 +173,7 @@ const highlightQuestion = (question: string, highlight?: string): React.ReactNod
 
     return parts.map((part, index) =>
         part.match(regex) ? (
-            <span key={`${part}-${index}`} className="text-primary-500">
+            <span key={`${part}-${index}`} className="text-lpa-step">
                 {part}
             </span>
         ) : (
@@ -359,7 +359,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowHelpPanel((prev) => !prev)}
-                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300 hover:text-primary-500"
+                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300 hover:text-lpa-step"
                             >
                                 Need help?
                                 <ChevronDown
@@ -406,7 +406,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-primary-500 lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-lpa-step lg:text-base"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -445,7 +445,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleRegionalProceed}
-                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-primary-500 hover:shadow-lg lg:w-auto"
+                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-lpa-step hover:shadow-lg lg:w-auto"
                             >
                                 I understand and wish to proceed
                             </button>
@@ -635,7 +635,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-slate-600 transition hover:text-primary-500 sm:text-base md:text-lg"
+                                className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-slate-600 transition hover:text-lpa-step sm:text-base md:text-lg"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
