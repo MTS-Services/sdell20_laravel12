@@ -20,6 +20,8 @@ const lpaSteps = [
     { key: 'fees', title: 'OPG Fees', description: 'Office of the Public Guardian fee' }
 ];
 
+const TOTAL_FORM_STEPS = 11;
+
 const documentOptions = [
     {
         value: 'property',
@@ -136,7 +138,9 @@ export default function LpaCreate({ user }: Props) {
 
     // States for new steps
     const [notifyPeople, setNotifyPeople] = useState<'yes' | 'no' | null>(null);
+    const [lifeSustainingTreatment, setLifeSustainingTreatment] = useState<'yes' | 'no' | null>(null);
     const [applicant, setApplicant] = useState<string>('');
+    const [documentRecipient, setDocumentRecipient] = useState<string>('');
 
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
@@ -159,9 +163,13 @@ export default function LpaCreate({ user }: Props) {
             case 6:
                 return Boolean(wantReplacementAttorneys);
             case 7:
-                return Boolean(notifyPeople);
+                return Boolean(lifeSustainingTreatment);
             case 8:
+                return Boolean(notifyPeople);
+            case 9:
                 return Boolean(applicant);
+            case 10:
+                return Boolean(documentRecipient);
             default:
                 return true;
         }
@@ -263,7 +271,7 @@ export default function LpaCreate({ user }: Props) {
 
         setCurrentStep((prev) => {
             if (direction === 'next') {
-                return Math.min(prev + 1, lpaSteps.length - 1);
+                return Math.min(prev + 1, TOTAL_FORM_STEPS - 1);
             }
 
             return Math.max(prev - 1, 0);
@@ -1007,8 +1015,8 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 onClick={() => setCanViewDocuments('yes')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'yes'
-                                        ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                    ? 'bg-slate-700 text-white'
+                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                     }`}
                             >
                                 Yes - give the attorneys authority
@@ -1017,8 +1025,8 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 onClick={() => setCanViewDocuments('no')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'no'
-                                        ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                    ? 'bg-slate-700 text-white'
+                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                     }`}
                             >
                                 No - do not give the attorneys authority
@@ -1069,8 +1077,8 @@ export default function LpaCreate({ user }: Props) {
                                             type="button"
                                             onClick={() => setWantReplacementAttorneys('no')}
                                             className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'no'
-                                                    ? 'bg-slate-700 text-white'
-                                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                                ? 'bg-slate-700 text-white'
+                                                : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                                 }`}
                                         >
                                             No
@@ -1079,8 +1087,8 @@ export default function LpaCreate({ user }: Props) {
                                             type="button"
                                             onClick={() => setWantReplacementAttorneys('yes')}
                                             className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'yes'
-                                                    ? 'bg-slate-700 text-white'
-                                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                                ? 'bg-slate-700 text-white'
+                                                : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
                                                 }`}
                                         >
                                             Yes
@@ -1391,10 +1399,66 @@ export default function LpaCreate({ user }: Props) {
             );
         }
 
-        // Step 7: People To Notify
+
+
+        // Step 7: Life-sustaining Treatment
         if (currentStep === 7) {
             return (
-                <div className="max-w-4xl space-y-6">
+                <div className="mx-auto max-w-4xl space-y-6">
+                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                        <h2 className="text-3xl font-semibold text-center text-slate-900 mb-8">
+                            Life-sustaining <span className="text-cyan-500">Treatment</span>
+                        </h2>
+
+                        <div className="space-y-6 text-base text-slate-900 mb-8">
+                            <p>
+                                <span className="text-cyan-500">You</span> must choose what you want to happen if you needed medical help to keep you alive and you no longer had mental capacity.
+                            </p>
+
+                            <p>
+                                If you choose YES and <span className="text-cyan-500">you</span> ever needed life-sustaining treatment but can't make decisions, the attorneys can speak to doctors on your behalf as if they were <span className="text-cyan-500">you</span>.
+                            </p>
+
+                            <p>
+                                If you choose NO doctors will make decisions about life-sustaining treatment for <span className="text-cyan-500">you</span>.
+                            </p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-slate-900">
+                                Do you want the attorneys to make decisions about life-sustaining treatment?
+                            </h3>
+                            <div className="overflow-hidden rounded-md border border-slate-200">
+                                <button
+                                    type="button"
+                                    onClick={() => setLifeSustainingTreatment('yes')}
+                                    className={`w-full px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'yes'
+                                        ? 'bg-slate-600 text-white'
+                                        : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        }`}
+                                >
+                                    Yes - give the attorneys authority
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setLifeSustainingTreatment('no')}
+                                    className={`w-full border-t border-slate-200 px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'no'
+                                        ? 'bg-slate-600 text-white'
+                                        : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        }`}
+                                >
+                                    No - do not give the attorneys authority
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        // Step 8: People To Notify
+        if (currentStep === 8) {
+            return (
+                <div className="mx-auto max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-2xl font-semibold text-slate-900 mb-6">
                             People to <span className="text-cyan-500">notify</span>
@@ -1432,22 +1496,20 @@ export default function LpaCreate({ user }: Props) {
                                 <button
                                     type="button"
                                     onClick={() => setNotifyPeople('no')}
-                                    className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
-                                        notifyPeople === 'no'
-                                            ? 'bg-slate-700 text-white'
-                                            : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
-                                    }`}
+                                    className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${notifyPeople === 'no'
+                                        ? 'bg-slate-700 text-white'
+                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                        }`}
                                 >
                                     No, there are no people to notify
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setNotifyPeople('yes')}
-                                    className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
-                                        notifyPeople === 'yes'
-                                            ? 'bg-slate-700 text-white'
-                                            : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
-                                    }`}
+                                    className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${notifyPeople === 'yes'
+                                        ? 'bg-slate-700 text-white'
+                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                        }`}
                                 >
                                     Yes, there are people to notify
                                 </button>
@@ -1457,11 +1519,13 @@ export default function LpaCreate({ user }: Props) {
                 </div>
             );
         }
+        // Step 9: Application Information - Who is applying to register
+        if (currentStep === 9) {
+            const selectedAttorney = applicant === 'attorneys' && attorneys.length > 0 ? attorneys[0] : null;
+            const selectedDonor = donorDetails;
 
-        // Step 8: Application Information
-        if (currentStep === 8) {
             return (
-                <div className="max-w-4xl space-y-6">
+                <div className="mx-auto max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-2xl font-semibold text-slate-900 mb-6">
                             Who is <span className="text-cyan-500">applying to register?</span>
@@ -1481,8 +1545,8 @@ export default function LpaCreate({ user }: Props) {
                             </p>
                         </div>
 
-                        <div>
-                            <h3 className="text-lg font-semibold text-slate-900 mb-4">Who is applying to register?</h3>
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-slate-900">Who is applying to register?</h3>
                             <div className="rounded-md border border-slate-300 bg-white">
                                 <select
                                     className="w-full border-none bg-transparent px-4 py-3 text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
@@ -1493,6 +1557,91 @@ export default function LpaCreate({ user }: Props) {
                                     <option value="donor">Donor</option>
                                     <option value="attorneys">Attorneys</option>
                                 </select>
+                            </div>
+
+                            {applicant === 'attorneys' && attorneys.length === 1 && selectedAttorney && (
+                                <div className="space-y-3">
+                                    <p className="text-sm text-slate-600">You only have one attorney, they have been automatically selected.</p>
+                                    <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
+                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-semibold">
+                                                {selectedAttorney.title} {selectedAttorney.firstName} {selectedAttorney.middleNames} {selectedAttorney.lastName}
+                                            </p>
+                                            <p className="text-sm">{selectedAttorney.email}</p>
+                                        </div>
+                                        <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
+                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {applicant === 'donor' && (
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
+                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-semibold">
+                                                {selectedDonor.title} {selectedDonor.firstName} {selectedDonor.middleNames} {selectedDonor.lastName}
+                                            </p>
+                                            <p className="text-sm">{contactDetails.email}</p>
+                                        </div>
+                                        <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
+                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Step 10: Application Information - Who should receive the document
+        if (currentStep === 10) {
+            return (
+                <div className="mx-auto max-w-4xl space-y-6">
+                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                        <h2 className="text-2xl font-semibold text-slate-900 mb-6">
+                            Who should <span className="text-cyan-500">receive the document?</span>
+                        </h2>
+
+                        <div className="space-y-6">
+                            <p className="text-base text-slate-700">
+                                Once this document is registered with the Office of the Public Guardian (OPG) it will be sent to the person listed below.
+                            </p>
+
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold text-slate-900">Where should the registered document be sent?</h3>
+                                <div className="rounded-md border border-slate-300 bg-white">
+                                    <select
+                                        className="w-full border-none bg-transparent px-4 py-3 text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                                        value={documentRecipient}
+                                        onChange={(e) => setDocumentRecipient(e.target.value)}
+                                    >
+                                        <option value="">Choose from this list...</option>
+                                        <option value="attorney">Attorney</option>
+                                        <option value="donor">Donor</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                {documentRecipient && (
+                                    <p className="text-sm text-cyan-500">Select the person who should receive the document</p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -1595,9 +1744,9 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 className="inline-flex items-center gap-2 rounded-full bg-primary-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50"
                                 onClick={() => handleStepChange('next')}
-                                disabled={currentStep === lpaSteps.length - 1 || !canAdvanceFromStep(currentStep)}
+                                disabled={currentStep === TOTAL_FORM_STEPS - 1 || !canAdvanceFromStep(currentStep)}
                             >
-                                {currentStep === 5 || currentStep === 6 || currentStep === 7 ? 'Save and continue' : 'Continue'}
+                                {(currentStep === 5 || currentStep === 6 || currentStep === 7 || currentStep === 8 || currentStep === 9 || currentStep === 10) ? 'Save and continue' : 'Continue'}
                                 <ArrowRight className="h-4 w-4" />
                             </button>
                         </div>
