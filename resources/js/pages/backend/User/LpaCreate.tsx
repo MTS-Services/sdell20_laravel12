@@ -1461,7 +1461,7 @@ export default function LpaCreate({ user }: Props) {
         // Step 8: Application Information
         if (currentStep === 8) {
             return (
-                <div className="mx-auto max-w-4xl space-y-6">
+                <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
                         <h2 className="text-2xl font-semibold text-slate-900 mb-6">
                             Who is <span className="text-cyan-500">applying to register?</span>
