@@ -180,7 +180,7 @@ export default function LpaCreate({ user }: Props) {
             );
         }
 
-       
+
 
         if (currentStep === 1) {
             const selectedDocument = selectedDocumentOption ? documentOptions.find((opt) => opt.value === selectedDocumentOption) : null;
@@ -371,11 +371,11 @@ export default function LpaCreate({ user }: Props) {
                 </div>
             );
         }
- if (currentStep === 3) {
+        if (currentStep === 3) {
             return (
                 <div className="space-y-8 rounded-2xl max-w-4xl bg-white p-8 text-slate-800 shadow-sm">
                     <div className="text-left">
-                        <h2 className="text-3xl font-semibold text-slate-900">
+                        <h2 className="text-3xl font-semibold text-center text-slate-900">
                             Your <span className="text-primary-500">contact details</span>
                         </h2>
                         <div className="mt-2 h-px w-full bg-primary-100" />
