@@ -239,7 +239,7 @@ export default function LpaCreate({ user }: Props) {
                             About <span className="text-primary-500">You</span> (The Donor)
                         </h2>
                         <p className="text-base text-slate-600">
-                            The “Donor” is the person appointing others to make decisions on their behalf and must be:
+                            The "Donor" is the person appointing others to make decisions on their behalf and must be:
                         </p>
                         <ul className="space-y-2 text-sm text-slate-700">
                             <li className="flex items-start gap-2">
@@ -378,6 +378,7 @@ export default function LpaCreate({ user }: Props) {
                         <h2 className="text-3xl font-semibold text-center text-slate-900">
                             Your <span className="text-primary-500">contact details</span>
                         </h2>
+                        <p className="text-center text-sm text-slate-500 mt-2">Complete the donor information</p>
                         <div className="mt-2 h-px w-full bg-primary-100" />
                     </div>
 
@@ -489,6 +490,19 @@ export default function LpaCreate({ user }: Props) {
         );
     };
 
+    // Helper function to map currentStep to display step for the progress indicator
+    const getDisplayStep = (currentStepIndex: number): number => {
+        // Steps 2 and 3 both map to step 2 in the visual progress
+        if (currentStepIndex === 3) {
+            return 2;
+        }
+        // After step 3, we need to offset by -1 because we're "hiding" step 3 in the visual
+        if (currentStepIndex > 3) {
+            return currentStepIndex - 1;
+        }
+        return currentStepIndex;
+    };
+
     return (
         <UserLayout>
             <div className="bg-slate-50 py-10 sm:pb-12">
@@ -503,8 +517,11 @@ export default function LpaCreate({ user }: Props) {
                                 {/* Steps */}
                                 <div className="relative flex items-start justify-between">
                                     {lpaSteps.map((step, index) => {
-                                        const isActive = currentStep === index;
-                                        const isCompleted = currentStep > index;
+                                        // Map currentStep to display step
+                                        const displayStep = getDisplayStep(currentStep);
+                                        
+                                        const isActive = displayStep === index;
+                                        const isCompleted = displayStep > index;
 
                                         return (
                                             <div key={step.key} className="flex flex-col items-center text-center" style={{ minWidth: '80px' }}>
