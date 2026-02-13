@@ -96,8 +96,47 @@ export default function LpaCreate({ user }: Props) {
         email: ''
     });
     const [isManualAddress, setIsManualAddress] = useState(false);
+    
+    // New states for the additional attorney steps
+    const [canViewDocuments, setCanViewDocuments] = useState<'yes' | 'no' | null>(null);
+    const [wantReplacementAttorneys, setWantReplacementAttorneys] = useState<'yes' | 'no' | null>(null);
+    const [showReplacementAttorneyModal, setShowReplacementAttorneyModal] = useState(false);
+    const [replacementAttorneys, setReplacementAttorneys] = useState<Array<{
+        id: string;
+        title: string;
+        firstName: string;
+        lastName: string;
+        middleNames: string;
+        postcode: string;
+        addressLine1: string;
+        addressLine2: string;
+        town: string;
+        county: string;
+        birthDay: string;
+        birthMonth: string;
+        birthYear: string;
+        email: string;
+    }>>([]);
+    const [currentReplacementAttorney, setCurrentReplacementAttorney] = useState({
+        title: 'Mr',
+        firstName: '',
+        lastName: '',
+        middleNames: '',
+        postcode: '',
+        addressLine1: '',
+        addressLine2: '',
+        town: '',
+        county: '',
+        birthDay: '',
+        birthMonth: '',
+        birthYear: '',
+        email: ''
+    });
+    const [isManualReplacementAddress, setIsManualReplacementAddress] = useState(false);
+    
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
+    const replacementModalRef = useRef<HTMLDivElement | null>(null);
 
     const getSelectionCopy = (): string => {
         return selectedWhoOption === 'Mirror' ? 'mirror' : 'yourself only';
@@ -111,6 +150,10 @@ export default function LpaCreate({ user }: Props) {
                 return Boolean(selectedDocumentOption);
             case 4:
                 return attorneys.length > 0;
+            case 5:
+                return Boolean(canViewDocuments);
+            case 6:
+                return Boolean(wantReplacementAttorneys);
             default:
                 return true;
         }
@@ -133,8 +176,16 @@ export default function LpaCreate({ user }: Props) {
         setCurrentAttorney((prev) => ({ ...prev, [field]: value }));
     };
 
+    const handleReplacementAttorneyChange = (field: keyof typeof currentReplacementAttorney, value: string): void => {
+        setCurrentReplacementAttorney((prev) => ({ ...prev, [field]: value }));
+    };
+
     const handleAddAttorney = (): void => {
         setShowAttorneyModal(true);
+    };
+
+    const handleAddReplacementAttorney = (): void => {
+        setShowReplacementAttorneyModal(true);
     };
 
     const handleSaveAttorney = (): void => {
@@ -162,9 +213,39 @@ export default function LpaCreate({ user }: Props) {
         setShowAttorneyModal(false);
     };
 
+    const handleSaveReplacementAttorney = (): void => {
+        const newAttorney = {
+            ...currentReplacementAttorney,
+            id: Date.now().toString()
+        };
+        setReplacementAttorneys((prev) => [...prev, newAttorney]);
+        setCurrentReplacementAttorney({
+            title: 'Mr',
+            firstName: '',
+            lastName: '',
+            middleNames: '',
+            postcode: '',
+            addressLine1: '',
+            addressLine2: '',
+            town: '',
+            county: '',
+            birthDay: '',
+            birthMonth: '',
+            birthYear: '',
+            email: ''
+        });
+        setIsManualReplacementAddress(false);
+        setShowReplacementAttorneyModal(false);
+    };
+
     const handleCloseAttorneyModal = (): void => {
         setShowAttorneyModal(false);
         setIsManualAddress(false);
+    };
+
+    const handleCloseReplacementAttorneyModal = (): void => {
+        setShowReplacementAttorneyModal(false);
+        setIsManualReplacementAddress(false);
     };
 
     const handleStepChange = (direction: 'next' | 'prev') => {
@@ -216,6 +297,24 @@ export default function LpaCreate({ user }: Props) {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [showAttorneyModal]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!showReplacementAttorneyModal) {
+                return;
+            }
+
+            if (replacementModalRef.current && event.target instanceof Node && !replacementModalRef.current.contains(event.target)) {
+                handleCloseReplacementAttorneyModal();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showReplacementAttorneyModal]);
 
     const renderStepContent = (): ReactElement => {
         if (currentStep === 0) {
@@ -600,7 +699,7 @@ export default function LpaCreate({ user }: Props) {
 
                                 {attorneys.length === 0 ? (
                                     <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center text-sm text-slate-500">
-                                        You haven’t added any attorneys yet. Click “Add new attorney” to start.
+                                        You haven't added any attorneys yet. Click "Add new attorney" to start.
                                     </div>
                                 ) : (
                                     <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -881,6 +980,413 @@ export default function LpaCreate({ user }: Props) {
                 </>
             );
         }
+
+        // Step 5: Can attorneys view your legal documents?
+        if (currentStep === 5) {
+            return (
+                <div className="mx-auto max-w-4xl space-y-6">
+                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                        <h2 className="text-2xl font-semibold text-slate-900 mb-6">
+                            Can attorneys <span className="text-cyan-500">view your legal documents?</span>
+                        </h2>
+
+                        <p className="text-base text-slate-700 mb-8">
+                            Are you happy for your Attorneys to view your legal documents if you lose mental capacity?
+                        </p>
+
+                        <div className="space-y-3">
+                            <button
+                                type="button"
+                                onClick={() => setCanViewDocuments('yes')}
+                                className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
+                                    canViewDocuments === 'yes'
+                                        ? 'bg-slate-700 text-white'
+                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                }`}
+                            >
+                                Yes - give the attorneys authority
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setCanViewDocuments('no')}
+                                className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
+                                    canViewDocuments === 'no'
+                                        ? 'bg-slate-700 text-white'
+                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                }`}
+                            >
+                                No - do not give the attorneys authority
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="rounded-xl bg-cyan-50/70 border border-cyan-200 p-4">
+                        <button
+                            type="button"
+                            className="flex w-full items-center justify-between text-left"
+                        >
+                            <span className="text-base font-semibold text-cyan-700">NEED HELP?</span>
+                            <svg className="h-5 w-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Step 6: Replacement Attorneys
+        if (currentStep === 6) {
+            return (
+                <>
+                    <div className="grid gap-8 lg:grid-cols-6">
+                        {/* Main Content */}
+                        <div className="lg:col-span-4 space-y-6">
+                            <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                                <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+                                    Replacement <span className="text-cyan-500">Attorneys</span>
+                                </h2>
+
+                                <p className="text-slate-700 mb-4">
+                                    One or more replacement attorneys can be appointed, this is optional.
+                                </p>
+
+                                <p className="text-slate-700 mb-6">
+                                    Replacement attorneys are people a donor appoints to make decisions on their behalf if one of their attorneys
+                                    can no longer make decisions on their behalf.
+                                </p>
+
+                                <div className="mb-6">
+                                    <h3 className="text-lg font-semibold text-slate-900 mb-4">Do you want any replacement attorneys?</h3>
+                                    <div className="space-y-3">
+                                        <button
+                                            type="button"
+                                            onClick={() => setWantReplacementAttorneys('no')}
+                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
+                                                wantReplacementAttorneys === 'no'
+                                                    ? 'bg-slate-700 text-white'
+                                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                            }`}
+                                        >
+                                            No
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setWantReplacementAttorneys('yes')}
+                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
+                                                wantReplacementAttorneys === 'yes'
+                                                    ? 'bg-slate-700 text-white'
+                                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                            }`}
+                                        >
+                                            Yes
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {wantReplacementAttorneys === 'yes' && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={handleAddReplacementAttorney}
+                                            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-slate-700 font-medium transition hover:border-primary-400 hover:bg-slate-50 mb-6"
+                                        >
+                                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                            </svg>
+                                            Add replacement attorney
+                                        </button>
+
+                                        {replacementAttorneys.length > 0 && (
+                                            <div className="grid gap-4 md:grid-cols-2">
+                                                {replacementAttorneys.map((attorney) => (
+                                                    <div key={attorney.id} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                                                        <p className="text-base font-semibold text-slate-900">
+                                                            {attorney.title} {attorney.firstName} {attorney.middleNames} {attorney.lastName}
+                                                        </p>
+                                                        <p className="mt-1 text-sm text-slate-600">
+                                                            Born: {attorney.birthDay || '--'}/{attorney.birthMonth || '--'}/{attorney.birthYear || '----'}
+                                                        </p>
+                                                        {(attorney.addressLine1 || attorney.postcode) && (
+                                                            <div className="mt-3 text-sm text-slate-600">
+                                                                <p>{attorney.addressLine1}</p>
+                                                                {attorney.addressLine2 && <p>{attorney.addressLine2}</p>}
+                                                                <p>
+                                                                    {[attorney.town, attorney.county, attorney.postcode].filter(Boolean).join(', ')}
+                                                                </p>
+                                                            </div>
+                                                        )}
+                                                        {attorney.email && <p className="mt-3 text-sm text-slate-600">Email: {attorney.email}</p>}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Sidebar */}
+                        <div className="lg:col-span-2">
+                            <div className="rounded-2xl bg-white p-6 shadow-sm sticky top-6">
+                                <h3 className="text-xl font-semibold text-slate-900 mb-4">Who can be a Replacement Attorney?</h3>
+                                <p className="text-sm text-slate-700 mb-4">The replacement attorney must be meet the following requirements:</p>
+                                <ul className="space-y-3">
+                                    <li className="flex items-start gap-3">
+                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
+                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm text-slate-700">Aged <span className="font-semibold">18 or over</span>.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
+                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm text-slate-700">Have <span className="font-semibold">mental capacity</span> to make decisions.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
+                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm text-slate-700">Must not be <span className="font-semibold">bankrupt</span>, or subject to a debt relief order.</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
+                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </span>
+                                        <span className="text-sm text-slate-700">Must not already be assigned as an <span className="font-semibold">Attorney</span></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Replacement Attorney Modal */}
+                    {showReplacementAttorneyModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+                            <div
+                                ref={replacementModalRef}
+                                className="relative flex h-[90vh] w-full max-w-2xl max-h-[90vh] flex-col overflow-y-auto rounded-xl bg-white shadow-2xl"
+                            >
+                                <button
+                                    type="button"
+                                    onClick={handleCloseReplacementAttorneyModal}
+                                    className="absolute right-4 top-4 rounded-full p-1.5 text-white transition hover:bg-white/10"
+                                    aria-label="Close"
+                                >
+                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+
+                                {/* Modal Header */}
+                                <div className="border-b border-slate-200 bg-primary-600 px-6 py-4 pr-12">
+                                    <h3 className="text-xl font-semibold text-white">Add replacement attorney</h3>
+                                </div>
+
+                                {/* Modal Body */}
+                                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                    {/* Full Legal Name */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">Full legal name</h4>
+
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-600">Title</label>
+                                            <div className="rounded-md border border-slate-300 bg-white px-3 py-2">
+                                                <select
+                                                    className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                                    value={currentReplacementAttorney.title}
+                                                    onChange={(e) => handleReplacementAttorneyChange('title', e.target.value)}
+                                                >
+                                                    {donorTitleOptions.map((title) => (
+                                                        <option key={title} value={title}>
+                                                            {title}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="grid gap-4 md:grid-cols-2">
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">First Name</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentReplacementAttorney.firstName}
+                                                    onChange={(e) => handleReplacementAttorneyChange('firstName', e.target.value)}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Last Name</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentReplacementAttorney.lastName}
+                                                    onChange={(e) => handleReplacementAttorneyChange('lastName', e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-600">Middle names (if any)</label>
+                                            <input
+                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                value={currentReplacementAttorney.middleNames}
+                                                onChange={(e) => handleReplacementAttorneyChange('middleNames', e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Address */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">What's their address?</h4>
+
+                                        {!isManualReplacementAddress ? (
+                                            <>
+                                                <div>
+                                                    <label className="mb-2 block text-sm text-slate-600">Enter postcode to search for address</label>
+                                                    <div className="flex gap-3">
+                                                        <input
+                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            value={currentReplacementAttorney.postcode}
+                                                            onChange={(e) => handleReplacementAttorneyChange('postcode', e.target.value)}
+                                                            placeholder="Enter postcode"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            className="rounded-md bg-primary-500 px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-600"
+                                                        >
+                                                            Search
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setIsManualReplacementAddress(true)}
+                                                    className="text-sm font-medium text-primary-500 hover:text-primary-600 transition"
+                                                >
+                                                    Enter address manually
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 1</label>
+                                                    <input
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        value={currentReplacementAttorney.addressLine1}
+                                                        onChange={(e) => handleReplacementAttorneyChange('addressLine1', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 2</label>
+                                                    <input
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        value={currentReplacementAttorney.addressLine2}
+                                                        onChange={(e) => handleReplacementAttorneyChange('addressLine2', e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className="grid gap-4 md:grid-cols-2">
+                                                    <div>
+                                                        <label className="mb-2 block text-sm font-medium text-slate-600">Town</label>
+                                                        <input
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            value={currentReplacementAttorney.town}
+                                                            onChange={(e) => handleReplacementAttorneyChange('town', e.target.value)}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="mb-2 block text-sm font-medium text-slate-600">County</label>
+                                                        <input
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            value={currentReplacementAttorney.county}
+                                                            onChange={(e) => handleReplacementAttorneyChange('county', e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Postcode</label>
+                                                    <input
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        value={currentReplacementAttorney.postcode}
+                                                        onChange={(e) => handleReplacementAttorneyChange('postcode', e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Date of Birth */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">What's their date of birth</h4>
+                                        <div className="grid gap-4 grid-cols-3">
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Day</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentReplacementAttorney.birthDay}
+                                                    onChange={(e) => handleReplacementAttorneyChange('birthDay', e.target.value)}
+                                                    placeholder="DD"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Month</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentReplacementAttorney.birthMonth}
+                                                    onChange={(e) => handleReplacementAttorneyChange('birthMonth', e.target.value)}
+                                                    placeholder="MM"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="mb-2 block text-sm font-medium text-slate-600">Year</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    value={currentReplacementAttorney.birthYear}
+                                                    onChange={(e) => handleReplacementAttorneyChange('birthYear', e.target.value)}
+                                                    placeholder="YYYY"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Email */}
+                                    <div className="space-y-4">
+                                        <h4 className="text-lg font-semibold text-slate-900">What's their email address? (optional)</h4>
+                                        <input
+                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                            type="email"
+                                            value={currentReplacementAttorney.email}
+                                            onChange={(e) => handleReplacementAttorneyChange('email', e.target.value)}
+                                            placeholder="email@example.com"
+                                        />
+                                    </div>
+
+                                    {/* Save Button */}
+                                    <div className="border-t border-slate-200 bg-slate-50 px-6 py-4">
+                                        <button
+                                            type="button"
+                                            onClick={handleSaveReplacementAttorney}
+                                            className="w-full rounded-md bg-primary-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-primary-600"
+                                        >
+                                            Save and continue
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </>
+            );
+        }
+
         const nextStep = lpaSteps[currentStep];
         return (
             <div className="rounded-2xl bg-white p-8 text-slate-700 shadow-sm">
@@ -896,9 +1402,17 @@ export default function LpaCreate({ user }: Props) {
         if (currentStepIndex === 3) {
             return 2;
         }
+        // Steps 5 and 6 (new attorney steps) both map to step 3 (Attorneys) in the visual
+        if (currentStepIndex === 5 || currentStepIndex === 6) {
+            return 3;
+        }
         // After step 3, we need to offset by -1 because we're "hiding" step 3 in the visual
-        if (currentStepIndex > 3) {
+        if (currentStepIndex > 3 && currentStepIndex < 5) {
             return currentStepIndex - 1;
+        }
+        // After the new attorney steps (5-6), offset by -3
+        if (currentStepIndex > 6) {
+            return currentStepIndex - 3;
         }
         return currentStepIndex;
     };
@@ -970,7 +1484,7 @@ export default function LpaCreate({ user }: Props) {
                                 onClick={() => handleStepChange('next')}
                                 disabled={currentStep === lpaSteps.length - 1 || !canAdvanceFromStep(currentStep)}
                             >
-                                Continue
+                                {currentStep === 5 || currentStep === 6 ? 'Save and continue' : 'Continue'}
                                 <ArrowRight className="h-4 w-4" />
                             </button>
                         </div>
