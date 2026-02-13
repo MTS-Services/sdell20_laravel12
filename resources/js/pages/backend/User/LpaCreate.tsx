@@ -96,7 +96,7 @@ export default function LpaCreate({ user }: Props) {
         email: ''
     });
     const [isManualAddress, setIsManualAddress] = useState(false);
-    
+
     // New states for the additional attorney steps
     const [canViewDocuments, setCanViewDocuments] = useState<'yes' | 'no' | null>(null);
     const [wantReplacementAttorneys, setWantReplacementAttorneys] = useState<'yes' | 'no' | null>(null);
@@ -133,7 +133,7 @@ export default function LpaCreate({ user }: Props) {
         email: ''
     });
     const [isManualReplacementAddress, setIsManualReplacementAddress] = useState(false);
-    
+
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
     const replacementModalRef = useRef<HTMLDivElement | null>(null);
@@ -998,22 +998,20 @@ export default function LpaCreate({ user }: Props) {
                             <button
                                 type="button"
                                 onClick={() => setCanViewDocuments('yes')}
-                                className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
-                                    canViewDocuments === 'yes'
+                                className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'yes'
                                         ? 'bg-slate-700 text-white'
                                         : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
-                                }`}
+                                    }`}
                             >
                                 Yes - give the attorneys authority
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setCanViewDocuments('no')}
-                                className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
-                                    canViewDocuments === 'no'
+                                className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'no'
                                         ? 'bg-slate-700 text-white'
                                         : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
-                                }`}
+                                    }`}
                             >
                                 No - do not give the attorneys authority
                             </button>
@@ -1062,22 +1060,20 @@ export default function LpaCreate({ user }: Props) {
                                         <button
                                             type="button"
                                             onClick={() => setWantReplacementAttorneys('no')}
-                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
-                                                wantReplacementAttorneys === 'no'
+                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'no'
                                                     ? 'bg-slate-700 text-white'
                                                     : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
-                                            }`}
+                                                }`}
                                         >
                                             No
                                         </button>
                                         <button
                                             type="button"
                                             onClick={() => setWantReplacementAttorneys('yes')}
-                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${
-                                                wantReplacementAttorneys === 'yes'
+                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'yes'
                                                     ? 'bg-slate-700 text-white'
                                                     : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
-                                            }`}
+                                                }`}
                                         >
                                             Yes
                                         </button>
