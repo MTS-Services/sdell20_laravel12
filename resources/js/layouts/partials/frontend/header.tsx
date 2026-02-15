@@ -1,3 +1,4 @@
+import AppLogo from '@/components/app-logo';
 import { Link } from '@inertiajs/react';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import { useState } from 'react';
@@ -26,17 +27,16 @@ export function FrontendHeader() {
 
     return (
         <header className="sticky top-0 z-50">
-            <nav className="w-full bg-slate-800 text-white shadow-lg">
+            <nav className="w-full bg-primary-500 text-white shadow-lg">
                 <div className="container mx-auto px-6 py-4">
                     <div className="flex items-center justify-between">
                         <Link href="/" className="flex items-center space-x-3">
-                            <svg className="h-12 w-12" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="50" cy="25" r="12" stroke="currentColor" strokeWidth="3" fill="none" />
-                                <path d="M15 40 Q50 20, 85 40" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
-                            </svg>
-                            <div>
-                                <div className="font-sans text-2xl font-bold tracking-wider">HORIZON WILLS</div>
-                                <div className="text-xs text-primary-300 tracking-widest">PROTECTING YOUR ASSETS</div>
+                            <div className="flex flex-col items-center gap-2 md:flex-row md:items-center md:gap-3">
+                                <AppLogo className="h-16 w-auto" />
+                                <div className="text-center md:text-left">
+                                    <div className="text-xl font-sans font-bold tracking-wider">HORIZON WILLS</div>
+                                    <div className="text-xs text-primary-200 tracking-widest">PROTECTING YOUR ASSETS</div>
+                                </div>
                             </div>
                         </Link>
 
