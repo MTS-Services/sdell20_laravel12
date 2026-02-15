@@ -81,9 +81,9 @@ const steps: Step[] = [
         icon: Users,
         illustrationSrc: 'https://online.zenco.com/images/family1.png',
         options: [
-            { label: 'Me', value: 'me' },
-            { label: 'Me and my partner', value: 'partner' },
-            { label: 'Someone else', value: 'someone-else' },
+             { label: 'Health & Welfare LPA', value: 'health' },
+            { label: 'Property & Finance LPA', value: 'finance' },
+            { label: 'Both LPAs', value: 'both' },
         ],
     },
     {
