@@ -2,7 +2,7 @@ export function FrontendFooter() {
     return (
         <footer className="bg-slate-900 text-white py-16">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 pl-14 sm:pl-0">
-                <div className="grid gap-12 mb-12  grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid gap-12 mb-12  grid-cols-1 lg:grid-cols-3">
                     {/* Company Info */}
                     <div className="space-y-4 text-center md:text-left">
                         <div className="flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3">
@@ -66,85 +66,21 @@ export function FrontendFooter() {
                         </div>
                     </div>
 
-                    {/* Services Links */}
-                    <div>
-                        <h4 className="font-sans font-semibold text-lg mb-4">Services</h4>
-                        <ul className="space-y-2 text-slate-200">
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Will Writing
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Estate Planning
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Power of Attorney
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Probate Services
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Resources Links */}
-                    <div>
-                        <h4 className="font-sans font-semibold text-lg mb-4">Resources</h4>
-                        <ul className="space-y-2 text-slate-200">
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    FAQs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Guides
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Support
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Company Links */}
-                    <div>
-                        <h4 className="font-sans font-semibold text-lg mb-4">Company</h4>
-                        <ul className="space-y-2 text-slate-200">
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    About Us
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Contact
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Careers
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-white transition-colors">
-                                    Reviews
-                                </a>
-                            </li>
-                        </ul>
+                    {/* Contact CTA */}
+                    <div className="lg:col-span-2">
+                        <h4 className="font-sans font-semibold text-lg mb-4">Contact us</h4>
+                        <p className="text-slate-200 text-sm leading-relaxed mb-4">
+                            Speak with our team for tailored support. We keep one clear line of communication so you always know how to reach us.
+                        </p>
+                        <a
+                            href={route('contact')}
+                            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-100"
+                        >
+                            Contact us today
+                            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 12h14" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
