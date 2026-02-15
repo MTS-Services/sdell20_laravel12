@@ -19,15 +19,15 @@ export function PreferToTalkSection() {
 
                         <div className="space-y-3">
                             <div className="flex items-start gap-3">
-                                <span className="text-slate-500 text-xl">✓</span>
+                                <span className="text-primary-500 text-xl">✓</span>
                                 <p className="text-gray-700">Whether you need probate</p>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-slate-500 text-xl">✓</span>
+                                <span className="text-primary-500 text-xl">✓</span>
                                 <p className="text-gray-700">How much it&apos;ll cost to get started</p>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-slate-500 text-xl">✓</span>
+                                <span className="text-primary-500 text-xl">✓</span>
                                 <p className="text-gray-700">What information you&apos;ll need for the application</p>
                             </div>
                         </div>

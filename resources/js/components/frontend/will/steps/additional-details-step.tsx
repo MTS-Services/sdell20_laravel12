@@ -36,7 +36,7 @@ const AdditionalDetailsStep: React.FC<AdditionalDetailsStepProps> = ({
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Additional Details</h2>
+            <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-4">Additional Details</h2>
             <p className="text-sm md:text-base text-secondary mb-8">Do you want to include any additional instructions?</p>
 
             <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
@@ -45,14 +45,14 @@ const AdditionalDetailsStep: React.FC<AdditionalDetailsStepProps> = ({
                         <button
                             type="button"
                             onClick={() => onToggle(true)}
-                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${wantsClauses ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${wantsClauses ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'}`}
                         >
                             YES
                         </button>
                         <button
                             type="button"
                             onClick={() => onToggle(false)}
-                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!wantsClauses ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!wantsClauses ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'}`}
                         >
                             NO
                         </button>
@@ -72,7 +72,7 @@ const AdditionalDetailsStep: React.FC<AdditionalDetailsStepProps> = ({
                                 <textarea
                                     value={clause.text}
                                     onChange={(e) => updateClause(index, e.target.value)}
-                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors min-h-24 resize-y"
+                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors min-h-24 resize-y"
                                     placeholder="e.g. I wish to forgive Jane Smith's debt of £5,000 incurred on January 1, 2017, for the purchase of a vehicle."
                                 />
                             </div>
@@ -89,9 +89,9 @@ const AdditionalDetailsStep: React.FC<AdditionalDetailsStepProps> = ({
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
-                    <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                    <h3 className="text-base font-semibold text-primary-700 mb-4">Frequently Asked Questions</h3>
                     <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
-                        <ul className="space-y-3 text-sm text-slate-600">
+                        <ul className="space-y-3 text-sm text-primary-600">
                             {ADDITIONAL_DETAILS_FAQ.map((item) => (
                                 <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
                                     <button
@@ -109,7 +109,7 @@ const AdditionalDetailsStep: React.FC<AdditionalDetailsStepProps> = ({
                         </ul>
                         {faqTooltip && (
                             <div
-                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-primary-600 shadow-lg"
                                 style={{ top: faqTooltip.top }}
                             >
                                 <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />

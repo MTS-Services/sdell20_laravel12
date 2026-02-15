@@ -35,10 +35,10 @@ export function WillWritingProcessSection() {
                 <div className="grid gap-10 lg:grid-cols-[1fr,1.3fr]">
                     <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500 animate-fadeInUp">Process</p>
-                        <h3 className="mt-4 text-3xl font-serif font-semibold text-slate-900 animate-fadeInUp delay-100">
-                           Fully protected wills made easy, with Online Will Services
+                        <h3 className="mt-4 text-3xl font-serif font-semibold text-primary-900 animate-fadeInUp delay-100">
+                            Fully protected wills made easy, with Online Will Services
                         </h3>
-                        <p className="mt-3 text-sm text-slate-600">
+                        <p className="mt-3 text-sm text-primary-600">
                             From the first questionnaire to securely storing your will, our specialists stay with you the whole way.
                         </p>
                     </div>
@@ -52,8 +52,8 @@ export function WillWritingProcessSection() {
                                     {index < steps.length - 1 && <span className="mt-3 h-20 w-px bg-primary-100" />}
                                 </div>
                                 <div>
-                                    <h4 className="text-lg font-semibold text-slate-900">{step.title}</h4>
-                                    <div className="mt-2 space-y-2 text-sm text-slate-600">
+                                    <h4 className="text-lg font-semibold text-primary-900">{step.title}</h4>
+                                    <div className="mt-2 space-y-2 text-sm text-primary-600">
                                         {step.paragraphs.map((paragraph) => (
                                             <p key={paragraph}>{paragraph}</p>
                                         ))}

@@ -33,7 +33,7 @@ export function WillWritingProtectedSection() {
         <section className="bg-white px-4 py-6 md:py-12 lg:py-16">
             <div className="mx-auto max-w-4xl">
                 {/* Section Title */}
-                <h2 className="mb-6 text-2xl font-semibold text-slate-800 md:text-3xl">
+                <h2 className="mb-6 text-2xl font-semibold text-primary-800 md:text-3xl">
                     Fully protected wills made easy, with Online Will Services
                 </h2>
 
@@ -55,12 +55,12 @@ export function WillWritingProtectedSection() {
 
                             {/* Right Column - Content */}
                             <div className="flex-1 ">
-                                <h3 className="mb-3 text-lg lg:text-xl font-semibold text-slate-900">
+                                <h3 className="mb-3 text-lg lg:text-xl font-semibold text-primary-900">
                                     {step.title}
                                 </h3>
                                 <div className="space-y-3">
                                     {step.paragraphs.map((paragraph, pIndex) => (
-                                        <p key={pIndex} className="text-base leading-relaxed text-slate-700">
+                                        <p key={pIndex} className="text-base leading-relaxed text-primary-700">
                                             {paragraph}
                                         </p>
                                     ))}

@@ -35,17 +35,17 @@ export function ContactConsultationSection() {
                         <br /> options with a free
                         <br /> consultation
                     </h2>
-                    <p className="max-w-xl text-sm leading-relaxed text-slate-600">
+                    <p className="max-w-xl text-sm leading-relaxed text-primary-600">
                         We’ll talk through your situation and explain the best next steps. Whether you need a simple Will or help with a more complex estate, we’ll make the process clear and comfortable.
                     </p>
-                    <p className="font-semibold text-slate-800">Contact Details</p>
+                    <p className="font-semibold text-primary-800">Contact Details</p>
                     <div className="space-y-3">
                         {contactDetails.map((detail) => (
-                            <div key={detail.label} className="flex items-start gap-3 text-sm text-slate-700">
+                            <div key={detail.label} className="flex items-start gap-3 text-sm text-primary-700">
                                 <span className="mt-0.5 text-primary-600">{detail.icon}</span>
                                 <div>
-                                    <p className="font-medium text-slate-800">{detail.value}</p>
-                                    <p className="text-xs text-slate-500">{detail.helper}</p>
+                                    <p className="font-medium text-primary-800">{detail.value}</p>
+                                    <p className="text-xs text-primary-500">{detail.helper}</p>
                                 </div>
                             </div>
                         ))}
@@ -63,13 +63,13 @@ export function ContactConsultationSection() {
                             <FormField id="preferredContact" label="Preferred contact method" />
                         </div>
                         <div>
-                            <label className="text-xs font-semibold text-slate-700" htmlFor="message">
+                            <label className="text-xs font-semibold text-primary-700" htmlFor="message">
                                 Message
                             </label>
                             <textarea
                                 id="message"
                                 rows={5}
-                                className="mt-2 w-full resize-none rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                                className="mt-2 w-full resize-none rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary-900 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
                             />
                         </div>
                         <button
@@ -94,13 +94,13 @@ type FormFieldProps = {
 function FormField({ id, label, type = 'text' }: FormFieldProps) {
     return (
         <div>
-            <label className="text-xs font-semibold text-slate-700" htmlFor={id}>
+            <label className="text-xs font-semibold text-primary-700" htmlFor={id}>
                 {label}
             </label>
             <input
                 id={id}
                 type={type}
-                className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-primary-900 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
             />
         </div>
     );

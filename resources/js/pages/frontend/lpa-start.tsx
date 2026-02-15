@@ -81,7 +81,7 @@ const steps: Step[] = [
         icon: Users,
         illustrationSrc: 'https://online.zenco.com/images/family1.png',
         options: [
-             { label: 'Health & Welfare LPA', value: 'health' },
+            { label: 'Health & Welfare LPA', value: 'health' },
             { label: 'Property & Finance LPA', value: 'finance' },
             { label: 'Both LPAs', value: 'both' },
         ],
@@ -191,7 +191,7 @@ const OptionButton: React.FC<{
         type="button"
         onClick={onClick}
         className={[
-            'w-full cursor-pointer rounded border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 sm:px-6 sm:py-3 lg:px-8 lg:py-4 lg:text-base',
+            'w-full cursor-pointer rounded border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-primary-700 sm:px-6 sm:py-3 lg:px-8 lg:py-4 lg:text-base',
             'shadow-[0_2px_8px_rgba(15,23,42,0.12)] transition duration-300 hover:bg-primary-500 hover:text-primary-50',
             'hover:border-slate-300 hover:shadow-[0_3px_10px_rgba(15,23,42,0.14)]',
             selected ? 'border-primary-400 text-primary-600' : '',
@@ -214,7 +214,7 @@ const Illustration: React.FC<{ src?: string; icon: React.ComponentType<{ classNa
     return (
         <div className="flex justify-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white sm:h-16 sm:w-16">
-                <Icon className="h-6 w-6 text-slate-500 sm:h-8 sm:w-8" />
+                <Icon className="h-6 w-6 text-primary-500 sm:h-8 sm:w-8" />
             </div>
         </div>
     );
@@ -347,8 +347,8 @@ const LpaStartPage: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
-                            <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                            <h1 className="text-2xl font-semibold text-primary-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                            <div className="space-y-3 text-sm text-primary-600 lg:text-base">
                                 <p>You have said the people this document is for are not over 18 or do not have the mental capacity to make decisions.</p>
                                 <p>The specialist document is for adults 18 years or over and able to make decisions and understand what this document is for.</p>
                                 <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
@@ -359,27 +359,27 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowHelpPanel((prev) => !prev)}
-                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300 hover:text-lpa-step"
+                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-primary-800 transition duration-300 hover:text-lpa-step"
                             >
                                 Need help?
                                 <ChevronDown
-                                    className={`h-4 w-4 text-slate-500 transition ${showHelpPanel ? 'rotate-180' : ''}`}
+                                    className={`h-4 w-4 text-primary-500 transition ${showHelpPanel ? 'rotate-180' : ''}`}
                                 />
                             </button>
 
                             {showHelpPanel ? (
-                                <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
+                                <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-primary-700">
                                     <div className="flex items-start gap-3">
                                         <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Call us</p>
+                                            <p className="font-semibold text-primary-900">Call us</p>
                                             <p>0800 888 6068</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
                                         <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Opening hours</p>
+                                            <p className="font-semibold text-primary-900">Opening hours</p>
                                             <p>Monday - Friday · 8:00am - 5:30pm</p>
                                             <p>Weekends · Closed (Bank holidays hours might differ)</p>
                                         </div>
@@ -387,14 +387,14 @@ const LpaStartPage: React.FC = () => {
                                     <div className="flex items-start gap-3">
                                         <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Email us</p>
+                                            <p className="font-semibold text-primary-900">Email us</p>
                                             <p>enquiries@zenco.com</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
                                         <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Address</p>
+                                            <p className="font-semibold text-primary-900">Address</p>
                                             <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
                                         </div>
                                     </div>
@@ -406,7 +406,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-lpa-step lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition duration-300 hover:text-lpa-step lg:text-base"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -429,11 +429,11 @@ const LpaStartPage: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">
+                            <h1 className="text-2xl font-semibold text-primary-900 lg:text-3xl">
                                 Confirm you wish to continue outside of{' '}
                                 <span className="text-primary-600">England or Wales?</span>
                             </h1>
-                            <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                            <div className="space-y-3 text-sm text-primary-600 lg:text-base">
                                 <p>Some countries will accept a notarised power of attorney.</p>
                                 <p>You will need to register the power of attorney with the Office of the Public Guardian first, which takes approx 16-20 weeks.</p>
                                 <p>You can then take the document to be notarised.</p>
@@ -445,14 +445,14 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleRegionalProceed}
-                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-lpa-step hover:shadow-lg lg:w-auto"
+                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-primary-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-lpa-step hover:shadow-lg lg:w-auto"
                             >
                                 I understand and wish to proceed
                             </button>
                             <button
                                 type="button"
                                 onClick={handleRegionalDecline}
-                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-800 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-auto"
+                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-primary-800 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg lg:w-auto"
                             >
                                 I do not want to proceed
                             </button>
@@ -462,7 +462,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition duration-300 hover:text-primary-900 lg:text-base"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -485,8 +485,8 @@ const LpaStartPage: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
-                            <div className="space-y-3 text-sm text-slate-600 lg:text-base">
+                            <h1 className="text-2xl font-semibold text-primary-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                            <div className="space-y-3 text-sm text-primary-600 lg:text-base">
                                 <p>You have said that the people this document is for do not live in England or Wales.</p>
                                 <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
                             </div>
@@ -496,25 +496,25 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowRegionalHelpPanel((prev) => !prev)}
-                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition duration-300"
+                                className="flex w-full cursor-pointer items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold text-primary-800 transition duration-300"
                             >
                                 Need help?
-                                <ChevronDown className={`h-4 w-4 text-slate-500 transition ${showRegionalHelpPanel ? 'rotate-180' : ''}`} />
+                                <ChevronDown className={`h-4 w-4 text-primary-500 transition ${showRegionalHelpPanel ? 'rotate-180' : ''}`} />
                             </button>
 
                             {showRegionalHelpPanel ? (
-                                <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-slate-700">
+                                <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-primary-700">
                                     <div className="flex items-start gap-3">
                                         <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Call us</p>
+                                            <p className="font-semibold text-primary-900">Call us</p>
                                             <p>0800 888 6068</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
                                         <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Opening hours</p>
+                                            <p className="font-semibold text-primary-900">Opening hours</p>
                                             <p>Monday - Friday · 8:00am - 5:30pm</p>
                                             <p>Weekends · Closed (Bank holidays hours might differ)</p>
                                         </div>
@@ -522,14 +522,14 @@ const LpaStartPage: React.FC = () => {
                                     <div className="flex items-start gap-3">
                                         <Mail className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Email us</p>
+                                            <p className="font-semibold text-primary-900">Email us</p>
                                             <p>enquiries@zenco.com</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
                                         <MapPin className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
-                                            <p className="font-semibold text-slate-900">Address</p>
+                                            <p className="font-semibold text-primary-900">Address</p>
                                             <p>Zenqo legal<br />Second Floor<br />64 Mansfield Street<br />Leicester<br />LE1 3DL</p>
                                         </div>
                                     </div>
@@ -541,7 +541,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-600 transition duration-300 hover:text-slate-900 lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition duration-300 hover:text-primary-900 lg:text-base"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -566,12 +566,12 @@ const LpaStartPage: React.FC = () => {
                         <Illustration src={currentStep.illustrationSrc} icon={currentStep.icon} />
 
                         <div className="space-y-3 text-left sm:space-y-4 md:space-y-5">
-                            <h1 className="text-xl font-semibold leading-7 text-slate-900 sm:text-2xl md:text-3xl lg:text-3xl lg:leading-9">
+                            <h1 className="text-xl font-semibold leading-7 text-primary-900 sm:text-2xl md:text-3xl lg:text-3xl lg:leading-9">
                                 {renderQuestion()}
                             </h1>
 
                             {currentStep.description ? (
-                                <p className="max-w-2xl text-xs leading-5 text-slate-600 sm:text-sm md:text-base lg:text-base lg:leading-6">
+                                <p className="max-w-2xl text-xs leading-5 text-primary-600 sm:text-sm md:text-base lg:text-base lg:leading-6">
                                     {currentStep.description}
                                 </p>
                             ) : null}
@@ -591,13 +591,13 @@ const LpaStartPage: React.FC = () => {
                         ) : (
                             <div className="space-y-6">
                                 <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 md:p-7 lg:p-8">
-                                    <div className="mb-4 flex items-start gap-3 text-slate-600 lg:gap-4">
+                                    <div className="mb-4 flex items-start gap-3 text-primary-600 lg:gap-4">
                                         <ShieldCheck className="mt-0.5 h-6 w-6 text-emerald-500 lg:h-7 lg:w-7" />
                                         <div>
-                                            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500 lg:text-sm">
+                                            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary-500 lg:text-sm">
                                                 Trustpilot
                                             </p>
-                                            <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-slate-800 lg:text-base">
+                                            <p className="mt-1 flex items-center gap-2 text-sm font-semibold text-primary-800 lg:text-base">
                                                 TrustScore 4.9
                                                 <span className="flex items-center gap-1 text-primary-600">
                                                     {[...Array(5)].map((_, index) => (
@@ -608,11 +608,11 @@ const LpaStartPage: React.FC = () => {
                                                     ))}
                                                 </span>
                                             </p>
-                                            <p className="text-xs text-slate-500 lg:text-sm">2,718 reviews</p>
+                                            <p className="text-xs text-primary-500 lg:text-sm">2,718 reviews</p>
                                         </div>
                                     </div>
 
-                                    <ul className="space-y-3 text-sm text-slate-700 lg:text-base">
+                                    <ul className="space-y-3 text-sm text-primary-700 lg:text-base">
                                         {benefits.map((benefit) => (
                                             <li key={benefit} className="flex gap-3">
                                                 <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-500 lg:h-6 lg:w-6" />
@@ -635,7 +635,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-slate-600 transition hover:text-lpa-step sm:text-base md:text-lg"
+                                className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-primary-600 transition hover:text-lpa-step sm:text-base md:text-lg"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back

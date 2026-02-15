@@ -17,7 +17,7 @@ const items: Item[] = [
         desc: 'Store and organize your will, power of attorney, healthcare directives, and other important legal paperwork in one secure place.',
         delay: 'delay-0',
         icon: (
-            <svg className="h-8 w-8 text-slate-600 group-hover:text-primary-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-8 w-8 text-primary-600 group-hover:text-primary-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
         ),
@@ -28,7 +28,7 @@ const items: Item[] = [
         delay: 'delay-150',
         href: route('probate'),
         icon: (
-            <svg className="h-8 w-8 text-slate-600 group-hover:text-primary-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-8 w-8 text-primary-600 group-hover:text-primary-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12a4 4 0 100-8 4 4 0 000 8zm9 8a9 9 0 10-18 0" />
             </svg>
         ),
@@ -38,7 +38,7 @@ const items: Item[] = [
         desc: 'Document real estate, vehicles, valuable items, and other possessions with clear information about their location and value.',
         delay: 'delay-300',
         icon: (
-            <svg className="h-8 w-8 text-slate-600 group-hover:text-primary-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-8 w-8 text-primary-600 group-hover:text-primary-600 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
         ),
@@ -57,7 +57,7 @@ export function ManagingAffairsSection() {
                     className={`mb-16 space-y-4 text-center transition-all duration-700 ease-out ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
                     <h2 className="font-serif text-5xl font-bold text-primary-900 md:text-6xl text-balance">Managing Your Affairs</h2>
-                    <p className="mx-auto max-w-2xl font-body text-xl text-slate-700">Prepare the essential details that will help your loved ones during difficult times</p>
+                    <p className="mx-auto max-w-2xl font-body text-xl text-primary-700">Prepare the essential details that will help your loved ones during difficult times</p>
                 </div>
 
                 <div ref={gridRef} className="mx-auto grid max-w-6xl gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -75,7 +75,7 @@ export function ManagingAffairsSection() {
                                     {item.icon}
                                 </div>
                                 <h3 className="mb-4 font-serif text-2xl font-semibold text-primary-900 transition-colors duration-300 group-hover:text-primary-600">{item.title}</h3>
-                                <p className="leading-relaxed text-slate-600 transition-colors duration-300 group-hover:text-slate-700">{item.desc}</p>
+                                <p className="leading-relaxed text-primary-600 transition-colors duration-300 group-hover:text-primary-700">{item.desc}</p>
                             </Wrapper>
                         );
                     })}

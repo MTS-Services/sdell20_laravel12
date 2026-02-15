@@ -47,7 +47,7 @@ export default function UserDashboard({ user }: Props) {
                 <div className="container mx-auto grid max-w-6xl gap-8 lg:gap-10 px-4 sm:px-6 lg:grid-cols-2">
                     <section className="space-y-6">
                         <div>
-                            <p className="text-lg font-semibold text-slate-700">Welcome <span className="text-primary-500">{user.name}</span></p>
+                            <p className="text-lg font-semibold text-primary-700">Welcome <span className="text-primary-500">{user.name}</span></p>
                             <div className="mt-2 h-1 w-16 rounded-full bg-primary-400" />
                         </div>
 
@@ -56,16 +56,16 @@ export default function UserDashboard({ user }: Props) {
                                 <button
                                     key={action.title}
                                     type="button"
-                                    className="flex w-full flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-5 py-6 text-left text-slate-700 shadow-lg transition hover:bg-primary-50 "
+                                    className="flex w-full flex-wrap items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-5 py-6 text-left text-primary-700 shadow-lg transition hover:bg-primary-50 "
                                     onClick={() => handleActionClick(action.id)}
                                 >
                                     <div className="flex flex-1 min-w-0 items-center gap-4">
                                         <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-200 bg-primary-50 text-primary-500">
                                             <action.icon className="h-5 w-5" />
                                         </span>
-                                        <div className="text-base lg:text-xl font-semibold text-slate-800 wrap-break-word">{action.title}</div>
+                                        <div className="text-base lg:text-xl font-semibold text-primary-800 wrap-break-word">{action.title}</div>
                                     </div>
-                                    <ArrowRight className="h-5 w-5 text-slate-400" />
+                                    <ArrowRight className="h-5 w-5 text-primary-400" />
                                 </button>
                             ))}
                         </div>
@@ -80,8 +80,8 @@ export default function UserDashboard({ user }: Props) {
                                 loading="lazy"
                             />
                         </div>
-                        <p className="text-xl font-semibold text-slate-800">You&apos;re getting close...</p>
-                        <p className="mt-2 text-sm text-slate-600">
+                        <p className="text-xl font-semibold text-primary-800">You&apos;re getting close...</p>
+                        <p className="mt-2 text-sm text-primary-600">
                             You&apos;re close to getting your Lasting Power of Attorney in place, finish it now and get peace of mind.
                         </p>
 
@@ -95,7 +95,7 @@ export default function UserDashboard({ user }: Props) {
                                 aria-expanded={helpOpen}
                             >
                                 NEED HELP?
-                                <span className={`text-slate-500 transition-transform ${helpOpen ? 'rotate-180' : ''}`}>
+                                <span className={`text-primary-500 transition-transform ${helpOpen ? 'rotate-180' : ''}`}>
                                     &#9650;
                                 </span>
                             </button>
@@ -103,11 +103,11 @@ export default function UserDashboard({ user }: Props) {
                                 className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${helpOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
                             >
                                 <div className="overflow-hidden">
-                                    <div className={`border-t border-slate-200 px-5 py-6 text-sm text-slate-600 transition-all duration-500 ${helpOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+                                    <div className={`border-t border-slate-200 px-5 py-6 text-sm text-primary-600 transition-all duration-500 ${helpOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
                                         <div className="flex items-start gap-3">
                                             <span className="text-primary-500"><Phone className="h-5 w-5" /></span>
                                             <div>
-                                                <p className="font-semibold text-slate-700">Call us</p>
+                                                <p className="font-semibold text-primary-700">Call us</p>
                                                 <a href="tel:08008886508" className="text-primary-500 underline">
                                                     0800 888 6508
                                                 </a>
@@ -117,7 +117,7 @@ export default function UserDashboard({ user }: Props) {
                                         <div className="mt-6 flex items-start gap-3">
                                             <span className="text-primary-500"><CalendarDays className="h-5 w-5" /></span>
                                             <div className="space-y-1">
-                                                <p className="font-semibold text-slate-700">Opening hours</p>
+                                                <p className="font-semibold text-primary-700">Opening hours</p>
                                                 {[
                                                     ['Monday', '8:00am - 5:30pm'],
                                                     ['Tuesday', '8:00am - 5:30pm'],
@@ -126,19 +126,19 @@ export default function UserDashboard({ user }: Props) {
                                                     ['Friday', '8:00am - 5:00pm'],
                                                     ['Weekends', 'CLOSED'],
                                                 ].map(([day, hours]) => (
-                                                    <div key={day} className="flex justify-between gap-6 text-slate-600">
+                                                    <div key={day} className="flex justify-between gap-6 text-primary-600">
                                                         <span>{day}</span>
-                                                        <span className="font-medium text-slate-800">{hours}</span>
+                                                        <span className="font-medium text-primary-800">{hours}</span>
                                                     </div>
                                                 ))}
-                                                <p className="pt-2 text-xs text-slate-500">(Bank holiday hours might differ)</p>
+                                                <p className="pt-2 text-xs text-primary-500">(Bank holiday hours might differ)</p>
                                             </div>
                                         </div>
 
                                         <div className="mt-6 flex items-start gap-3">
                                             <span className="text-primary-500"><Mail className="h-5 w-5" /></span>
                                             <div>
-                                                <p className="font-semibold text-slate-700">Email us</p>
+                                                <p className="font-semibold text-primary-700">Email us</p>
                                                 <a href="mailto:enquiries@zenco.com" className="text-primary-500 underline">
                                                     enquiries@zenco.com
                                                 </a>

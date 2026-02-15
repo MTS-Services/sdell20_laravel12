@@ -21,11 +21,11 @@ export function LpaPlanningSection() {
         <section className="bg-white py-16" id="planning">
             <div className="container mx-auto grid gap-10 px-6 lg:grid-cols-2">
                 <div className="space-y-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.45em] text-slate-500 animate-fadeInUp">Guided journey</p>
-                    <h2 className="text-4xl font-semibold text-slate-900 animate-fadeInUp" style={{ animationDelay: '50ms' }}>
+                    <p className="text-xs font-semibold uppercase tracking-[0.45em] text-primary-500 animate-fadeInUp">Guided journey</p>
+                    <h2 className="text-4xl font-semibold text-primary-900 animate-fadeInUp" style={{ animationDelay: '50ms' }}>
                         Write your will or LPA in three simple steps.
                     </h2>
-                    <p className="text-base text-slate-600 animate-fadeInUp" style={{ animationDelay: '100ms' }}>
+                    <p className="text-base text-primary-600 animate-fadeInUp" style={{ animationDelay: '100ms' }}>
                         Digital forms plus human experts mean you always know what comes next.
                     </p>
                     <Link
@@ -41,12 +41,12 @@ export function LpaPlanningSection() {
                     {willSteps.map((step, index) => (
                         <div key={step.title} className="flex gap-6 animate-fadeInRight" style={{ animationDelay: `${index * 100}ms` }}>
                             <div className="flex flex-col items-center">
-                                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-200 font-semibold text-slate-900">{index + 1}</span>
+                                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-200 font-semibold text-primary-900">{index + 1}</span>
                                 {index < willSteps.length - 1 && <span className="mt-3 h-16 w-px bg-primary-200" />}
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-slate-900">{step.title}</h3>
-                                <p className="mt-2 text-sm text-slate-600">{step.description}</p>
+                                <h3 className="text-lg font-semibold text-primary-900">{step.title}</h3>
+                                <p className="mt-2 text-sm text-primary-600">{step.description}</p>
                             </div>
                         </div>
                     ))}

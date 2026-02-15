@@ -91,13 +91,13 @@ export function HorizonHeroSection() {
                             <div
                                 key={message}
                                 className={`hero-text-item transition-all duration-700 ease-out ${status === 'active'
-                                        ? 'opacity-100 translate-y-0'
-                                        : status === 'above'
-                                            ? 'opacity-50 -translate-y-4'
-                                            : 'opacity-50 translate-y-4'
+                                    ? 'opacity-100 translate-y-0'
+                                    : status === 'above'
+                                        ? 'opacity-50 -translate-y-4'
+                                        : 'opacity-50 translate-y-4'
                                     }`}
                             >
-                                <h1 className="text-3xl font-light leading-tight text-slate-900 sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+                                <h1 className="text-3xl font-light leading-tight text-primary-900 sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                                     {message}
                                 </h1>
                             </div>

@@ -29,7 +29,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Total Failure Clause</h2>
+            <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-4">Total Failure Clause</h2>
             <p className="text-sm md:text-base text-secondary mb-8">
                 How do you want your estate to be divided if the charity/organisation beneficiary no longer exists after you pass away?
             </p>
@@ -42,7 +42,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                         onClick={() => onChangeStrategy(option)}
                         className={`block w-full max-w-lg text-left px-6 py-3 rounded border-2 text-sm font-medium transition-all cursor-pointer ${totalFailureStrategy === option
                             ? 'border-secondary bg-secondary/5 text-secondary'
-                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                            : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'}`}
                     >
                         {option === 'family'
                             ? 'Equally divided among my parents/siblings'
@@ -56,7 +56,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                     {totalFailureBeneficiaries.map((beneficiary, index) => (
                         <div key={beneficiary.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
                             <div className="flex items-center justify-between mb-4">
-                                <p className="text-base font-semibold text-slate-800">Wipeout Beneficiary</p>
+                                <p className="text-base font-semibold text-primary-800">Wipeout Beneficiary</p>
                                 {totalFailureBeneficiaries.length > 1 && (
                                     <button type="button" onClick={() => removeBeneficiary(index)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
                                         Remove
@@ -73,7 +73,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                                             onClick={() => updateBeneficiary(index, { type })}
                                             className={`flex-1 px-4 py-2 border-2 text-sm font-semibold uppercase tracking-wide transition-all ${beneficiary.type === type
                                                 ? 'border-secondary text-secondary bg-secondary/5'
-                                                : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300'}`}
+                                                : 'border-slate-200 text-primary-600 bg-white hover:border-slate-300'}`}
                                         >
                                             {type === 'person' ? 'Individual' : 'Charity or organisation'}
                                         </button>
@@ -93,7 +93,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                                                     lastName: parts.join(' ')
                                                 });
                                             }}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                             placeholder="e.g. William Timothy Smith"
                                         />
                                     </div>
@@ -105,7 +105,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                                                 type="text"
                                                 value={beneficiary.charityName || ''}
                                                 onChange={(e) => updateBeneficiary(index, { charityName: e.target.value })}
-                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                 placeholder="e.g. Local Animal Shelter"
                                             />
                                         </div>
@@ -115,7 +115,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                                                 type="text"
                                                 value={beneficiary.charityNumber || ''}
                                                 onChange={(e) => updateBeneficiary(index, { charityNumber: e.target.value })}
-                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                 placeholder="e.g. 1089464"
                                             />
                                         </div>
@@ -128,7 +128,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                                         type="text"
                                         value={beneficiary.city || ''}
                                         onChange={(e) => updateBeneficiary(index, { city: e.target.value })}
-                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                         placeholder="e.g. London"
                                     />
                                 </div>
@@ -138,7 +138,7 @@ const TotalFailureClauseStep: React.FC<TotalFailureClauseStepProps> = ({
                                     <select
                                         value={beneficiary.country || 'England'}
                                         onChange={(e) => updateBeneficiary(index, { country: e.target.value })}
-                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                                     >
                                         {UK_COUNTRY_OPTIONS.map((country) => (
                                             <option key={country} value={country}>

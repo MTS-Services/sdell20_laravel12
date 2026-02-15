@@ -25,7 +25,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-8">Remainder of Estate</h2>
+            <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-8">Remainder of Estate</h2>
 
             <div className="space-y-6">
                 {beneficiaries.map((beneficiary, index) => (
@@ -48,7 +48,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                         onClick={() => updateBeneficiary(index, { type })}
                                         className={`flex-1 px-4 py-2 border-2 text-sm font-semibold uppercase tracking-wide transition-all ${beneficiary.type === type
                                             ? 'border-secondary text-secondary bg-secondary/5'
-                                            : 'border-slate-200 text-slate-600 bg-white hover:border-slate-300'}`}
+                                            : 'border-slate-200 text-primary-600 bg-white hover:border-slate-300'}`}
                                     >
                                         {type === 'person' ? 'Individual' : 'Charity or organisation'}
                                     </button>
@@ -68,7 +68,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                                 lastName: parts.join(' ')
                                             });
                                         }}
-                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                         placeholder="e.g. William Timothy Smith"
                                     />
                                 </div>
@@ -80,7 +80,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                             type="text"
                                             value={beneficiary.charityName || ''}
                                             onChange={(e) => updateBeneficiary(index, { charityName: e.target.value })}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                             placeholder="e.g. Local Animal Shelter"
                                         />
                                     </div>
@@ -90,7 +90,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                             type="text"
                                             value={beneficiary.charityNumber || ''}
                                             onChange={(e) => updateBeneficiary(index, { charityNumber: e.target.value })}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                             placeholder="e.g. 1089464"
                                         />
                                     </div>
@@ -103,7 +103,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                     type="text"
                                     value={beneficiary.city || ''}
                                     onChange={(e) => updateBeneficiary(index, { city: e.target.value })}
-                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                     placeholder="e.g. London"
                                 />
                             </div>
@@ -113,7 +113,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                 <select
                                     value={beneficiary.country || 'England'}
                                     onChange={(e) => updateBeneficiary(index, { country: e.target.value })}
-                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                                 >
                                     {UK_COUNTRY_OPTIONS.map((country) => (
                                         <option key={country} value={country}>
@@ -131,7 +131,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                     onChange={(e) => updateBeneficiary(index, { allowAlternate: e.target.checked })}
                                     className="h-4 w-4 border border-slate-300 rounded"
                                 />
-                                <label htmlFor={`alt-share-${beneficiary.id}`} className="text-sm text-slate-600">List an alternate choice for this share</label>
+                                <label htmlFor={`alt-share-${beneficiary.id}`} className="text-sm text-primary-600">List an alternate choice for this share</label>
                             </div>
 
                             {beneficiary.allowAlternate && (
@@ -142,7 +142,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                             type="text"
                                             value={beneficiary.alternateName || ''}
                                             onChange={(e) => updateBeneficiary(index, { alternateName: e.target.value })}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                             placeholder="e.g. Sarah Doe"
                                         />
                                     </div>
@@ -152,7 +152,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                             type="text"
                                             value={beneficiary.alternateCity || ''}
                                             onChange={(e) => updateBeneficiary(index, { alternateCity: e.target.value })}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                             placeholder="e.g. London"
                                         />
                                     </div>
@@ -161,7 +161,7 @@ const RemainderStep: React.FC<RemainderStepProps> = ({
                                         <select
                                             value={beneficiary.alternateCountry || 'England'}
                                             onChange={(e) => updateBeneficiary(index, { alternateCountry: e.target.value })}
-                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                                         >
                                             {UK_COUNTRY_OPTIONS.map((country) => (
                                                 <option key={country} value={country}>

@@ -36,7 +36,7 @@ export function LpaHeroSection() {
                         <div className="mt-10 flex flex-wrap gap-4 animate-fadeInUp" style={{ animationDelay: '200ms' }}>
                             <Link
                                 href={route('lpa.start')}
-                                className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-100"
+                                className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:bg-slate-100"
                             >
                                 Let's get started
                                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>

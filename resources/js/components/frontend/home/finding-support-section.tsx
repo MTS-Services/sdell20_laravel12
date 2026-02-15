@@ -48,7 +48,7 @@ export function FindingSupportSection() {
                     className={`mb-16 space-y-4 text-center transition-all duration-700 ease-out ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
                     <h2 className="font-serif text-5xl font-bold md:text-6xl">Probate Services</h2>
-                    <p className="mx-auto max-w-2xl font-body text-xl text-slate-200">Resources and guidance to help you navigate grief and handle practical matters</p>
+                    <p className="mx-auto max-w-2xl font-body text-xl text-primary-200">Resources and guidance to help you navigate grief and handle practical matters</p>
                 </div>
 
                 <div ref={cardsRef} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -60,7 +60,7 @@ export function FindingSupportSection() {
                         >
                             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-slate-500/30">{card.icon}</div>
                             <h3 className="mb-4 font-serif text-2xl font-semibold">{card.title}</h3>
-                            <p className="leading-relaxed text-slate-100">{card.desc}</p>
+                            <p className="leading-relaxed text-primary-100">{card.desc}</p>
                         </div>
                     ))}
                 </div>

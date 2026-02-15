@@ -29,7 +29,7 @@ export function LpaFaqSection() {
     return (
         <section className="bg-primary-100/50 px-6 py-20">
             <div className="mx-auto max-w-5xl">
-                <h2 className="text-center text-4xl font-semibold text-slate-900 animate-fadeInUp">Helping you make the right choice</h2>
+                <h2 className="text-center text-4xl font-semibold text-primary-900 animate-fadeInUp">Helping you make the right choice</h2>
                 <div className="mt-10 space-y-0">
                     {faqItems.map((question, index) => (
                         <div key={question.question} className="border-b border-slate-200 py-2 animate-fadeInUp" style={{ animationDelay: `${index * 80}ms` }}>
@@ -39,7 +39,7 @@ export function LpaFaqSection() {
                                 className="flex w-full items-center justify-between text-left"
                                 aria-expanded={openIndex === index}
                             >
-                                <span className="text-lg font-medium text-slate-900">{question.question}</span>
+                                <span className="text-lg font-medium text-primary-900">{question.question}</span>
                                 <span
                                     className={`flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white transition ${openIndex === index ? 'rotate-180' : ''}`}
                                 >
@@ -50,7 +50,7 @@ export function LpaFaqSection() {
                                 className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-400 ${openIndex === index ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
                                 aria-hidden={openIndex !== index}
                             >
-                                <div className="overflow-hidden pt-0 text-sm text-slate-600">
+                                <div className="overflow-hidden pt-0 text-sm text-primary-600">
                                     <div className="pt-4">
                                         <p>{question.answer}</p>
                                     </div>
@@ -60,7 +60,7 @@ export function LpaFaqSection() {
                     ))}
                 </div>
                 <div className="mt-10 flex justify-center animate-fadeInUp" style={{ animationDelay: '250ms' }}>
-                    <button className="rounded-full border-2 border-slate-900 px-8 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-900 hover:text-white">Show more</button>
+                    <button className="rounded-full border-2 border-slate-900 px-8 py-3 text-sm font-semibold text-primary-900 transition hover:bg-slate-900 hover:text-white">Show more</button>
                 </div>
             </div>
         </section>

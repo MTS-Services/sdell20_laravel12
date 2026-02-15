@@ -105,7 +105,7 @@ export function WhyCreateWillCardsGrid() {
                                 <h3 className={`text-2xl font-sans font-bold ${card.titleColor}`}>{card.title}</h3>
                             </div>
 
-                            <p className="text-slate-700 leading-relaxed transition-colors duration-300 group-hover:text-slate-900">{card.desc}</p>
+                            <p className="text-primary-700 leading-relaxed transition-colors duration-300 group-hover:text-primary-900">{card.desc}</p>
                         </div>
                     ))}
                 </div>

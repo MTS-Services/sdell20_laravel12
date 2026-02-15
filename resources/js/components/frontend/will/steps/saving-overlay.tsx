@@ -13,7 +13,7 @@ const SavingOverlay: React.FC = () => (
                     }}
                 />
             </div>
-            <p className="text-sm text-slate-600 font-medium">Saving</p>
+            <p className="text-sm text-primary-600 font-medium">Saving</p>
             <style>{`
                 @keyframes saving-stripe {
                     0% { background-position: 0 0; }

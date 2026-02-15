@@ -38,7 +38,7 @@ export function SpecialistSupportSection() {
 
                         <div className="bg-slate-50 border-l-4 border-slate-400 p-4 mb-4">
                             <div className="flex items-start gap-3">
-                                <span className="text-slate-500 text-xl">✓</span>
+                                <span className="text-primary-500 text-xl">✓</span>
                                 <div>
                                     <p className="font-semibold text-gray-900">Submit the grant of probate application</p>
                                     <p className="text-sm text-gray-600 mt-1">You will need to: Identify relevant paperwork
@@ -70,15 +70,15 @@ export function SpecialistSupportSection() {
 
                         <div className="space-y-3 mb-6">
                             <div className="flex items-start gap-3">
-                                <span className="text-slate-500 text-xl">✓</span>
+                                <span className="text-primary-500 text-xl">✓</span>
                                 <p className="text-gray-700">Assess and value the estate</p>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-slate-500 text-xl">✓</span>
+                                <span className="text-primary-500 text-xl">✓</span>
                                 <p className="text-gray-700">Submit the grant of probate application</p>
                             </div>
                             <div className="flex items-start gap-3">
-                                <span className="text-slate-500 text-xl">✓</span>
+                                <span className="text-primary-500 text-xl">✓</span>
                                 <p className="text-gray-700">Settle accounts, manage property, pay taxes</p>
                             </div>
                         </div>

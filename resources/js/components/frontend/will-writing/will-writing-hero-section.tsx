@@ -22,11 +22,11 @@ export function WillWritingHeroSection() {
                     <div className="flex flex-col justify-center">
                         <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500">Will Writing</p>
                         <h1 className="mt-4 text-3xl md:text-4xl lg:text-5xl xl:text-6xl  font-serif font-bold leading-tight text-primary-500">{heroContent.heading}</h1>
-                        <p className="mt-4 text-base md:text-lg lg:text-xl  text-slate-800 font-normal mb-2">{heroContent.description}</p>
-                        <p className="mt-2 text-sm md:text-base lg:text-lg   text-slate-700">{heroContent.legal}</p>
+                        <p className="mt-4 text-base md:text-lg lg:text-xl  text-primary-800 font-normal mb-2">{heroContent.description}</p>
+                        <p className="mt-2 text-sm md:text-base lg:text-lg   text-primary-700">{heroContent.legal}</p>
                         <button
                             onClick={handleGetStarted}
-                            className="mt-6 inline-flex max-w-50 items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm lg:text-base font-semibold text-slate-900 shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
+                            className="mt-6 inline-flex max-w-50 items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm lg:text-base font-semibold text-primary-900 shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
                         >
                             {heroContent.primaryCtaLabel}
                             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

@@ -11,7 +11,7 @@ export function WillWritingCalloutsSection() {
     return (
         <section className="bg-primary-100 px-4 py-16 sm:px-6 lg:px-10">
             <div className="mx-auto max-w-6xl text-center">
-                <h3 className="text-2xl font-serif font-semibold text-slate-900">
+                <h3 className="text-2xl font-serif font-semibold text-primary-900">
                     Call us now on{' '}
                     <a href="tel:02045253605" className="font-bold text-primary-600">
                         020 4525 3605
@@ -26,7 +26,7 @@ export function WillWritingCalloutsSection() {
                             style={{ animationDelay: `${index * 150}ms` }}
                         >
                             <img src={item.img} alt="Callout" className="h-24 w-24 object-contain" loading="lazy" />
-                            <p className="text-base text-slate-700">{item.text}</p>
+                            <p className="text-base text-primary-700">{item.text}</p>
                         </div>
                     ))}
                 </div>

@@ -43,7 +43,7 @@ export default function Login() {
                                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300 sm:p-5">
                                     <Label
                                         htmlFor="email"
-                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500"
                                     >
                                         Email address
                                     </Label>
@@ -54,7 +54,7 @@ export default function Login() {
                                         required
                                         autoFocus
                                         placeholder="name@company.com"
-                                        className="mt-2 h-11 rounded-2xl border border-muted/60 bg-white text-sm text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200 sm:h-12 sm:text-base"
+                                        className="mt-2 h-11 rounded-2xl border border-muted/60 bg-white text-sm text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200 sm:h-12 sm:text-base"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
@@ -63,7 +63,7 @@ export default function Login() {
                                     <div className="mb-2 flex items-center justify-between">
                                         <Label
                                             htmlFor="password"
-                                            className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                            className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500"
                                         >
                                             Password
                                         </Label>
@@ -81,7 +81,7 @@ export default function Login() {
                                         name="password"
                                         required
                                         placeholder="••••••••"
-                                        className="h-11 rounded-2xl border border-muted/60 bg-white text-sm text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200 sm:h-12 sm:text-base"
+                                        className="h-11 rounded-2xl border border-muted/60 bg-white text-sm text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200 sm:h-12 sm:text-base"
                                     />
                                     <InputError message={errors.password} />
                                 </div>
