@@ -338,15 +338,15 @@ export default function LpaCreate({ user }: Props) {
     const renderStepContent = (): ReactElement => {
         if (currentStep === 0) {
             return (
-                <div className="space-y-4 rounded-2xl bg-white p-6 pl-12 text-slate-800 shadow-sm">
+                <div className="space-y-4 rounded-2xl bg-white p-6 pl-12 text-primary-800 shadow-sm">
                     <div className="space-y-4 text-left">
-                        <h2 className="text-2xl font-semibold text-slate-900">
+                        <h2 className="text-2xl font-semibold text-primary-900">
                             Who is the <span className="text-primary-500">Lasting Power of Attorney</span> for?
                         </h2>
-                        <p className="text-base text-slate-700">
+                        <p className="text-base text-primary-700">
                             You have chosen to make documents for <span className="font-semibold text-primary-500">{getSelectionCopy()}.</span>
                         </p>
-                        <div className="space-y-2 text-base text-slate-700">
+                        <div className="space-y-2 text-base text-primary-700">
                             <p className="flex flex-wrap items-center gap-2">
                                 <span>If you have made a mistake and need these documents for someone else then</span>
                                 <span ref={dropdownRef} className="relative inline-flex">
@@ -371,7 +371,7 @@ export default function LpaCreate({ user }: Props) {
                                                     setSelectedWhoOption(option as 'Me' | 'Mirror');
                                                     setIsEditingWho(false);
                                                 }}
-                                                className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition first:rounded-t-xl last:rounded-b-xl hover:bg-primary-50 ${selectedWhoOption === option ? 'text-primary-600' : 'text-slate-700'
+                                                className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition first:rounded-t-xl last:rounded-b-xl hover:bg-primary-50 ${selectedWhoOption === option ? 'text-primary-600' : 'text-primary-700'
                                                     }`}
                                             >
                                                 <span>{option === 'Mirror' ? 'Mirror' : 'Me'}</span>
@@ -382,10 +382,10 @@ export default function LpaCreate({ user }: Props) {
                                 </span>
                             </p>
                         </div>
-                        <p className="text-base text-slate-700">Click the continue button to continue making Lasting Power of Attorney documents for yourself.</p>
+                        <p className="text-base text-primary-700">Click the continue button to continue making Lasting Power of Attorney documents for yourself.</p>
                     </div>
 
-                    <p className="text-sm text-slate-500">Need to change your answer later? You can always revisit this step.</p>
+                    <p className="text-sm text-primary-500">Need to change your answer later? You can always revisit this step.</p>
                 </div>
             );
         }
@@ -396,12 +396,12 @@ export default function LpaCreate({ user }: Props) {
             const selectedDocument = selectedDocumentOption ? documentOptions.find((opt) => opt.value === selectedDocumentOption) : null;
 
             return (
-                <div className="space-y-5 px-6 text-slate-800 ">
+                <div className="space-y-5 px-6 text-primary-800 ">
                     <div className="space-y-3 text-left max-w-3xl">
-                        <h2 className="text-2xl font-semibold text-slate-900 mb-8">
+                        <h2 className="text-2xl font-semibold text-primary-900 mb-8">
                             Which <span className="text-primary-500">Lasting Power of Attorney</span> documents do you need?
                         </h2>
-                        <p className="text-base text-slate-600">
+                        <p className="text-base text-primary-600">
                             You need to choose which type of documents you want for yourself – select Health &amp; Welfare for health decisions, Property &amp; Finance for
                             financial decisions, or choose both to stay fully protected.
                         </p>
@@ -411,7 +411,7 @@ export default function LpaCreate({ user }: Props) {
                                 We strongly recommend taking both documents for peace of mind and the best protection.
                             </p>
                         </div>
-                        <p className="text-lg font-semibold text-slate-900">
+                        <p className="text-lg font-semibold text-primary-900">
                             Which documents do <span className="text-primary-500">you</span> need?
                         </p>
                     </div>
@@ -424,7 +424,7 @@ export default function LpaCreate({ user }: Props) {
                                     key={option.value}
                                     type="button"
                                     onClick={() => setSelectedDocumentOption(option.value)}
-                                    className={`flex w-full items-center justify-center gap-2 px-6 py-4 text-center text-base font-semibold transition ${isSelected ? 'bg-primary-600 text-white' : 'bg-white text-slate-800 hover:bg-slate-50'
+                                    className={`flex w-full items-center justify-center gap-2 px-6 py-4 text-center text-base font-semibold transition ${isSelected ? 'bg-primary-600 text-white' : 'bg-white text-primary-800 hover:bg-slate-50'
                                         } ${index !== documentOptions.length - 1 ? 'border-b border-slate-200' : ''}`}
                                 >
                                     {option.title}
@@ -443,15 +443,15 @@ export default function LpaCreate({ user }: Props) {
 
         if (currentStep === 2) {
             return (
-                <div className="space-y-8 rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                <div className="space-y-8 rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
                     <div className="space-y-2 text-left">
-                        <h2 className="text-3xl font-semibold text-slate-900">
+                        <h2 className="text-3xl font-semibold text-primary-900">
                             About <span className="text-primary-500">You</span> (The Donor)
                         </h2>
-                        <p className="text-base text-slate-600">
+                        <p className="text-base text-primary-600">
                             The "Donor" is the person appointing others to make decisions on their behalf and must be:
                         </p>
-                        <ul className="space-y-2 text-sm text-slate-700">
+                        <ul className="space-y-2 text-sm text-primary-700">
                             <li className="flex items-start gap-2">
                                 <span className="text-primary-500">✔</span>
                                 <span>Aged 18 or over.</span>
@@ -461,7 +461,7 @@ export default function LpaCreate({ user }: Props) {
                                 <span>Have mental capacity to make decisions at the time their Lasting Power of Attorney is made.</span>
                             </li>
                         </ul>
-                        <p className="text-sm text-slate-600">
+                        <p className="text-sm text-primary-600">
                             The Donor is the only one who can make decisions about their LPA and the people it should involve.
                         </p>
                     </div>
@@ -469,14 +469,14 @@ export default function LpaCreate({ user }: Props) {
                     <div className="space-y-6">
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 border-b border-primary-100 pb-2">
-                                <h3 className="text-xl font-semibold text-slate-900">Full legal name</h3>
+                                <h3 className="text-xl font-semibold text-primary-900">Full legal name</h3>
                             </div>
                             <div className="grid gap-4 md:grid-cols-4">
                                 <div className="md:col-span-1">
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Title</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
                                     <div className="rounded-md border border-slate-200 bg-white px-3 py-2">
                                         <select
-                                            className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                            className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
                                             value={donorDetails.title}
                                             onChange={(event) => handleDonorChange('title', event.target.value)}
                                         >
@@ -489,17 +489,17 @@ export default function LpaCreate({ user }: Props) {
                                     </div>
                                 </div>
                                 <div className="md:col-span-1">
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">First name</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">First name</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.firstName}
                                         onChange={(event) => handleDonorChange('firstName', event.target.value)}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Last name</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Last name</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.lastName}
                                         onChange={(event) => handleDonorChange('lastName', event.target.value)}
                                     />
@@ -508,17 +508,17 @@ export default function LpaCreate({ user }: Props) {
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Middle names (if any)</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Middle names (if any)</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.middleNames}
                                         onChange={(event) => handleDonorChange('middleNames', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Preferred name (optional)</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Preferred name (optional)</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.preferredName}
                                         onChange={(event) => handleDonorChange('preferredName', event.target.value)}
                                     />
@@ -534,9 +534,9 @@ export default function LpaCreate({ user }: Props) {
                                 </button>
                                 {showOtherNames && (
                                     <div>
-                                        <label className="mb-2 block text-sm font-medium text-slate-600">Other names (optional)</label>
+                                        <label className="mb-2 block text-sm font-medium text-primary-600">Other names (optional)</label>
                                         <input
-                                            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                             value={donorDetails.otherNames}
                                             onChange={(event) => handleDonorChange('otherNames', event.target.value)}
                                             placeholder="Add any other names you have been known by"
@@ -548,29 +548,29 @@ export default function LpaCreate({ user }: Props) {
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 border-b border-primary-100 pb-2">
-                                <h3 className="text-xl font-semibold text-slate-900">Date of birth</h3>
+                                <h3 className="text-xl font-semibold text-primary-900">Date of birth</h3>
                             </div>
                             <div className="grid gap-4 md:grid-cols-3">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Day</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthDay}
                                         onChange={(event) => handleDonorChange('birthDay', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Month</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthMonth}
                                         onChange={(event) => handleDonorChange('birthMonth', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Year</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthYear}
                                         onChange={(event) => handleDonorChange('birthYear', event.target.value)}
                                     />
@@ -583,56 +583,56 @@ export default function LpaCreate({ user }: Props) {
         }
         if (currentStep === 3) {
             return (
-                <div className="space-y-8 rounded-2xl max-w-4xl bg-white p-8 text-slate-800 shadow-sm">
+                <div className="space-y-8 rounded-2xl max-w-4xl bg-white p-8 text-primary-800 shadow-sm">
                     <div className="text-left">
-                        <h2 className="text-3xl font-semibold text-center text-slate-900">
+                        <h2 className="text-3xl font-semibold text-center text-primary-900">
                             Your <span className="text-primary-500">contact details</span>
                         </h2>
-                        <p className="text-center text-sm text-slate-500 mt-2">Complete the donor information</p>
+                        <p className="text-center text-sm text-primary-500 mt-2">Complete the donor information</p>
                         <div className="mt-2 h-px w-full bg-primary-100" />
                     </div>
 
                     <div className="space-y-6">
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-slate-900">What's your address?</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">What's your address?</h3>
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 1</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 1</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.addressLine1}
                                         onChange={(event) => handleContactChange('addressLine1', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 2</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 2</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.addressLine2}
                                         onChange={(event) => handleContactChange('addressLine2', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Town</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Town</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.town}
                                         onChange={(event) => handleContactChange('town', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">County</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">County</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.county}
                                         onChange={(event) => handleContactChange('county', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Country</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Country</label>
                                     <div className="rounded-md border border-slate-200 bg-white px-3 py-2">
                                         <select
-                                            className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                            className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
                                             value={contactDetails.country}
                                             onChange={(event) => handleContactChange('country', event.target.value)}
                                         >
@@ -645,9 +645,9 @@ export default function LpaCreate({ user }: Props) {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">Postcode</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.postcode}
                                         onChange={(event) => handleContactChange('postcode', event.target.value)}
                                     />
@@ -656,20 +656,20 @@ export default function LpaCreate({ user }: Props) {
                         </div>
 
                         <div>
-                            <h3 className="text-lg font-semibold text-slate-900">Contact Number</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">Contact Number</h3>
                             <div className="mt-4 grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">What's your mobile number?</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">What's your mobile number?</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.mobile}
                                         onChange={(event) => handleContactChange('mobile', event.target.value)}
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-slate-600">What's your landline number?</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">What's your landline number?</label>
                                     <input
-                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                        className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.landline}
                                         onChange={(event) => handleContactChange('landline', event.target.value)}
                                     />
@@ -678,10 +678,10 @@ export default function LpaCreate({ user }: Props) {
                         </div>
 
                         <div>
-                            <h3 className="text-lg font-semibold text-slate-900">What's your email address?</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">What's your email address?</h3>
                             <div className="mt-3">
                                 <input
-                                    className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none"
+                                    className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                     value={contactDetails.email}
                                     onChange={(event) => handleContactChange('email', event.target.value)}
                                 />
@@ -698,17 +698,17 @@ export default function LpaCreate({ user }: Props) {
                     <div className="grid gap-8 lg:grid-cols-6">
                         {/* Main Content */}
                         <div className="lg:col-span-3 space-y-6">
-                            <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
-                                <h2 className="text-3xl font-semibold text-slate-900 mb-4">Attorneys</h2>
+                            <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                                <h2 className="text-3xl font-semibold text-primary-900 mb-4">Attorneys</h2>
 
-                                <p className="text-slate-700 mb-6">
+                                <p className="text-primary-700 mb-6">
                                     Attorneys are people a donor appoints to make decisions on their behalf, you need to choose at least one Attorney.
                                 </p>
 
                                 <button
                                     type="button"
                                     onClick={handleAddAttorney}
-                                    className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-slate-700 font-medium transition hover:border-primary-400 hover:bg-slate-50"
+                                    className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-primary-700 font-medium transition hover:border-primary-400 hover:bg-slate-50"
                                 >
                                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -717,21 +717,21 @@ export default function LpaCreate({ user }: Props) {
                                 </button>
 
                                 {attorneys.length === 0 ? (
-                                    <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center text-sm text-slate-500">
+                                    <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center text-sm text-primary-500">
                                         You haven't added any attorneys yet. Click "Add new attorney" to start.
                                     </div>
                                 ) : (
                                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                                         {attorneys.map((attorney) => (
                                             <div key={attorney.id} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                                                <p className="text-base font-semibold text-slate-900">
+                                                <p className="text-base font-semibold text-primary-900">
                                                     {attorney.title} {attorney.firstName} {attorney.middleNames} {attorney.lastName}
                                                 </p>
-                                                <p className="mt-1 text-sm text-slate-600">
+                                                <p className="mt-1 text-sm text-primary-600">
                                                     Born: {attorney.birthDay || '--'}/{attorney.birthMonth || '--'}/{attorney.birthYear || '----'}
                                                 </p>
                                                 {(attorney.addressLine1 || attorney.postcode) && (
-                                                    <div className="mt-3 text-sm text-slate-600">
+                                                    <div className="mt-3 text-sm text-primary-600">
                                                         <p>{attorney.addressLine1}</p>
                                                         {attorney.addressLine2 && <p>{attorney.addressLine2}</p>}
                                                         <p>
@@ -739,7 +739,7 @@ export default function LpaCreate({ user }: Props) {
                                                         </p>
                                                     </div>
                                                 )}
-                                                {attorney.email && <p className="mt-3 text-sm text-slate-600">Email: {attorney.email}</p>}
+                                                {attorney.email && <p className="mt-3 text-sm text-primary-600">Email: {attorney.email}</p>}
                                             </div>
                                         ))}
                                     </div>
@@ -750,8 +750,8 @@ export default function LpaCreate({ user }: Props) {
                         {/* Sidebar */}
                         <div className="lg:col-span-2">
                             <div className="rounded-2xl bg-white p-6 shadow-sm sticky top-6">
-                                <h3 className="text-xl font-semibold text-slate-900 mb-4">Who can be an Attorney?</h3>
-                                <p className="text-sm text-slate-700 mb-4">The Attorney must be meet the following requirements:</p>
+                                <h3 className="text-xl font-semibold text-primary-900 mb-4">Who can be an Attorney?</h3>
+                                <p className="text-sm text-primary-700 mb-4">The Attorney must be meet the following requirements:</p>
                                 <ul className="space-y-3">
                                     <li className="flex items-start gap-3">
                                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
@@ -759,7 +759,7 @@ export default function LpaCreate({ user }: Props) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-slate-700">Aged 18 or over.</span>
+                                        <span className="text-sm text-primary-700">Aged 18 or over.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
@@ -767,7 +767,7 @@ export default function LpaCreate({ user }: Props) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-slate-700">Have mental capacity to make decisions.</span>
+                                        <span className="text-sm text-primary-700">Have mental capacity to make decisions.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
@@ -775,7 +775,7 @@ export default function LpaCreate({ user }: Props) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-slate-700">Must not be bankrupt, or subject to a debt relief order.</span>
+                                        <span className="text-sm text-primary-700">Must not be bankrupt, or subject to a debt relief order.</span>
                                     </li>
                                 </ul>
                             </div>
@@ -809,13 +809,13 @@ export default function LpaCreate({ user }: Props) {
                                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
                                     {/* Full Legal Name */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">Full legal name</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">Full legal name</h4>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-slate-600">Title</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
                                             <div className="rounded-md border border-slate-300 bg-white px-3 py-2">
                                                 <select
-                                                    className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                                    className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
                                                     value={currentAttorney.title}
                                                     onChange={(e) => handleAttorneyChange('title', e.target.value)}
                                                 >
@@ -830,17 +830,17 @@ export default function LpaCreate({ user }: Props) {
 
                                         <div className="grid gap-4 md:grid-cols-2">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">First Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">First Name</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.firstName}
                                                     onChange={(e) => handleAttorneyChange('firstName', e.target.value)}
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Last Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Last Name</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.lastName}
                                                     onChange={(e) => handleAttorneyChange('lastName', e.target.value)}
                                                 />
@@ -848,9 +848,9 @@ export default function LpaCreate({ user }: Props) {
                                         </div>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-slate-600">Middle names (if any)</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">Middle names (if any)</label>
                                             <input
-                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                 value={currentAttorney.middleNames}
                                                 onChange={(e) => handleAttorneyChange('middleNames', e.target.value)}
                                             />
@@ -859,15 +859,15 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Address */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">What's their address?</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">What's their address?</h4>
 
                                         {!isManualAddress ? (
                                             <>
                                                 <div>
-                                                    <label className="mb-2 block text-sm text-slate-600">Enter postcode to search for address</label>
+                                                    <label className="mb-2 block text-sm text-primary-600">Enter postcode to search for address</label>
                                                     <div className="flex gap-3">
                                                         <input
-                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                             value={currentAttorney.postcode}
                                                             onChange={(e) => handleAttorneyChange('postcode', e.target.value)}
                                                             placeholder="Enter postcode"
@@ -891,43 +891,43 @@ export default function LpaCreate({ user }: Props) {
                                         ) : (
                                             <div className="space-y-4">
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 1</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 1</label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentAttorney.addressLine1}
                                                         onChange={(e) => handleAttorneyChange('addressLine1', e.target.value)}
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 2</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 2</label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentAttorney.addressLine2}
                                                         onChange={(e) => handleAttorneyChange('addressLine2', e.target.value)}
                                                     />
                                                 </div>
                                                 <div className="grid gap-4 md:grid-cols-2">
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-slate-600">Town</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">Town</label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                             value={currentAttorney.town}
                                                             onChange={(e) => handleAttorneyChange('town', e.target.value)}
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-slate-600">County</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">County</label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                             value={currentAttorney.county}
                                                             onChange={(e) => handleAttorneyChange('county', e.target.value)}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Postcode</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentAttorney.postcode}
                                                         onChange={(e) => handleAttorneyChange('postcode', e.target.value)}
                                                     />
@@ -938,30 +938,30 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Date of Birth */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">What's their date of birth</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">What's their date of birth</h4>
                                         <div className="grid gap-4 grid-cols-3">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Day</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.birthDay}
                                                     onChange={(e) => handleAttorneyChange('birthDay', e.target.value)}
                                                     placeholder="DD"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Month</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.birthMonth}
                                                     onChange={(e) => handleAttorneyChange('birthMonth', e.target.value)}
                                                     placeholder="MM"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Year</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.birthYear}
                                                     onChange={(e) => handleAttorneyChange('birthYear', e.target.value)}
                                                     placeholder="YYYY"
@@ -972,9 +972,9 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Email */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">What's their email address? (optional)</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">What's their email address? (optional)</h4>
                                         <input
-                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                             type="email"
                                             value={currentAttorney.email}
                                             onChange={(e) => handleAttorneyChange('email', e.target.value)}
@@ -1004,12 +1004,12 @@ export default function LpaCreate({ user }: Props) {
         if (currentStep === 5) {
             return (
                 <div className="max-w-4xl space-y-6">
-                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-slate-900 mb-6">
+                    <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
                             Can attorneys <span className="text-cyan-500">view your legal documents?</span>
                         </h2>
 
-                        <p className="text-base text-slate-700 mb-8">
+                        <p className="text-base text-primary-700 mb-8">
                             Are you happy for your Attorneys to view your legal documents if you lose mental capacity?
                         </p>
 
@@ -1019,7 +1019,7 @@ export default function LpaCreate({ user }: Props) {
                                 onClick={() => setCanViewDocuments('yes')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'yes'
                                     ? 'bg-slate-700 text-white'
-                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                    : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
                                     }`}
                             >
                                 Yes - give the attorneys authority
@@ -1029,7 +1029,7 @@ export default function LpaCreate({ user }: Props) {
                                 onClick={() => setCanViewDocuments('no')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'no'
                                     ? 'bg-slate-700 text-white'
-                                    : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                    : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
                                     }`}
                             >
                                 No - do not give the attorneys authority
@@ -1059,29 +1059,29 @@ export default function LpaCreate({ user }: Props) {
                     <div className="grid gap-8 lg:grid-cols-6">
                         {/* Main Content */}
                         <div className="lg:col-span-4 space-y-6">
-                            <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
-                                <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+                            <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                                <h2 className="text-2xl font-semibold text-primary-900 mb-4">
                                     Replacement <span className="text-cyan-500">Attorneys</span>
                                 </h2>
 
-                                <p className="text-slate-700 mb-4">
+                                <p className="text-primary-700 mb-4">
                                     One or more replacement attorneys can be appointed, this is optional.
                                 </p>
 
-                                <p className="text-slate-700 mb-6">
+                                <p className="text-primary-700 mb-6">
                                     Replacement attorneys are people a donor appoints to make decisions on their behalf if one of their attorneys
                                     can no longer make decisions on their behalf.
                                 </p>
 
                                 <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-slate-900 mb-4">Do you want any replacement attorneys?</h3>
+                                    <h3 className="text-lg font-semibold text-primary-900 mb-4">Do you want any replacement attorneys?</h3>
                                     <div className="space-y-3">
                                         <button
                                             type="button"
                                             onClick={() => setWantReplacementAttorneys('no')}
                                             className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'no'
                                                 ? 'bg-slate-700 text-white'
-                                                : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                                : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
                                                 }`}
                                         >
                                             No
@@ -1091,7 +1091,7 @@ export default function LpaCreate({ user }: Props) {
                                             onClick={() => setWantReplacementAttorneys('yes')}
                                             className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'yes'
                                                 ? 'bg-slate-700 text-white'
-                                                : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                                : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
                                                 }`}
                                         >
                                             Yes
@@ -1104,7 +1104,7 @@ export default function LpaCreate({ user }: Props) {
                                         <button
                                             type="button"
                                             onClick={handleAddReplacementAttorney}
-                                            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-slate-700 font-medium transition hover:border-primary-400 hover:bg-slate-50 mb-6"
+                                            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-primary-700 font-medium transition hover:border-primary-400 hover:bg-slate-50 mb-6"
                                         >
                                             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -1116,14 +1116,14 @@ export default function LpaCreate({ user }: Props) {
                                             <div className="grid gap-4 md:grid-cols-2">
                                                 {replacementAttorneys.map((attorney) => (
                                                     <div key={attorney.id} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                                                        <p className="text-base font-semibold text-slate-900">
+                                                        <p className="text-base font-semibold text-primary-900">
                                                             {attorney.title} {attorney.firstName} {attorney.middleNames} {attorney.lastName}
                                                         </p>
-                                                        <p className="mt-1 text-sm text-slate-600">
+                                                        <p className="mt-1 text-sm text-primary-600">
                                                             Born: {attorney.birthDay || '--'}/{attorney.birthMonth || '--'}/{attorney.birthYear || '----'}
                                                         </p>
                                                         {(attorney.addressLine1 || attorney.postcode) && (
-                                                            <div className="mt-3 text-sm text-slate-600">
+                                                            <div className="mt-3 text-sm text-primary-600">
                                                                 <p>{attorney.addressLine1}</p>
                                                                 {attorney.addressLine2 && <p>{attorney.addressLine2}</p>}
                                                                 <p>
@@ -1131,7 +1131,7 @@ export default function LpaCreate({ user }: Props) {
                                                                 </p>
                                                             </div>
                                                         )}
-                                                        {attorney.email && <p className="mt-3 text-sm text-slate-600">Email: {attorney.email}</p>}
+                                                        {attorney.email && <p className="mt-3 text-sm text-primary-600">Email: {attorney.email}</p>}
                                                     </div>
                                                 ))}
                                             </div>
@@ -1144,8 +1144,8 @@ export default function LpaCreate({ user }: Props) {
                         {/* Sidebar */}
                         <div className="lg:col-span-2">
                             <div className="rounded-2xl bg-white p-6 shadow-sm sticky top-6">
-                                <h3 className="text-xl font-semibold text-slate-900 mb-4">Who can be a Replacement Attorney?</h3>
-                                <p className="text-sm text-slate-700 mb-4">The replacement attorney must be meet the following requirements:</p>
+                                <h3 className="text-xl font-semibold text-primary-900 mb-4">Who can be a Replacement Attorney?</h3>
+                                <p className="text-sm text-primary-700 mb-4">The replacement attorney must be meet the following requirements:</p>
                                 <ul className="space-y-3">
                                     <li className="flex items-start gap-3">
                                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
@@ -1153,7 +1153,7 @@ export default function LpaCreate({ user }: Props) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-slate-700">Aged <span className="font-semibold">18 or over</span>.</span>
+                                        <span className="text-sm text-primary-700">Aged <span className="font-semibold">18 or over</span>.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
@@ -1161,7 +1161,7 @@ export default function LpaCreate({ user }: Props) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-slate-700">Have <span className="font-semibold">mental capacity</span> to make decisions.</span>
+                                        <span className="text-sm text-primary-700">Have <span className="font-semibold">mental capacity</span> to make decisions.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
@@ -1169,7 +1169,7 @@ export default function LpaCreate({ user }: Props) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-slate-700">Must not be <span className="font-semibold">bankrupt</span>, or subject to a debt relief order.</span>
+                                        <span className="text-sm text-primary-700">Must not be <span className="font-semibold">bankrupt</span>, or subject to a debt relief order.</span>
                                     </li>
                                     <li className="flex items-start gap-3">
                                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
@@ -1177,7 +1177,7 @@ export default function LpaCreate({ user }: Props) {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-slate-700">Must not already be assigned as an <span className="font-semibold">Attorney</span></span>
+                                        <span className="text-sm text-primary-700">Must not already be assigned as an <span className="font-semibold">Attorney</span></span>
                                     </li>
                                 </ul>
                             </div>
@@ -1211,13 +1211,13 @@ export default function LpaCreate({ user }: Props) {
                                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
                                     {/* Full Legal Name */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">Full legal name</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">Full legal name</h4>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-slate-600">Title</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
                                             <div className="rounded-md border border-slate-300 bg-white px-3 py-2">
                                                 <select
-                                                    className="w-full border-none bg-transparent text-sm text-slate-800 focus:outline-none"
+                                                    className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
                                                     value={currentReplacementAttorney.title}
                                                     onChange={(e) => handleReplacementAttorneyChange('title', e.target.value)}
                                                 >
@@ -1232,17 +1232,17 @@ export default function LpaCreate({ user }: Props) {
 
                                         <div className="grid gap-4 md:grid-cols-2">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">First Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">First Name</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.firstName}
                                                     onChange={(e) => handleReplacementAttorneyChange('firstName', e.target.value)}
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Last Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Last Name</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.lastName}
                                                     onChange={(e) => handleReplacementAttorneyChange('lastName', e.target.value)}
                                                 />
@@ -1250,9 +1250,9 @@ export default function LpaCreate({ user }: Props) {
                                         </div>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-slate-600">Middle names (if any)</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">Middle names (if any)</label>
                                             <input
-                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                 value={currentReplacementAttorney.middleNames}
                                                 onChange={(e) => handleReplacementAttorneyChange('middleNames', e.target.value)}
                                             />
@@ -1261,15 +1261,15 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Address */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">What's their address?</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">What's their address?</h4>
 
                                         {!isManualReplacementAddress ? (
                                             <>
                                                 <div>
-                                                    <label className="mb-2 block text-sm text-slate-600">Enter postcode to search for address</label>
+                                                    <label className="mb-2 block text-sm text-primary-600">Enter postcode to search for address</label>
                                                     <div className="flex gap-3">
                                                         <input
-                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                             value={currentReplacementAttorney.postcode}
                                                             onChange={(e) => handleReplacementAttorneyChange('postcode', e.target.value)}
                                                             placeholder="Enter postcode"
@@ -1293,43 +1293,43 @@ export default function LpaCreate({ user }: Props) {
                                         ) : (
                                             <div className="space-y-4">
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 1</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 1</label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentReplacementAttorney.addressLine1}
                                                         onChange={(e) => handleReplacementAttorneyChange('addressLine1', e.target.value)}
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Address Line 2</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 2</label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentReplacementAttorney.addressLine2}
                                                         onChange={(e) => handleReplacementAttorneyChange('addressLine2', e.target.value)}
                                                     />
                                                 </div>
                                                 <div className="grid gap-4 md:grid-cols-2">
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-slate-600">Town</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">Town</label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                             value={currentReplacementAttorney.town}
                                                             onChange={(e) => handleReplacementAttorneyChange('town', e.target.value)}
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-slate-600">County</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">County</label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                             value={currentReplacementAttorney.county}
                                                             onChange={(e) => handleReplacementAttorneyChange('county', e.target.value)}
                                                         />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-slate-600">Postcode</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentReplacementAttorney.postcode}
                                                         onChange={(e) => handleReplacementAttorneyChange('postcode', e.target.value)}
                                                     />
@@ -1340,30 +1340,30 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Date of Birth */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">What's their date of birth</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">What's their date of birth</h4>
                                         <div className="grid gap-4 grid-cols-3">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Day</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.birthDay}
                                                     onChange={(e) => handleReplacementAttorneyChange('birthDay', e.target.value)}
                                                     placeholder="DD"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Month</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.birthMonth}
                                                     onChange={(e) => handleReplacementAttorneyChange('birthMonth', e.target.value)}
                                                     placeholder="MM"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-slate-600">Year</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.birthYear}
                                                     onChange={(e) => handleReplacementAttorneyChange('birthYear', e.target.value)}
                                                     placeholder="YYYY"
@@ -1374,9 +1374,9 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Email */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-slate-900">What's their email address? (optional)</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">What's their email address? (optional)</h4>
                                         <input
-                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                             type="email"
                                             value={currentReplacementAttorney.email}
                                             onChange={(e) => handleReplacementAttorneyChange('email', e.target.value)}
@@ -1408,12 +1408,12 @@ export default function LpaCreate({ user }: Props) {
         if (currentStep === 7) {
             return (
                 <div className="max-w-4xl space-y-6">
-                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
-                        <h2 className="text-3xl font-semibold text-center text-slate-900 mb-8">
+                    <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                        <h2 className="text-3xl font-semibold text-center text-primary-900 mb-8">
                             Life-sustaining <span className="text-cyan-500">Treatment</span>
                         </h2>
 
-                        <div className="space-y-6 text-base text-slate-900 mb-8">
+                        <div className="space-y-6 text-base text-primary-900 mb-8">
                             <p>
                                 <span className="text-cyan-500">You</span> must choose what you want to happen if you needed medical help to keep you alive and you no longer had mental capacity.
                             </p>
@@ -1428,7 +1428,7 @@ export default function LpaCreate({ user }: Props) {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-slate-900">
+                            <h3 className="text-lg font-semibold text-primary-900">
                                 Do you want the attorneys to make decisions about life-sustaining treatment?
                             </h3>
                             <div className="overflow-hidden rounded-md border border-slate-200">
@@ -1437,7 +1437,7 @@ export default function LpaCreate({ user }: Props) {
                                     onClick={() => setLifeSustainingTreatment('yes')}
                                     className={`w-full px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'yes'
                                         ? 'bg-slate-600 text-white'
-                                        : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        : 'bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
                                     Yes - give the attorneys authority
@@ -1447,7 +1447,7 @@ export default function LpaCreate({ user }: Props) {
                                     onClick={() => setLifeSustainingTreatment('no')}
                                     className={`w-full border-t border-slate-200 px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'no'
                                         ? 'bg-slate-600 text-white'
-                                        : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        : 'bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
                                     No - do not give the attorneys authority
@@ -1462,12 +1462,12 @@ export default function LpaCreate({ user }: Props) {
         if (currentStep === 8) {
             return (
                 <div className="max-w-4xl space-y-6">
-                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-slate-900 mb-6">
+                    <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
                             People to <span className="text-cyan-500">notify</span>
                         </h2>
 
-                        <div className="space-y-4 text-slate-700">
+                        <div className="space-y-4 text-primary-700">
                             <p className="text-base">
                                 You can let people know that you're going to register this document. They can raise any concerns they have about the Lasting Powers of Attorney – for example, if there was any pressure or fraud in making it.
                             </p>
@@ -1494,14 +1494,14 @@ export default function LpaCreate({ user }: Props) {
                         </div>
 
                         <div className="mt-8">
-                            <h3 className="text-lg font-semibold text-slate-900 mb-4">Are there any people to notify?</h3>
+                            <h3 className="text-lg font-semibold text-primary-900 mb-4">Are there any people to notify?</h3>
                             <div className="space-y-3">
                                 <button
                                     type="button"
                                     onClick={() => setNotifyPeople('no')}
                                     className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${notifyPeople === 'no'
                                         ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                        : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
                                         }`}
                                 >
                                     No, there are no people to notify
@@ -1511,7 +1511,7 @@ export default function LpaCreate({ user }: Props) {
                                     onClick={() => setNotifyPeople('yes')}
                                     className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${notifyPeople === 'yes'
                                         ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-slate-800 border border-slate-300 hover:bg-slate-50'
+                                        : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
                                         }`}
                                 >
                                     Yes, there are people to notify
@@ -1529,12 +1529,12 @@ export default function LpaCreate({ user }: Props) {
 
             return (
                 <div className="max-w-4xl space-y-6">
-                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-slate-900 mb-6">
+                    <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
                             Who is <span className="text-cyan-500">applying to register?</span>
                         </h2>
 
-                        <div className="space-y-4 text-slate-700 mb-8">
+                        <div className="space-y-4 text-primary-700 mb-8">
                             <p className="text-base">
                                 This document can't be used until it is registered by the Office of the Public Guardian (OPG).
                             </p>
@@ -1549,10 +1549,10 @@ export default function LpaCreate({ user }: Props) {
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-slate-900">Who is applying to register?</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">Who is applying to register?</h3>
                             <div className="rounded-md border border-slate-300 bg-white">
                                 <select
-                                    className="w-full border-none bg-transparent px-4 py-3 text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                                    className="w-full border-none bg-transparent px-4 py-3 text-base text-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
                                     value={applicant}
                                     onChange={(e) => setApplicant(e.target.value)}
                                 >
@@ -1564,7 +1564,7 @@ export default function LpaCreate({ user }: Props) {
 
                             {applicant === 'attorneys' && attorneys.length === 1 && selectedAttorney && (
                                 <div className="space-y-3">
-                                    <p className="text-sm text-slate-600">You only have one attorney, they have been automatically selected.</p>
+                                    <p className="text-sm text-primary-600">You only have one attorney, they have been automatically selected.</p>
                                     <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
                                             <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
@@ -1578,7 +1578,7 @@ export default function LpaCreate({ user }: Props) {
                                             <p className="text-sm">{selectedAttorney.email}</p>
                                         </div>
                                         <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
@@ -1601,7 +1601,7 @@ export default function LpaCreate({ user }: Props) {
                                             <p className="text-sm">{contactDetails.email}</p>
                                         </div>
                                         <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
@@ -1620,21 +1620,21 @@ export default function LpaCreate({ user }: Props) {
             const selectedDonor = donorDetails;
             return (
                 <div className="max-w-4xl space-y-6">
-                    <div className="rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-slate-900 mb-6">
+                    <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
                             Who should <span className="text-cyan-500">receive the document?</span>
                         </h2>
 
                         <div className="space-y-6">
-                            <p className="text-base text-slate-700">
+                            <p className="text-base text-primary-700">
                                 Once this document is registered with the Office of the Public Guardian (OPG) it will be sent to the person listed below.
                             </p>
 
                             <div className="space-y-4">
-                                <h3 className="text-lg font-semibold text-slate-900">Where should the registered document be sent?</h3>
+                                <h3 className="text-lg font-semibold text-primary-900">Where should the registered document be sent?</h3>
                                 <div className="rounded-md border border-slate-300 bg-white">
                                     <select
-                                        className="w-full border-none bg-transparent px-4 py-3 text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                                        className="w-full border-none bg-transparent px-4 py-3 text-base text-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
                                         value={documentRecipient}
                                         onChange={(e) => setDocumentRecipient(e.target.value)}
                                     >
@@ -1651,7 +1651,7 @@ export default function LpaCreate({ user }: Props) {
 
                             {documentRecipient === 'attorney' && selectedAttorney && (
                                 <div className="space-y-3">
-                                    <p className="text-sm text-slate-600">You only have one attorney, they will receive the registered document.</p>
+                                    <p className="text-sm text-primary-600">You only have one attorney, they will receive the registered document.</p>
                                     <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
                                             <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
@@ -1665,7 +1665,7 @@ export default function LpaCreate({ user }: Props) {
                                             <p className="text-sm">{selectedAttorney.email}</p>
                                         </div>
                                         <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
@@ -1688,7 +1688,7 @@ export default function LpaCreate({ user }: Props) {
                                             <p className="text-sm">{contactDetails.email}</p>
                                         </div>
                                         <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
@@ -1697,7 +1697,7 @@ export default function LpaCreate({ user }: Props) {
                             )}
 
                             {documentRecipient === 'other' && (
-                                <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
+                                <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-primary-600">
                                     You'll be able to provide the recipient's details in the following step.
                                 </div>
                             )}
@@ -1710,20 +1710,20 @@ export default function LpaCreate({ user }: Props) {
         // Step 11: Certificate Provider
         if (currentStep === 11) {
             return (
-                <div className="max-w-4xl space-y-8 rounded-2xl bg-white p-8 text-slate-800 shadow-sm">
+                <div className="max-w-4xl space-y-8 rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
                     <div className="text-center space-y-3">
-                        <h2 className="text-3xl font-semibold text-slate-900">
+                        <h2 className="text-3xl font-semibold text-primary-900">
                             The <span className="text-primary-500">Certificate Provider</span>
                         </h2>
                         <div className="mx-auto h-px w-full bg-slate-200" />
                     </div>
 
-                    <p className="text-base text-slate-700">
+                    <p className="text-base text-primary-700">
                         This person signs to confirm they have discussed the Lasting Power of Attorney with the Donor and that they are fully aware of what they are doing.
                     </p>
 
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-slate-900">Do you want to choose your certificate provider now?</h3>
+                        <h3 className="text-lg font-semibold text-primary-900">Do you want to choose your certificate provider now?</h3>
                         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_30px_rgba(15,23,42,0.08)]">
                             {[
                                 { value: 'no', label: 'No, I will add them when I sign the documents' },
@@ -1734,10 +1734,10 @@ export default function LpaCreate({ user }: Props) {
                                     type="button"
                                     onClick={() => setCertificateChoice(option.value as 'yes' | 'no')}
                                     className={`w-full px-8 py-5 text-left text-base font-semibold transition ${certificateChoice === option.value
-                                            ? 'bg-slate-800 text-white'
-                                            : index === 0
-                                                ? 'bg-slate-900 text-white hover:bg-slate-800'
-                                                : 'bg-white text-slate-800 hover:bg-slate-50'
+                                        ? 'bg-slate-800 text-white'
+                                        : index === 0
+                                            ? 'bg-slate-900 text-white hover:bg-slate-800'
+                                            : 'bg-white text-primary-800 hover:bg-slate-50'
                                         } ${index === 0 ? 'border-b border-slate-200/70' : ''}`}
                                 >
                                     {option.label}
@@ -1751,9 +1751,9 @@ export default function LpaCreate({ user }: Props) {
 
         const nextStep = lpaSteps[currentStep];
         return (
-            <div className="rounded-2xl bg-white p-8 text-slate-700 shadow-sm">
-                <p className="text-lg font-semibold text-slate-900">{nextStep?.title ?? 'Upcoming Step'}</p>
-                <p className="mt-2 text-sm text-slate-500">This part of the journey will be completed in the next iteration.</p>
+            <div className="rounded-2xl bg-white p-8 text-primary-700 shadow-sm">
+                <p className="text-lg font-semibold text-primary-900">{nextStep?.title ?? 'Upcoming Step'}</p>
+                <p className="mt-2 text-sm text-primary-500">This part of the journey will be completed in the next iteration.</p>
             </div>
         );
     };
@@ -1838,7 +1838,7 @@ export default function LpaCreate({ user }: Props) {
 
                                                 {/* Step Title */}
                                                 <p
-                                                    className={`mt-3 text-xs font-medium transition-colors duration-200 ${isActive ? 'text-primary-600' : isCompleted ? 'text-slate-600' : 'text-slate-400'
+                                                    className={`mt-3 text-xs font-medium transition-colors duration-200 ${isActive ? 'text-primary-600' : isCompleted ? 'text-primary-600' : 'text-primary-400'
                                                         }`}
                                                 >
                                                     {step.title}

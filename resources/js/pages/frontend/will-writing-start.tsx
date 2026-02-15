@@ -36,10 +36,10 @@ const MaritalStatusCard: React.FC<{
             : 'border-gray-200 bg-white hover:border-gray-300'
             }`}
     >
-        <div className={`mb-2 ${selected ? 'text-secondary' : 'text-slate-600'}`}>
+        <div className={`mb-2 ${selected ? 'text-secondary' : 'text-primary-600'}`}>
             {icon}
         </div>
-        <span className={`text-xs font-normal ${selected ? 'text-secondary' : 'text-slate-600'}`}>
+        <span className={`text-xs font-normal ${selected ? 'text-secondary' : 'text-primary-600'}`}>
             {label}
         </span>
     </button>
@@ -657,7 +657,7 @@ const WillCreationWizard: React.FC = () => {
 
                 {/* Main Content Card */}
                 <div className="max-w-3xl mx-auto mt-8 bg-card rounded shadow-sm border border-border px-10 py-10 md:px-14">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-slate-700 mb-8">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-primary-700 mb-8">
                         What is your marital status?
                     </h2>
 
@@ -788,7 +788,7 @@ const WillCreationWizard: React.FC = () => {
                             type="button"
                             onClick={handleBack}
                             disabled={isSaving}
-                            className="px-6 py-2.5 rounded border border-slate-300 bg-slate-100 text-slate-700 text-sm font-semibold uppercase tracking-wide hover:bg-slate-200 transition-colors duration-200 cursor-pointer disabled:opacity-50"
+                            className="px-6 py-2.5 rounded border border-slate-300 bg-slate-100 text-primary-700 text-sm font-semibold uppercase tracking-wide hover:bg-slate-200 transition-colors duration-200 cursor-pointer disabled:opacity-50"
                         >
                             BACK
                         </button>

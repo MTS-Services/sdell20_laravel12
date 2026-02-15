@@ -6,8 +6,8 @@ export function LpaFeaturedLogosSection() {
     return (
         <section className="bg-primary-50 py-14">
             <div className="container mx-auto px-6">
-                <p className="text-center text-lg font-semibold text-slate-700 animate-fadeInUp">Proudly featured in</p>
-                <div className="mt-8 grid grid-cols-2 gap-8 text-center text-slate-600 sm:grid-cols-4">
+                <p className="text-center text-lg font-semibold text-primary-700 animate-fadeInUp">Proudly featured in</p>
+                <div className="mt-8 grid grid-cols-2 gap-8 text-center text-primary-600 sm:grid-cols-4">
                     {featuredLogos.map((logo, index) => (
                         <div
                             key={logo}

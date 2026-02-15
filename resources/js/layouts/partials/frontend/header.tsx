@@ -36,7 +36,7 @@ export function FrontendHeader() {
                             </svg>
                             <div>
                                 <div className="font-sans text-2xl font-bold tracking-wider">HORIZON WILLS</div>
-                                <div className="text-xs text-slate-300 tracking-widest">PROTECTING YOUR ASSETS</div>
+                                <div className="text-xs text-primary-300 tracking-widest">PROTECTING YOUR ASSETS</div>
                             </div>
                         </Link>
 
@@ -44,7 +44,7 @@ export function FrontendHeader() {
                             <div className="relative group">
                                 <Link
                                     href={route('horizon-wills')}
-                                    className="flex items-center gap-2 font-sans text-sm tracking-wide text-slate-100/90 transition-colors hover:text-primary-500"
+                                    className="flex items-center gap-2 font-sans text-sm tracking-wide text-primary-100/90 transition-colors hover:text-primary-500"
                                 >
                                     <span>About Us</span>
                                     <ChevronDown className="h-3 w-3 transition-transform duration-200 group-hover:rotate-180" />
@@ -78,7 +78,7 @@ export function FrontendHeader() {
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div className="w-1/2 p-6 flex flex-col justify-between bg-white text-slate-900">
+                                        <div className="w-1/2 p-6 flex flex-col justify-between bg-white text-primary-900">
                                             <div className="space-y-4">
                                                 <div className="flex items-center gap-2 text-primary-700">
                                                     <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -86,7 +86,7 @@ export function FrontendHeader() {
                                                     </svg>
                                                     <span className="font-semibold tracking-wide">Not sure where to start?</span>
                                                 </div>
-                                                <p className="text-sm text-slate-600 leading-relaxed">
+                                                <p className="text-sm text-primary-600 leading-relaxed">
                                                     Take the 1 min quiz to discover the right estate plan for you.
                                                 </p>
                                             </div>
@@ -98,14 +98,14 @@ export function FrontendHeader() {
                             <div className="relative group">
                                 <button
                                     type="button"
-                                    className="flex items-center gap-2 font-sans tracking-wide text-sm  text-slate-100/90 hover:text-primary-500 transition-colors"
+                                    className="flex items-center gap-2 font-sans tracking-wide text-sm  text-primary-100/90 hover:text-primary-500 transition-colors"
                                 >
                                     <span>Estate Planning</span>
                                     <ChevronDown className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" />
                                 </button>
 
                                 <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 opacity-0 invisible group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
-                                    <div className="w-[360px] bg-white rounded-3xl shadow-2xl border border-primary-100 p-6 text-slate-900 ring-1 ring-primary-200/60">
+                                    <div className="w-[360px] bg-white rounded-3xl shadow-2xl border border-primary-100 p-6 text-primary-900 ring-1 ring-primary-200/60">
                                         <p className="text-xs uppercase tracking-[0.3em] text-primary-500 font-semibold mb-4">Estate Planning</p>
                                         <ul className="space-y-3 text-sm">
                                             <li className="flex gap-3 group rounded-2xl p-3 hover:bg-primary-50 transition">
@@ -115,10 +115,10 @@ export function FrontendHeader() {
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <Link href={route('will-writing')} className="font-semibold text-slate-900">
+                                                    <Link href={route('will-writing')} className="font-semibold text-primary-900">
                                                         Will Writing
                                                     </Link>
-                                                    <p className="text-slate-500 text-xs">Write a will tailored to you</p>
+                                                    <p className="text-primary-500 text-xs">Write a will tailored to you</p>
                                                 </div>
                                             </li>
                                             <li className="flex gap-3 group rounded-2xl p-3 hover:bg-primary-50 transition">
@@ -128,10 +128,10 @@ export function FrontendHeader() {
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <Link href={route('lpa')} className="font-semibold text-slate-900">
+                                                    <Link href={route('lpa')} className="font-semibold text-primary-900">
                                                         Lasting Power of Attorney
                                                     </Link>
-                                                    <p className="text-slate-500 text-xs">Choose who makes decisions for you</p>
+                                                    <p className="text-primary-500 text-xs">Choose who makes decisions for you</p>
                                                 </div>
                                             </li>
                                         </ul>
@@ -142,14 +142,14 @@ export function FrontendHeader() {
                             <div className="relative group">
                                 <button
                                     type="button"
-                                    className="flex items-center gap-2 font-sans tracking-wide text-sm text-slate-100/90 hover:text-primary-500 transition-colors"
+                                    className="flex items-center gap-2 font-sans tracking-wide text-sm text-primary-100/90 hover:text-primary-500 transition-colors"
                                 >
                                     <span>Get Support After Loss</span>
                                     <ChevronDown className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" />
                                 </button>
 
                                 <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 opacity-0 invisible group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
-                                    <div className="w-[340px] bg-white rounded-3xl shadow-2xl border border-primary-100 p-6 text-slate-900 ring-1 ring-primary-200/60">
+                                    <div className="w-[340px] bg-white rounded-3xl shadow-2xl border border-primary-100 p-6 text-primary-900 ring-1 ring-primary-200/60">
                                         <p className="text-xs uppercase tracking-[0.3em] text-primary-500 font-semibold mb-4">Get Support After Loss</p>
                                         <ul className="space-y-3 text-sm">
                                             <li className="flex gap-3 group rounded-2xl p-3 hover:bg-primary-50 transition">
@@ -159,10 +159,10 @@ export function FrontendHeader() {
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <Link href={route('probate')} className="font-semibold text-slate-900">
+                                                    <Link href={route('probate')} className="font-semibold text-primary-900">
                                                         Probate
                                                     </Link>
-                                                    <p className="text-slate-500 text-xs">Guidance through probate</p>
+                                                    <p className="text-primary-500 text-xs">Guidance through probate</p>
                                                 </div>
                                             </li>
                                         </ul>
@@ -186,7 +186,7 @@ export function FrontendHeader() {
                     </div>
 
                     {mobileMenuOpen && (
-                        <div className="rounded-2xl bg-white shadow-lg border border-slate-200 p-4 space-y-3 text-slate-900 md:hidden mt-4">
+                        <div className="rounded-2xl bg-white shadow-lg border border-slate-200 p-4 space-y-3 text-primary-900 md:hidden mt-4">
                             {Object.entries(mobileLinks).map(([key, links]) => (
                                 <div key={key} className="rounded-2xl overflow-hidden">
                                     <button
@@ -215,7 +215,7 @@ export function FrontendHeader() {
                                                         setMobileMenuOpen(false);
                                                         setMobileDropdown(null);
                                                     }}
-                                                    className="block rounded-xl px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition"
+                                                    className="block rounded-xl px-4 py-2 text-sm font-medium text-primary-700 hover:bg-slate-50 transition"
                                                 >
                                                     {item.label}
                                                 </Link>

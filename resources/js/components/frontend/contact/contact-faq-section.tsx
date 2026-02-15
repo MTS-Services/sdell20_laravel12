@@ -61,10 +61,10 @@ export function ContactFaqSection() {
                                                 <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                         </span>
-                                        <p className="font-semibold text-slate-900">{item.q}</p>
+                                        <p className="font-semibold text-primary-900">{item.q}</p>
                                     </div>
 
-                                    <span className="mt-1 text-slate-400">
+                                    <span className="mt-1 text-primary-400">
                                         <svg
                                             viewBox="0 0 24 24"
                                             className={`h-5 w-5 transition-transform ${isOpen ? 'rotate-180' : 'rotate-0'}`}
@@ -78,7 +78,7 @@ export function ContactFaqSection() {
                                 </button>
 
                                 {isOpen ? (
-                                    <p className="mt-3 pl-9 text-sm leading-relaxed text-slate-600">{item.a}</p>
+                                    <p className="mt-3 pl-9 text-sm leading-relaxed text-primary-600">{item.a}</p>
                                 ) : null}
                             </div>
                         );

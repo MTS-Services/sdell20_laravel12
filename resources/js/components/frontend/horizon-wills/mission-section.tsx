@@ -11,18 +11,17 @@ export function MissionSection() {
             <div className="container mx-auto px-6">
                 <div
                     ref={contentRef}
-                    className={`mx-auto mb-16 max-w-3xl text-center transition-all duration-700 ease-out ${
-                        contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                    }`}
+                    className={`mx-auto mb-16 max-w-3xl text-center transition-all duration-700 ease-out ${contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                        }`}
                 >
                     <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border-2 border-slate-300 bg-white">
-                        <svg className="h-8 w-8 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <svg className="h-8 w-8 text-primary-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <circle cx="12" cy="12" r="10" />
                             <path d="M12 6v6l4 2" />
                         </svg>
                     </div>
-                    <h2 className="text-4xl font-light text-slate-900 md:text-5xl">Our mission</h2>
-                    <p className="mt-6 text-lg leading-relaxed text-slate-600">
+                    <h2 className="text-4xl font-light text-primary-900 md:text-5xl">Our mission</h2>
+                    <p className="mt-6 text-lg leading-relaxed text-primary-600">
                         Death is inevitable. Losing what and who you love is hard. But doing nothing about it is harder. We plan to prevent the people you'll leave
                         behind from spending precious time figuring out what to do next, and more time living the life you've left them.
                     </p>

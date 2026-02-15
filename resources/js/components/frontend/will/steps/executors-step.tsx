@@ -89,10 +89,10 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
         <div>
             {!showBackupSection && (
                 <>
-                    <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">
+                    <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-4">
                         Choose an Executor/Personal Representative
                     </h2>
-                    <p className="text-sm md:text-base text-slate-600 mb-10">
+                    <p className="text-sm md:text-base text-primary-600 mb-10">
                         Executors are responsible for carrying out the instructions in your will. Add trusted individuals below.
                     </p>
                 </>
@@ -100,10 +100,10 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
 
             {showBackupSection && (
                 <>
-                    <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">
+                    <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-4">
                         Backup Executor/Personal Representative
                     </h2>
-                    <p className="text-sm md:text-base text-slate-600 mb-6">
+                    <p className="text-sm md:text-base text-primary-600 mb-6">
                         Do you want to name an alternative in case your original executor is unavailable?
                     </p>
                 </>
@@ -115,7 +115,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                         <>
                             {showSpouseQuestion && onToggleSpouseExecutor && (
                                 <div className="space-y-4">
-                                    <p className="text-sm md:text-base text-slate-600">
+                                    <p className="text-sm md:text-base text-primary-600">
                                         Do you want {spouseFirstName || partnerLabel} to administer your estate?
                                     </p>
                                     <div className="flex gap-4">
@@ -126,7 +126,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                 onClick={() => onToggleSpouseExecutor(option === 'yes')}
                                                 className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all ${(option === 'yes' && spouseIsExecutor) || (option === 'no' && !spouseIsExecutor)
                                                     ? 'border-secondary text-secondary bg-white shadow-[0_2px_6px_rgba(0,0,0,0.04)]'
-                                                    : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                                                    : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'
                                                     }`}
                                             >
                                                 {option.toUpperCase()}
@@ -144,7 +144,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                 return (
                                     <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
                                         <div className="flex items-center justify-between mb-4">
-                                            <p className="text-base font-semibold text-slate-700">{cardTitle}</p>
+                                            <p className="text-base font-semibold text-primary-700">{cardTitle}</p>
                                             {executors.length > 1 && (
                                                 <button
                                                     type="button"
@@ -163,7 +163,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                     type="text"
                                                     value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
                                                     onChange={(e) => handleFullNameChange(index, e.target.value)}
-                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                     placeholder="e.g. William Timothy Smith"
                                                 />
                                             </div>
@@ -175,7 +175,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                             type="text"
                                                             value={executor.city}
                                                             onChange={(e) => setExecutorFields(index, { city: e.target.value })}
-                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                             placeholder="e.g. London"
                                                         />
                                                     </div>
@@ -184,7 +184,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                         <select
                                                             value={executor.country}
                                                             onChange={(e) => setExecutorFields(index, { country: e.target.value })}
-                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                            className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                                                         >
                                                             {UK_COUNTRY_OPTIONS.map((country) => (
                                                                 <option key={country} value={country}>
@@ -221,7 +221,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                         onClick={() => onToggleAlternate(option === 'yes')}
                                         className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all ${(option === 'yes' && wantsAlternateExecutor) || (option === 'no' && !wantsAlternateExecutor)
                                             ? 'border-secondary bg-secondary/5 text-secondary'
-                                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                                            : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'
                                             }`}
                                     >
                                         {option.toUpperCase()}
@@ -233,7 +233,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                 {alternateExecutors.map((executor, index) => (
                                     <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6 mb-6 last:mb-0">
                                         <div className="flex items-center justify-between mb-4">
-                                            <p className="text-base font-semibold text-slate-700">Alternate Executor {index + 1}</p>
+                                            <p className="text-base font-semibold text-primary-700">Alternate Executor {index + 1}</p>
                                             {alternateExecutors.length > 1 && (
                                                 <button type="button" onClick={() => removeExecutor(index, true)} className="text-rose-500 text-xs font-semibold uppercase tracking-wide hover:text-rose-600">
                                                     Remove
@@ -248,7 +248,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                     type="text"
                                                     value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
                                                     onChange={(e) => handleFullNameChange(index, e.target.value, true)}
-                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                     placeholder="e.g. William Timothy Smith"
                                                 />
                                             </div>
@@ -258,7 +258,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                     type="text"
                                                     value={executor.city}
                                                     onChange={(e) => setExecutorFields(index, { city: e.target.value }, true)}
-                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                     placeholder="e.g. London"
                                                 />
                                             </div>
@@ -267,7 +267,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                 <select
                                                     value={executor.country}
                                                     onChange={(e) => setExecutorFields(index, { country: e.target.value }, true)}
-                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                                                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                                                 >
                                                     {UK_COUNTRY_OPTIONS.map((country) => (
                                                         <option key={country} value={country}>
@@ -293,9 +293,9 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                 </div>
 
                 <aside className="rounded border border-slate-200 bg-white shadow-sm p-6 h-fit">
-                    <h3 className="text-base font-semibold text-slate-700 mb-4">Frequently Asked Questions</h3>
+                    <h3 className="text-base font-semibold text-primary-700 mb-4">Frequently Asked Questions</h3>
                     <div className="relative" onMouseLeave={() => setFaqTooltip(null)}>
-                        <ul className="space-y-3 text-sm text-slate-600">
+                        <ul className="space-y-3 text-sm text-primary-600">
                             {FAQ_ITEMS.map((item) => (
                                 <li key={item.question} className="border-b text-left border-slate-100 pb-3 last:border-b-0 last:pb-0">
                                     <button
@@ -313,7 +313,7 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                         </ul>
                         {faqTooltip && (
                             <div
-                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-lg"
+                                className="absolute left-[calc(100%+1rem)] w-64 rounded-lg border border-slate-200 bg-white p-4 text-xs text-primary-600 shadow-lg"
                                 style={{ top: faqTooltip.top }}
                             >
                                 <div className="absolute -left-2 top-4 h-0 w-0 border-y-8 border-y-transparent border-r-8 border-r-slate-200" />

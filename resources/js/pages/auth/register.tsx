@@ -39,7 +39,7 @@ export default function Register() {
                                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 sm:p-5 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     <Label
                                         htmlFor="name"
-                                        className="text-[11px] font-semibold uppercase tracking-[0.35em] text-slate-500 sm:text-xs"
+                                        className="text-[11px] font-semibold uppercase tracking-[0.35em] text-primary-500 sm:text-xs"
                                     >
                                         Full name
                                     </Label>
@@ -50,7 +50,7 @@ export default function Register() {
                                         required
                                         autoFocus
                                         placeholder="Avery Jensen"
-                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60 bg-white text-sm sm:text-base text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60 bg-white text-sm sm:text-base text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                     <InputError message={errors.name} />
                                 </div>
@@ -59,7 +59,7 @@ export default function Register() {
                                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 sm:p-5 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     <Label
                                         htmlFor="email"
-                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500"
                                     >
                                         Email address
                                     </Label>
@@ -69,7 +69,7 @@ export default function Register() {
                                         type="email"
                                         required
                                         placeholder="team@horizon.io"
-                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60  bg-white text-sm sm:text-base text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60  bg-white text-sm sm:text-base text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                     <InputError message={errors.email} />
                                 </div>
@@ -78,7 +78,7 @@ export default function Register() {
                                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 sm:p-5 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     <Label
                                         htmlFor="password"
-                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500"
                                     >
                                         Password
                                     </Label>
@@ -87,7 +87,7 @@ export default function Register() {
                                         name="password"
                                         required
                                         placeholder="Create a passphrase"
-                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60 bg-white text-sm sm:text-base text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60 bg-white text-sm sm:text-base text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                 </div>
 
@@ -95,7 +95,7 @@ export default function Register() {
                                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 sm:p-5 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     <Label
                                         htmlFor="password_confirmation"
-                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500"
                                     >
                                         Confirm password
                                     </Label>
@@ -104,7 +104,7 @@ export default function Register() {
                                         name="password_confirmation"
                                         required
                                         placeholder="Re-enter password"
-                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60 bg-white text-sm sm:text-base text-primary-500 placeholder:text-slate-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60 bg-white text-sm sm:text-base text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                 </div>
 

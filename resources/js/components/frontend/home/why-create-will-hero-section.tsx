@@ -15,7 +15,7 @@ export function WhyCreateWillHeroSection({ headerRef, headerVisible, videoRef, v
                 className={`text-center mb-16 space-y-4 transition-all duration-700 ease-out ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
                 <h2 className="text-5xl md:text-6xl font-serif font-bold text-primary-900 text-balance">Why Should You Create A Will?</h2>
-                <p className="text-xl text-slate-700 max-w-2xl mx-auto font-body">Protect what matters most and ensure your wishes are honored</p>
+                <p className="text-xl text-primary-700 max-w-2xl mx-auto font-body">Protect what matters most and ensure your wishes are honored</p>
             </div>
 
             <div

@@ -53,7 +53,7 @@ export function DashboardPreviewSection() {
                         className={`order-2 space-y-6 md:order-1 transition-all duration-700 ease-out ${copyVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-6'}`}
                     >
                         <h2 className="font-serif text-4xl font-bold md:text-5xl">My Will Dashboard</h2>
-                        <p className="font-body text-xl leading-relaxed text-slate-200">
+                        <p className="font-body text-xl leading-relaxed text-primary-200">
                             Welcome to your online will writing service. It can take as little as 15 minutes to create your will through our simple, step-by-step process.
                         </p>
                         <div className="space-y-4">
@@ -64,7 +64,7 @@ export function DashboardPreviewSection() {
                                     </svg>
                                     <div>
                                         <p className="font-sans text-lg font-semibold">{item.title}</p>
-                                        <p className="text-sm text-slate-200">{item.subtitle}</p>
+                                        <p className="text-sm text-primary-200">{item.subtitle}</p>
                                     </div>
                                 </div>
                             ))}
@@ -86,9 +86,9 @@ export function DashboardPreviewSection() {
                         <div className="rounded-3xl bg-white p-8 shadow-2xl">
                             <div className="rounded-2xl border-2 border-slate-100 bg-cream p-8">
                                 <h3 className="mb-4 font-serif text-3xl font-bold text-primary-900">Welcome John Arnold, to your online will writing service</h3>
-                                <p className="mb-4 font-body leading-relaxed text-slate-700">
+                                <p className="mb-4 font-body leading-relaxed text-primary-700">
                                     Please fill out the <span className="font-semibold">will checklist</span> to complete your will. If you have any questions call us on{' '}
-                                    <a href="tel:02045253605" className="font-semibold text-slate-600 hover:underline">
+                                    <a href="tel:02045253605" className="font-semibold text-primary-600 hover:underline">
                                         020 4525 3605
                                     </a>
                                     .

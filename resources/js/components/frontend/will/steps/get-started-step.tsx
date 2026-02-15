@@ -9,10 +9,10 @@ interface GetStartedStepProps {
 
 const GetStartedStep: React.FC<GetStartedStepProps> = ({ personalInfo, onChange }) => (
     <div>
-        <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-8">
+        <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-8">
             Your Details
         </h2>
-        <p className="text-sm md:text-base lg:text-lg text-slate-800 mb-8">
+        <p className="text-sm md:text-base lg:text-lg text-primary-800 mb-8">
             Who is this Last Will being created for?
         </p>
 
@@ -28,7 +28,7 @@ const GetStartedStep: React.FC<GetStartedStepProps> = ({ personalInfo, onChange 
                         onChange('middleName', parts.length > 2 ? parts.slice(1, -1).join(' ') : '');
                         onChange('lastName', parts.length > 1 ? parts[parts.length - 1] : '');
                     }}
-                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                     placeholder="e.g. William Timothy Smith"
                 />
             </div>
@@ -39,7 +39,7 @@ const GetStartedStep: React.FC<GetStartedStepProps> = ({ personalInfo, onChange 
                     type="text"
                     value={personalInfo.city}
                     onChange={(e) => onChange('city', e.target.value)}
-                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                     placeholder="e.g. London"
                 />
             </div>
@@ -49,7 +49,7 @@ const GetStartedStep: React.FC<GetStartedStepProps> = ({ personalInfo, onChange 
                 <select
                     value={personalInfo.country}
                     onChange={(e) => onChange('country', e.target.value)}
-                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 focus:border-secondary focus:outline-none transition-colors cursor-pointer"
                 >
                     {UK_COUNTRY_OPTIONS.map((country) => (
                         <option key={country} value={country}>

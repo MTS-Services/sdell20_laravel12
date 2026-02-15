@@ -22,8 +22,8 @@ const SpouseStep: React.FC<SpouseStepProps> = ({ spouseName, onChange, partnerTy
     return (
         <div className="space-y-8 max-w-2xl">
             <div>
-                <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-2">{copy.heading}</h2>
-                <p className="text-sm md:text-base text-slate-600">{copy.question}</p>
+                <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-2">{copy.heading}</h2>
+                <p className="text-sm md:text-base text-primary-600">{copy.question}</p>
             </div>
 
             <div>
@@ -32,7 +32,7 @@ const SpouseStep: React.FC<SpouseStepProps> = ({ spouseName, onChange, partnerTy
                     type="text"
                     value={spouseName}
                     onChange={(event) => onChange(event.target.value)}
-                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                    className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                     placeholder="e.g. Alex Taylor"
                 />
             </div>

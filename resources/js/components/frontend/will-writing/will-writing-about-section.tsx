@@ -20,13 +20,13 @@ export function WillWritingAboutSection() {
                     </div>
                     <div className="space-y-4 animate-fadeInUp delay-100">
                         <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500">About</p>
-                        <h3 className="text-3xl font-serif font-semibold text-slate-900">{aboutContent.heading}</h3>
+                        <h3 className="text-3xl font-serif font-semibold text-primary-900">{aboutContent.heading}</h3>
                         {aboutContent.paragraphs.map((text) => (
-                            <p key={text} className="text-sm text-slate-600">
+                            <p key={text} className="text-sm text-primary-600">
                                 {text}
                             </p>
                         ))}
-                        <a href="#perks" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 hover:text-primary-600">
+                        <a href="#perks" className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900 hover:text-primary-600">
                             Explore perks & benefits
                             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M5 12h14" />

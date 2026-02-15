@@ -47,7 +47,7 @@ export function HowItWorksSection() {
                     className={`mb-16 space-y-4 text-center transition-all duration-700 ease-out ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
                     <h2 className="font-serif text-5xl font-bold text-primary-900 md:text-6xl text-balance">Quick Guide to Will Writing Online</h2>
-                    <p className="mx-auto max-w-3xl font-body text-xl text-slate-700">Create your legally-binding will in three simple steps</p>
+                    <p className="mx-auto max-w-3xl font-body text-xl text-primary-700">Create your legally-binding will in three simple steps</p>
                 </div>
 
                 <div ref={stepsRef} className="mx-auto grid max-w-6xl gap-12 md:grid-cols-3">
@@ -78,7 +78,7 @@ export function HowItWorksSection() {
                             </div>
                             <div className="space-y-4">
                                 <h3 className="font-serif text-2xl font-bold text-primary-900 transition-colors duration-300 group-hover:text-primary-600">{step.title}</h3>
-                                <p className="font-body text-slate-700 leading-relaxed">{step.description}</p>
+                                <p className="font-body text-primary-700 leading-relaxed">{step.description}</p>
                             </div>
                         </div>
                     ))}

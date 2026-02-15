@@ -9,7 +9,7 @@ export function LpaCtaSection() {
                         <h2 className="text-3xl font-light leading-tight sm:text-4xl">
                             Call <span className="font-semibold">0333 049 9397</span> for LPA, will, and probate support.
                         </h2>
-                        <p className="text-sm text-slate-100">Lines open Monday to Friday · 9am – 5pm</p>
+                        <p className="text-sm text-primary-100">Lines open Monday to Friday · 9am – 5pm</p>
                     </div>
                     <div className="mt-8 flex flex-wrap gap-4 animate-fadeInRight">
                         <a href="#planning" className="rounded-full border border-white px-6 py-3 text-sm font-semibold transition hover:bg-white/10">

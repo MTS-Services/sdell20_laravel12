@@ -28,21 +28,21 @@ const PetsStep: React.FC<PetsStepProps> = ({
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-slate-900 mb-4">Pets</h2>
+            <h2 className="text-2xl md:text-3xl font-normal text-primary-900 mb-4">Pets</h2>
             <p className="text-sm md:text-base text-secondary mb-8">Do you have any pets?</p>
 
             <div className="flex gap-4 mb-8">
                 <button
                     type="button"
                     onClick={() => onToggle(true)}
-                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${hasPets ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${hasPets ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'}`}
                 >
                     YES
                 </button>
                 <button
                     type="button"
                     onClick={() => onToggle(false)}
-                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!hasPets ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                    className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!hasPets ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'}`}
                 >
                     NO
                 </button>
@@ -68,7 +68,7 @@ const PetsStep: React.FC<PetsStepProps> = ({
                                         type="text"
                                         value={pet.name}
                                         onChange={(e) => updatePet(index, { name: e.target.value })}
-                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                         placeholder="e.g. Lassie"
                                     />
                                 </div>
@@ -79,7 +79,7 @@ const PetsStep: React.FC<PetsStepProps> = ({
                                         type="text"
                                         value={pet.description}
                                         onChange={(e) => updatePet(index, { description: e.target.value })}
-                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                         placeholder="e.g. Female German Shepherd"
                                     />
                                 </div>
@@ -92,25 +92,25 @@ const PetsStep: React.FC<PetsStepProps> = ({
                                         type="text"
                                         value={pet.fundAmount}
                                         onChange={(e) => updatePet(index, { fundAmount: e.target.value })}
-                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-slate-800 placeholder-slate-400 focus:border-secondary focus:outline-none transition-colors"
+                                        className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                         placeholder="e.g. 500"
                                     />
                                 </div>
 
                                 <div>
-                                    <p className="text-sm md:text-base text-slate-600 mb-3">Let your executor appoint a pet caretaker?</p>
+                                    <p className="text-sm md:text-base text-primary-600 mb-3">Let your executor appoint a pet caretaker?</p>
                                     <div className="flex gap-4">
                                         <button
                                             type="button"
                                             onClick={() => updatePet(index, { executorAppointCaretaker: true })}
-                                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${pet.executorAppointCaretaker ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${pet.executorAppointCaretaker ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'}`}
                                         >
                                             YES
                                         </button>
                                         <button
                                             type="button"
                                             onClick={() => updatePet(index, { executorAppointCaretaker: false })}
-                                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!pet.executorAppointCaretaker ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}
+                                            className={`px-8 py-2.5 rounded border-2 text-sm font-semibold uppercase tracking-wide transition-all cursor-pointer ${!pet.executorAppointCaretaker ? 'border-secondary bg-secondary/5 text-secondary' : 'border-slate-200 bg-white text-primary-600 hover:border-slate-300'}`}
                                         >
                                             NO
                                         </button>

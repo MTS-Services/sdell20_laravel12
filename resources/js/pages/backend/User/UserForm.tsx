@@ -69,8 +69,8 @@ export default function UserForm() {
                 <div className="mx-auto w-full max-w-6xl rounded-3xl border border-primary-100 bg-white px-6 py-8 shadow-sm lg:px-10 lg:py-12">
                     <div className="space-y-3 text-center lg:text-left">
                         <p className="text-sm font-semibold uppercase tracking-[0.35em] text-primary-500">Tell us a little about yourself</p>
-                        <h1 className="text-2xl font-semibold text-slate-900 lg:text-3xl">Let&apos;s get your account set up</h1>
-                        <p className="text-sm text-slate-600 lg:text-base">
+                        <h1 className="text-2xl font-semibold text-primary-900 lg:text-3xl">Let&apos;s get your account set up</h1>
+                        <p className="text-sm text-primary-600 lg:text-base">
                             First, please give us some information about yourself. You can use these details in any Lasting Power of Attorney documents you create using our service.
                         </p>
                     </div>
@@ -131,7 +131,7 @@ export default function UserForm() {
                         </section>
 
                         <section className="space-y-4">
-                            <Label className="text-base font-semibold text-slate-800">Date of birth</Label>
+                            <Label className="text-base font-semibold text-primary-800">Date of birth</Label>
                             <div className="grid gap-4 lg:grid-cols-2">
                                 <div className="grid gap-4 sm:grid-cols-2">
                                     <InputField id="dobDay" label="Day" value={formState.dobDay} onChange={handleChange('dobDay')} placeholder="DD" required />
@@ -142,7 +142,7 @@ export default function UserForm() {
                         </section>
 
                         <section className="space-y-4">
-                            <Label className="text-base font-semibold text-slate-800">What&apos;s your address?</Label>
+                            <Label className="text-base font-semibold text-primary-800">What&apos;s your address?</Label>
                             <div className="grid gap-4 lg:grid-cols-2">
                                 <InputField id="addressLine1" label="Address line 1" value={formState.addressLine1} onChange={handleChange('addressLine1')} required />
                                 <InputField id="addressLine2" label="Address line 2" value={formState.addressLine2} onChange={handleChange('addressLine2')} placeholder="Optional" />
@@ -166,7 +166,7 @@ export default function UserForm() {
                         </section>
 
                         <section className="space-y-4">
-                            <Label className="text-base font-semibold text-slate-800">Contact number</Label>
+                            <Label className="text-base font-semibold text-primary-800">Contact number</Label>
                             <div className="grid gap-4 lg:grid-cols-2">
                                 <InputField
                                     id="mobileNumber"
@@ -224,7 +224,7 @@ function SelectField({
                 value={value}
                 onChange={onChange}
                 required={required}
-                className="h-12 w-full rounded border border-slate-200 px-3 text-sm text-slate-700 focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                className="h-12 w-full rounded border border-slate-200 px-3 text-sm text-primary-700 focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
             >
                 {placeholder ? (
                     <option value="">{placeholder}</option>
@@ -264,7 +264,7 @@ function InputField({
                 onChange={onChange}
                 placeholder={placeholder}
                 required={required}
-                className="h-12 rounded border border-slate-200 px-3 text-sm text-slate-800 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-100"
+                className="h-12 rounded border border-slate-200 px-3 text-sm text-primary-800 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-100"
             />
         </div>
     );
