@@ -1,6 +1,6 @@
 export function FrontendFooter() {
     return (
-        <footer className="bg-slate-900 text-white py-16">
+        <footer className="bg-primary-500 text-white py-16">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 pl-14 sm:pl-0">
                 <div className="grid gap-12 mb-12  grid-cols-1 lg:grid-cols-3">
                     {/* Company Info */}
