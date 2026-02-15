@@ -1,18 +1,12 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
+import AppLogo from '@/components/app-logo';
 
 const StepsHeader: React.FC = () => (
-    <div className="bg-primary-50 text-primary-900">
+    <div className="bg-primary-500 text-primary-900">
         <div className="container mx-auto flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:py-5">
             <Link href="/" className="flex items-center gap-3">
-                <svg className="h-10 w-10 sm:h-12 sm:w-12" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="25" r="12" stroke="currentColor" strokeWidth="3" fill="none" />
-                    <path d="M15 40 Q50 20, 85 40" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
-                </svg>
-                <div>
-                    <div className="font-sans text-lg font-bold tracking-wider sm:text-xl">HORIZON WILLS</div>
-                    <div className="text-[10px] text-primary-300 tracking-[0.3em] sm:text-xs">PROTECTING YOUR ASSETS</div>
-                </div>
+                <AppLogo className="h-18" />
             </Link>
 
             <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-white/30 px-4 py-2 text-xs font-semibold text-primary-900 sm:justify-center sm:text-sm">

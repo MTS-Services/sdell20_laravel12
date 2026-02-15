@@ -1,3 +1,6 @@
+import AppLogo from '@/components/app-logo';
+import { Link } from '@inertiajs/react';
+
 export function FrontendFooter() {
     return (
         <footer className="bg-primary-500 text-white py-16">
@@ -5,40 +8,9 @@ export function FrontendFooter() {
                 <div className="grid gap-12 mb-12  grid-cols-1 lg:grid-cols-3">
                     {/* Company Info */}
                     <div className="space-y-4 text-center md:text-left">
-                        <div className="flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3">
-                            <svg
-                                className="w-12 h-12"
-                                viewBox="0 0 100 80"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                {/* Horizon symbol with circle and lines */}
-                                <circle
-                                    cx="50"
-                                    cy="25"
-                                    r="12"
-                                    stroke="currentColor"
-                                    strokeWidth="3"
-                                    fill="none"
-                                />
-                                <path
-                                    d="M15 40 Q50 20, 85 40"
-                                    stroke="currentColor"
-                                    strokeWidth="3"
-                                    fill="none"
-                                    strokeLinecap="round"
-                                />
-                            </svg>
-
-                            <div>
-                                <div className="text-xl font-sans font-bold tracking-wider">
-                                    HORIZON WILLS
-                                </div>
-                                <div className="text-xs text-primary-200 tracking-widest">
-                                    PROTECTING YOUR ASSETS
-                                </div>
-                            </div>
-                        </div>
+                        <Link href="/" className="flex items-center justify-center space-x-3 md:justify-start">
+                            <AppLogo className="h-18" />
+                        </Link>
 
                         <p className="text-primary-200 text-sm leading-relaxed">
                             Professional will writing and estate planning services to secure

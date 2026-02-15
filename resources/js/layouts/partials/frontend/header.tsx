@@ -31,13 +31,7 @@ export function FrontendHeader() {
                 <div className="container mx-auto px-6 py-4">
                     <div className="flex items-center justify-between">
                         <Link href="/" className="flex items-center space-x-3">
-                            <div className="flex flex-col items-center gap-2 md:flex-row md:items-center md:gap-3">
-                                <AppLogo className="h-16 w-auto" />
-                                <div className="text-center md:text-left">
-                                    <div className="text-xl font-sans font-bold tracking-wider">HORIZON WILLS</div>
-                                    <div className="text-xs text-primary-200 tracking-widest">PROTECTING YOUR ASSETS</div>
-                                </div>
-                            </div>
+                            <AppLogo className="h-16 w-auto" />
                         </Link>
 
                         <div className="hidden items-center space-x-8 md:flex">
@@ -250,7 +244,7 @@ export function FrontendHeader() {
                         </div>
                     )}
                 </div>
-            </nav>
-        </header>
+            </nav >
+        </header >
     );
 }
