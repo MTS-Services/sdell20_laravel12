@@ -2,16 +2,6 @@ import React from 'react';
 
 const contactDetails = [
     {
-        label: 'Call us',
-        value: '+44 (0) 203 455 9811',
-        helper: 'Weekdays 8am – 6pm GMT',
-        icon: (
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path d="M2 5l5.5 2.2a2 2 0 011.1 2.7l-.7 1.6a15 15 0 007.6 7.6l1.6-.7a2 2 0 012.7 1.1L22 22" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-        ),
-    },
-    {
         label: 'Email',
         value: 'support@heirkinestate.com',
         helper: 'We respond within 24 hours',
@@ -70,7 +60,7 @@ export function ContactConsultationSection() {
                         </div>
                         <div className="grid gap-4 md:grid-cols-2">
                             <FormField id="email" label="Email" type="email" />
-                            <FormField id="phone" label="Phone number" type="tel" />
+                            <FormField id="preferredContact" label="Preferred contact method" />
                         </div>
                         <div>
                             <label className="text-xs font-semibold text-slate-700" htmlFor="message">
