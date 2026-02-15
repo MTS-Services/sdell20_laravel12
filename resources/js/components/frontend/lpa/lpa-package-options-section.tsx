@@ -3,24 +3,24 @@ import { type ReactElement } from 'react';
 
 const packages = [
     {
-        title: 'Single LPA',
-        subtitle: 'For one person',
+        title: 'Health & Welfare LPA',
+        subtitle: 'Medical treatment, care and daily life decisions',
         lines: [
-            "Start with an 'LPA-PA'",
-            "Then optionally add an 'LPA-HW'"
+            'Appoint trusted attorneys for health and care choices',
+            'Cover decisions about treatment, living arrangements and routines'
         ],
         price: '£49.99',
-        accent: 'bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300'
+        accent: 'bg-gradient-to-br from-rose-100 via-rose-200 to-rose-300'
     },
     {
-        title: 'Mirror LPA',
-        subtitle: 'For a couple',
+        title: 'Property & Finance LPA',
+        subtitle: 'Money management, property and investments',
         lines: [
-            "Each make an 'LPA-PA'",
-            "Then optionally add 'LPA-HWs'"
+            'Give attorneys authority for banking, bills and assets',
+            'Ensure property sales and investments can continue smoothly'
         ],
         price: '£79.99',
-        accent: 'bg-gradient-to-br from-lime-100 via-lime-200 to-lime-300'
+        accent: 'bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300'
     }
 ];
 
