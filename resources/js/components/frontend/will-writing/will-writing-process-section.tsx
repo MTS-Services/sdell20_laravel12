@@ -36,7 +36,7 @@ export function WillWritingProcessSection() {
                     <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500 animate-fadeInUp">Process</p>
                         <h3 className="mt-4 text-3xl font-serif font-semibold text-primary-900 animate-fadeInUp delay-100">
-                            Fully protected wills made easy, with Online Will Services
+                            Unlock a High-Return Business Opportunity with Will Write Online 
                         </h3>
                         <p className="mt-3 text-sm text-primary-600">
                             From the first questionnaire to securely storing your will, our specialists stay with you the whole way.
