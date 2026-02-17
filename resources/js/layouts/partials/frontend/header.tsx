@@ -65,7 +65,7 @@ export function FrontendHeader() {
         <header className="sticky top-0 z-50">
             {/* Top Announcement Banner */}
             <div className="bg-slate-500 py-2 text-center">
-                <p className="px-4 font-serif  tracking-wide text-white text-sm md:text-base lg:text-base">
+                <p className="px-4 font-serif  tracking-wide text-white text-base lg:text-xl">
                     <span className="">
                         Trusted by families across England &amp; Wales. Complete your LPA in as little as 15 minutes.
                     </span>
@@ -77,7 +77,7 @@ export function FrontendHeader() {
                 <div className="mx-auto flex container items-center justify-between px-4 lg:px-6">
                     {/* Logo */}
                     <Link href="/" className="flex shrink-0 items-center py-3">
-                        <AppLogo className="h-18 md:h-20 " />
+                        <AppLogo className="h-20 sm:h-24" />
                     </Link>
 
                     {/* Desktop Navigation */}
