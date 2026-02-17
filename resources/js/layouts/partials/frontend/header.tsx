@@ -113,7 +113,7 @@ export function FrontendHeader() {
                                         <ul className="space-y-1">
                                             <li>
                                                 <Link
-                                                    href={route('horizon-wills')}
+                                                    href={route('will-writing-online')}
                                                     className="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/10"
                                                 >
                                                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white">
