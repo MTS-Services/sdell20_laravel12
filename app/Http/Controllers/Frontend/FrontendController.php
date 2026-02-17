@@ -15,7 +15,7 @@ class FrontendController extends Controller
 
     public function horizonWills(): Response
     {
-        return Inertia::render('frontend/horizon-wills');
+        return Inertia::render('frontend/will-writing-online');
     }
 
     public function contact(): Response
