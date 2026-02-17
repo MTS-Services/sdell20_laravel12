@@ -52,4 +52,9 @@ class FrontendController extends Controller
     {
         return Inertia::render('frontend/privacy-policy');
     }
+
+    public function terms(): Response
+    {
+        return Inertia::render('frontend/terms-and-conditions');
+    }
 }

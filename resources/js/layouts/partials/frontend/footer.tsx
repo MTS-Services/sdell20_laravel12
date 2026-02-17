@@ -62,9 +62,12 @@ export function FrontendFooter() {
                             >
                                 Privacy policy
                             </Link>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            <Link
+                                href={route('terms')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Terms and Conditions
-                            </a>
+                            </Link>
                             <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
                                 Consumer Rights Act 2015
                             </a>
