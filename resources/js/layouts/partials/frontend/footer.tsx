@@ -68,9 +68,12 @@ export function FrontendFooter() {
                             >
                                 Terms and Conditions
                             </Link>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            <Link
+                                href={route('consumer-rights')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Consumer Rights Act 2015
-                            </a>
+                            </Link>
                             <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
                                 Cookie policy
                             </a>
