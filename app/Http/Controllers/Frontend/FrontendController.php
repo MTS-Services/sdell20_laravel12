@@ -57,4 +57,14 @@ class FrontendController extends Controller
     {
         return Inertia::render('frontend/terms-and-conditions');
     }
+
+    public function consumerRights(): Response
+    {
+        return Inertia::render('frontend/consumer-rights-act');
+    }
+
+    public function cookiePolicy(): Response
+    {
+        return Inertia::render('frontend/cookie-policy');
+    }
 }
