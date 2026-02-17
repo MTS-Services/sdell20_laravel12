@@ -10,7 +10,7 @@ const mobileLinks: Record<
     { label: string; desc: string; route: Parameters<typeof route>[0] }[]
 > = {
     about: [
-        { label: 'Horizon Wills', desc: 'Learn about our mission', route: 'horizon-wills' },
+        { label: 'Will Writing Online', desc: 'Learn about our mission', route: 'will-writing-online' },
         { label: 'Contact Us', desc: 'Get in touch with our team', route: 'contact' },
     ],
     estate: [
@@ -122,7 +122,7 @@ export function FrontendHeader() {
                                                         </svg>
                                                     </span>
                                                     <span className="text-sm font-bold uppercase tracking-wide text-white">
-                                                        Wil Write Online
+                                                        Will Writing Online
                                                     </span>
                                                 </Link>
                                             </li>
