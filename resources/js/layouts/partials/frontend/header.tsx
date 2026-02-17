@@ -65,8 +65,8 @@ export function FrontendHeader() {
         <header className="sticky top-0 z-50">
             {/* Top Announcement Banner */}
             <div className="bg-slate-500 py-2 text-center">
-                <p className="px-4 font-serif text-xs tracking-wide text-white sm:text-sm md:text-base">
-                    <span className="italic">
+                <p className="px-4 font-serif  tracking-wide text-white text-sm md:text-base lg:text-base">
+                    <span className="">
                         Trusted by families across England &amp; Wales. Complete your LPA in as little as 15 minutes.
                     </span>
                 </p>
@@ -122,7 +122,7 @@ export function FrontendHeader() {
                                                         </svg>
                                                     </span>
                                                     <span className="text-sm font-bold uppercase tracking-wide text-white">
-                                                        Horizon Wills
+                                                        Wil Write Online
                                                     </span>
                                                 </Link>
                                             </li>
