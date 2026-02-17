@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@inertiajs/react';
 
 import { useReveal } from '@/hooks/use-reveal';
 
@@ -86,12 +87,12 @@ export default function Banner() {
                         ref={ctaRef}
                         className={`pt-3 transition-all duration-700 ease-out ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
                     >
-                        <a
-                            href="#"
+                        <Link
+                            href={route('will-writing.start')}
                             className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
                         >
                             Create Your Will Now
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
