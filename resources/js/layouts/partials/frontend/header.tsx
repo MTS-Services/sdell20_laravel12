@@ -10,7 +10,7 @@ const mobileLinks: Record<
     { label: string; desc: string; route: Parameters<typeof route>[0] }[]
 > = {
     about: [
-        { label: 'Horizon Wills', desc: 'Learn about our mission', route: 'horizon-wills' },
+        { label: 'Will Writing Online', desc: 'Learn about our mission', route: 'will-writing-online' },
         { label: 'Contact Us', desc: 'Get in touch with our team', route: 'contact' },
     ],
     estate: [
@@ -65,8 +65,8 @@ export function FrontendHeader() {
         <header className="sticky top-0 z-50">
             {/* Top Announcement Banner */}
             <div className="bg-slate-500 py-2 text-center">
-                <p className="px-4 font-serif text-xs tracking-wide text-white sm:text-sm md:text-base">
-                    <span className="italic">
+                <p className="px-4 font-serif  tracking-wide text-white text-base lg:text-xl">
+                    <span className="">
                         Trusted by families across England &amp; Wales. Complete your LPA in as little as 15 minutes.
                     </span>
                 </p>
@@ -77,7 +77,7 @@ export function FrontendHeader() {
                 <div className="mx-auto flex container items-center justify-between px-4 lg:px-6">
                     {/* Logo */}
                     <Link href="/" className="flex shrink-0 items-center py-3">
-                        <AppLogo className="h-18 md:h-20 " />
+                        <AppLogo className="h-20 sm:h-24" />
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -113,7 +113,7 @@ export function FrontendHeader() {
                                         <ul className="space-y-1">
                                             <li>
                                                 <Link
-                                                    href={route('horizon-wills')}
+                                                    href={route('will-writing-online')}
                                                     className="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/10"
                                                 >
                                                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white">
@@ -122,7 +122,7 @@ export function FrontendHeader() {
                                                         </svg>
                                                     </span>
                                                     <span className="text-sm font-bold uppercase tracking-wide text-white">
-                                                        Horizon Wills
+                                                        Will Writing Online
                                                     </span>
                                                 </Link>
                                             </li>
@@ -336,7 +336,7 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
-                                    Create Your LPA &ndash; Just &pound;99 Each
+                                    Create Your LPA &ndash; Just &pound;299 Each
                                 </span>
                                 <span className="text-[10px] font-normal text-white/80">
                                     (plus &pound;92 OPG fee per LPA)

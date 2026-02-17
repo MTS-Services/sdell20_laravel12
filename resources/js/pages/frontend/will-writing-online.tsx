@@ -6,7 +6,7 @@ import { MissionSection } from '@/components/frontend/horizon-wills/mission-sect
 import { TeamSection } from '@/components/frontend/horizon-wills/team-section';
 import FrontendLayout from '@/layouts/frontend-layout';
 
-export default function HorizonWills() {
+export default function WillWritingOnline() {
     return (
         <FrontendLayout>
             <main className="flex flex-col">

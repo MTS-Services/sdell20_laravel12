@@ -15,7 +15,7 @@ class FrontendController extends Controller
 
     public function horizonWills(): Response
     {
-        return Inertia::render('frontend/horizon-wills');
+        return Inertia::render('frontend/will-writing-online');
     }
 
     public function contact(): Response
@@ -46,5 +46,25 @@ class FrontendController extends Controller
     public function probate(): Response
     {
         return Inertia::render('frontend/probate');
+    }
+
+    public function privacyPolicy(): Response
+    {
+        return Inertia::render('frontend/privacy-policy');
+    }
+
+    public function terms(): Response
+    {
+        return Inertia::render('frontend/terms-and-conditions');
+    }
+
+    public function consumerRights(): Response
+    {
+        return Inertia::render('frontend/consumer-rights-act');
+    }
+
+    public function cookiePolicy(): Response
+    {
+        return Inertia::render('frontend/cookie-policy');
     }
 }
