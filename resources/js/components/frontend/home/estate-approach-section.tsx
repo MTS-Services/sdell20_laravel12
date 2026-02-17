@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Link } from "@inertiajs/react";
 import { useReveal } from "@/hooks/use-reveal";
 
 const lpaSteps = [
@@ -86,7 +87,16 @@ export function EstateApproachSection() {
             <p className="text-base text-white/80">
               Our guide cover image for Power of Attorney [PS] with legal document and signature.
             </p>
+            <div className="mt-8 flex justify-center z-50">
+              <Link
+                href={route('lpa.start')}
+                className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40 hover:text-primary-50"
+              >
+                Create Your LPA Now
+              </Link>
+            </div>
           </div>
+
 
           <div className="mt-12 grid items-center gap-10 rounded-3xl bg-white/5 p-6 text-left shadow-2xl shadow-slate-900/40 md:grid-cols-2">
             <div className="space-y-5">
@@ -128,6 +138,14 @@ export function EstateApproachSection() {
               binding until it has been registered with the Office of the Public Guardian. Our service tells you exactly how much your
               registration fees are and how to pay them directly to the OPG.
             </p>
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href={route('lpa.start')}
+              className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent hover:text-primary-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+            >
+              Create Your LPA Now
+            </Link>
           </div>
         </div>
       </div>

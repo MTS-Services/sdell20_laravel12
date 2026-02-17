@@ -51,23 +51,35 @@ export function FrontendFooter() {
                     <div className="lg:col-span-4 flex flex-col items-center sm:items-start">
                         <nav className="flex flex-col space-y-3 text-center sm:text-left">
                             <Link
-                                href={route('home')}
+                                href={route('will-writing-online')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
                             >
                                 About us
                             </Link>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            <Link
+                                href={route('privacy')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Privacy policy
-                            </a>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            </Link>
+                            <Link
+                                href={route('terms')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Terms and Conditions
-                            </a>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            </Link>
+                            <Link
+                                href={route('consumer-rights')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Consumer Rights Act 2015
-                            </a>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            </Link>
+                            <Link
+                                href={route('cookies')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Cookie policy
-                            </a>
+                            </Link>
                             <Link
                                 href={route('contact')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
