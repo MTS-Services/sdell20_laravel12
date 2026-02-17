@@ -13,4 +13,5 @@ Route::middleware('guest')->group(function () {
     Route::get("/lpa/start", [FrontendController::class, "lpaStart"])->name("lpa.start");
     Route::get("/probate", [FrontendController::class, "probate"])->name("probate");
     Route::get("/privacy-policy", [FrontendController::class, "privacyPolicy"])->name("privacy");
+    Route::get("/terms-and-conditions", [FrontendController::class, "terms"])->name("terms");
 });
