@@ -15,4 +15,5 @@ Route::middleware('guest')->group(function () {
     Route::get("/privacy-policy", [FrontendController::class, "privacyPolicy"])->name("privacy");
     Route::get("/terms-and-conditions", [FrontendController::class, "terms"])->name("terms");
     Route::get("/consumer-rights-act-2015", [FrontendController::class, "consumerRights"])->name("consumer-rights");
+    Route::get("/cookie-policy", [FrontendController::class, "cookiePolicy"])->name("cookies");
 });

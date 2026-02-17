@@ -74,9 +74,12 @@ export function FrontendFooter() {
                             >
                                 Consumer Rights Act 2015
                             </Link>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            <Link
+                                href={route('cookies')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Cookie policy
-                            </a>
+                            </Link>
                             <Link
                                 href={route('contact')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
