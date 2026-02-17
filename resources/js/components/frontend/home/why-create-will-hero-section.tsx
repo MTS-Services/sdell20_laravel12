@@ -36,6 +36,9 @@ export function WhyCreateWillHeroSection({ headerRef, headerVisible, videoRef, v
                     </video>
                 </div>
             </div>
+            
         </>
+
+        
     );
 }

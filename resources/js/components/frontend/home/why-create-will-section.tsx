@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Link } from '@inertiajs/react';
 import { PoundSterling } from 'lucide-react';
 
 import { WhyCreateWillHeroSection } from './why-create-will-hero-section';
@@ -95,8 +96,14 @@ export function WhyCreateWillSection() {
                     videoRef={videoRef}
                     videoVisible={videoVisible}
                 />
-
-                
+                <div className="mt-8 flex justify-center ">
+                    <Link
+                        href={route('will-writing.start')}
+                        className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40 hover:text-primary-600"
+                    >
+                        Create Your Will Now
+                    </Link>
+                </div>
             </div>
         </section>
     );
