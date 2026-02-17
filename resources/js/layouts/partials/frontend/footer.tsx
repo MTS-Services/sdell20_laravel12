@@ -56,9 +56,12 @@ export function FrontendFooter() {
                             >
                                 About us
                             </Link>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                            <Link
+                                href={route('privacy')}
+                                className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
+                            >
                                 Privacy policy
-                            </a>
+                            </Link>
                             <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
                                 Terms and Conditions
                             </a>

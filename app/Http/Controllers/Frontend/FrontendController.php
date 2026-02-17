@@ -47,4 +47,9 @@ class FrontendController extends Controller
     {
         return Inertia::render('frontend/probate');
     }
+
+    public function privacyPolicy(): Response
+    {
+        return Inertia::render('frontend/privacy-policy');
+    }
 }
