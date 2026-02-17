@@ -24,8 +24,8 @@ export function WillWritingPricingSection() {
         <section id="pricing" className="px-4 pt-6 lg:pt-16 sm:px-6 lg:px-10">
             <div className="mx-auto max-w-4xl">
                 <div className="text-center">
-                    <h2 className="text-3xl font-semibold text-primary-900">Why this business opportunity is ready now</h2>
-                    <p className="mt-2 text-base text-primary-600">Use the stats below to illustrate why Will Write Online converts visitors into paying clients.</p>
+                    <h2 className="text-3xl font-semibold text-primary-900">Choose the will that fits</h2>
+                    <p className="mt-2 text-base text-primary-600">Transparent pricing with limited-time savings applied automatically.</p>
                 </div>
                 <div className="mt-12 grid gap-8 md:grid-cols-2">
                     {pricingOptions.map((option) => (
@@ -48,21 +48,17 @@ export function WillWritingPricingSection() {
                     ))}
                 </div>
                 <p className="mt-10 text-sm md:text-base lg:text-lg leading-relaxed text-primary-800">
-                    User accounts, secure login, personal dashboards, PDF exports, and customizable public pages (Home, Create a Will, LPA Health & Welfare, LPA Property & Finance,
-                    About, Contact, Login/Register, and User Dashboard) all ship ready to brand. Laravel architecture keeps performance high, while 30 days of post-delivery support
-                    and deployment guidance help you launch smoothly.
+                    Your circumstances might mean you need a different type of will which could cost more. We’ll discuss this with you. You do not have to pay anything until you’ve spoken to us.
+                    All prices include VAT and this offer is available in England and Wales. Full <span className="text-primary-600 underline">terms and conditions</span> apply.
                 </p>
                 <div className="mt-10 flex justify-center">
-                    <a
-                        href="mailto:support@willwrite.online"
-                        className="inline-flex items-center gap-2 rounded-full border border-slate-500 bg-slate-500 hover:text-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-transparent"
-                    >
-                        Email Clara Martinez
+                    <button className="inline-flex items-center gap-2 rounded-full border border-primary-600 bg-primary-600 hover:text-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-transparent">
+                        Get started
                         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M5 12h14" />
                             <path d="M12 5l7 7-7 7" />
                         </svg>
-                    </a>
+                    </button>
                 </div>
             </div>
         </section>
