@@ -3,27 +3,27 @@ import React from 'react';
 const steps = [
     {
         number: 1,
-        title: 'Launch your branded platform',
+        title: 'Complete our simple questionnaire',
         paragraphs: [
-            'Receive a fully operational Laravel site with Home, Create a Will, LPA Health & Welfare, LPA Property & Finance, About, Contact, Login/Register, and Dashboard pages ready to customize.',
-            'We guide you through deployment so the site goes live quickly on your domain and remains secure from day one.',
-            '30 days of post-delivery support ensures every workflow feels confident before you onboard clients.',
+            'On average, this takes 20 minutes to complete.',
+            'Don’t worry if you don’t have all of the information right now, we will go through everything in detail later.',
+            'We’ll save your progress for 21 days and send you reminders if you don’t get chance to finish it.',
         ],
     },
     {
         number: 2,
-        title: 'Automate client experiences',
+        title: 'We check your will together',
         paragraphs: [
-            'Clients self-serve via guided forms, generate PDFs of their wills and LPAs, and manage progress from their personal dashboards.',
-            'Secure registration and login flows keep every document protected while you monitor submissions remotely.',
+            'We’ll arrange a call to discuss your needs and make sure everything is covered in your will.',
+            'If you’re happy, we will take payment at the end of the call.',
         ],
     },
     {
         number: 3,
-        title: 'Scale your remote business',
+        title: 'Check and sign your will',
         paragraphs: [
-            'Add team members or franchise partners, update pricing pages, and grow by promoting the GOV.UK-inspired flow to new regions.',
-            'Because everything happens online, you can reinvest savings from office overhead into marketing and client perks.',
+            'We will email you your draft will to approve. When you’re happy, we’ll send you a professionally bound will to sign.',
+            'We can store your will securely for life, for free.',
         ],
     },
 ];
@@ -36,10 +36,10 @@ export function WillWritingProcessSection() {
                     <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500 animate-fadeInUp">Process</p>
                         <h3 className="mt-4 text-3xl font-serif font-semibold text-primary-900 animate-fadeInUp delay-100">
-                            Unlock a high-return business opportunity with Will Write Online
+                            Unlock a High-Return Business Opportunity with Will Write Online 
                         </h3>
                         <p className="mt-3 text-sm text-primary-600">
-                            Three simple stages take you from investment inquiry to a thriving, remote-first will and LPA service.
+                            From the first questionnaire to securely storing your will, our specialists stay with you the whole way.
                         </p>
                     </div>
                     <div className="space-y-10">
