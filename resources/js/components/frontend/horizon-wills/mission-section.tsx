@@ -2,50 +2,53 @@ import React from 'react';
 
 import { useReveal } from '@/hooks/use-reveal';
 
+const reasons = [
+    {
+        title: 'Massive market demand',
+        detail: '61% of UK adults do not have a will, and 5.4M people are unsure where to start. You can serve this audience immediately.'
+    },
+    {
+        title: 'Fully automated workflow',
+        detail: 'Clients complete guided questionnaires online, generate PDFs, and manage revisions without manual admin work.'
+    },
+    {
+        title: 'Work from anywhere',
+        detail: 'No face-to-face meetings. Every consultation, payment, document, and update lives inside the secure portal.'
+    },
+    {
+        title: 'Laravel foundations',
+        detail: 'Built on modern Laravel so you benefit from reliability, security, and easy scalability compared to template builders.'
+    },
+];
+
 export function MissionSection() {
     const [contentRef, contentVisible] = useReveal<HTMLDivElement>();
-    const [videoRef, videoVisible] = useReveal<HTMLDivElement>(0.2);
+    const [listRef, listVisible] = useReveal<HTMLDivElement>(0.2);
 
     return (
-        <section className="mission-section bg-slate-50 py-24">
-            <div className="container mx-auto px-6">
+        <section className="bg-slate-50 py-20 sm:py-24">
+            <div className="container mx-auto px-4 sm:px-6">
                 <div
                     ref={contentRef}
-                    className={`mx-auto mb-16 max-w-3xl text-center transition-all duration-700 ease-out ${contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                        }`}
+                    className={`mx-auto mb-12 max-w-3xl text-center transition-all duration-700 ${contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
-                    <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border-2 border-slate-300 bg-white">
-                        <svg className="h-8 w-8 text-primary-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 6v6l4 2" />
-                        </svg>
-                    </div>
-                    <h2 className="text-4xl font-light text-primary-900 md:text-5xl">Our mission</h2>
-                    <p className="mt-6 text-lg leading-relaxed text-primary-600">
-                        Death is inevitable. Losing what and who you love is hard. But doing nothing about it is harder. We plan to prevent the people you'll leave
-                        behind from spending precious time figuring out what to do next, and more time living the life you've left them.
+                    <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-500">Why this business works</p>
+                    <h2 className="mt-4 text-3xl font-semibold text-primary-900 sm:text-4xl">Why this opportunity is right for you</h2>
+                    <p className="mt-5 text-base leading-relaxed text-primary-600 sm:text-lg">
+                        Will Writing Online lets you run a legitimate legal-services business in the cloud. Clients complete every step digitally while you focus on acquiring leads, nurturing relationships, and generating recurring revenue.
                     </p>
                 </div>
 
                 <div
-                    ref={videoRef}
-                    className={`mx-auto max-w-4xl transition-all duration-700 ease-out ${videoVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                    ref={listRef}
+                    className={`grid gap-6 md:grid-cols-2 transition-all duration-700 ${listVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
-                    <div className="aspect-video overflow-hidden rounded-3xl bg-linear-to-br from-slate-200 to-slate-300 shadow-2xl">
-                        <video
-                            className="h-full w-full object-cover"
-                            loop
-                            playsInline
-                            controls
-                            poster="https://a.storyblok.com/f/309177/2620x1458/648998649c/video-thumbnail.avif"
-                        >
-                            <source
-                                src="https://a.storyblok.com/f/309177/x/1bfef5d928/oct_leg_0005_legacy_box_all-contributors_v2_16x9.mp4"
-                                type="video/mp4"
-                            />
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
+                    {reasons.map((reason) => (
+                        <div key={reason.title} className="rounded-3xl border border-primary-100 bg-white p-6 shadow-[0_20px_50px_rgba(15,23,42,0.08)]">
+                            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary-400">{reason.title}</p>
+                            <p className="mt-3 text-base leading-relaxed text-primary-700">{reason.detail}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
