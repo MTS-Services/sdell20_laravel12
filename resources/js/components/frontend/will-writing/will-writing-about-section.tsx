@@ -2,10 +2,11 @@ import React from 'react';
 
 const aboutContent = {
     image: 'https://a.storyblok.com/f/309177/718x1000/f544cb2f60/sam-mum.jpg',
-    heading: 'Our job is to bring care to life.',
+    heading: 'Start your profitable online will & LPA business.',
     paragraphs: [
-        'At Horizon Wills, we move thoughtfully, communicate clearly, and obsess over every detail so families can plan in confidence.',
-        "We're a team that values kindness, craft, and ownership—building services that genuinely help people prepare for tomorrow.",
+        'Will Write Online is a turnkey platform that lets you help families create Wills and LPAs entirely online. The flow mirrors GOV.UK guidance, so clients trust the process while you operate remotely.',
+        'Every deployment includes customizable pages (Home, Create a Will, LPA Health & Welfare, LPA Property & Finance, About, Contact, Login/Register, and Dashboard), secure logins, document storage, and PDF exports.',
+        'Our team supports you during deployment and for 30 days after launch so you can focus on marketing and revenue instead of debugging tech.',
     ],
 };
 
@@ -26,8 +27,8 @@ export function WillWritingAboutSection() {
                                 {text}
                             </p>
                         ))}
-                        <a href="#perks" className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900 hover:text-primary-600">
-                            Explore perks & benefits
+                        <a href="mailto:support@willwrite.online" className="inline-flex items-center gap-2 text-sm font-semibold text-primary-900 hover:text-primary-600">
+                            Email Clara Martinez to learn more
                             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <path d="M5 12h14" />
                                 <path d="M12 5l7 7-7 7" />

@@ -41,7 +41,7 @@ export function LpaFaqSection() {
                             >
                                 <span className="text-lg font-medium text-primary-900">{question.question}</span>
                                 <span
-                                    className={`flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white transition ${openIndex === index ? 'rotate-180' : ''}`}
+                                    className={`flex h-10 w-10 items-center justify-center rounded-full bg-slate-500 text-white transition ${openIndex === index ? 'rotate-180' : ''}`}
                                 >
                                     {openIndex === index ? '−' : '+'}
                                 </span>
@@ -60,7 +60,7 @@ export function LpaFaqSection() {
                     ))}
                 </div>
                 <div className="mt-10 flex justify-center animate-fadeInUp" style={{ animationDelay: '250ms' }}>
-                    <button className="rounded-full border-2 border-slate-900 px-8 py-3 text-sm font-semibold text-primary-900 transition hover:bg-slate-900 hover:text-white">Show more</button>
+                    <button className="rounded-full border-2 border-slate-500 px-8 py-3 text-sm font-semibold text-primary-900 transition hover:bg-slate-500 hover:text-white">Show more</button>
                 </div>
             </div>
         </section>
