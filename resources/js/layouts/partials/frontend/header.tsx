@@ -336,7 +336,7 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
-                                    Create Your LPA &ndash; Just &pound;99 Each
+                                    Create Your LPA &ndash; Just &pound;299 Each
                                 </span>
                                 <span className="text-[10px] font-normal text-white/80">
                                     (plus &pound;92 OPG fee per LPA)
