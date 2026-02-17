@@ -1,10 +1,10 @@
 import React from 'react';
 
 const callouts = [
-    { img: 'https://a.storyblok.com/f/309177/x/3434441de2/penpaper.avif', text: 'Our basic and bespoke will services' },
-    { img: 'https://a.storyblok.com/f/309177/x/af41af3514/arrowtarget.avif', text: 'Getting a fast-tracked will' },
-    { img: 'https://a.storyblok.com/f/309177/x/5afd42ca1b/twopages.avif', text: 'Writing a mirror will' },
-    { img: 'https://a.storyblok.com/f/309177/x/7330913b9e/closedsafe.avif', text: 'Our will storage and update service' },
+    { img: 'https://a.storyblok.com/f/309177/x/3434441de2/penpaper.avif', text: 'User accounts with secure logins and dashboards' },
+    { img: 'https://a.storyblok.com/f/309177/x/af41af3514/arrowtarget.avif', text: 'Guided forms that mirror GOV.UK simplicity' },
+    { img: 'https://a.storyblok.com/f/309177/x/5afd42ca1b/twopages.avif', text: 'Automatic PDF generation for wills and LPAs' },
+    { img: 'https://a.storyblok.com/f/309177/x/7330913b9e/closedsafe.avif', text: 'Built on Laravel for security, speed, and scaling' },
 ];
 
 export function WillWritingCalloutsSection() {
@@ -12,9 +12,9 @@ export function WillWritingCalloutsSection() {
         <section className="bg-primary-100 px-4 py-16 sm:px-6 lg:px-10">
             <div className="mx-auto max-w-6xl text-center">
                 <h3 className="text-2xl font-serif font-semibold text-primary-900">
-                    Call us now on{' '}
-                    <a href="tel:02045253605" className="font-bold text-primary-600">
-                        020 4525 3605
+                    Email Clara Martinez at{' '}
+                    <a href="mailto:support@willwrite.online" className="font-bold text-primary-600">
+                        support@willwrite.online
                     </a>{' '}
                     to learn more about
                 </h3>
