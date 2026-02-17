@@ -139,6 +139,14 @@ export function EstateApproachSection() {
               registration fees are and how to pay them directly to the OPG.
             </p>
           </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href={route('lpa.start')}
+              className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent hover:text-primary-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+            >
+              Create Your LPA Now
+            </Link>
+          </div>
         </div>
       </div>
     </section>
