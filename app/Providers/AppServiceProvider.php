@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Auth\WhenIWorkUserProvider;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -26,14 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-        $this->registerAuthProviders();
-    }
-
-    protected function registerAuthProviders(): void
-    {
-        Auth::provider('wheniwork', function ($app, array $config) {
-            return new WhenIWorkUserProvider;
-        });
     }
 
     protected function configureDefaults(): void
