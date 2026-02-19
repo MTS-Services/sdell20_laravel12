@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\Payment\PaymentIntentClientInterface;
+use App\Services\Payment\StripePaymentIntentClient;
 use Carbon\CarbonImmutable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PaymentIntentClientInterface::class, function () {
+            return new StripePaymentIntentClient(config('services.stripe.secret'));
+        });
     }
 
     /**
