@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -82,6 +83,11 @@ class User extends Authenticatable
             'locations' => 'array',
             'avatar_urls' => 'array',
         ];
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 
     protected function name(): Attribute
