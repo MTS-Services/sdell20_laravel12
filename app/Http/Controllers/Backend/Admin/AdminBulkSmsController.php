@@ -11,7 +11,6 @@ use App\Rules\E164PhoneNumber;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -91,7 +90,7 @@ class AdminBulkSmsController extends Controller
 
         return redirect()
             ->route('admin.bulk-sms.show', $bulkSend)
-            ->with('success', count($phoneNumbers) . ' SMS messages queued for sending.');
+            ->with('success', count($phoneNumbers).' SMS messages queued for sending.');
     }
 
     public function show(Request $request, BulkSmsSend $bulkSmsSend): Response

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\Admin\AdminBulkSmsController;
 use App\Http\Controllers\Backend\Admin\AdminDashboardController;
+use App\Http\Controllers\Backend\Admin\AdminUserController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use App\Http\Controllers\ScheduledSmsController;
 use App\Http\Controllers\UserProfileController;
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::get('/users/list', [UserSelectionController::class, 'getUsers'])->name('users.list');
 
         // Bulk SMS Routes
