@@ -167,8 +167,8 @@ export default function Create({ senderId, timezone }: Props) {
                                             type="button"
                                             onClick={() => setData('schedule_type', 'one_time')}
                                             className={`flex items-center gap-3 rounded-lg border-2 p-4 text-left transition ${data.schedule_type === 'one_time'
-                                                    ? 'border-primary bg-primary/5'
-                                                    : 'border-muted hover:border-muted-foreground/30'
+                                                ? 'border-primary bg-primary/5'
+                                                : 'border-muted hover:border-muted-foreground/30'
                                                 }`}
                                         >
                                             <Clock className={`h-5 w-5 ${data.schedule_type === 'one_time' ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -183,8 +183,8 @@ export default function Create({ senderId, timezone }: Props) {
                                             type="button"
                                             onClick={() => setData('schedule_type', 'daily')}
                                             className={`flex items-center gap-3 rounded-lg border-2 p-4 text-left transition ${data.schedule_type === 'daily'
-                                                    ? 'border-primary bg-primary/5'
-                                                    : 'border-muted hover:border-muted-foreground/30'
+                                                ? 'border-primary bg-primary/5'
+                                                : 'border-muted hover:border-muted-foreground/30'
                                                 }`}
                                         >
                                             <Repeat className={`h-5 w-5 ${data.schedule_type === 'daily' ? 'text-primary' : 'text-muted-foreground'}`} />
