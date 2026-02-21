@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import AdminLayout from '@/layouts/admin-layout';
 import { type User } from '@/types';
 import { Link } from '@inertiajs/react';
-import { ClipboardList, LayoutDashboard, List, MessageSquare, Plus, Send, UserCircle, Users } from 'lucide-react';
+import { ClipboardList, CalendarClock, LayoutDashboard, List, MessageSquare, Plus, Send, UserCircle, Users } from 'lucide-react';
 
 interface Props {
     user: User;
@@ -50,6 +50,31 @@ export default function AdminDashboard({ user, totalUsers }: Props) {
                                     <Link href={route('admin.bulk-sms.index')}>
                                         <List className="mr-2 h-4 w-4" />
                                         Bulk SMS History
+                                    </Link>
+                                </Button>
+                            </CardContent>
+                        </Card>
+
+                        {/* SMS Campaigns */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2 text-lg">
+                                    <CalendarClock className="h-5 w-5 text-primary" />
+                                    SMS Campaigns
+                                </CardTitle>
+                                <CardDescription>Schedule one-time or daily recurring bulk SMS</CardDescription>
+                            </CardHeader>
+                            <CardContent className="flex flex-wrap gap-3">
+                                <Button asChild>
+                                    <Link href={route('admin.campaigns.create')}>
+                                        <Plus className="mr-2 h-4 w-4" />
+                                        New Campaign
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline">
+                                    <Link href={route('admin.campaigns.index')}>
+                                        <List className="mr-2 h-4 w-4" />
+                                        All Campaigns
                                     </Link>
                                 </Button>
                             </CardContent>
