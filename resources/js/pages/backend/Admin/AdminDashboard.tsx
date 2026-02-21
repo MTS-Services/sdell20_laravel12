@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import AdminLayout from '@/layouts/admin-layout';
 import { type User } from '@/types';
 import { Link } from '@inertiajs/react';
-import { ClipboardList, CalendarClock, LayoutDashboard, List, MessageSquare, Plus, Send, UserCircle, Users } from 'lucide-react';
+import { CalendarClock, List, MessageSquare, Plus } from 'lucide-react';
 
 interface Props {
     user: User;
@@ -75,31 +75,6 @@ export default function AdminDashboard({ user, totalUsers }: Props) {
                                     <Link href={route('admin.campaigns.index')}>
                                         <List className="mr-2 h-4 w-4" />
                                         All Campaigns
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
-
-                        {/* Scheduled SMS */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-lg">
-                                    <Send className="h-5 w-5 text-primary" />
-                                    Scheduled SMS
-                                </CardTitle>
-                                <CardDescription>Schedule and view individual messages</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex flex-wrap gap-3">
-                                <Button asChild>
-                                    <Link href={route('sms.create')}>
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        Schedule SMS
-                                    </Link>
-                                </Button>
-                                <Button asChild variant="outline">
-                                    <Link href={route('sms.index')}>
-                                        <ClipboardList className="mr-2 h-4 w-4" />
-                                        Scheduled SMS List
                                     </Link>
                                 </Button>
                             </CardContent>
