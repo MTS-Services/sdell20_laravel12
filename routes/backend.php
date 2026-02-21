@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\Admin\AdminBulkSmsController;
 use App\Http\Controllers\Backend\Admin\AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\AdminUserController;
+use App\Http\Controllers\Backend\Admin\SmsCampaignController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use App\Http\Controllers\ScheduledSmsController;
 use App\Http\Controllers\UserProfileController;
@@ -34,6 +35,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/bulk-sms/create', [AdminBulkSmsController::class, 'create'])->name('bulk-sms.create');
         Route::post('/bulk-sms', [AdminBulkSmsController::class, 'store'])->name('bulk-sms.store')->middleware('throttle:10,1');
         Route::get('/bulk-sms/{bulkSmsSend}', [AdminBulkSmsController::class, 'show'])->name('bulk-sms.show');
+
+        // SMS Campaign Routes
+        Route::get('/campaigns', [SmsCampaignController::class, 'index'])->name('campaigns.index');
+        Route::get('/campaigns/create', [SmsCampaignController::class, 'create'])->name('campaigns.create');
+        Route::post('/campaigns', [SmsCampaignController::class, 'store'])->name('campaigns.store')->middleware('throttle:10,1');
+        Route::get('/campaigns/{campaign}', [SmsCampaignController::class, 'show'])->name('campaigns.show');
+        Route::patch('/campaigns/{campaign}/toggle', [SmsCampaignController::class, 'toggle'])->name('campaigns.toggle');
+        Route::patch('/campaigns/{campaign}/schedule', [SmsCampaignController::class, 'updateSchedule'])->name('campaigns.update-schedule');
+        Route::get('/campaigns/{campaign}/download-failed', [SmsCampaignController::class, 'downloadFailed'])->name('campaigns.download-failed');
     });
 
     // Profile Routes
