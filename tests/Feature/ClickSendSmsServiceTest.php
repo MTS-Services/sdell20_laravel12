@@ -26,7 +26,7 @@ it('sends sms successfully', function () {
                 'queued_count' => 1,
                 'messages' => [
                     [
-                        'to' => '+8801712345678',
+                        'to' => '+447911123456',
                         'body' => 'Test message',
                         'status' => 'SUCCESS',
                         'message_id' => 'msg-abc-123',
@@ -37,7 +37,7 @@ it('sends sms successfully', function () {
     ]);
 
     $service = new ClickSendSmsService;
-    $result = $service->send('+8801712345678', 'Test message');
+    $result = $service->send('+447911123456', 'Test message');
 
     expect($result['message_id'])->toBe('msg-abc-123');
     expect($result['status'])->toBe('SUCCESS');
@@ -45,7 +45,7 @@ it('sends sms successfully', function () {
 
     Http::assertSent(function ($request) {
         return str_contains($request->url(), '/sms/send')
-            && $request['messages'][0]['to'] === '+8801712345678'
+            && $request['messages'][0]['to'] === '+447911123456'
             && $request['messages'][0]['body'] === 'Test message'
             && $request['messages'][0]['from'] === 'TestApp';
     });
@@ -61,7 +61,7 @@ it('throws exception on authentication failure', function () {
     ]);
 
     $service = new ClickSendSmsService;
-    $service->send('+8801712345678', 'Test message');
+    $service->send('+447911123456', 'Test message');
 })->throws(ClickSendException::class, 'ClickSend authentication failed');
 
 it('throws exception on api error', function () {
@@ -74,7 +74,7 @@ it('throws exception on api error', function () {
     ]);
 
     $service = new ClickSendSmsService;
-    $service->send('+8801712345678', 'Test message');
+    $service->send('+447911123456', 'Test message');
 })->throws(ClickSendException::class, 'ClickSend error: Internal server error');
 
 it('throws exception on per-message failure', function () {
@@ -85,7 +85,7 @@ it('throws exception on per-message failure', function () {
             'data' => [
                 'messages' => [
                     [
-                        'to' => '+8801712345678',
+                        'to' => '+447911123456',
                         'body' => 'Test',
                         'status' => 'INVALID_RECIPIENT',
                         'message_id' => null,
@@ -96,7 +96,7 @@ it('throws exception on per-message failure', function () {
     ]);
 
     $service = new ClickSendSmsService;
-    $service->send('+8801712345678', 'Test');
+    $service->send('+447911123456', 'Test');
 })->throws(ClickSendException::class, 'INVALID_RECIPIENT');
 
 it('passes custom string in payload', function () {
@@ -114,7 +114,7 @@ it('passes custom string in payload', function () {
     ]);
 
     $service = new ClickSendSmsService;
-    $result = $service->send('+8801712345678', 'Test', '42');
+    $result = $service->send('+447911123456', 'Test', '42');
 
     Http::assertSent(function ($request) {
         return $request['messages'][0]['custom_string'] === '42';

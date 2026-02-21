@@ -6,7 +6,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
@@ -42,7 +41,7 @@ it('creates a scheduled sms with valid data', function () {
 
     actingAs($user)
         ->post(route('sms.store'), [
-            'to_phone' => '+8801712345678',
+            'to_phone' => '+447911123456',
             'message' => 'Test SMS message',
             'scheduled_at' => $scheduledTime->format('Y-m-d\TH:i'),
         ])
@@ -51,7 +50,7 @@ it('creates a scheduled sms with valid data', function () {
 
     assertDatabaseHas('scheduled_sms', [
         'user_id' => $user->id,
-        'to_phone' => '+8801712345678',
+        'to_phone' => '+447911123456',
         'message' => 'Test SMS message',
         'status' => 'pending',
     ]);
@@ -64,7 +63,7 @@ it('validates phone number format', function () {
 
     actingAs($user)
         ->post(route('sms.store'), [
-            'to_phone' => '01712345678', // Invalid: no +88 prefix
+            'to_phone' => '01712345678', // Invalid: no +44 prefix
             'message' => 'Test SMS message',
             'scheduled_at' => $scheduledTime->format('Y-m-d\TH:i'),
         ])
@@ -78,7 +77,7 @@ it('validates message is required', function () {
 
     actingAs($user)
         ->post(route('sms.store'), [
-            'to_phone' => '+8801712345678',
+            'to_phone' => '+447911123456',
             'message' => '',
             'scheduled_at' => $scheduledTime->format('Y-m-d\TH:i'),
         ])
@@ -92,7 +91,7 @@ it('validates scheduled time must be in future', function () {
 
     actingAs($user)
         ->post(route('sms.store'), [
-            'to_phone' => '+8801712345678',
+            'to_phone' => '+447911123456',
             'message' => 'Test SMS message',
             'scheduled_at' => $pastTime->format('Y-m-d\TH:i'),
         ])
@@ -173,7 +172,7 @@ it('rate limits sms creation to 20 per minute', function () {
     for ($i = 0; $i < 21; $i++) {
         $response = actingAs($user)
             ->post(route('sms.store'), [
-                'to_phone' => "+880171234567{$i}",
+                'to_phone' => "+44791112345{$i}",
                 'message' => "Test SMS {$i}",
                 'scheduled_at' => $scheduledTime->format('Y-m-d\TH:i'),
             ]);

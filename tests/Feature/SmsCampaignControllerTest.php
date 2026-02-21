@@ -61,7 +61,7 @@ it('requires csv_file when creating a campaign', function () {
 it('requires message when creating a campaign', function () {
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csv = UploadedFile::fake()->createWithContent('phones.csv', "+8801712345678\n+8801712345679");
+    $csv = UploadedFile::fake()->createWithContent('phones.csv', "+447911123456\n+447911123457");
 
     actingAs($admin)
         ->post(route('admin.campaigns.store'), [
@@ -76,7 +76,7 @@ it('requires message when creating a campaign', function () {
 it('requires schedule_type when creating a campaign', function () {
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+8801712345678');
+    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+447911123456');
 
     actingAs($admin)
         ->post(route('admin.campaigns.store'), [
@@ -89,7 +89,7 @@ it('requires schedule_type when creating a campaign', function () {
 it('requires scheduled_at for one_time campaigns', function () {
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+8801712345678');
+    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+447911123456');
 
     actingAs($admin)
         ->post(route('admin.campaigns.store'), [
@@ -103,7 +103,7 @@ it('requires scheduled_at for one_time campaigns', function () {
 it('requires daily_time for daily campaigns', function () {
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+8801712345678');
+    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+447911123456');
 
     actingAs($admin)
         ->post(route('admin.campaigns.store'), [
@@ -117,7 +117,7 @@ it('requires daily_time for daily campaigns', function () {
 it('rejects scheduled_at in the past', function () {
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+8801712345678');
+    $csv = UploadedFile::fake()->createWithContent('phones.csv', '+447911123456');
 
     actingAs($admin)
         ->post(route('admin.campaigns.store'), [
@@ -137,7 +137,7 @@ it('creates a one-time campaign with valid CSV', function () {
 
     $csv = UploadedFile::fake()->createWithContent(
         'phones.csv',
-        "+8801712345678\n+8801712345679\n+8801712345680"
+        "+447911123456\n+447911123457\n+447911123458"
     );
 
     actingAs($admin)
@@ -170,7 +170,7 @@ it('creates a daily recurring campaign', function () {
 
     $csv = UploadedFile::fake()->createWithContent(
         'phones.csv',
-        "+8801712345678\n+8801712345679"
+        "+447911123456\n+447911123457"
     );
 
     actingAs($admin)
@@ -204,7 +204,7 @@ it('deduplicates phone numbers from CSV', function () {
 
     $csv = UploadedFile::fake()->createWithContent(
         'phones.csv',
-        "+8801712345678\n+8801712345678\n+8801712345679"
+        "+447911123456\n+447911123456\n+447911123457"
     );
 
     actingAs($admin)
@@ -337,7 +337,7 @@ it('downloads failed numbers as CSV', function () {
     $campaign = SmsCampaign::factory()->for($admin, 'admin')->create();
     SmsCampaignLog::factory()->failed()->create([
         'sms_campaign_id' => $campaign->id,
-        'phone_number' => '+8801712345678',
+        'phone_number' => '+447911123456',
     ]);
 
     actingAs($admin)

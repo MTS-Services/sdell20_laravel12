@@ -31,11 +31,11 @@ export default function Create() {
 
                 <form onSubmit={submit} className="space-y-5">
                     <div className="grid gap-2">
-                        <Label htmlFor="to_phone">Phone Number (E.164 format)</Label>
+                        <Label htmlFor="to_phone">Phone Number (UK E.164 format)</Label>
                         <Input
                             id="to_phone"
                             type="text"
-                            placeholder="+8801XXXXXXXXX"
+                            placeholder="+447XXXXXXXXX"
                             value={data.to_phone}
                             onChange={(e) => setData('to_phone', e.target.value)}
                         />

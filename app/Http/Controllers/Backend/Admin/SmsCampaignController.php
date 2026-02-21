@@ -61,7 +61,7 @@ class SmsCampaignController extends Controller
 
         if (empty($phoneNumbers)) {
             return back()->withErrors([
-                'csv_file' => 'No valid phone numbers found. Ensure numbers are in E.164 format (e.g., +8801XXXXXXXXX).',
+                'csv_file' => 'No valid UK phone numbers found. Ensure numbers are in E.164 format (e.g., +447XXXXXXXXX).',
             ]);
         }
 

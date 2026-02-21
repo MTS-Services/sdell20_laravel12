@@ -116,7 +116,7 @@ export default function Create({ senderId, timezone }: Props) {
                                         />
                                     </div>
                                     <p className="text-xs text-muted-foreground">
-                                        One phone number per row in E.164 format (e.g., +8801XXXXXXXXX). Max 5MB. Duplicates will be removed.
+                                        One phone number per row in UK E.164 format (e.g., +447XXXXXXXXX). Max 5MB. Duplicates will be removed.
                                     </p>
                                     <InputError message={errors.csv_file} />
                                 </div>
