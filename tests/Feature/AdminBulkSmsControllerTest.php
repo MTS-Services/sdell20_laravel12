@@ -51,7 +51,7 @@ it('requires message in bulk sms form', function () {
     actingAs($admin)
         ->post(route('admin.bulk-sms.store'), [
             'message' => '',
-            'manual_phone' => '+8801712345678',
+            'manual_phone' => '+447911123456',
         ])
         ->assertSessionHasErrors('message');
 });
@@ -88,7 +88,7 @@ it('sends bulk sms with manual phone number', function () {
     actingAs($admin)
         ->post(route('admin.bulk-sms.store'), [
             'message' => 'Hello from bulk SMS!',
-            'manual_phone' => '+8801712345678',
+            'manual_phone' => '+447911123456',
         ])
         ->assertRedirect();
 
@@ -100,7 +100,7 @@ it('sends bulk sms with manual phone number', function () {
     ]);
 
     assertDatabaseHas('sms_send_logs', [
-        'phone_number' => '+8801712345678',
+        'phone_number' => '+447911123456',
         'message' => 'Hello from bulk SMS!',
         'status' => 'pending',
         'created_by' => $admin->id,
@@ -113,7 +113,7 @@ it('sends bulk sms with csv file', function () {
     /** @var User $admin */
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csvContent = "+8801711111111\n+8801722222222\n+8801733333333\ninvalid_number\n+8801711111111";
+    $csvContent = "+447700900111\n+447700900222\n+447700900333\ninvalid_number\n+447700900111";
     $csvFile = UploadedFile::fake()->createWithContent('phones.csv', $csvContent);
 
     actingAs($admin)
@@ -123,7 +123,7 @@ it('sends bulk sms with csv file', function () {
         ])
         ->assertRedirect();
 
-    // Should have 3 unique valid numbers (duplicate +8801711111111 removed, invalid_number skipped)
+    // Should have 3 unique valid numbers (duplicate +447700900111 removed, invalid_number skipped)
     assertDatabaseHas('bulk_sms_sends', [
         'admin_id' => $admin->id,
         'total_numbers' => 3,
@@ -137,14 +137,14 @@ it('sends bulk sms with csv and manual phone combined', function () {
     /** @var User $admin */
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csvContent = "+8801711111111\n+8801722222222";
+    $csvContent = "+447700900111\n+447700900222";
     $csvFile = UploadedFile::fake()->createWithContent('phones.csv', $csvContent);
 
     actingAs($admin)
         ->post(route('admin.bulk-sms.store'), [
             'message' => 'Combined test',
             'csv_file' => $csvFile,
-            'manual_phone' => '+8801799999999',
+            'manual_phone' => '+447700900999',
         ])
         ->assertRedirect();
 
@@ -157,14 +157,14 @@ it('deduplicates manual phone if also in csv', function () {
     /** @var User $admin */
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csvContent = "+8801711111111\n+8801722222222";
+    $csvContent = "+447700900111\n+447700900222";
     $csvFile = UploadedFile::fake()->createWithContent('phones.csv', $csvContent);
 
     actingAs($admin)
         ->post(route('admin.bulk-sms.store'), [
             'message' => 'Dedup test',
             'csv_file' => $csvFile,
-            'manual_phone' => '+8801711111111', // Already in CSV
+            'manual_phone' => '+447700900111', // Already in CSV
         ])
         ->assertRedirect();
 
@@ -237,7 +237,7 @@ it('handles csv with header row correctly', function () {
     /** @var User $admin */
     $admin = User::factory()->create(['is_admin' => true]);
 
-    $csvContent = "phone,name\n+8801711111111,John\n+8801722222222,Jane";
+    $csvContent = "phone,name\n+447700900111,John\n+447700900222,Jane";
     $csvFile = UploadedFile::fake()->createWithContent('with_header.csv', $csvContent);
 
     actingAs($admin)

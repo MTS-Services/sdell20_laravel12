@@ -17,7 +17,7 @@ class SmsCampaignLogFactory extends Factory
     {
         return [
             'sms_campaign_id' => SmsCampaign::factory(),
-            'phone_number' => '+88017'.$this->faker->numberBetween(10000000, 99999999),
+            'phone_number' => '+4479'.$this->faker->numberBetween(10000000, 99999999),
             'message' => $this->faker->sentence(),
             'status' => 'pending',
             'provider_message_id' => null,

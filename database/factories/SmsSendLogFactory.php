@@ -18,7 +18,7 @@ class SmsSendLogFactory extends Factory
     {
         return [
             'bulk_sms_send_id' => BulkSmsSend::factory(),
-            'phone_number' => '+88017' . $this->faker->numberBetween(10000000, 99999999),
+            'phone_number' => '+4479'.$this->faker->numberBetween(10000000, 99999999),
             'message' => $this->faker->sentence(),
             'status' => 'pending',
             'provider_message_id' => null,
@@ -33,7 +33,7 @@ class SmsSendLogFactory extends Factory
     {
         return $this->state(fn () => [
             'status' => 'sent',
-            'provider_message_id' => 'msg_' . $this->faker->uuid(),
+            'provider_message_id' => 'msg_'.$this->faker->uuid(),
             'sent_at' => now(),
         ]);
     }

@@ -10,20 +10,20 @@ it('creates a scheduled sms factory', function () {
     $sms = ScheduledSms::factory()->create();
 
     expect($sms->id)->toBeInt();
-    expect($sms->to_phone)->toMatch('/^\+[1-9]\d{6,14}$/');
+    expect($sms->to_phone)->toMatch('/^\+44[1-9]\d{8,9}$/');
     expect($sms->message)->toBeString();
     expect($sms->status)->toBe('pending');
 });
 
 it('generates unique idempotency keys', function () {
     $sms1 = ScheduledSms::factory()->create([
-        'to_phone' => '+8801712345678',
+        'to_phone' => '+447911123456',
         'message' => 'Test',
         'scheduled_at' => now(),
     ]);
 
     $sms2 = ScheduledSms::factory()->create([
-        'to_phone' => '+8801712345679',
+        'to_phone' => '+447911123457',
         'message' => 'Test',
         'scheduled_at' => now(),
     ]);

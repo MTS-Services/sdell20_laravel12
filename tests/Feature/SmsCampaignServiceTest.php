@@ -11,13 +11,13 @@ it('parses valid phone numbers from CSV', function () {
 
     $csv = UploadedFile::fake()->createWithContent(
         'phones.csv',
-        "+8801712345678\n+8801712345679\n+8801712345680"
+        "+447911123456\n+447911123457\n+447911123458"
     );
 
     $numbers = $service->parsePhoneNumbersFromCsv($csv);
 
     expect($numbers)->toHaveCount(3)
-        ->and($numbers[0])->toBe('+8801712345678');
+        ->and($numbers[0])->toBe('+447911123456');
 });
 
 it('deduplicates phone numbers', function () {
@@ -25,7 +25,7 @@ it('deduplicates phone numbers', function () {
 
     $csv = UploadedFile::fake()->createWithContent(
         'phones.csv',
-        "+8801712345678\n+8801712345678\n+8801712345679"
+        "+447911123456\n+447911123456\n+447911123457"
     );
 
     $numbers = $service->parsePhoneNumbersFromCsv($csv);
@@ -38,7 +38,7 @@ it('skips invalid phone numbers', function () {
 
     $csv = UploadedFile::fake()->createWithContent(
         'phones.csv',
-        "+8801712345678\ninvalid_number\n123\n+8801712345679"
+        "+447911123456\ninvalid_number\n123\n+447911123457"
     );
 
     $numbers = $service->parsePhoneNumbersFromCsv($csv);
@@ -51,7 +51,7 @@ it('handles CSV with multiple columns', function () {
 
     $csv = UploadedFile::fake()->createWithContent(
         'phones.csv',
-        "+8801712345678,John Doe\n+8801712345679,Jane Doe"
+        "+447911123456,John Doe\n+447911123457,Jane Doe"
     );
 
     $numbers = $service->parsePhoneNumbersFromCsv($csv);
@@ -80,7 +80,7 @@ it('creates campaign with log entries', function () {
         'schedule_type' => 'one_time',
         'status' => 'scheduled',
         'scheduled_at' => now()->addHour(),
-    ], ['+8801712345678', '+8801712345679']);
+    ], ['+447911123456', '+447911123457']);
 
     expect($campaign->total_numbers)->toBe(2)
         ->and($campaign->pending_count)->toBe(2)

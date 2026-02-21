@@ -9,17 +9,17 @@ class E164PhoneNumber implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // E.164: + followed by 7–15 digits
+        // UK E.164: +44 followed by 10 digits (total 13 chars)
         if (! $this->isValid($value)) {
-            $fail('The :attribute must be in E.164 format (e.g., +8801XXXXXXXXX).');
+            $fail('The :attribute must be a valid UK phone number in E.164 format (e.g., +447XXXXXXXXX).');
         }
     }
 
     /**
-     * Check if a phone number matches E.164 format.
+     * Check if a phone number is a valid UK E.164 format.
      */
     public function isValid(mixed $value): bool
     {
-        return (bool) preg_match('/^\+[1-9]\d{6,14}$/', (string) $value);
+        return (bool) preg_match('/^\+44[1-9]\d{8,9}$/', (string) $value);
     }
 }

@@ -16,7 +16,7 @@ class ScheduledSmsFactory extends Factory
 
         return [
             'user_id' => null,
-            'to_phone' => '+88017'.$this->faker->numberBetween(10000000, 99999999),
+            'to_phone' => '+4479'.$this->faker->numberBetween(10000000, 99999999),
             'message' => $this->faker->paragraph(),
             'scheduled_at' => Carbon::instance($scheduledAt)->setTimezone('UTC'),
             'timezone' => 'Asia/Dhaka',
