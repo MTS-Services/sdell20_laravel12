@@ -3,12 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'SMS', href: route('sms.index') },
-];
+import AdminLayout from '@/layouts/admin-layout';
 
 interface ScheduledSmsItem {
     id: number;
@@ -43,7 +38,7 @@ export default function Index({ messages }: { messages: PaginatedMessages }) {
     }
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout>
             <Head title="Scheduled SMS" />
 
             <div className="mx-auto mt-8 max-w-6xl px-4">
@@ -114,6 +109,6 @@ export default function Index({ messages }: { messages: PaginatedMessages }) {
                     )}
                 </div>
             </div>
-        </AppLayout>
+        </AdminLayout>
     );
 }

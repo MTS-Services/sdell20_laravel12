@@ -5,13 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'SMS', href: route('sms.index') },
-    { title: 'Schedule SMS', href: route('sms.create') },
-];
+import AdminLayout from '@/layouts/admin-layout';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
@@ -29,7 +23,7 @@ export default function Create() {
     }
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <AdminLayout>
             <Head title="Schedule SMS" />
 
             <div className="mx-auto mt-8 max-w-xl rounded-lg border bg-card p-6 shadow-sm">
@@ -78,6 +72,6 @@ export default function Create() {
                     </Button>
                 </form>
             </div>
-        </AppLayout>
+        </AdminLayout>
     );
 }
