@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('schedule_type', ['one_time', 'daily']);
             $table->timestamp('scheduled_at')->nullable(); // for one-time
             $table->string('daily_time', 5)->nullable(); // HH:MM for daily recurring
-            $table->string('timezone', 64)->default('Asia/Dhaka');
+            $table->string('timezone', 64)->default('Europe/London');
             $table->enum('status', ['draft', 'scheduled', 'running', 'completed', 'paused', 'failed'])->default('draft');
             $table->unsignedInteger('total_numbers')->default(0);
             $table->unsignedInteger('sent_count')->default(0);

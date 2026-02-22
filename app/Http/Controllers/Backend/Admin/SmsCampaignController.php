@@ -49,7 +49,7 @@ class SmsCampaignController extends Controller
     {
         return Inertia::render('backend/Admin/Campaigns/Create', [
             'senderId' => config('clicksend.sender_id'),
-            'timezone' => config('app.timezone', 'Asia/Dhaka'),
+            'timezone' => config('app.timezone', 'Europe/London'),
         ]);
     }
 
@@ -74,14 +74,14 @@ class SmsCampaignController extends Controller
             'message' => $request->validated('message'),
             'sender_id' => config('clicksend.sender_id'),
             'schedule_type' => $request->validated('schedule_type'),
-            'timezone' => config('app.timezone', 'Asia/Dhaka'),
+            'timezone' => config('app.timezone', 'Europe/London'),
             'status' => 'scheduled',
             'csv_filename' => $request->file('csv_file')->getClientOriginalName(),
         ];
 
         // Set schedule time based on type
         if ($request->validated('schedule_type') === 'one_time') {
-            $scheduledAt = Carbon::parse($request->validated('scheduled_at'), config('app.timezone', 'Asia/Dhaka'))->utc();
+            $scheduledAt = Carbon::parse($request->validated('scheduled_at'), config('app.timezone', 'Europe/London'))->utc();
             $campaignData['scheduled_at'] = $scheduledAt;
             $campaignData['next_run_at'] = $scheduledAt;
         } else {
@@ -111,15 +111,26 @@ class SmsCampaignController extends Controller
     {
         abort_unless($campaign->admin_id === $request->user()->id, 403);
 
-        $campaign->load('logs');
-
-        $failedLogs = $campaign->logs
+        $failedLogs = $campaign->logs()
             ->where('status', 'failed')
+            ->get()
             ->map(fn (SmsCampaignLog $log) => [
                 'phone_number' => $log->phone_number,
                 'error_reason' => $log->error_reason,
             ])
             ->values();
+
+        $logs = $campaign->logs()
+            ->orderByDesc('id')
+            ->paginate(30)
+            ->through(fn (SmsCampaignLog $log) => [
+                'id' => $log->id,
+                'phone_number' => $log->phone_number,
+                'status' => $log->status,
+                'error_reason' => $log->error_reason,
+                'provider_message_id' => $log->provider_message_id,
+                'sent_at' => $log->sent_at?->format('Y-m-d H:i'),
+            ]);
 
         return Inertia::render('backend/Admin/Campaigns/Show', [
             'campaign' => [
@@ -143,16 +154,7 @@ class SmsCampaignController extends Controller
                 'created_at' => $campaign->created_at->format('Y-m-d H:i'),
             ],
             'failedLogs' => $failedLogs,
-            'logs' => $campaign->logs
-                ->map(fn (SmsCampaignLog $log) => [
-                    'id' => $log->id,
-                    'phone_number' => $log->phone_number,
-                    'status' => $log->status,
-                    'error_reason' => $log->error_reason,
-                    'provider_message_id' => $log->provider_message_id,
-                    'sent_at' => $log->sent_at?->format('Y-m-d H:i'),
-                ])
-                ->values(),
+            'logs' => $logs,
         ]);
     }
 
@@ -219,6 +221,22 @@ class SmsCampaignController extends Controller
         return redirect()
             ->route('admin.campaigns.show', $campaign)
             ->with('success', 'Campaign schedule updated successfully.');
+    }
+
+    /**
+     * Delete a campaign and its logs.
+     */
+    public function destroy(Request $request, SmsCampaign $campaign): RedirectResponse
+    {
+        abort_unless($campaign->admin_id === $request->user()->id, 403);
+
+        $campaignName = $campaign->name ?? 'Untitled Campaign';
+        $campaign->logs()->delete();
+        $campaign->delete();
+
+        return redirect()
+            ->route('admin.campaigns.index')
+            ->with('success', "Campaign \"{$campaignName}\" deleted successfully.");
     }
 
     /**

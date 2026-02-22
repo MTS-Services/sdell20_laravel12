@@ -23,7 +23,7 @@ class SmsCampaignFactory extends Factory
             'schedule_type' => 'one_time',
             'scheduled_at' => now()->addHour(),
             'daily_time' => null,
-            'timezone' => 'Asia/Dhaka',
+            'timezone' => 'Europe/London',
             'status' => 'draft',
             'total_numbers' => 5,
             'sent_count' => 0,

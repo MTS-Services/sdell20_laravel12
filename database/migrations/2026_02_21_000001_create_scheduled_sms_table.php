@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('to_phone', 20);
             $table->text('message');
             $table->timestamp('scheduled_at');
-            $table->string('timezone', 50)->default('Asia/Dhaka');
+            $table->string('timezone', 50)->default('Europe/London');
             $table->enum('status', [
                 'pending', 'processing', 'sent', 'failed', 'delivered', 'cancelled',
             ])->default('pending');

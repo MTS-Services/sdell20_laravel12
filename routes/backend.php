@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/campaigns/{campaign}/toggle', [SmsCampaignController::class, 'toggle'])->name('campaigns.toggle');
         Route::patch('/campaigns/{campaign}/schedule', [SmsCampaignController::class, 'updateSchedule'])->name('campaigns.update-schedule');
         Route::get('/campaigns/{campaign}/download-failed', [SmsCampaignController::class, 'downloadFailed'])->name('campaigns.download-failed');
+        Route::delete('/campaigns/{campaign}', [SmsCampaignController::class, 'destroy'])->name('campaigns.destroy');
     });
 
     // Profile Routes
