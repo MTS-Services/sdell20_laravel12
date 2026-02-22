@@ -252,7 +252,7 @@ it('shows campaign details to the owning admin', function () {
             ->component('backend/Admin/Campaigns/Show')
             ->has('campaign')
             ->has('failedLogs')
-            ->has('logs', 3)
+            ->has('logs.data', 3)
         );
 });
 

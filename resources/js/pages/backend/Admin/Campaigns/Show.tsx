@@ -18,6 +18,7 @@ import {
     Play,
     RefreshCw,
     Repeat,
+    Trash2,
 } from 'lucide-react';
 
 interface CampaignData {
@@ -55,10 +56,21 @@ interface FailedLog {
     error_reason: string | null;
 }
 
+interface PaginatedLogs {
+    data: LogItem[];
+    current_page: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+    from: number | null;
+    to: number | null;
+    links: Array<{ url: string | null; label: string; active: boolean }>;
+}
+
 interface Props {
     campaign: CampaignData;
     failedLogs: FailedLog[];
-    logs: LogItem[];
+    logs: PaginatedLogs;
 }
 
 const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
@@ -91,6 +103,13 @@ export default function Show({ campaign, failedLogs, logs }: Props) {
         });
     }
 
+    function deleteCampaign() {
+        if (!confirm(`Are you sure you want to delete "${campaign.name}"? This will permanently remove the campaign and all its send logs.`)) {
+            return;
+        }
+        router.delete(route('admin.campaigns.destroy', campaign.id));
+    }
+
     function updateSchedule(e: React.FormEvent) {
         e.preventDefault();
         scheduleForm.patch(route('admin.campaigns.update-schedule', campaign.id), {
@@ -120,6 +139,10 @@ export default function Show({ campaign, failedLogs, logs }: Props) {
                                     Refresh
                                 </Button>
                             )}
+                            <Button variant="destructive" size="sm" onClick={deleteCampaign}>
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete
+                            </Button>
                             <Button asChild variant="outline">
                                 <Link href={route('admin.campaigns.index')}>
                                     <ArrowLeft className="mr-2 h-4 w-4" />
@@ -358,7 +381,14 @@ export default function Show({ campaign, failedLogs, logs }: Props) {
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-lg">Send Logs</CardTitle>
-                            <CardDescription>Per-number delivery status for this campaign</CardDescription>
+                            <CardDescription>
+                                Per-number delivery status for this campaign
+                                {logs.total > 0 && (
+                                    <span className="ml-1">
+                                        — showing {logs.from}–{logs.to} of {logs.total}
+                                    </span>
+                                )}
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="rounded-md border">
@@ -374,16 +404,18 @@ export default function Show({ campaign, failedLogs, logs }: Props) {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {logs.length === 0 ? (
+                                        {logs.data.length === 0 ? (
                                             <TableRow>
                                                 <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
                                                     No send logs yet. Campaign hasn't been executed.
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
-                                            logs.map((log, index) => (
+                                            logs.data.map((log, index) => (
                                                 <TableRow key={log.id}>
-                                                    <TableCell className="font-mono text-sm">{index + 1}</TableCell>
+                                                    <TableCell className="font-mono text-sm">
+                                                        {(logs.from ?? 0) + index}
+                                                    </TableCell>
                                                     <TableCell className="font-mono text-sm">{log.phone_number}</TableCell>
                                                     <TableCell className="text-center">
                                                         <Badge variant={STATUS_VARIANT[log.status] ?? 'outline'}>
@@ -406,6 +438,31 @@ export default function Show({ campaign, failedLogs, logs }: Props) {
                                     </TableBody>
                                 </Table>
                             </div>
+
+                            {/* Pagination */}
+                            {logs.links.length > 3 && (
+                                <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
+                                    {logs.links.map((link, i) => (
+                                        <Button
+                                            key={i}
+                                            variant={link.active ? 'default' : 'outline'}
+                                            size="sm"
+                                            disabled={!link.url}
+                                            asChild={!!link.url}
+                                        >
+                                            {link.url ? (
+                                                <Link
+                                                    href={link.url}
+                                                    preserveScroll
+                                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                                />
+                                            ) : (
+                                                <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                            )}
+                                        </Button>
+                                    ))}
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </div>

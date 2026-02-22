@@ -93,7 +93,7 @@ it('calculates next_run_at for daily campaigns', function () {
 
     $campaign = SmsCampaign::factory()->for($admin, 'admin')->daily()->create([
         'daily_time' => '21:00',
-        'timezone' => 'Asia/Dhaka',
+        'timezone' => 'Europe/London',
     ]);
 
     $nextRun = $service->calculateNextRunAt($campaign);
