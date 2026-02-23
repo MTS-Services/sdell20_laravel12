@@ -2,7 +2,7 @@
 
 use App\Rules\E164PhoneNumber;
 
-it('validates phone number is UK e164 format', function () {
+it('validates phone number is UK or Bangladesh e164 format', function () {
     $rule = new E164PhoneNumber;
 
     $closure = function ($message) {
@@ -16,10 +16,17 @@ it('validates phone number is UK e164 format', function () {
     });
     expect($called)->toBeFalse();
 
+    // Valid Bangladesh number — the closure should NOT be called (no failure)
+    $called = false;
+    $rule->validate('phone', '+8801712345678', function () use (&$called) {
+        $called = true;
+    });
+    expect($called)->toBeFalse();
+
     // Invalid - no prefix
     $rule->validate('phone', '07911123456', $closure);
 
-    // Invalid - not UK country code
+    // Invalid - not UK or Bangladesh country code
     $rule->validate('phone', '+14155552671', $closure);
 
     // Invalid - too short
@@ -29,14 +36,20 @@ it('validates phone number is UK e164 format', function () {
     $rule->validate('phone', '+44791112345678901', $closure);
 });
 
-it('validates valid UK phone numbers', function () {
+it('validates valid UK and Bangladesh phone numbers', function () {
     $rule = new E164PhoneNumber;
 
     $validNumbers = [
+        // UK numbers
         '+447911123456',
         '+447700900123',
         '+442071234567',
         '+441234567890',
+        // Bangladesh numbers
+        '+8801712345678',
+        '+8801812345678',
+        '+8801912345678',
+        '+8801312345678',
     ];
 
     foreach ($validNumbers as $number) {
@@ -48,7 +61,7 @@ it('validates valid UK phone numbers', function () {
     }
 });
 
-it('rejects non-UK phone numbers', function () {
+it('rejects invalid phone numbers', function () {
     $rule = new E164PhoneNumber;
 
     $invalidNumbers = [
@@ -57,9 +70,12 @@ it('rejects non-UK phone numbers', function () {
         '+0447911123456',  // Starts with 0 after +
         '07911123456',     // Missing +44
         '+44',             // Too short
-        '+8801712345678',  // Bangladesh, not UK
-        '+14155552671',    // US, not UK
-        '+919876543210',   // India, not UK
+        '+14155552671',    // US number
+        '+919876543210',   // India number
+        '+8801012345678',  // Bangladesh landline (starts with 0)
+        '+8801212345678',  // Bangladesh invalid (starts with 2)
+        '+880171234567',   // Bangladesh too short
+        '+88017123456789', // Bangladesh too long
     ];
 
     foreach ($invalidNumbers as $number) {

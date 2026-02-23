@@ -49,7 +49,7 @@ export default function Create() {
                             onChange={(e) => setData('csv_file', e.target.files?.[0] ?? null)}
                         />
                         <p className="text-xs text-muted-foreground">
-                            One phone number per row in UK E.164 format (e.g., +447XXXXXXXXX). Max 5MB.
+                            One phone number per row in UK or Bangladesh E.164 format (e.g., +447XXXXXXXXX or +8801XXXXXXXXX). Max 5MB.
                         </p>
                         <InputError message={errors.csv_file} />
                     </div>
@@ -60,7 +60,7 @@ export default function Create() {
                         <Input
                             id="manual_phone"
                             type="text"
-                            placeholder="+447XXXXXXXXX"
+                            placeholder="+447XXXXXXXXX or +8801XXXXXXXXX"
                             value={data.manual_phone}
                             onChange={(e) => setData('manual_phone', e.target.value)}
                         />
