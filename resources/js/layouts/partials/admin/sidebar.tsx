@@ -84,7 +84,7 @@ export function AdminSidebar(): React.ReactElement {
     }, [userMenuOpen]);
 
     return (
-        <aside className="hidden h-[83.5vh] w-67.5 flex-col overflow-hidden border-r border-white/50 bg-white/80 text-sm shadow-[0_25px_80px_-45px_rgba(15,24,46,0.4)] backdrop-blur-xl lg:flex">
+        <aside className="hidden h-[89vh] w-67.5 flex-col overflow-hidden border-r border-white/50 bg-white/80 text-sm shadow-[0_25px_80px_-45px_rgba(15,24,46,0.4)] backdrop-blur-xl lg:flex">
 
             <div className="flex-1 overflow-y-auto px-5 py-5 custom-scrollbar">
                 {sections.map((section) => (
