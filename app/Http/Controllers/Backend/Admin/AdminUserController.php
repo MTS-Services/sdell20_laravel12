@@ -12,12 +12,22 @@ class AdminUserController extends Controller
 {
     public function index(Request $request): Response
     {
+        $role = $request->string('role')->lower();
+
+        $usersQuery = User::query()
+            ->select('id', 'name', 'email', 'is_admin', 'created_at')
+            ->latest();
+
+        if ($role === 'admin') {
+            $usersQuery->where('is_admin', true);
+        } elseif ($role === 'user') {
+            $usersQuery->where('is_admin', false);
+        }
+
         return Inertia::render('backend/Admin/Users/Index', [
-            'users' => User::query()
-                ->select('id', 'name', 'email', 'is_admin', 'created_at')
-                ->latest()
-                ->paginate(15),
+            'users' => $usersQuery->paginate(15)->withQueryString(),
             'totalUsers' => User::count(),
+            'currentFilter' => $role ?: 'all',
         ]);
     }
 }
