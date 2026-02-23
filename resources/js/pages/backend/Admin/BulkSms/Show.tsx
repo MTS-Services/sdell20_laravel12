@@ -62,7 +62,7 @@ export default function Show({ bulkSend, failedLogs, logs }: Props) {
                     { label: `Bulk SMS #${bulkSend.id}` },
                 ],
             }}
-            headerContainerClassName="mx-auto my-8 container px-4"
+            headerContainerClassName="mx-auto my-8 container"
         >
             <Head title={`Bulk SMS #${bulkSend.id}`} />
 

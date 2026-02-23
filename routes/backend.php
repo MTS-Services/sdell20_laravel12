@@ -20,7 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
-        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::resource('users', AdminUserController::class);
         Route::get('/users/list', [UserSelectionController::class, 'getUsers'])->name('users.list');
 
         // Bulk SMS Routes

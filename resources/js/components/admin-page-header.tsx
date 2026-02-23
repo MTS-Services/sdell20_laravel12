@@ -22,7 +22,7 @@ export function AdminPageHeader({ title, subtitle, breadcrumbs = [] }: AdminPage
     const avatarInitials = currentUser?.name?.slice(0, 2).toUpperCase() ?? 'AD';
 
     return (
-        <div className="rounded-4xl border border-[#f4d9c8] bg-[#fff8f4] px-6 py-5 shadow-sm">
+        <div className="rounded-4xl  border border-[#f4d9c8] bg-[#fff8f4] px-6 py-5 shadow-sm">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex items-center gap-4">
                     {/* <button

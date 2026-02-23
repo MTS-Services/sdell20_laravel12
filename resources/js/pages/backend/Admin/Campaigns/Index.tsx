@@ -50,7 +50,7 @@ export default function Index({ campaigns }: { campaigns: PaginatedCampaigns }) 
                     { label: 'SMS Campaigns' },
                 ],
             }}
-            headerContainerClassName="mx-auto my-8 container px-4"
+            headerContainerClassName="mx-auto my-8 container"
         >
             <Head title="SMS Campaigns" />
 

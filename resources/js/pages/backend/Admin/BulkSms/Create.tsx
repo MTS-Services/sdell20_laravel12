@@ -39,7 +39,7 @@ export default function Create() {
                     { label: 'Send Bulk SMS' },
                 ],
             }}
-            headerContainerClassName="mx-auto my-8 container px-4"
+            headerContainerClassName="mx-auto my-8 container"
         >
             <Head title="Send Bulk SMS" />
 
