@@ -55,7 +55,7 @@ export default function Show({ bulkSend, failedLogs, logs }: Props) {
         <AdminLayout>
             <Head title={`Bulk SMS #${bulkSend.id}`} />
 
-            <div className="mx-auto mt-8 max-w-6xl px-4">
+            <div className="mx-auto mt-8 container px-4">
                 {/* Summary Card */}
                 <div className="mb-6 rounded-lg border bg-card p-6 shadow-sm">
                     <div className="mb-4 flex items-center justify-between">

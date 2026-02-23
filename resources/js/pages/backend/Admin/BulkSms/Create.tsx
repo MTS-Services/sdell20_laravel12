@@ -32,7 +32,7 @@ export default function Create() {
         <AdminLayout>
             <Head title="Send Bulk SMS" />
 
-            <div className="mx-auto mt-8 max-w-2xl rounded-lg border bg-card p-6 shadow-sm">
+            <div className="mx-auto mt-8 container rounded-lg border bg-card p-6 shadow-sm">
                 <h1 className="mb-2 text-xl font-semibold text-foreground">Send Bulk SMS</h1>
                 <p className="mb-6 text-sm text-muted-foreground">
                     Upload a CSV file with phone numbers and/or enter a manual number to send SMS in bulk.
