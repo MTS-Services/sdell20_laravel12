@@ -1,9 +1,11 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 
+import { AdminPageHeader } from '@/components/admin-page-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AdminLayout from '@/layouts/admin-layout';
+import { type SharedData } from '@/types';
 
 interface BulkSendItem {
     id: number;
@@ -30,12 +32,21 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | '
 };
 
 export default function Index({ sends }: { sends: PaginatedSends }) {
+    const { props } = usePage<SharedData>();
+    const firstName = props.auth?.user?.name?.split(' ')[0] ?? 'Admin';
+
     return (
         <AdminLayout>
             <Head title="Bulk SMS Sends" />
 
-            <div className="mx-auto mt-8 max-w-6xl px-4">
-                <div className="mb-4 flex items-center justify-between">
+            <div className="mx-auto my-8 container  space-y-6 px-4">
+                <AdminPageHeader
+                    title={`Good morning, ${firstName}!`}
+                    subtitle="Here's what's happening this morning"
+                    breadcrumbs={[{ label: 'Admin Dashboard' }]}
+                />
+
+                <div className="flex flex-wrap items-center justify-between gap-3">
                     <h1 className="text-2xl font-semibold text-foreground">Bulk SMS Sends</h1>
                     <Button asChild>
                         <Link href={route('admin.bulk-sms.create')}>+ New Bulk SMS</Link>

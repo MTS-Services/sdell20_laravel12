@@ -210,9 +210,6 @@ export function AdminSidebar(): React.ReactElement {
                     <p className="text-xs text-muted-foreground">{authUser?.email}</p>
                     <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
                         <span>{authUser?.is_admin ? 'Admin controls enabled' : 'User mode'}</span>
-                        <Link href="mailto:ops@sms.local" className="font-semibold text-primary-600 hover:underline">
-                            Contact
-                        </Link>
                     </div>
                 </div>
             </div>
