@@ -1,19 +1,15 @@
-import { Link, usePage } from '@inertiajs/react';
-import {
-    Activity,
-    BarChart3,
-    CalendarClock,
-    LifeBuoy,
-    MessageSquare,
-    Settings,
-    ShieldCheck,
-    Users,
-} from 'lucide-react';
+import React from 'react';
 
-import AppLogo from '@/components/app-logo';
+import { Link, usePage } from '@inertiajs/react';
+import { BarChart3, CalendarClock, ChevronDown, MessageSquare, ShieldCheck, Users } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { type SharedData } from '@/types';
+
+type SidebarSharedData = SharedData & {
+    currentFilter?: string | null;
+};
 
 interface NavLink {
     label: string;
@@ -40,9 +36,11 @@ const matchRoute = (current: string | null, patterns?: string[]): boolean => {
 };
 
 export function AdminSidebar(): React.ReactElement {
-    const { props } = usePage<SharedData>();
+    const { props, component } = usePage<SidebarSharedData>();
     const currentRoute = route().current();
     const authUser = props.auth?.user;
+    const pageSlug = component;
+    const currentFilter = props.currentFilter ?? null;
 
     const sections: NavSection[] = [
         {
@@ -65,45 +63,25 @@ export function AdminSidebar(): React.ReactElement {
                     description: 'Broadcast sends & uploads',
                     href: route('admin.bulk-sms.index'),
                     icon: MessageSquare,
-                    patterns: ['admin.bulk-sms.'],
+                    patterns: ['admin.bulk-sms.*', 'admin.bulk-sms.index', 'admin.bulk-sms.create'],
                 },
                 {
                     label: 'Campaigns',
                     description: 'One-off & recurring flows',
                     href: route('admin.campaigns.index'),
                     icon: CalendarClock,
-                    patterns: ['admin.campaigns.'],
+                    patterns: ['admin.campaigns.*', 'admin.campaigns.index', 'admin.campaigns.create'],
                 },
             ],
         },
-        {
-            title: 'User management',
-            links: [
-                {
-                    label: 'Admin list',
-                    description: 'Only administrators',
-                    href: route('admin.users.index', { role: 'admin' }),
-                    icon: ShieldCheck,
-                    badge: 'Admins',
-                    patterns: ['admin.users.'],
-                },
-                {
-                    label: 'User list',
-                    description: 'Customers & staff',
-                    href: route('admin.users.index', { role: 'user' }),
-                    icon: Users,
-                    patterns: ['admin.users.'],
-                },
-            ],
-        },
-
     ];
 
-    const healthIndicators = [
-        { label: 'Deliverability', value: '99.1%', tone: 'text-emerald-600' },
-        { label: 'Queued jobs', value: '1,248', tone: 'text-primary-600' },
-        { label: 'Escalations', value: '3 open', tone: 'text-amber-600' },
-    ];
+    const userMenuOpen = React.useMemo(() => pageSlug?.includes('Admin/Users'), [pageSlug]);
+    const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(userMenuOpen);
+
+    React.useEffect(() => {
+        setIsUserMenuOpen(userMenuOpen);
+    }, [userMenuOpen]);
 
     return (
         <aside className="hidden h-[83.5vh] w-67.5 flex-col overflow-hidden border-r border-white/50 bg-white/80 text-sm shadow-[0_25px_80px_-45px_rgba(15,24,46,0.4)] backdrop-blur-xl lg:flex">
@@ -154,6 +132,74 @@ export function AdminSidebar(): React.ReactElement {
                         </div>
                     </div>
                 ))}
+
+                <div className="mb-8">
+                    <button
+                        type="button"
+                        className={cn(
+                            'flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-semibold',
+                            'border-white/60 bg-white/70 text-slate-900 hover:border-primary/40',
+                            pageSlug?.includes('Admin/Users') && 'border-primary/60 bg-primary/5 text-primary-700 shadow-sm'
+                        )}
+                        onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                    >
+                        <span>User Management</span>
+                        <ChevronDown
+                            className={cn(
+                                'h-4 w-4 text-primary-600 transition-transform',
+                                isUserMenuOpen ? 'rotate-180' : 'rotate-0'
+                            )}
+                        />
+                    </button>
+                    {isUserMenuOpen && (
+                        <div className="mt-3 space-y-2 pl-2">
+                            {[
+                                {
+                                    label: 'Admins',
+                                    href: route('admin.users.index', { role: 'admin' }),
+                                    description: 'Only administrators',
+                                    icon: ShieldCheck,
+                                    role: 'admin',
+                                },
+                                {
+                                    label: 'Users',
+                                    href: route('admin.users.index', { role: 'user' }),
+                                    description: 'Customers & staff',
+                                    icon: Users,
+                                    role: 'user',
+                                },
+                            ].map((item) => {
+                                const active = pageSlug?.includes('Admin/Users') && currentFilter === item.role;
+                                return (
+                                    <Link
+                                        key={item.role}
+                                        href={item.href}
+                                        className={cn(
+                                            'flex items-start gap-3 rounded-2xl border px-4 py-2 text-sm transition-all',
+                                            'border-transparent bg-white/60 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-white',
+                                            active && 'border-primary/60 bg-primary/10 shadow-lg shadow-primary/20'
+                                        )}
+                                    >
+                                        <span
+                                            className={cn(
+                                                'mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary-600',
+                                                active && 'bg-primary text-white'
+                                            )}
+                                        >
+                                            <item.icon className="h-4 w-4" />
+                                        </span>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold text-slate-900">{item.label}</span>
+                                            </div>
+                                            <p className="text-xs text-muted-foreground">{item.description}</p>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
 
             </div>
 
