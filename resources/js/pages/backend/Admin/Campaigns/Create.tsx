@@ -51,18 +51,23 @@ export default function Create({ senderId, timezone }: Props) {
     }
 
     return (
-        <AdminLayout>
+        <AdminLayout
+            pageHeader={{
+                title: 'Create Campaign',
+                subtitle: 'Schedule a targeted SMS blast with automated delivery.',
+                breadcrumbs: [
+                    { label: 'Admin Dashboard', href: route('admin.dashboard') },
+                    { label: 'SMS Campaigns', href: route('admin.campaigns.index') },
+                    { label: 'Create Campaign' },
+                ],
+            }}
+            headerContainerClassName="mx-auto my-8 container px-4"
+        >
             <Head title="Create SMS Campaign" />
 
-            <div className="flex flex-1 items-start justify-center py-10 px-4">
-                <div className="w-full max-w-2xl space-y-6">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-3xl font-bold tracking-tight">Create Campaign</h1>
-                            <p className="mt-1 text-muted-foreground">
-                                Schedule a bulk SMS campaign to send at a specific time
-                            </p>
-                        </div>
+            <div className="flex flex-1 items-start justify-center px-4 pb-10">
+                <div className="w-full max-w-4xl space-y-6">
+                    <div className="flex items-center justify-end">
                         <Button asChild variant="outline">
                             <Link href={route('admin.campaigns.index')}>
                                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -236,8 +241,8 @@ export default function Create({ senderId, timezone }: Props) {
                         </Card>
 
                         {/* Submit */}
-                        <div className="flex gap-3">
-                            <Button type="submit" disabled={processing} className="flex-1">
+                        <div className="flex flex-wrap items-center justify-end gap-3">
+                            <Button type="submit" disabled={processing}>
                                 {processing ? 'Creating Campaign...' : 'Create & Schedule Campaign'}
                             </Button>
                             <Button type="button" variant="outline" asChild>

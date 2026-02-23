@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -29,14 +29,26 @@ export default function Create() {
     }
 
     return (
-        <AdminLayout>
+        <AdminLayout
+            pageHeader={{
+                title: 'Send Bulk SMS',
+                subtitle: 'Upload contacts and craft your broadcast message.',
+                breadcrumbs: [
+                    { label: 'Admin Dashboard', href: route('admin.dashboard') },
+                    { label: 'Bulk SMS Sends', href: route('admin.bulk-sms.index') },
+                    { label: 'Send Bulk SMS' },
+                ],
+            }}
+            headerContainerClassName="mx-auto my-8 container px-4"
+        >
             <Head title="Send Bulk SMS" />
 
-            <div className="mx-auto mt-8 container rounded-lg border bg-card p-6 shadow-sm">
-                <h1 className="mb-2 text-xl font-semibold text-foreground">Send Bulk SMS</h1>
-                <p className="mb-6 text-sm text-muted-foreground">
-                    Upload a CSV file with phone numbers and/or enter a manual number to send SMS in bulk.
-                </p>
+                <div className="mb-4 flex justify-end mx-auto max-w-4xl">
+                    <Button variant="outline" asChild>
+                        <Link href={route('admin.bulk-sms.index')}>&larr; Back to Bulk SMS</Link>
+                    </Button>
+                </div>
+            <div className="mx-auto max-w-4xl rounded-lg border bg-card p-6 shadow-sm">
 
                 <form onSubmit={submit} className="space-y-5">
                     {/* CSV Upload */}

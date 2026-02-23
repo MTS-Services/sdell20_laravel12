@@ -119,19 +119,27 @@ export default function Show({ campaign, failedLogs, logs }: Props) {
     }
 
     return (
-        <AdminLayout>
+        <AdminLayout
+            pageHeader={{
+                title: campaign.name || `Campaign #${campaign.id}`,
+                subtitle: 'Track performance and manage scheduling for this campaign.',
+                breadcrumbs: [
+                    { label: 'Admin Dashboard', href: route('admin.dashboard') },
+                    { label: 'SMS Campaigns', href: route('admin.campaigns.index') },
+                    { label: campaign.name || `Campaign #${campaign.id}` },
+                ],
+            }}
+            headerContainerClassName="mx-auto my-8 container px-4"
+        >
             <Head title={`Campaign: ${campaign.name}`} />
 
-            <div className="flex flex-1 items-start justify-center py-10 px-4">
+            <div className="flex flex-1 items-start justify-center px-4 pb-10">
                 <div className="w-full max-w-6xl space-y-6">
                     {/* Header */}
                     <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-3xl font-bold tracking-tight">{campaign.name}</h1>
-                            <p className="mt-1 text-muted-foreground">
-                                Campaign #{campaign.id} &middot; Created {campaign.created_at}
-                            </p>
-                        </div>
+                        <p className="text-sm text-muted-foreground">
+                            Campaign #{campaign.id} &middot; Created {campaign.created_at}
+                        </p>
                         <div className="flex gap-2">
                             {(campaign.status === 'running' || campaign.status === 'scheduled') && (
                                 <Button variant="outline" size="sm" onClick={refresh}>

@@ -41,25 +41,23 @@ const STATUS_VARIANT: Record<string, 'default' | 'secondary' | 'destructive' | '
 
 export default function Index({ campaigns }: { campaigns: PaginatedCampaigns }) {
     return (
-        <AdminLayout>
+        <AdminLayout
+            pageHeader={{
+                title: 'SMS Campaigns',
+                subtitle: 'Create and manage scheduled bulk SMS campaigns.',
+                breadcrumbs: [
+                    { label: 'Admin Dashboard', href: route('admin.dashboard') },
+                    { label: 'SMS Campaigns' },
+                ],
+            }}
+            headerContainerClassName="mx-auto my-8 container px-4"
+        >
             <Head title="SMS Campaigns" />
 
-            <div className="flex flex-1 items-start justify-center py-10 px-4">
-                <div className="w-full max-w-6xl space-y-6">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-3xl font-bold tracking-tight">SMS Campaigns</h1>
-                            <p className="mt-1 text-muted-foreground">
-                                Create and manage scheduled bulk SMS campaigns
-                            </p>
-                        </div>
+            <div className="flex flex-1 items-start justify-center px-4 pb-10">
+                <div className="w-full container space-y-6">
+                    <div className="flex items-center justify-end">
                         <div className="flex gap-2">
-                            <Button asChild variant="outline">
-                                <Link href={route('admin.dashboard')}>
-                                    <ArrowLeft className="mr-2 h-4 w-4" />
-                                    Dashboard
-                                </Link>
-                            </Button>
                             <Button asChild>
                                 <Link href={route('admin.campaigns.create')}>
                                     <Plus className="mr-2 h-4 w-4" />
