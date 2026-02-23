@@ -20,6 +20,7 @@ interface UserItem {
     name: string;
     email: string;
     is_admin: boolean;
+    account_status?: string;
     created_at: string;
 }
 
@@ -163,6 +164,7 @@ export default function Index({ users, totalUsers, search = '', currentFilter = 
                                             <TableHead>Name</TableHead>
                                             <TableHead>Email</TableHead>
                                             <TableHead className="w-24 text-center">Role</TableHead>
+                                            <TableHead className="w-28 text-center">Status</TableHead>
                                             <TableHead className="w-32">Joined</TableHead>
                                             <TableHead className="w-24 text-center">Actions</TableHead>
                                         </TableRow>
@@ -183,6 +185,19 @@ export default function Index({ users, totalUsers, search = '', currentFilter = 
                                                     <TableCell className="text-center">
                                                         <Badge variant={u.is_admin ? 'default' : 'outline'}>
                                                             {u.is_admin ? 'Admin' : 'User'}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell className="text-center">
+                                                        <Badge
+                                                            className={
+                                                                u.account_status === 'active'
+                                                                    ? 'bg-emerald-50 text-emerald-700'
+                                                                    : u.account_status === 'suspended'
+                                                                        ? 'bg-red-50 text-red-700'
+                                                                        : 'bg-amber-50 text-amber-700'
+                                                            }
+                                                        >
+                                                            {(u.account_status ?? 'unknown').replace(/\b\w/g, (char) => char.toUpperCase())}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell className="text-sm text-muted-foreground">
