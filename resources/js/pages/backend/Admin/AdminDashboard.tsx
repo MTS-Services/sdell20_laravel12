@@ -19,7 +19,7 @@ export default function AdminDashboard({ user, totalUsers }: Props) {
                 subtitle: "Here's what's happening this morning",
                 breadcrumbs: [{ label: 'Admin Dashboard' }],
             }}
-            headerContainerClassName="mx-auto w-full container px-4 pt-10"
+            headerContainerClassName="mx-auto w-full container px-4 my-10"
         >
             <div className="mx-auto w-full container space-y-6 px-4 pb-10">
                 <AdminStatsCards totalUsers={totalUsers} />

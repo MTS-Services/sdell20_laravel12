@@ -18,7 +18,7 @@ export default function AdminLayout({ children, pageHeader, headerContainerClass
             <AdminHeader />
             <div className="flex flex-1 ">
                 <AdminSidebar />
-                <main className="flex-1 bg-transparent h-[83.5vh] overflow-y-auto">
+                <main className="flex-1 bg-transparent h-[89vh] overflow-y-auto">
                     {pageHeader && (
                         <div className={headerContainerClassName}>
                             <AdminPageHeader {...pageHeader} />
@@ -27,7 +27,7 @@ export default function AdminLayout({ children, pageHeader, headerContainerClass
                     {children}
                 </main>
             </div>
-            <AdminFooter />
+            {/* <AdminFooter /> */}
         </div>
     );
 }

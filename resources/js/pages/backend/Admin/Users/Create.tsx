@@ -6,16 +6,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AdminLayout from '@/layouts/admin-layout';
 import { ArrowLeft, UserPlus } from 'lucide-react';
 
-export default function Create() {
+interface Props {
+    statusOptions: string[];
+}
+
+export default function Create({ statusOptions }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
         is_admin: false,
+        account_status: statusOptions?.[0] ?? 'active',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -119,6 +125,30 @@ export default function Create() {
                                     />
                                     {errors.password_confirmation && (
                                         <p className="text-sm text-destructive">{errors.password_confirmation}</p>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="account_status">
+                                        Account Status <span className="text-destructive">*</span>
+                                    </Label>
+                                    <Select
+                                        value={data.account_status}
+                                        onValueChange={(value) => setData('account_status', value)}
+                                    >
+                                        <SelectTrigger id="account_status" aria-invalid={!!errors.account_status}>
+                                            <SelectValue placeholder="Select status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {statusOptions.map((status) => (
+                                                <SelectItem key={status} value={status}>
+                                                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.account_status && (
+                                        <p className="text-sm text-destructive">{errors.account_status}</p>
                                     )}
                                 </div>
 

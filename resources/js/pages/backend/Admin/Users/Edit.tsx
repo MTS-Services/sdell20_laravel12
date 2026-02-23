@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AdminLayout from '@/layouts/admin-layout';
 import { ArrowLeft, UserCog } from 'lucide-react';
 
@@ -14,20 +15,23 @@ interface User {
     name: string;
     email: string;
     is_admin: boolean;
+    account_status: string;
     created_at: string;
 }
 
 interface Props {
     user: User;
+    statusOptions: string[];
 }
 
-export default function Edit({ user }: Props) {
+export default function Edit({ user, statusOptions }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         name: user.name,
         email: user.email,
         password: '',
         password_confirmation: '',
         is_admin: user.is_admin,
+        account_status: user.account_status,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -137,6 +141,30 @@ export default function Edit({ user }: Props) {
                                             )}
                                         </div>
                                     </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="account_status">
+                                        Account Status <span className="text-destructive">*</span>
+                                    </Label>
+                                    <Select
+                                        value={data.account_status}
+                                        onValueChange={(value) => setData('account_status', value)}
+                                    >
+                                        <SelectTrigger id="account_status" aria-invalid={!!errors.account_status}>
+                                            <SelectValue placeholder="Select status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {statusOptions.map((status) => (
+                                                <SelectItem key={status} value={status}>
+                                                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {errors.account_status && (
+                                        <p className="text-sm text-destructive">{errors.account_status}</p>
+                                    )}
                                 </div>
 
                                 <div className="flex items-center space-x-2">

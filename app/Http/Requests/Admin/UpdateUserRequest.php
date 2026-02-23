@@ -31,6 +31,7 @@ class UpdateUserRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class, 'email')->ignore($user?->id)],
             'password' => ['nullable', 'confirmed', Password::defaults()],
             'is_admin' => ['nullable', 'boolean'],
+            'account_status' => ['required', Rule::in(User::ACCOUNT_STATUS_OPTIONS)],
         ];
     }
 }

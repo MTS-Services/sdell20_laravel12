@@ -19,7 +19,7 @@ class AdminUserController extends Controller
         $search = $request->string('search')->trim();
 
         $usersQuery = User::query()
-            ->select('id', 'name', 'email', 'is_admin', 'created_at')
+            ->select('id', 'name', 'email', 'is_admin', 'account_status', 'created_at')
             ->latest();
 
         if ($role === 'admin') {
@@ -42,6 +42,7 @@ class AdminUserController extends Controller
             'totalUsers' => User::count(),
             'currentFilter' => $role ?: 'all',
             'search' => $searchValue,
+            'statusOptions' => User::ACCOUNT_STATUS_OPTIONS,
         ]);
     }
 
@@ -53,15 +54,19 @@ class AdminUserController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'is_admin' => $user->is_admin,
+                'account_status' => $user->account_status,
                 'created_at' => $user->created_at?->toDateTimeString(),
                 'updated_at' => $user->updated_at?->toDateTimeString(),
             ],
+            'statusOptions' => User::ACCOUNT_STATUS_OPTIONS,
         ]);
     }
 
     public function create(): Response
     {
-        return Inertia::render('backend/Admin/Users/Create');
+        return Inertia::render('backend/Admin/Users/Create', [
+            'statusOptions' => User::ACCOUNT_STATUS_OPTIONS,
+        ]);
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
@@ -73,6 +78,7 @@ class AdminUserController extends Controller
             'email' => $validated['email'],
             'password' => $validated['password'],
             'is_admin' => $validated['is_admin'] ?? false,
+            'account_status' => $validated['account_status'] ?? 'active',
         ]);
 
         return redirect()
@@ -88,8 +94,10 @@ class AdminUserController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'is_admin' => $user->is_admin,
+                'account_status' => $user->account_status,
                 'created_at' => $user->created_at?->toDateTimeString(),
             ],
+            'statusOptions' => User::ACCOUNT_STATUS_OPTIONS,
         ]);
     }
 
@@ -102,6 +110,7 @@ class AdminUserController extends Controller
         }
 
         $validated['is_admin'] = $validated['is_admin'] ?? false;
+        $validated['account_status'] = $validated['account_status'] ?? $user->account_status ?? 'active';
 
         $user->update($validated);
 

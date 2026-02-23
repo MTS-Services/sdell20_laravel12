@@ -11,6 +11,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
+    public const ACCOUNT_STATUS_OPTIONS = ['active', 'inactive', 'suspended'];
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
@@ -25,6 +27,7 @@ class User extends Authenticatable
         'avatar',
         'password',
         'is_admin',
+        'account_status',
         'has_completed_onboarding',
         'created_at',
         'updated_at',
