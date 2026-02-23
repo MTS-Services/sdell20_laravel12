@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react';
 
-import { AdminPageHeader } from '@/components/admin-page-header';
 import { AdminRecentActivity } from '@/components/admin-recent-activity';
 import { AdminStatsCards } from '@/components/admin-stats-cards';
 import { Button } from '@/components/ui/button';
@@ -14,14 +13,15 @@ interface Props {
 
 export default function AdminDashboard({ user, totalUsers }: Props) {
     return (
-        <AdminLayout>
-            <div className="mx-auto w-full container space-y-6 px-4 py-10">
-                <AdminPageHeader
-                    title={`Good morning, ${user.name?.split(' ')[0] ?? 'Admin'}!`}
-                    subtitle="Here's what's happening this morning"
-                    breadcrumbs={[{ label: 'Admin Dashboard' }]}
-                />
-
+        <AdminLayout
+            pageHeader={{
+                title: `Good morning, ${user.name?.split(' ')[0] ?? 'Admin'}!`,
+                subtitle: "Here's what's happening this morning",
+                breadcrumbs: [{ label: 'Admin Dashboard' }],
+            }}
+            headerContainerClassName="mx-auto w-full container px-4 pt-10"
+        >
+            <div className="mx-auto w-full container space-y-6 px-4 pb-10">
                 <AdminStatsCards totalUsers={totalUsers} />
 
                 <div className="grid gap-4 md:grid-cols-2">

@@ -52,10 +52,28 @@ export default function Show({ bulkSend, failedLogs, logs }: Props) {
     }
 
     return (
-        <AdminLayout>
+        <AdminLayout
+            pageHeader={{
+                title: `Bulk SMS #${bulkSend.id}`,
+                subtitle: 'Review delivery stats and individual send logs.',
+                breadcrumbs: [
+                    { label: 'Admin Dashboard', href: route('admin.dashboard') },
+                    { label: 'Bulk SMS Sends', href: route('admin.bulk-sms.index') },
+                    { label: `Bulk SMS #${bulkSend.id}` },
+                ],
+            }}
+            headerContainerClassName="mx-auto my-8 container px-4"
+        >
             <Head title={`Bulk SMS #${bulkSend.id}`} />
 
-            <div className="mx-auto mt-8 container px-4">
+
+            <div className="mx-auto container px-4 pb-10">
+
+                <div className="my-4 ml-auto flex w-fit justify-end">
+                    <Button variant="outline" asChild>
+                        <Link href={route('admin.bulk-sms.index')}>&larr; Back to Bulk SMS</Link>
+                    </Button>
+                </div>
                 {/* Summary Card */}
                 <div className="mb-6 rounded-lg border bg-card p-6 shadow-sm">
                     <div className="mb-4 flex items-center justify-between">
@@ -170,11 +188,6 @@ export default function Show({ bulkSend, failedLogs, logs }: Props) {
                     )}
                 </div>
 
-                <div className="mt-4">
-                    <Button variant="outline" asChild>
-                        <Link href={route('admin.bulk-sms.index')}>&larr; Back to Bulk SMS</Link>
-                    </Button>
-                </div>
             </div>
         </AdminLayout>
     );

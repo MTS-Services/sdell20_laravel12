@@ -5,12 +5,12 @@ import { ChevronRight, Menu } from 'lucide-react';
 
 import { type SharedData } from '@/types';
 
-interface BreadcrumbItem {
+export interface BreadcrumbItem {
     label: string;
     href?: string;
 }
 
-interface AdminPageHeaderProps {
+export interface AdminPageHeaderProps {
     title: string;
     subtitle?: string;
     breadcrumbs?: BreadcrumbItem[];

@@ -29,18 +29,22 @@ interface Props {
 
 export default function Index({ users, totalUsers }: Props) {
     return (
-        <AdminLayout>
+        <AdminLayout
+            pageHeader={{
+                title: 'All Users',
+                subtitle: `${totalUsers} registered ${totalUsers === 1 ? 'user' : 'users'}`,
+                breadcrumbs: [
+                    { label: 'Admin Dashboard', href: route('admin.dashboard') },
+                    { label: 'Users' },
+                ],
+            }}
+            headerContainerClassName="mx-auto my-8 container px-4"
+        >
             <Head title="All Users" />
 
-            <div className="flex flex-1 items-start justify-center py-10 px-4">
+            <div className="flex flex-1 items-start justify-center px-4 pb-10">
                 <div className="w-full max-w-5xl space-y-6">
                     <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-3xl font-bold tracking-tight">All Users</h1>
-                            <p className="mt-1 text-muted-foreground">
-                                {totalUsers} registered {totalUsers === 1 ? 'user' : 'users'}
-                            </p>
-                        </div>
                         <Button asChild variant="outline">
                             <Link href={route('admin.dashboard')}>
                                 <ArrowLeft className="mr-2 h-4 w-4" />
