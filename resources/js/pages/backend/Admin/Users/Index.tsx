@@ -43,8 +43,8 @@ export default function Index({ users, totalUsers }: Props) {
             <Head title="All Users" />
 
             <div className="flex flex-1 items-start justify-center px-4 pb-10">
-                <div className="w-full max-w-5xl space-y-6">
-                    <div className="flex items-center justify-between">
+                <div className="w-full container space-y-6">
+                    <div className="flex items-center justify-end">
                         <Button asChild variant="outline">
                             <Link href={route('admin.dashboard')}>
                                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -101,28 +101,29 @@ export default function Index({ users, totalUsers }: Props) {
                                 </Table>
                             </div>
 
-                            {/* Pagination */}
-                            {users.links.length > 3 && (
-                                <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
-                                    {users.links.map((link, i) => (
-                                        <Button
-                                            key={i}
-                                            variant={link.active ? 'default' : 'outline'}
-                                            size="sm"
-                                            disabled={!link.url}
-                                            asChild={!!link.url}
-                                        >
-                                            {link.url ? (
-                                                <Link href={link.url} dangerouslySetInnerHTML={{ __html: link.label }} />
-                                            ) : (
-                                                <span dangerouslySetInnerHTML={{ __html: link.label }} />
-                                            )}
-                                        </Button>
-                                    ))}
-                                </div>
-                            )}
+
                         </CardContent>
                     </Card>
+                    {/* Pagination */}
+                    {users.links.length > 3 && (
+                        <div className="mt-4 flex flex-wrap items-center justify-end gap-1">
+                            {users.links.map((link, i) => (
+                                <Button
+                                    key={i}
+                                    variant={link.active ? 'default' : 'outline'}
+                                    size="sm"
+                                    disabled={!link.url}
+                                    asChild={!!link.url}
+                                >
+                                    {link.url ? (
+                                        <Link href={link.url} dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    ) : (
+                                        <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                    )}
+                                </Button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </AdminLayout>

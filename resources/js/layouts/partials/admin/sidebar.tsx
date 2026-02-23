@@ -130,76 +130,86 @@ export function AdminSidebar(): React.ReactElement {
                                 );
                             })}
                         </div>
+
+                        {section.title === 'Overview' && (
+                            <div className="mt-8 space-y-3">
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.5em] text-muted-foreground/80">
+                                    User Management
+                                </p>
+                                <button
+                                    type="button"
+                                    className={cn(
+                                        'flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-semibold',
+                                        'border-white/60 bg-white/70 text-slate-900 hover:border-primary/40',
+                                        pageSlug?.includes('Admin/Users') && 'border-primary/60 bg-primary/5 text-primary-700 shadow-sm'
+                                    )}
+                                    onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <span className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary-600 text-black">
+                                            <Users className="h-4 w-4" />
+                                        </span>
+                                        User Management
+                                    </span>
+                                    <ChevronDown
+                                        className={cn(
+                                            'h-4 w-4 text-primary-600 transition-transform',
+                                            isUserMenuOpen ? 'rotate-180' : 'rotate-0'
+                                        )}
+                                    />
+                                </button>
+                                {isUserMenuOpen && (
+                                    <div className="mt-3 space-y-2 pl-2">
+                                        {[
+                                            {
+                                                label: 'Admins',
+                                                href: route('admin.users.index', { role: 'admin' }),
+                                                description: 'Only administrators',
+                                                icon: ShieldCheck,
+                                                role: 'admin',
+                                            },
+                                            {
+                                                label: 'Users',
+                                                href: route('admin.users.index', { role: 'user' }),
+                                                description: 'Customers & staff',
+                                                icon: Users,
+                                                role: 'user',
+                                            },
+                                        ].map((item) => {
+                                            const active = pageSlug?.includes('Admin/Users') && currentFilter === item.role;
+                                            return (
+                                                <Link
+                                                    key={item.role}
+                                                    href={item.href}
+                                                    className={cn(
+                                                        'flex items-start gap-3 rounded-2xl border px-4 py-2 text-sm transition-all',
+                                                        'border-transparent bg-white/60 hover:-translate-y-0.5 hover-border-primary/30 hover:bg-white',
+                                                        active && 'border-primary/60 bg-primary/10 shadow-lg shadow-primary/20'
+                                                    )}
+                                                >
+                                                    <span
+                                                        className={cn(
+                                                            'mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary-600',
+                                                            active && 'bg-primary text-white'
+                                                        )}
+                                                    >
+                                                        <item.icon className="h-4 w-4" />
+                                                    </span>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-semibold text-slate-900">{item.label}</span>
+                                                        </div>
+                                                        <p className="text-xs text-muted-foreground">{item.description}</p>
+                                                    </div>
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 ))}
-
-                <div className="mb-8">
-                    <button
-                        type="button"
-                        className={cn(
-                            'flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-semibold',
-                            'border-white/60 bg-white/70 text-slate-900 hover:border-primary/40',
-                            pageSlug?.includes('Admin/Users') && 'border-primary/60 bg-primary/5 text-primary-700 shadow-sm'
-                        )}
-                        onClick={() => setIsUserMenuOpen((prev) => !prev)}
-                    >
-                        <span>User Management</span>
-                        <ChevronDown
-                            className={cn(
-                                'h-4 w-4 text-primary-600 transition-transform',
-                                isUserMenuOpen ? 'rotate-180' : 'rotate-0'
-                            )}
-                        />
-                    </button>
-                    {isUserMenuOpen && (
-                        <div className="mt-3 space-y-2 pl-2">
-                            {[
-                                {
-                                    label: 'Admins',
-                                    href: route('admin.users.index', { role: 'admin' }),
-                                    description: 'Only administrators',
-                                    icon: ShieldCheck,
-                                    role: 'admin',
-                                },
-                                {
-                                    label: 'Users',
-                                    href: route('admin.users.index', { role: 'user' }),
-                                    description: 'Customers & staff',
-                                    icon: Users,
-                                    role: 'user',
-                                },
-                            ].map((item) => {
-                                const active = pageSlug?.includes('Admin/Users') && currentFilter === item.role;
-                                return (
-                                    <Link
-                                        key={item.role}
-                                        href={item.href}
-                                        className={cn(
-                                            'flex items-start gap-3 rounded-2xl border px-4 py-2 text-sm transition-all',
-                                            'border-transparent bg-white/60 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-white',
-                                            active && 'border-primary/60 bg-primary/10 shadow-lg shadow-primary/20'
-                                        )}
-                                    >
-                                        <span
-                                            className={cn(
-                                                'mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary-600',
-                                                active && 'bg-primary text-white'
-                                            )}
-                                        >
-                                            <item.icon className="h-4 w-4" />
-                                        </span>
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-semibold text-slate-900">{item.label}</span>
-                                            </div>
-                                            <p className="text-xs text-muted-foreground">{item.description}</p>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
 
             </div>
 
