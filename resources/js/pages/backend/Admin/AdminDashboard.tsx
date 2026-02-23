@@ -1,11 +1,7 @@
 import { AdminRecentActivity } from '@/components/admin-recent-activity';
 import { AdminStatsCards } from '@/components/admin-stats-cards';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { type User } from '@/types';
-import { Link } from '@inertiajs/react';
-import { CalendarClock, List, MessageSquare, Plus } from 'lucide-react';
 
 interface Props {
     user: User;
@@ -16,7 +12,7 @@ export default function AdminDashboard({ user, totalUsers }: Props) {
     return (
         <AdminLayout>
             <div className="flex flex-1 items-start justify-center py-10 px-4">
-                <div className="w-full max-w-5xl space-y-6">
+                <div className="w-full container space-y-6">
                     {/* Welcome Header */}
                     <div className="text-center">
                         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
@@ -27,59 +23,6 @@ export default function AdminDashboard({ user, totalUsers }: Props) {
 
                     {/* Stats */}
                     <AdminStatsCards totalUsers={totalUsers} />
-
-                    {/* Quick Actions Grid */}
-                    <div className="grid gap-6 md:grid-cols-2">
-                        {/* Bulk SMS */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-lg">
-                                    <MessageSquare className="h-5 w-5 text-primary" />
-                                    Bulk SMS
-                                </CardTitle>
-                                <CardDescription>Send and manage bulk SMS campaigns</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex flex-wrap gap-3">
-                                <Button asChild>
-                                    <Link href={route('admin.bulk-sms.create')}>
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        Send Bulk SMS
-                                    </Link>
-                                </Button>
-                                <Button asChild variant="outline">
-                                    <Link href={route('admin.bulk-sms.index')}>
-                                        <List className="mr-2 h-4 w-4" />
-                                        Bulk SMS History
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
-
-                        {/* SMS Campaigns */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-lg">
-                                    <CalendarClock className="h-5 w-5 text-primary" />
-                                    SMS Campaigns
-                                </CardTitle>
-                                <CardDescription>Schedule one-time or daily recurring bulk SMS</CardDescription>
-                            </CardHeader>
-                            <CardContent className="flex flex-wrap gap-3">
-                                <Button asChild>
-                                    <Link href={route('admin.campaigns.create')}>
-                                        <Plus className="mr-2 h-4 w-4" />
-                                        New Campaign
-                                    </Link>
-                                </Button>
-                                <Button asChild variant="outline">
-                                    <Link href={route('admin.campaigns.index')}>
-                                        <List className="mr-2 h-4 w-4" />
-                                        All Campaigns
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </div>
 
                     {/* Recent Activity */}
                     <AdminRecentActivity />

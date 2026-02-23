@@ -17,7 +17,7 @@ export function AdminHeader() {
         <header className='bg-primary-500'>
             <div className='container mx-auto flex items-center justify-between py-4 px-4  text-primary-500'>
                 <Link href={dashboard()} className='flex text-primary-500  items-center gap-2'>
-                     <AppLogo className="h-16 w-auto" />
+                    <AppLogo className="h-16 w-auto" />
                 </Link>
                 <div className='hidden md:flex items-center gap-4'>
                     <DropdownMenu>
