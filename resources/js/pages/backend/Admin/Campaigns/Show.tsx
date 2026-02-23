@@ -129,7 +129,7 @@ export default function Show({ campaign, failedLogs, logs }: Props) {
                     { label: campaign.name || `Campaign #${campaign.id}` },
                 ],
             }}
-            headerContainerClassName="mx-auto my-8 container px-4"
+            headerContainerClassName="mx-auto my-8 container"
         >
             <Head title={`Campaign: ${campaign.name}`} />
 

@@ -1,11 +1,19 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AdminLayout from '@/layouts/admin-layout';
-import { ArrowLeft, Users } from 'lucide-react';
+import { ArrowLeft, Eye, Pencil, Plus, Settings, Trash2, Users } from 'lucide-react';
 
 interface UserItem {
     id: number;
@@ -25,32 +33,117 @@ interface PaginatedUsers {
 interface Props {
     users: PaginatedUsers;
     totalUsers: number;
+    search?: string;
+    currentFilter?: string;
 }
 
-export default function Index({ users, totalUsers }: Props) {
+export default function Index({ users, totalUsers, search = '', currentFilter = 'all' }: Props) {
+    const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
+    const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
+    const [searchValue, setSearchValue] = useState(search);
+    const isInitialLoad = useRef(true);
+    const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+    const handleDelete = (userId: number) => {
+        if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+            setDeletingUserId(userId);
+            router.delete(route('admin.users.destroy', userId), {
+                onFinish: () => setDeletingUserId(null),
+            });
+        }
+    };
+
+    useEffect(() => {
+        if (isInitialLoad.current) {
+            isInitialLoad.current = false;
+            return;
+        }
+
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(() => {
+            router.get(
+                route('admin.users.index'),
+                {
+                    search: searchValue || undefined,
+                    role: currentFilter && currentFilter !== 'all' ? currentFilter : undefined,
+                },
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    replace: true,
+                },
+            );
+        }, 350);
+
+        return () => {
+            if (debounceRef.current) {
+                clearTimeout(debounceRef.current);
+            }
+        };
+    }, [searchValue, currentFilter]);
+
+    const headerTitle =
+        currentFilter === 'admin'
+            ? 'Admin Users'
+            : currentFilter === 'user'
+                ? 'Standard Users'
+                : 'All Users';
+
+    const headerSubtitle =
+        currentFilter === 'admin'
+            ? 'Showing only administrators'
+            : currentFilter === 'user'
+                ? 'Showing non-admin users'
+                : `${totalUsers} registered ${totalUsers === 1 ? 'user' : 'users'}`;
+
     return (
         <AdminLayout
             pageHeader={{
-                title: 'All Users',
-                subtitle: `${totalUsers} registered ${totalUsers === 1 ? 'user' : 'users'}`,
+                title: headerTitle,
+                subtitle: headerSubtitle,
                 breadcrumbs: [
                     { label: 'Admin Dashboard', href: route('admin.dashboard') },
                     { label: 'Users' },
                 ],
             }}
-            headerContainerClassName="mx-auto my-8 container px-4"
+            headerContainerClassName="mx-auto my-8 container"
         >
             <Head title="All Users" />
 
             <div className="flex flex-1 items-start justify-center px-4 pb-10">
                 <div className="w-full container space-y-6">
-                    <div className="flex items-center justify-end">
-                        <Button asChild variant="outline">
-                            <Link href={route('admin.dashboard')}>
-                                <ArrowLeft className="mr-2 h-4 w-4" />
-                                Back to Dashboard
-                            </Link>
-                        </Button>
+                    {flash?.success && (
+                        <div className="rounded-md bg-green-50 p-4 border border-green-200">
+                            <p className="text-sm font-medium text-green-800">{flash.success}</p>
+                        </div>
+                    )}
+                    {flash?.error && (
+                        <div className="rounded-md bg-red-50 p-4 border border-red-200">
+                            <p className="text-sm font-medium text-red-800">{flash.error}</p>
+                        </div>
+                    )}
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-end">
+                        <div className="flex w-full max-w-80 items-center gap-2">
+                            <Input
+                                type="search"
+                                value={searchValue}
+                                onChange={(event) => setSearchValue(event.target.value)}
+                                placeholder="Search by name or email"
+                                className="flex-1"
+                            />
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Button asChild>
+                                <Link href={route('admin.users.create')}>
+                                    <Plus className="mr-2 h-4 w-4" />
+                                    Add User
+                                </Link>
+                            </Button>
+                        </div>
+
                     </div>
 
                     <Card>
@@ -71,12 +164,13 @@ export default function Index({ users, totalUsers }: Props) {
                                             <TableHead>Email</TableHead>
                                             <TableHead className="w-24 text-center">Role</TableHead>
                                             <TableHead className="w-32">Joined</TableHead>
+                                            <TableHead className="w-24 text-center">Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {users.data.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
+                                                <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
                                                     No users found.
                                                 </TableCell>
                                             </TableRow>
@@ -93,6 +187,48 @@ export default function Index({ users, totalUsers }: Props) {
                                                     </TableCell>
                                                     <TableCell className="text-sm text-muted-foreground">
                                                         {new Date(u.created_at).toLocaleDateString()}
+                                                    </TableCell>
+                                                    <TableCell className="text-center">
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger asChild>
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-9 w-9 p-0 transition-transform duration-300 hover:rotate-180 data-[state=open]:rotate-180"
+                                                                    disabled={deletingUserId === u.id}
+                                                                >
+                                                                    <Settings className="h-4 w-4" />
+                                                                    <span className="sr-only">Open user actions</span>
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent align="end" className="w-40">
+                                                                <DropdownMenuItem asChild>
+                                                                    <Link href={route('admin.users.show', u.id)} className="cursor-pointer flex items-center gap-2">
+                                                                        <Eye className="h-4 w-4" />
+                                                                        Show
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                                <DropdownMenuItem asChild>
+                                                                    <Link href={route('admin.users.edit', u.id)} className="cursor-pointer flex items-center gap-2">
+                                                                        <Pencil className="h-4 w-4" />
+                                                                        Edit
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                                <DropdownMenuItem
+                                                                    className="cursor-pointer gap-2 text-black focus:bg-destructive/10 focus:text-destructive"
+                                                                    onSelect={(event) => {
+                                                                        event.preventDefault();
+                                                                        if (deletingUserId === u.id) {
+                                                                            return;
+                                                                        }
+                                                                        handleDelete(u.id);
+                                                                    }}
+                                                                >
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                    <span>{deletingUserId === u.id ? 'Deleting…' : 'Delete'}</span>
+                                                                </DropdownMenuItem>
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu>
                                                     </TableCell>
                                                 </TableRow>
                                             ))

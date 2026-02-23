@@ -44,7 +44,7 @@ export default function Index({ sends }: { sends: PaginatedSends }) {
                     { label: 'Bulk SMS Sends' },
                 ],
             }}
-            headerContainerClassName="mx-auto my-8 container px-4"
+            headerContainerClassName="mx-auto my-8 container"
         >
             <Head title="Bulk SMS Sends" />
 

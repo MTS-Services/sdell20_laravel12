@@ -61,7 +61,7 @@ export default function Create({ senderId, timezone }: Props) {
                     { label: 'Create Campaign' },
                 ],
             }}
-            headerContainerClassName="mx-auto my-8 container px-4"
+            headerContainerClassName="mx-auto my-8 container "
         >
             <Head title="Create SMS Campaign" />
 
