@@ -14,7 +14,7 @@ export function AdminHeader() {
     const { auth } = usePage<SharedData>().props;
 
     return (
-        <header className='bg-primary-50'>
+        <header className='bg-primary-500'>
             <div className='container mx-auto flex items-center justify-between py-4 px-4  text-primary-500'>
                 <Link href={dashboard()} className='flex text-primary-500  items-center gap-2'>
                      <AppLogo className="h-16 w-auto" />
@@ -22,7 +22,7 @@ export function AdminHeader() {
                 <div className='hidden md:flex items-center gap-4'>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="flex items-center gap-2 h-auto p-2 hover:bg-transparent hover:scale-105 transition-transform focus-visible:ring-0 focus-visible:ring-offset-0">
+                            <Button variant="ghost" className="flex items-center gap-2 h-auto p-2  hover:bg-transparent hover:scale-105 transition-transform focus-visible:ring-0 focus-visible:ring-offset-0">
                                 <UserInfo user={auth.user} />
                             </Button>
                         </DropdownMenuTrigger>
