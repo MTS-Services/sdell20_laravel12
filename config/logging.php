@@ -127,14 +127,6 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'clicksend' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/clicksend.log'),
-            'level' => 'debug',
-            'days' => 30,
-            'replace_placeholders' => true,
-        ],
-
     ],
 
 ];
