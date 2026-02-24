@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, CalendarClock, ChevronDown, MessageSquare, ShieldCheck, Users } from 'lucide-react';
+import { BarChart3, ChevronDown, ShieldCheck, Users } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
@@ -52,25 +52,6 @@ export function AdminSidebar(): React.ReactElement {
                     href: route('admin.dashboard'),
                     icon: BarChart3,
                     patterns: ['admin.dashboard'],
-                },
-            ],
-        },
-        {
-            title: 'Messaging',
-            links: [
-                {
-                    label: 'Bulk SMS',
-                    description: 'Broadcast sends & uploads',
-                    href: route('admin.bulk-sms.index'),
-                    icon: MessageSquare,
-                    patterns: ['admin.bulk-sms.*', 'admin.bulk-sms.index', 'admin.bulk-sms.create'],
-                },
-                {
-                    label: 'Campaigns',
-                    description: 'One-off & recurring flows',
-                    href: route('admin.campaigns.index'),
-                    icon: CalendarClock,
-                    patterns: ['admin.campaigns.*', 'admin.campaigns.index', 'admin.campaigns.create'],
                 },
             ],
         },
