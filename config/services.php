@@ -41,4 +41,11 @@ return [
         'base_url' => env('WHEN_I_WORK_BASE_URL', 'https://api.wheniwork.com/2/'),
     ],
 
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'token' => env('TWILIO_AUTH_TOKEN'),
+        'from_uk' => env('TWILIO_FROM_UK'),
+        'from_us' => env('TWILIO_FROM_US'),
+    ],
+
 ];
