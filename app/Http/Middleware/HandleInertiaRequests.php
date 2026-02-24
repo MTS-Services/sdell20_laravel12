@@ -62,6 +62,10 @@ class HandleInertiaRequests extends Middleware
                 ) : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error'),
+            ],
             'features' => [
                 // 'canRegister' => Features::enabled(Features::registration()),
                 // 'canResetPassword' => Features::enabled(Features::resetPasswords()),

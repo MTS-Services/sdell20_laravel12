@@ -22,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->validateCsrfTokens(except: [
-            //
+            'twilio/webhook',
         ]);
 
         $middleware->web(append: [

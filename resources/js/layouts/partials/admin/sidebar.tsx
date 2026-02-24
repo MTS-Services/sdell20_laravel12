@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, ChevronDown, ShieldCheck, Users } from 'lucide-react';
+import { BarChart3, ChevronDown, MessageSquare, ShieldCheck, Users } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
@@ -52,6 +52,18 @@ export function AdminSidebar(): React.ReactElement {
                     href: route('admin.dashboard'),
                     icon: BarChart3,
                     patterns: ['admin.dashboard'],
+                },
+            ],
+        },
+        {
+            title: 'Messaging',
+            links: [
+                {
+                    label: 'Twilio SMS',
+                    description: 'Send & manage SMS',
+                    href: route('admin.twilio.index'),
+                    icon: MessageSquare,
+                    patterns: ['admin.twilio.*'],
                 },
             ],
         },
