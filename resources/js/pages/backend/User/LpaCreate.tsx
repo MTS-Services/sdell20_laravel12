@@ -142,6 +142,8 @@ export default function LpaCreate({ user }: Props) {
     const [applicant, setApplicant] = useState<string>('');
     const [documentRecipient, setDocumentRecipient] = useState<string>('');
     const [certificateChoice, setCertificateChoice] = useState<'yes' | 'no' | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
@@ -269,8 +271,14 @@ export default function LpaCreate({ user }: Props) {
         setIsManualReplacementAddress(false);
     };
 
-    const handleStepChange = (direction: 'next' | 'prev') => {
+    const handleStepChange = async (direction: 'next' | 'prev') => {
         if (direction === 'next' && !canAdvanceFromStep(currentStep)) {
+            return;
+        }
+
+        // If on the last step and moving forward, submit the form
+        if (direction === 'next' && currentStep === TOTAL_FORM_STEPS - 1) {
+            await handleSubmit();
             return;
         }
 
@@ -281,6 +289,56 @@ export default function LpaCreate({ user }: Props) {
 
             return Math.max(prev - 1, 0);
         });
+    };
+
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
+        setSubmitError(null);
+
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            const response = await fetch('/lpas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    who_for: selectedWhoOption,
+                    document_type: selectedDocumentOption,
+                    donor_details: donorDetails,
+                    contact_details: contactDetails,
+                    attorneys: attorneys,
+                    can_view_documents: canViewDocuments === 'yes',
+                    replacement_attorneys: replacementAttorneys,
+                    want_replacement_attorneys: wantReplacementAttorneys === 'yes',
+                    life_sustaining_treatment: lifeSustainingTreatment === 'yes',
+                    notify_people: notifyPeople === 'yes',
+                    applicant: applicant,
+                    document_recipient: documentRecipient,
+                    certificate_choice: certificateChoice === 'yes',
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Show success message
+                alert(`LPA created successfully!\n\nPDF has been generated in DRAFT status.\nAmount: £${data.data.amount}\n\nYou will be redirected to the dashboard.`);
+
+                // Redirect to dashboard
+                window.location.href = '/dashboard';
+            } else {
+                setSubmitError(data.message || 'Failed to create LPA. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error creating LPA:', error);
+            setSubmitError('An error occurred while creating the LPA. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     // Auto-scroll active step into view on mobile
@@ -1898,13 +1956,21 @@ export default function LpaCreate({ user }: Props) {
                         {/* Content Section */}
                         {renderStepContent()}
 
+                        {/* Error Message */}
+                        {submitError && (
+                            <div className="rounded-lg border-2 border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700">
+                                <p className="font-semibold">Error</p>
+                                <p>{submitError}</p>
+                            </div>
+                        )}
+
                         {/* Navigation Buttons */}
                         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                             <button
                                 type="button"
                                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-500 px-5 py-2.5 text-sm font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                                 onClick={() => handleStepChange('prev')}
-                                disabled={currentStep === 0}
+                                disabled={currentStep === 0 || isSubmitting}
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -1913,10 +1979,22 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                                 onClick={() => handleStepChange('next')}
-                                disabled={!canAdvanceFromStep(currentStep)}
+                                disabled={!canAdvanceFromStep(currentStep) || isSubmitting}
                             >
-                                {(currentStep === 5 || currentStep === 6 || currentStep === 7 || currentStep === 8 || currentStep === 9 || currentStep === 10 || currentStep === 11) ? 'Save and continue' : 'Continue'}
-                                <ArrowRight className="h-4 w-4" />
+                                {isSubmitting ? (
+                                    <>
+                                        <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Creating LPA & Generating PDF...
+                                    </>
+                                ) : (
+                                    <>
+                                        {(currentStep === 5 || currentStep === 6 || currentStep === 7 || currentStep === 8 || currentStep === 9 || currentStep === 10 || currentStep === 11) ? 'Save and continue' : 'Continue'}
+                                        <ArrowRight className="h-4 w-4" />
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>

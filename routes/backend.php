@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\Admin\AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\AdminUserController;
 use App\Http\Controllers\Backend\Admin\TwilioController;
+use App\Http\Controllers\Backend\LpaController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserSelectionController;
@@ -36,6 +37,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/campaign/{id}/status', [TwilioController::class, 'campaignStatus'])->name('campaign.status');
             Route::get('/csv-template', [TwilioController::class, 'downloadCsvTemplate'])->name('csvTemplate');
         });
+    });
+
+    // LPA Routes
+    Route::prefix('lpas')->name('lpas.')->group(function () {
+        Route::get('/', [LpaController::class, 'index'])->name('index');
+        Route::get('/create', [LpaController::class, 'create'])->name('create');
+        Route::post('/', [LpaController::class, 'store'])->name('store');
+        Route::get('/{lpa}', [LpaController::class, 'show'])->name('show');
+        Route::delete('/{lpa}', [LpaController::class, 'destroy'])->name('destroy');
+        
+        // PDF Operations
+        Route::get('/{lpa}/pdf/download', [LpaController::class, 'downloadPdf'])->name('pdf.download');
+        Route::get('/{lpa}/pdf/preview', [LpaController::class, 'previewPdf'])->name('pdf.preview');
+        Route::post('/{lpa}/pdf/regenerate', [LpaController::class, 'regeneratePdf'])->name('pdf.regenerate');
+        
+        // Payment Processing
+        Route::post('/{lpa}/payment', [LpaController::class, 'processPayment'])->name('payment');
     });
 
     // Profile Routes
