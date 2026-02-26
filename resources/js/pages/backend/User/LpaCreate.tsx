@@ -1854,7 +1854,7 @@ export default function LpaCreate({ user }: Props) {
                         {renderStepContent()}
 
                         {/* Navigation Buttons */}
-                        <div className="flex flex-wrap items-center gap-3">
+                        <div className="flex flex-wrap items-center gap-3 ml-6">
                             <button
                                 type="button"
                                 className="inline-flex items-center gap-2 rounded-full border border-primary-500 px-5 py-2 text-sm font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white disabled:pointer-events-none disabled:opacity-50"
