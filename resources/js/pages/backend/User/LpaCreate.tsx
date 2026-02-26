@@ -146,6 +146,8 @@ export default function LpaCreate({ user }: Props) {
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
     const replacementModalRef = useRef<HTMLDivElement | null>(null);
+    const stepperContainerRef = useRef<HTMLDivElement | null>(null);
+    const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
     const getSelectionCopy = (): string => {
         return selectedWhoOption === 'Mirror' ? 'mirror' : 'yourself only';
@@ -281,6 +283,31 @@ export default function LpaCreate({ user }: Props) {
         });
     };
 
+    // Auto-scroll active step into view on mobile
+    useEffect(() => {
+        const displayStep = getDisplayStep(currentStep);
+        const stepElement = stepRefs.current[displayStep];
+        const container = stepperContainerRef.current;
+
+        if (stepElement && container) {
+            // Only auto-scroll on mobile/tablet (below md breakpoint)
+            const isMobile = window.innerWidth < 768;
+
+            if (isMobile) {
+                const containerRect = container.getBoundingClientRect();
+                const stepRect = stepElement.getBoundingClientRect();
+
+                // Calculate the scroll position to center the active step
+                const scrollLeft = stepElement.offsetLeft - (containerRect.width / 2) + (stepRect.width / 2);
+
+                container.scrollTo({
+                    left: scrollLeft,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }, [currentStep]);
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (!isEditingWho) {
@@ -338,15 +365,15 @@ export default function LpaCreate({ user }: Props) {
     const renderStepContent = (): ReactElement => {
         if (currentStep === 0) {
             return (
-                <div className="space-y-4 rounded-2xl bg-white p-6 pl-12 text-primary-800 shadow-sm">
+                <div className="space-y-5 rounded-2xl bg-white p-5 text-primary-800 shadow-md sm:space-y-6 sm:p-8 sm:pl-12 lg:shadow-lg">
                     <div className="space-y-4 text-left">
-                        <h2 className="text-2xl font-semibold text-primary-900">
+                        <h2 className="text-xl font-bold text-primary-900 sm:text-2xl lg:text-3xl">
                             Who is the <span className="text-primary-500">Lasting Power of Attorney</span> for?
                         </h2>
                         <p className="text-base text-primary-700">
                             You have chosen to make documents for <span className="font-semibold text-primary-500">{getSelectionCopy()}.</span>
                         </p>
-                        <div className="space-y-2 text-base text-primary-700">
+                        <div className="space-y-2 text-sm text-primary-700 sm:text-base">
                             <p className="flex flex-wrap items-center gap-2">
                                 <span>If you have made a mistake and need these documents for someone else then</span>
                                 <span ref={dropdownRef} className="relative inline-flex">
@@ -385,7 +412,9 @@ export default function LpaCreate({ user }: Props) {
                         <p className="text-base text-primary-700">Click the continue button to continue making Lasting Power of Attorney documents for yourself.</p>
                     </div>
 
-                    <p className="text-sm text-primary-500">Need to change your answer later? You can always revisit this step.</p>
+                    <div className="mt-6 rounded-lg border-l-4 border-primary-500 bg-primary-50 px-4 py-3">
+                        <p className="text-xs text-primary-600 sm:text-sm">💡 Need to change your answer later? You can always revisit this step.</p>
+                    </div>
                 </div>
             );
         }
@@ -396,26 +425,26 @@ export default function LpaCreate({ user }: Props) {
             const selectedDocument = selectedDocumentOption ? documentOptions.find((opt) => opt.value === selectedDocumentOption) : null;
 
             return (
-                <div className="space-y-5 px-6 text-primary-800 ">
+                <div className="space-y-5 rounded-2xl bg-white p-5 text-primary-800 shadow-md sm:space-y-6 sm:p-8 lg:shadow-lg">
                     <div className="space-y-3 text-left max-w-3xl">
-                        <h2 className="text-2xl font-semibold text-primary-900 mb-8">
+                        <h2 className="text-xl font-bold text-primary-900 mb-4 sm:mb-6 sm:text-2xl lg:text-3xl">
                             Which <span className="text-primary-500">Lasting Power of Attorney</span> documents do you need?
                         </h2>
-                        <p className="text-base text-primary-600">
+                        <p className="text-sm text-primary-600 sm:text-base">
                             You need to choose which type of documents you want for yourself – select Health &amp; Welfare for health decisions, Property &amp; Finance for
                             financial decisions, or choose both to stay fully protected.
                         </p>
-                        <div className="flex items-start gap-3 rounded-xl bg-primary-50/70 px-4 py-3 text-sm text-primary-700">
+                        <div className="flex items-start gap-2 rounded-xl border border-primary-200 bg-primary-50/70 px-3 py-2.5 text-sm text-primary-700 sm:gap-3 sm:px-4 sm:py-3">
                             <span className="mt-0.5 text-lg">💡</span>
                             <p className="font-medium">
                                 We strongly recommend taking both documents for peace of mind and the best protection.
                             </p>
                         </div>
-                        <p className="text-lg font-semibold text-primary-900">
+                        <p className="text-base font-semibold text-primary-900 sm:text-lg">
                             Which documents do <span className="text-primary-500">you</span> need?
                         </p>
                     </div>
-                    <div className="overflow-hidden rounded-md text-center max-w-3xl border border-slate-200">
+                    <div className="overflow-hidden rounded-xl text-center max-w-3xl border-2 border-slate-200 shadow-sm">
                         {documentOptions.map((option, index) => {
                             const isSelected = selectedDocumentOption === option.value;
 
@@ -424,7 +453,7 @@ export default function LpaCreate({ user }: Props) {
                                     key={option.value}
                                     type="button"
                                     onClick={() => setSelectedDocumentOption(option.value)}
-                                    className={`flex w-full items-center justify-center gap-2 px-6 py-4 text-center text-base font-semibold transition ${isSelected ? 'bg-primary-600 text-white' : 'bg-white text-primary-800 hover:bg-slate-50'
+                                    className={`flex w-full items-center justify-center gap-2 px-4 py-3 text-center text-sm font-semibold transition sm:px-6 sm:py-4 sm:text-base ${isSelected ? 'bg-primary-600 text-white' : 'bg-white text-primary-800 hover:bg-slate-50'
                                         } ${index !== documentOptions.length - 1 ? 'border-b border-slate-200' : ''}`}
                                 >
                                     {option.title}
@@ -443,9 +472,9 @@ export default function LpaCreate({ user }: Props) {
 
         if (currentStep === 2) {
             return (
-                <div className="space-y-8 rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                <div className="space-y-6 rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:space-y-8 sm:p-8">
                     <div className="space-y-2 text-left">
-                        <h2 className="text-3xl font-semibold text-primary-900">
+                        <h2 className="text-2xl font-semibold text-primary-900 sm:text-3xl">
                             About <span className="text-primary-500">You</span> (The Donor)
                         </h2>
                         <p className="text-base text-primary-600">
@@ -583,9 +612,9 @@ export default function LpaCreate({ user }: Props) {
         }
         if (currentStep === 3) {
             return (
-                <div className="space-y-8 rounded-2xl max-w-4xl bg-white p-8 text-primary-800 shadow-sm">
+                <div className="space-y-6 rounded-2xl max-w-4xl bg-white p-4 text-primary-800 shadow-sm sm:space-y-8 sm:p-8">
                     <div className="text-left">
-                        <h2 className="text-3xl font-semibold text-center text-primary-900">
+                        <h2 className="text-2xl font-semibold text-center text-primary-900 sm:text-3xl">
                             Your <span className="text-primary-500">contact details</span>
                         </h2>
                         <p className="text-center text-sm text-primary-500 mt-2">Complete the donor information</p>
@@ -695,20 +724,20 @@ export default function LpaCreate({ user }: Props) {
         if (currentStep === 4) {
             return (
                 <>
-                    <div className="grid gap-8 lg:grid-cols-6">
+                    <div className="grid gap-6 lg:grid-cols-6 lg:gap-8">
                         {/* Main Content */}
                         <div className="lg:col-span-3 space-y-6">
-                            <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                                <h2 className="text-3xl font-semibold text-primary-900 mb-4">Attorneys</h2>
+                            <div className="rounded-2xl bg-white p-5 text-primary-800 shadow-md sm:p-6 lg:p-8 lg:shadow-lg">
+                                <h2 className="text-xl font-bold text-primary-900 mb-3 sm:mb-4 sm:text-2xl lg:text-3xl">Attorneys</h2>
 
-                                <p className="text-primary-700 mb-6">
+                                <p className="text-sm text-primary-700 mb-5 sm:text-base sm:mb-6">
                                     Attorneys are people a donor appoints to make decisions on their behalf, you need to choose at least one Attorney.
                                 </p>
 
                                 <button
                                     type="button"
                                     onClick={handleAddAttorney}
-                                    className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-primary-700 font-medium transition hover:border-primary-400 hover:bg-slate-50"
+                                    className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary-300 bg-primary-50/30 px-4 py-3 text-primary-700 font-semibold transition hover:border-primary-500 hover:bg-primary-50 sm:px-6 sm:py-4"
                                 >
                                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -717,13 +746,14 @@ export default function LpaCreate({ user }: Props) {
                                 </button>
 
                                 {attorneys.length === 0 ? (
-                                    <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center text-sm text-primary-500">
-                                        You haven't added any attorneys yet. Click "Add new attorney" to start.
+                                    <div className="mt-5 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 px-4 py-6 text-center text-sm text-primary-500 sm:mt-6 sm:px-5 sm:py-8">
+                                        <p className="font-medium">You haven't added any attorneys yet.</p>
+                                        <p className="mt-1 text-xs text-slate-500">Click "Add new attorney" to start.</p>
                                     </div>
                                 ) : (
-                                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                                    <div className="mt-5 grid gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2">
                                         {attorneys.map((attorney) => (
-                                            <div key={attorney.id} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+                                            <div key={attorney.id} className="rounded-xl border-2 border-slate-200 bg-linear-to-br from-white to-slate-50 p-4 shadow-sm transition hover:shadow-md sm:p-5">
                                                 <p className="text-base font-semibold text-primary-900">
                                                     {attorney.title} {attorney.firstName} {attorney.middleNames} {attorney.lastName}
                                                 </p>
@@ -749,7 +779,7 @@ export default function LpaCreate({ user }: Props) {
 
                         {/* Sidebar */}
                         <div className="lg:col-span-2">
-                            <div className="rounded-2xl bg-white p-6 shadow-sm sticky top-6">
+                            <div className="rounded-2xl bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-6">
                                 <h3 className="text-xl font-semibold text-primary-900 mb-4">Who can be an Attorney?</h3>
                                 <p className="text-sm text-primary-700 mb-4">The Attorney must be meet the following requirements:</p>
                                 <ul className="space-y-3">
@@ -784,15 +814,15 @@ export default function LpaCreate({ user }: Props) {
 
                     {/* Attorney Modal */}
                     {showAttorneyModal && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-0 sm:p-4">
                             <div
                                 ref={modalRef}
-                                className="relative flex h-[90vh] w-full max-w-2xl max-h-[90vh] flex-col overflow-y-auto rounded-xl bg-white shadow-2xl"
+                                className="relative flex h-full w-full max-w-2xl flex-col overflow-y-auto rounded-none bg-white shadow-2xl sm:h-[90vh] sm:max-h-[90vh] sm:rounded-xl"
                             >
                                 <button
                                     type="button"
                                     onClick={handleCloseAttorneyModal}
-                                    className="absolute right-4 top-4 rounded-full p-1.5 text-white transition hover:bg-white/10"
+                                    className="absolute right-3 top-3 z-10 rounded-full p-1.5 text-white transition hover:bg-white/10 sm:right-4 sm:top-4"
                                     aria-label="Close"
                                 >
                                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -801,15 +831,15 @@ export default function LpaCreate({ user }: Props) {
                                 </button>
 
                                 {/* Modal Header */}
-                                <div className="border-b border-slate-200 bg-primary-600 px-6 py-4 pr-12">
-                                    <h3 className="text-xl font-semibold text-white">Add attorney</h3>
+                                <div className="border-b border-slate-200 bg-primary-600 px-4 py-3 pr-12 sm:px-6 sm:py-4">
+                                    <h3 className="text-lg font-semibold text-white sm:text-xl">Add attorney</h3>
                                 </div>
 
                                 {/* Modal Body */}
-                                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                <div className="flex-1 overflow-y-auto p-4 space-y-6 sm:p-6">
                                     {/* Full Legal Name */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">Full legal name</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">Full legal name</h4>
 
                                         <div>
                                             <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
@@ -859,7 +889,7 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Address */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">What's their address?</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their address?</h4>
 
                                         {!isManualAddress ? (
                                             <>
@@ -938,7 +968,7 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Date of Birth */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">What's their date of birth</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their date of birth</h4>
                                         <div className="grid gap-4 grid-cols-3">
                                             <div>
                                                 <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
@@ -972,7 +1002,7 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Email */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">What's their email address? (optional)</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their email address? (optional)</h4>
                                         <input
                                             className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                             type="email"
@@ -983,11 +1013,11 @@ export default function LpaCreate({ user }: Props) {
                                     </div>
 
                                     {/* Save Button */}
-                                    <div className="border-t border-slate-200 bg-slate-50 px-6 py-4">
+                                    <div className="sticky bottom-0 border-t border-slate-200 bg-slate-50 px-4 py-3 sm:px-6 sm:py-4">
                                         <button
                                             type="button"
                                             onClick={handleSaveAttorney}
-                                            className="w-full rounded-md bg-primary-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-primary-600"
+                                            className="w-full rounded-md bg-primary-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-600 sm:text-base"
                                         >
                                             Save and continue
                                         </button>
@@ -1004,8 +1034,8 @@ export default function LpaCreate({ user }: Props) {
         if (currentStep === 5) {
             return (
                 <div className="max-w-4xl space-y-6">
-                    <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
+                    <div className="rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:p-6 lg:p-8">
+                        <h2 className="text-xl font-semibold text-primary-900 mb-4 sm:mb-6 sm:text-2xl">
                             Can attorneys <span className="text-cyan-500">view your legal documents?</span>
                         </h2>
 
@@ -1056,11 +1086,11 @@ export default function LpaCreate({ user }: Props) {
         if (currentStep === 6) {
             return (
                 <>
-                    <div className="grid gap-8 lg:grid-cols-6">
+                    <div className="grid gap-6 lg:grid-cols-6 lg:gap-8">
                         {/* Main Content */}
                         <div className="lg:col-span-4 space-y-6">
-                            <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                                <h2 className="text-2xl font-semibold text-primary-900 mb-4">
+                            <div className="rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:p-6 lg:p-8">
+                                <h2 className="text-xl font-semibold text-primary-900 mb-4 sm:text-2xl">
                                     Replacement <span className="text-cyan-500">Attorneys</span>
                                 </h2>
 
@@ -1186,15 +1216,15 @@ export default function LpaCreate({ user }: Props) {
 
                     {/* Replacement Attorney Modal */}
                     {showReplacementAttorneyModal && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-0 sm:p-4">
                             <div
                                 ref={replacementModalRef}
-                                className="relative flex h-[90vh] w-full max-w-2xl max-h-[90vh] flex-col overflow-y-auto rounded-xl bg-white shadow-2xl"
+                                className="relative flex h-full w-full max-w-2xl flex-col overflow-y-auto rounded-none bg-white shadow-2xl sm:h-[90vh] sm:max-h-[90vh] sm:rounded-xl"
                             >
                                 <button
                                     type="button"
                                     onClick={handleCloseReplacementAttorneyModal}
-                                    className="absolute right-4 top-4 rounded-full p-1.5 text-white transition hover:bg-white/10"
+                                    className="absolute right-3 top-3 z-10 rounded-full p-1.5 text-white transition hover:bg-white/10 sm:right-4 sm:top-4"
                                     aria-label="Close"
                                 >
                                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1203,15 +1233,15 @@ export default function LpaCreate({ user }: Props) {
                                 </button>
 
                                 {/* Modal Header */}
-                                <div className="border-b border-slate-200 bg-primary-600 px-6 py-4 pr-12">
-                                    <h3 className="text-xl font-semibold text-white">Add replacement attorney</h3>
+                                <div className="border-b border-slate-200 bg-primary-600 px-4 py-3 pr-12 sm:px-6 sm:py-4">
+                                    <h3 className="text-lg font-semibold text-white sm:text-xl">Add replacement attorney</h3>
                                 </div>
 
                                 {/* Modal Body */}
-                                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                <div className="flex-1 overflow-y-auto p-4 space-y-6 sm:p-6 md:p-8 lg:p-10">
                                     {/* Full Legal Name */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">Full legal name</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">Full legal name</h4>
 
                                         <div>
                                             <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
@@ -1261,7 +1291,7 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Address */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">What's their address?</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their address?</h4>
 
                                         {!isManualReplacementAddress ? (
                                             <>
@@ -1710,7 +1740,7 @@ export default function LpaCreate({ user }: Props) {
         // Step 11: Certificate Provider
         if (currentStep === 11) {
             return (
-                <div className="max-w-4xl space-y-8 rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                <div className="max-w-4xl space-y-6 rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:space-y-8 sm:p-6 lg:p-8">
                     <div className="text-center space-y-3">
                         <h2 className="text-3xl font-semibold text-primary-900">
                             The <span className="text-primary-500">Certificate Provider</span>
@@ -1805,17 +1835,17 @@ export default function LpaCreate({ user }: Props) {
 
     return (
         <UserLayout>
-            <div className="bg-slate-50 py-10 sm:pb-12">
-                <div className="container mx-auto">
+            <div className="bg-slate-50 px-4 py-6 sm:px-6 sm:py-10 sm:pb-12">
+                <div className="container mx-auto max-w-7xl">
                     <div className="space-y-6">
                         {/* Updated Stepper Design */}
-                        <div className="pb-6">
-                            <div className="relative">
+                        <div className="pb-6 sm:pb-8">
+                            <div ref={stepperContainerRef} className="relative overflow-x-auto pb-2 scrollbar-hide">
                                 {/* Connecting Line */}
-                                <div className="absolute inset-x-0 top-3.5 mx-auto h-0.5 bg-slate-200" style={{ width: 'calc(100% - 80px)', left: '12px' }} aria-hidden="true" />
+                                <div className="absolute inset-x-0 top-4 mx-auto hidden h-0.5 bg-linear-to-r from-slate-200 via-slate-300 to-slate-200 md:block" style={{ width: 'calc(100% - 100px)', left: '50px' }} aria-hidden="true" />
 
                                 {/* Steps */}
-                                <div className="relative flex items-start justify-between">
+                                <div className="relative flex min-w-max items-start justify-between gap-1 px-2 sm:gap-2 md:gap-0 md:px-0">
                                     {lpaSteps.map((step, index) => {
                                         // Map currentStep to display step
                                         const displayStep = getDisplayStep(currentStep);
@@ -1824,21 +1854,36 @@ export default function LpaCreate({ user }: Props) {
                                         const isCompleted = displayStep > index;
 
                                         return (
-                                            <div key={step.key} className="flex flex-col items-center text-center" style={{ minWidth: '80px' }}>
+                                            <div
+                                                key={step.key}
+                                                ref={(el) => { stepRefs.current[index] = el; }}
+                                                className="flex flex-col items-center text-center"
+                                                style={{ minWidth: '75px' }}
+                                            >
                                                 {/* Circle Indicator */}
                                                 <div
-                                                    className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-white transition-all duration-200 ${isActive ? 'border-primary-500 shadow-md' : isCompleted ? 'border-primary-400' : 'border-slate-300'
+                                                    className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-white shadow-sm transition-all duration-300 sm:h-7 sm:w-7 md:h-8 md:w-8 ${isActive
+                                                        ? 'border-primary-500 shadow-lg shadow-primary-500/30 ring-4 ring-primary-100'
+                                                        : isCompleted
+                                                            ? 'border-primary-400 bg-primary-50'
+                                                            : 'border-slate-300'
                                                         }`}
                                                 >
-                                                    <span
-                                                        className={`h-3 w-3 rounded-full transition-all duration-200 ${isActive ? 'bg-primary-500' : isCompleted ? 'bg-primary-400' : 'bg-transparent'
-                                                            }`}
-                                                    />
+                                                    {isCompleted ? (
+                                                        <svg className="h-3 w-3 text-primary-500 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                    ) : (
+                                                        <span
+                                                            className={`h-2.5 w-2.5 rounded-full transition-all duration-300 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 ${isActive ? 'bg-primary-500 shadow-sm' : 'bg-slate-300'
+                                                                }`}
+                                                        />
+                                                    )}
                                                 </div>
 
                                                 {/* Step Title */}
                                                 <p
-                                                    className={`mt-3 text-xs font-medium transition-colors duration-200 ${isActive ? 'text-primary-600' : isCompleted ? 'text-primary-600' : 'text-primary-400'
+                                                    className={`mt-2 max-w-17.5 text-[9px] font-semibold leading-tight transition-colors duration-300 sm:mt-2.5 sm:max-w-20 sm:text-[10px] md:mt-3 md:max-w-none md:text-xs ${isActive ? 'text-primary-700' : isCompleted ? 'text-primary-600' : 'text-slate-400'
                                                         }`}
                                                 >
                                                     {step.title}
@@ -1854,10 +1899,10 @@ export default function LpaCreate({ user }: Props) {
                         {renderStepContent()}
 
                         {/* Navigation Buttons */}
-                        <div className="flex flex-wrap items-center gap-3 ml-6 sm:ml-0">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
                             <button
                                 type="button"
-                                className="inline-flex items-center gap-2 rounded-full border border-primary-500 px-5 py-2 text-sm font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white disabled:pointer-events-none disabled:opacity-50"
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-500 px-5 py-2.5 text-sm font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                                 onClick={() => handleStepChange('prev')}
                                 disabled={currentStep === 0}
                             >
@@ -1866,7 +1911,7 @@ export default function LpaCreate({ user }: Props) {
                             </button>
                             <button
                                 type="button"
-                                className="inline-flex items-center gap-2 rounded-full bg-primary-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50"
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                                 onClick={() => handleStepChange('next')}
                                 disabled={!canAdvanceFromStep(currentStep)}
                             >
