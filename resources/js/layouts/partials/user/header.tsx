@@ -21,45 +21,58 @@ export function UserHeader({ showProfileMenu = true }: UserHeaderProps) {
     };
 
     return (
-        <header className='bg-primary-50 shadow z-50 '>
-            <div className='container mx-auto flex items-center justify-between py-4 px-4 text-primary-500'>
-            <Link href={dashboard()} className='flex text-primary-500  items-center gap-2'>
-                     <AppLogo className="h-16 w-auto" />
-                </Link>
-
-                {showProfileMenu ? (
-                    <>
-                        <div className='hidden md:flex items-center gap-4'>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="flex items-center gap-2 h-auto p-2 hover:bg-transparent hover:scale-105 transition-transform focus-visible:ring-0 focus-visible:ring-offset-0">
-                                        <UserInfo user={auth.user} />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
-                                    <UserMenuContent user={auth.user} />
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-                        <div className='md:hidden'>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="relative h-9 w-9 rounded-md ring-offset-background transition-all hover:ring-2 hover:ring-ring">
-                                        <Menu className="size-6" />
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
-                                    <UserMenuContent user={auth.user} />
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
-                    </>
-                ) : (
-                    <Button variant="ghost" className="text-primary-500 hover:text-primary-600" onClick={handleLogout}>
-                        Log out
-                    </Button>
-                )}
+        <header className="sticky top-0 z-50">
+            {/* Top Announcement Banner */}
+            <div className="bg-slate-500 py-2 text-center">
+                <p className="px-4 font-serif tracking-wide text-white text-base lg:text-xl">
+                    <span>
+                        Trusted by families across England &amp; Wales. Complete your LPA in as little as 15 minutes.
+                    </span>
+                </p>
             </div>
+
+            {/* Main Navigation */}
+            <nav className="w-full bg-primary-600">
+                <div className="mx-auto flex container items-center justify-between px-4 lg:px-6">
+                    {/* Logo */}
+                    <Link href="/" className="flex shrink-0 items-center py-3">
+                        <AppLogo className="h-20 sm:h-24" />
+                    </Link>
+
+                    {showProfileMenu ? (
+                        <>
+                            <div className='hidden md:flex items-center gap-4'>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="flex items-center gap-2 h-auto p-2 text-white hover:bg-white/10 hover:text-white transition-all focus-visible:ring-0 focus-visible:ring-offset-0">
+                                            <UserInfo user={auth.user} />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
+                                        <UserMenuContent user={auth.user} />
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+                            <div className='md:hidden'>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="relative h-9 w-9 rounded-md text-white hover:bg-white/10 transition-all">
+                                            <Menu className="size-6" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-64 p-2 shadow-sm border-none" align="end" sideOffset={8}>
+                                        <UserMenuContent user={auth.user} />
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+                        </>
+                    ) : (
+                        <Button variant="ghost" className="text-white hover:bg-white/10 hover:text-white" onClick={handleLogout}>
+                            Log out
+                        </Button>
+                    )}
+                </div>
+            </nav>
         </header>
     );
 }

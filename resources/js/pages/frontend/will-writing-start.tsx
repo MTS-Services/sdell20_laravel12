@@ -783,12 +783,12 @@ const WillCreationWizard: React.FC = () => {
 
                 {/* Action Buttons */}
                 {shouldShowNavActions && (
-                    <div className="mt-10 flex items-center gap-4">
+                    <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                         <button
                             type="button"
                             onClick={handleBack}
                             disabled={isSaving}
-                            className="px-6 py-2.5 rounded border border-slate-300 bg-slate-100 text-primary-700 text-sm font-semibold uppercase tracking-wide hover:bg-slate-200 transition-colors duration-200 cursor-pointer disabled:opacity-50"
+                            className="w-full rounded border border-slate-300 bg-slate-100 px-6 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary-700 transition-colors duration-200 hover:bg-slate-200 cursor-pointer disabled:opacity-50 sm:w-auto"
                         >
                             BACK
                         </button>
@@ -796,7 +796,7 @@ const WillCreationWizard: React.FC = () => {
                             type="button"
                             onClick={handleSaveAndContinue}
                             disabled={isSaving}
-                            className="px-8 py-2.5 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wide hover:bg-emerald-700 transition-colors duration-200 cursor-pointer disabled:opacity-50"
+                            className="w-full rounded bg-emerald-600 px-8 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-colors duration-200 hover:bg-emerald-700 cursor-pointer disabled:opacity-50 sm:w-auto"
                         >
                             {isSaving ? 'SAVING...' : 'SAVE AND CONTINUE'}
                         </button>
@@ -804,7 +804,7 @@ const WillCreationWizard: React.FC = () => {
                             type="button"
                             onClick={handleSkip}
                             disabled={isSaving}
-                            className="text-secondary text-sm font-medium hover:text-secondary/80 transition-colors cursor-pointer bg-transparent border-none disabled:opacity-50"
+                            className="w-full text-sm font-medium text-secondary transition-colors cursor-pointer bg-transparent border-none hover:text-secondary/80 disabled:opacity-50 sm:w-auto"
                         >
                             Skip this step for now
                         </button>
