@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\Payment\PaymentIntentClientInterface;
 use App\Services\Payment\StripePaymentIntentClient;
+use App\Services\TwilioService;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(PaymentIntentClientInterface::class, function () {
             return new StripePaymentIntentClient(config('services.stripe.secret'));
+        });
+
+        $this->app->singleton(TwilioService::class, function () {
+            return new TwilioService;
         });
     }
 

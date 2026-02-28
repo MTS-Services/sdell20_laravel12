@@ -44,5 +44,11 @@ return [
     'stripe' => [
         'secret' => env('STRIPE_SECRET'),
     ],
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'token' => env('TWILIO_AUTH_TOKEN'),
+        'from_uk' => env('TWILIO_FROM_UK'),
+        'from_us' => env('TWILIO_FROM_US'),
+    ],
 
 ];

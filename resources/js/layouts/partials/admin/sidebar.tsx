@@ -1,159 +1,223 @@
-import { Link, usePage } from '@inertiajs/react';
-import { Users, User, BarChart, Shield, LayoutGrid, Settings } from 'lucide-react';
-import * as React from 'react';
+import React from 'react';
 
-import AppLogo from '@/components/app-logo';
-import { NavItem as NavItemComponent} from '@/components/ui/nav-item';
+import { Link, usePage } from '@inertiajs/react';
+import { BarChart3, ChevronDown, MessageSquare, ShieldCheck, Users } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
-import { type NavItem, type SharedData } from '@/types';
-// Navigation configuration
-const adminNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-        slug: 'dashboard',
-    },
-    {
-        title: 'User Management',
-        href: '#',
-        icon: Users,
-        badge: 42,
-        children: [
-            {
-                title: 'Admins',
-                href: '#',
-                icon: Shield,
-                permission: 'manage admins',
-                children: [
-                    { title: 'All Admins', href: '#' },
-                    { title: 'Active', href: '#' },
-                    {
-                        title: 'Inactive',
-                        href: '#',
-                        children: [
-                            { title: 'Recently Inactive', href: '#' },
-                            { title: 'Long Inactive', href: '#' },
-                            {
-                                title: 'Archive',
-                                href: '#',
-                                children: [
-                                    { title: 'Over 1 year', href: '#' },
-                                    { title: 'Over 2 years', href: '#' },
-                                ]
-                            }
-                        ]
-                    },
-                ],
-            },
-            {
-                title: 'Users',
-                href: '#',
-                icon: User,
-                children: [
-                    {
-                        title: 'All',
-                        href: route('admin.users.index'),
-                        icon: User,
-                        slug: 'admin-users'
-                    },
-                    { title: 'Active', href: '#' },
-                    { title: 'Premium', href: '#', badge: 15 },
-                ],
-            },
-        ],
-    },
-    {
-        title: 'Analytics',
-        href: '#',
-        icon: BarChart,
-        permission: 'view analytics',
-    },
-    {
-        title: 'Settings',
-        href: '#',
-        icon: Settings,
-        badge: 3,
-    },
-    {
-        title: 'Disabled Item',
-        href: '#',
-        icon: Shield,
-        disabled: true,
-    },
-];
+import { type SharedData } from '@/types';
 
-interface AdminSidebarProps {
-    isCollapsed: boolean;
-    activeSlug?: string | null;
+type SidebarSharedData = SharedData & {
+    currentFilter?: string | null;
+};
+
+interface NavLink {
+    label: string;
+    description?: string;
+    href: string;
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    badge?: string;
+    patterns?: string[];
 }
 
-export const AdminSidebar = React.memo<AdminSidebarProps>(({ isCollapsed, activeSlug }) => {
-    const { url, props } = usePage();
-    const currentRoute = url;
+interface NavSection {
+    title: string;
+    links: NavLink[];
+}
 
-    // Extract permissions from auth props
-    const userPermissions = React.useMemo(() => {
-        const auth = props.auth as SharedData['auth'];
-        return auth?.user?.permissions ||
-               auth?.user?.all_permissions ||
-               auth?.permissions ||
-               [];
-    }, [props.auth]);
+const matchRoute = (current: string | null, patterns?: string[]): boolean => {
+    if (!current || !patterns) {
+        return false;
+    }
+
+    return patterns.some((pattern) =>
+        pattern.endsWith('*') ? current.startsWith(pattern.slice(0, -1)) : current === pattern
+    );
+};
+
+export function AdminSidebar(): React.ReactElement {
+    const { props, component } = usePage<SidebarSharedData>();
+    const currentRoute = route().current();
+    const authUser = props.auth?.user;
+    const pageSlug = component;
+    const currentFilter = props.currentFilter ?? null;
+
+    const sections: NavSection[] = [
+        {
+            title: 'Overview',
+            links: [
+                {
+                    label: 'Dashboard',
+                    description: 'Mission control',
+                    href: route('admin.dashboard'),
+                    icon: BarChart3,
+                    patterns: ['admin.dashboard'],
+                },
+            ],
+        },
+        {
+            title: 'Messaging',
+            links: [
+                {
+                    label: 'Twilio SMS',
+                    description: 'Send & manage SMS',
+                    href: route('admin.twilio.index'),
+                    icon: MessageSquare,
+                    patterns: ['admin.twilio.*'],
+                },
+            ],
+        },
+    ];
+
+    const userMenuOpen = React.useMemo(() => pageSlug?.includes('Admin/Users'), [pageSlug]);
+    const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(userMenuOpen);
+
+    React.useEffect(() => {
+        setIsUserMenuOpen(userMenuOpen);
+    }, [userMenuOpen]);
 
     return (
-        <aside
-            className={cn(
-                'relative hidden h-screen border-r bg-background',
-                'transition-all duration-300 ease-in-out',
-                'md:flex flex-col',
-                isCollapsed ? 'w-16' : 'w-64'
-            )}
-        >
-            {/* Logo Section */}
-            <div className={cn(
-                "flex h-16 items-center border-b",
-                isCollapsed ? "justify-center px-2" : "px-6"
-            )}>
-                <Link
-                    href="/"
-                    className="flex items-center gap-2 transition-opacity hover:opacity-80"
-                >
-                    {isCollapsed ? (
-                        <LayoutGrid className="h-6 w-6 text-primary" />
-                    ) : (
-                        <AppLogo />
-                    )}
-                </Link>
+        <aside className="hidden h-[89vh] w-67.5 flex-col overflow-hidden border-r border-white/50 bg-white/80 text-sm shadow-[0_25px_80px_-45px_rgba(15,24,46,0.4)] backdrop-blur-xl lg:flex">
+
+            <div className="flex-1 overflow-y-auto px-5 py-5 custom-scrollbar">
+                {sections.map((section) => (
+                    <div key={section.title} className="mb-8">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.5em] text-muted-foreground/80">
+                            {section.title}
+                        </p>
+                        <div className="mt-3 space-y-2">
+                            {section.links.map((link) => {
+                                const active = matchRoute(currentRoute, link.patterns);
+                                return (
+                                    <Link
+                                        key={link.label}
+                                        href={link.href}
+                                        className={cn(
+                                            'flex items-start gap-3 rounded-2xl border px-4 py-2 text-sm transition-all',
+                                            'border-transparent bg-white/60 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-white',
+                                            active && 'border-primary/60 bg-primary/10 shadow-lg shadow-primary/20'
+                                        )}
+                                    >
+                                        <span
+                                            className={cn(
+                                                'mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary-600',
+                                                active && 'bg-primary text-white'
+                                            )}
+                                        >
+                                            <link.icon className="h-4 w-4" />
+                                        </span>
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-semibold text-slate-900">{link.label}</span>
+                                                {link.badge && (
+                                                    <span className="rounded-full bg-primary/10 px-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-primary-600">
+                                                        {link.badge}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            {link.description && (
+                                                <p className="text-xs text-muted-foreground">{link.description}</p>
+                                            )}
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+
+                        {section.title === 'Overview' && (
+                            <div className="mt-8 space-y-3">
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.5em] text-muted-foreground/80">
+                                    User Management
+                                </p>
+                                <button
+                                    type="button"
+                                    className={cn(
+                                        'flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-semibold',
+                                        'border-white/60 bg-white/70 text-slate-900 hover:border-primary/40',
+                                        pageSlug?.includes('Admin/Users') && 'border-primary/60 bg-primary/5 text-primary-700 shadow-sm'
+                                    )}
+                                    onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <span className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary-600 text-black">
+                                            <Users className="h-4 w-4" />
+                                        </span>
+                                        User Management
+                                    </span>
+                                    <ChevronDown
+                                        className={cn(
+                                            'h-4 w-4 text-primary-600 transition-transform',
+                                            isUserMenuOpen ? 'rotate-180' : 'rotate-0'
+                                        )}
+                                    />
+                                </button>
+                                {isUserMenuOpen && (
+                                    <div className="mt-3 space-y-2 pl-2">
+                                        {[
+                                            {
+                                                label: 'Admins',
+                                                href: route('admin.users.index', { role: 'admin' }),
+                                                description: 'Only administrators',
+                                                icon: ShieldCheck,
+                                                role: 'admin',
+                                            },
+                                            {
+                                                label: 'Users',
+                                                href: route('admin.users.index', { role: 'user' }),
+                                                description: 'Customers & staff',
+                                                icon: Users,
+                                                role: 'user',
+                                            },
+                                        ].map((item) => {
+                                            const active = pageSlug?.includes('Admin/Users') && currentFilter === item.role;
+                                            return (
+                                                <Link
+                                                    key={item.role}
+                                                    href={item.href}
+                                                    className={cn(
+                                                        'flex items-start gap-3 rounded-2xl border px-4 py-2 text-sm transition-all',
+                                                        'border-transparent bg-white/60 hover:-translate-y-0.5 hover-border-primary/30 hover:bg-white',
+                                                        active && 'border-primary/60 bg-primary/10 shadow-lg shadow-primary/20'
+                                                    )}
+                                                >
+                                                    <span
+                                                        className={cn(
+                                                            'mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary-600',
+                                                            active && 'bg-primary text-white'
+                                                        )}
+                                                    >
+                                                        <item.icon className="h-4 w-4" />
+                                                    </span>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-semibold text-slate-900">{item.label}</span>
+                                                        </div>
+                                                        <p className="text-xs text-muted-foreground">{item.description}</p>
+                                                    </div>
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                ))}
+
             </div>
 
-            {/* Navigation */}
-            <div className="flex-1 overflow-y-auto px-3 py-4 custom-scrollbar">
-                <nav className="space-y-1">
-                    {adminNavItems.map((item, index) => (
-                        <NavItemComponent
-                            key={`${item.title}-${index}`}
-                            item={item}
-                            isCollapsed={isCollapsed}
-                            currentRoute={currentRoute}
-                            isActive={activeSlug === item.slug}
-                            permissions={userPermissions}
-                        />
-                    ))}
-                </nav>
-            </div>
-
-            {/* Footer Section (Optional) */}
-            {!isCollapsed && (
-                <div className="border-t p-4">
-                    <div className="text-xs text-muted-foreground text-center">
-                        v1.0.0
+            <div className="border-t border-white/60 px-5 py-5">
+                <div className="rounded-3xl border border-white/70 bg-primary/5 p-4">
+                    <p className="text-[11px] uppercase tracking-[0.4em] text-muted-foreground">Signed in</p>
+                    <p className="mt-1 text-sm font-semibold text-primary-700">{authUser?.name}</p>
+                    <p className="text-xs text-muted-foreground">{authUser?.email}</p>
+                    <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+                        <span>{authUser?.is_admin ? 'Admin controls enabled' : 'User mode'}</span>
                     </div>
                 </div>
-            )}
+            </div>
         </aside>
     );
-});
+}
 
 AdminSidebar.displayName = 'AdminSidebar';
