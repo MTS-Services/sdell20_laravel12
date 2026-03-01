@@ -1,4 +1,4 @@
-  name: Deploy to VPS
+name: CI + Deploy to VPS
 
 on:
   push:
@@ -6,39 +6,50 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build-test-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy via SSH (appleboy)
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # -----------------------
+      # PHP Setup
+      # -----------------------
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          host: ${{ secrets.SSH_HOST}}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }} # optional, default 22
-          script: |
-            set -e
-            APP_DIR="/var/www/willwrite/sdell20_laravel12-main"
-            BRANCH="main"
+          php-version: '8.2'
+          extensions: mbstring, bcmath, pdo, pdo_mysql
+          coverage: none
 
-            cd "$APP_DIR"
-            git fetch --all
-            git reset --hard "origin/$BRANCH"
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
 
-            # Laravel
-            if [ -f artisan ]; then
-              composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
-              php artisan migrate --force || true
-              php artisan config:cache || true
-              php artisan route:cache || true
-              php artisan view:cache || true
-            fi
+      # -----------------------
+      # Node Setup (Vite Build)
+      # -----------------------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
-            # Node (if needed)
-            if [ -f package.json ]; then
-              npm ci || npm install
-              npm run build || true
-              pm2 reload all || true
-            fi
+      - name: Install NPM dependencies
+        run: npm ci
 
-            sudo systemctl reload nginx || true
+      - name: Build Vite assets
+        run: npm run build
+
+      # -----------------------
+      # Laravel Environment
+      - name: Run Migrations
+        run: php artisan migrate --force || true
+
+      # -----------------------
+      # Run Tests
+      # -----------------------
+      - name: Run Tests
+        run: php artisan test
+
+ 
