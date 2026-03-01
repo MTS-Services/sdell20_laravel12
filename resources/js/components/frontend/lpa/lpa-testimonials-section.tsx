@@ -19,8 +19,8 @@ export function LpaTestimonialsSection() {
                                 <path d="M16.17 6.17A5 5 0 0 1 21 11v7h-7v-6.5c0-2.49.9-4.38 2.17-5.33z" />
                             </svg>
                             <p className="text-lg leading-relaxed text-white/85">
-                                “I thought writing an LPA solo would be simple, but I was overwhelmed. Horizon stepped in, explained every clause, and delivered a flawless pack ready to
-                                sign. The relief is huge.”
+                                “I thought writing an LPA solo would be simple, but I was overwhelmed. Will Write Online stepped in, explained every clause, and delivered a flawless pack
+                                ready to sign. The relief is huge.”
                             </p>
                             <div className="flex flex-col gap-2">
                                 <p className="font-semibold text-white">Samantha S.</p>
