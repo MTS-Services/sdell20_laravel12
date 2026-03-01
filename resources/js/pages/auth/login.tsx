@@ -28,7 +28,7 @@ export default function Login() {
                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 px-4 py-3 text-sm text-primary-600 sm:px-5 sm:py-4 animate-in fade-in slide-in-from-top-2 duration-300">
                     <p className="text-xs uppercase tracking-[0.35em] text-primary-600">Trusted access</p>
                     <p className="mt-1 text-base font-medium text-primary-600">
-                        Sign in with your Horizon credentials or approved hardware key.
+                        Sign in with your Will Write Online credentials or approved hardware key.
                     </p>
                 </div>
 
