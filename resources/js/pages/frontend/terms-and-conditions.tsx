@@ -9,7 +9,7 @@ const termsSections = [
         copy: [
             'These Terms and Conditions govern your use of the Will Writing Online website, applications, and services. By ordering a will, LPA, or related service you agree to these terms in full. If you do not agree, please stop using the service immediately.',
             'Our estate-planning experience is delivered entirely online—consultations, questionnaires, document reviews, and approvals are completed through our secure digital platform.',
-            'Will Writing Online is registered in England & Wales #15576136 with its principal office at Nightingale House, 46/48 East Street, Epsom, Surrey, KT17 1HQ.'
+            'Will Writing Online is registered in England & Wales #15576136 with its principal office at 20-22 Wenlock Road, Islington, London, N1 7GU.'
         ]
     },
     {

@@ -39,7 +39,7 @@ export default function AuthLayout({
         },
         {
             title: 'Availability autopilot',
-            description: 'Managers publish templates; teams confirm on mobile and Horizon handles the API sync.',
+            description: 'Managers publish templates; teams confirm on mobile handles the API sync.',
         },
     ];
 
@@ -70,7 +70,7 @@ export default function AuthLayout({
                             <header className="space-y-6">
                                 <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
                                     <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[0.65rem]">
-                                        Horizon SSO
+                                        Will Write Online SSO
                                     </span>
                                     Always-on access
                                 </div>

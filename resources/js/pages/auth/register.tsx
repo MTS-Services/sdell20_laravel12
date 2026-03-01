@@ -20,9 +20,9 @@ export default function Register() {
 
             <div className="w-full space-y-3 px-2 sm:px-0">
                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 px-4 py-3 text-sm text-primary-600 sm:px-5 sm:py-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                    <p className="text-xs uppercase tracking-[0.35em] text-primary-600">New horizons</p>
+                    <p className="text-xs uppercase tracking-[0.35em] text-primary-600">New beginnings</p>
                     <p className="mt-1 text-base font-medium text-primary-600">
-                        Create your Horizon workspace and invite your crew in minutes.
+                        Create your Will Write Online workspace and invite your crew in minutes.
                     </p>
                 </div>
 
@@ -68,7 +68,7 @@ export default function Register() {
                                         name="email"
                                         type="email"
                                         required
-                                        placeholder="team@horizon.io"
+                                        placeholder="team@willwriteonline.co.uk"
                                         className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60  bg-white text-sm sm:text-base text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
                                     />
                                     <InputError message={errors.email} />
