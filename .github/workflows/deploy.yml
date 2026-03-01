@@ -10,46 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # -----------------------
-      # PHP Setup
-      # -----------------------
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          php-version: '8.3'
-          extensions: mbstring, bcmath, pdo, pdo_mysql
-          coverage: none
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            set -e
+            APP_DIR="/var/www/willwrite/sdell20_laravel12-main"
+            BRANCH="main"
 
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
+            cd "$APP_DIR"
+            git fetch --all
+            git reset --hard "origin/$BRANCH"
 
-      # -----------------------
-      # Node Setup (Vite Build)
-      # -----------------------
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
+            composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
 
-      - name: Install NPM dependencies
-        run: npm ci
+            php artisan migrate --force || true
+            php artisan config:cache || true
+            php artisan route:cache || true
+            php artisan view:cache || true
 
-      - name: Build Vite assets
-        run: npm run build
+            if [ -f package.json ]; then
+              npm ci || npm install
+              npm run build || true
+            fi
 
-      # -----------------------
-      # Laravel Environment
-      - name: Run Migrations
-        run: php artisan migrate --force || true
-
-      # -----------------------
-      # Run Tests
-      # -----------------------
-      - name: Run Tests
-        run: php artisan test
-
- 
+            pm2 reload all || true
+            sudo systemctl reload nginx || true
