@@ -191,9 +191,9 @@ class LpaController extends Controller
     {
         // Set pricing based on document type
         return match ($documentType) {
-            'property' => 82.00,
-            'health' => 82.00,
-            default => 82.00,
+            'property' => 139.99,
+            'health' => 139.99,
+            default => 139.99,
         };
     }
 }

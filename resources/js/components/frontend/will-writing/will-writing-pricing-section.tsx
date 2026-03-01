@@ -3,17 +3,17 @@ import React from 'react';
 const pricingOptions = [
     {
         tier: 'single will',
-        usualPrice: 'Usual price £149',
-        savings: 'Save £50',
-        price: '£99 for a single will',
+        usualPrice: 'Fixed fee £69.99',
+        savings: 'New price',
+        price: '£69.99 for a single will',
         blurb: "Make a will just for you, whether or not you're in a relationship.",
         bannerColor: 'from-rose-100 via-amber-100 to-rose-50',
     },
     {
         tier: 'mirror wills',
-        usualPrice: 'Usual price £200',
-        savings: 'Save £50',
-        price: '£150 for mirror wills',
+        usualPrice: 'Fixed fee £99.99',
+        savings: 'New price',
+        price: '£99.99 for mirror wills',
         blurb: "Make a will with someone who has wishes similar to yours, such as a partner.",
         bannerColor: 'from-emerald-100 via-sky-100 to-emerald-50',
     },
