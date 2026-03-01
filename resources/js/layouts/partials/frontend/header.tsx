@@ -373,8 +373,8 @@ export function FrontendHeader() {
                         <button
                             type="button"
                             className={`flex items-center gap-1.5 py-5 font-sans text-sm font-semibold transition-colors hover:text-white ${policyLinks.some((link) => urlIsActive(route(link.routeName)))
-                                    ? 'text-white'
-                                    : 'text-white/90'
+                                ? 'text-white'
+                                : 'text-white/90'
                                 }`}
                         >
                             Help & Policies
@@ -426,7 +426,7 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
-                                    Create Your LPA &ndash; Just &pound;299 Each
+                                    Create Your LPA &ndash; Just &pound;139.99 Each
                                 </span>
                                 <span className="text-[10px] font-normal text-white/80">
                                     (plus &pound;92 OPG fee per LPA)
@@ -457,7 +457,7 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-[10px] font-bold tracking-wide">
-                                    Create Your LPA &ndash; Just &pound;99 Each
+                                    Create Your LPA &ndash; Just &pound;139.99 Each
                                 </span>
                                 <span className="text-[9px] font-normal text-white/70">
                                     (plus &pound;92 OPG fee per LPA)
@@ -556,7 +556,7 @@ export function FrontendHeader() {
                                     onClick={closeMobile}
                                     className="flex items-center justify-center gap-2 rounded-full bg-slate-500 px-5 py-3.5 font-sans text-sm font-bold text-white transition hover:bg-slate-600"
                                 >
-                                    <span>Create Your LPA &ndash; Just &pound;99 Each</span>
+                                    <span>Create Your LPA &ndash; Just &pound;139.99 Each</span>
                                     <ChevronRight className="h-4 w-4" />
                                 </Link>
                                 <Link

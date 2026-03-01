@@ -9,9 +9,9 @@ export function LpaPricingSection() {
                     Work with our legal specialists online, over the phone, or at home. We draft, check, and send your forms ready for signing.
                 </p>
                 <div className="rounded-3xl border border-white/70 bg-white/90 p-10 shadow-xl animate-fadeInUp" style={{ animationDelay: '150ms' }}>
-                    <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500">Full service</span>
-                    <p className="mt-4 text-2xl font-semibold text-primary-900">£699 all-in for LPAs with specialist review.</p>
-                    <p className="mt-2 text-sm text-primary-600">Includes guided consults, document prep, and posting instructions for the OPG.</p>
+                    <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500">Flat pricing</span>
+                    <p className="mt-4 text-2xl font-semibold text-primary-900">£139.99 per LPA with specialist review.</p>
+                    <p className="mt-2 text-sm text-primary-600">Includes guided consults, document prep, and posting instructions for the OPG. Add both Health & Welfare and Property & Finance LPAs for £279.98.</p>
                 </div>
             </div>
         </section>
