@@ -18,7 +18,7 @@ export function CTASection() {
                 <div className="space-y-8 text-center">
                     <h2 className="font-serif text-5xl font-bold md:text-6xl">Start Protecting Your Legacy Today</h2>
                     <p className="font-body text-xl text-blue-200 md:text-2xl">
-                        Join thousands who have secured their family's future with Horizon Wills. Professional, affordable, and completely secure.
+                        Join thousands who have secured their family's future with Will Write Online. Professional, affordable, and completely secure.
                     </p>
 
                     <div className="flex flex-col justify-center gap-4 pt-6 sm:flex-row">

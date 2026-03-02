@@ -3,7 +3,36 @@ import { Link } from '@inertiajs/react';
 import { ChevronDown, ChevronRight, Menu, User, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-type MobileSection = 'about' | 'estate' | 'support' | null;
+import { useActiveUrl } from '@/hooks/use-active-url';
+
+type MobileSection = 'about' | 'estate' | 'support' | 'policies' | null;
+
+const policyLinks: {
+    label: string;
+    description: string;
+    routeName: Parameters<typeof route>[0];
+}[] = [
+        {
+            label: 'Terms & Conditions',
+            description: 'Understand the service agreement',
+            routeName: 'terms',
+        },
+        {
+            label: 'Privacy Policy',
+            description: 'See how we protect your data',
+            routeName: 'privacy',
+        },
+        {
+            label: 'Consumer Rights Act 2015',
+            description: 'Review your statutory protections',
+            routeName: 'consumer-rights',
+        },
+        {
+            label: 'Cookie Policy',
+            description: 'How we use cookies and tracking',
+            routeName: 'cookies',
+        }
+    ];
 
 const mobileLinks: Record<
     Exclude<MobileSection, null>,
@@ -18,12 +47,18 @@ const mobileLinks: Record<
         { label: 'Lasting Power of Attorney', desc: 'Choose who makes decisions for you', route: 'lpa' },
     ],
     support: [{ label: 'Probate', desc: 'Guidance through probate', route: 'probate' }],
+    policies: policyLinks.map((link) => ({
+        label: link.label,
+        desc: link.description,
+        route: link.routeName,
+    })),
 };
 
 const sectionLabels: Record<Exclude<MobileSection, null>, string> = {
     about: 'About Us',
     estate: 'Estate Planning',
     support: 'Get Support After Loss',
+    policies: 'Help & Policies',
 };
 
 export function FrontendHeader() {
@@ -31,6 +66,7 @@ export function FrontendHeader() {
     const [mobileDropdown, setMobileDropdown] = useState<MobileSection>(null);
     const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null);
     const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const { urlIsActive } = useActiveUrl();
 
     useEffect(() => {
         if (mobileMenuOpen) {
@@ -328,6 +364,60 @@ export function FrontendHeader() {
                         </div>
                     </div>
 
+                    {/* Help & Policies Dropdown */}
+                    <div
+                        className="relative hidden items-center lg:flex"
+                        onMouseEnter={() => openDropdown('policies')}
+                        onMouseLeave={closeDropdown}
+                    >
+                        <button
+                            type="button"
+                            className={`flex items-center gap-1.5 py-5 font-sans text-sm font-semibold transition-colors hover:text-white ${policyLinks.some((link) => urlIsActive(route(link.routeName)))
+                                ? 'text-white'
+                                : 'text-white/90'
+                                }`}
+                        >
+                            Help & Policies
+                            <ChevronDown
+                                className={`h-3.5 w-3.5 transition-transform duration-200 ${activeDesktopDropdown === 'policies' ? 'rotate-180' : ''}`}
+                            />
+                        </button>
+
+                        <div
+                            className={`absolute left-1/2 top-full z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'policies'
+                                ? 'visible translate-y-0 opacity-100'
+                                : 'invisible -translate-y-1 opacity-0 pointer-events-none'
+                                }`}
+                        >
+                            <div className="mt-3 w-85 rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
+                                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-primary-400">
+                                    Helpful Links
+                                </p>
+                                <ul className="space-y-2">
+                                    {policyLinks.map((link) => (
+                                        <li key={link.routeName}>
+                                            <Link
+                                                href={route(link.routeName)}
+                                                className={`flex items-start gap-3 rounded-xl p-3 transition hover:bg-primary-50 ${urlIsActive(route(link.routeName)) ? 'bg-primary-50' : ''
+                                                    }`}
+                                            >
+                                                <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary-500" />
+                                                <div>
+                                                    <span className="block text-sm font-bold text-primary-900">
+                                                        {link.label}
+                                                    </span>
+                                                    <span className="block text-xs text-primary-400">
+                                                        {link.description}
+                                                    </span>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Right Side: CTA Button + User Icon */}
                     <div className="hidden items-center gap-3 lg:flex">
                         <Link
@@ -336,7 +426,7 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
-                                    Create Your LPA &ndash; Just &pound;299 Each
+                                    Create Your LPA &ndash; Just &pound;139.99 Each
                                 </span>
                                 <span className="text-[10px] font-normal text-white/80">
                                     (plus &pound;92 OPG fee per LPA)
@@ -367,7 +457,7 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-[10px] font-bold tracking-wide">
-                                    Create Your LPA &ndash; Just &pound;99 Each
+                                    Create Your LPA &ndash; Just &pound;139.99 Each
                                 </span>
                                 <span className="text-[9px] font-normal text-white/70">
                                     (plus &pound;92 OPG fee per LPA)
@@ -466,7 +556,7 @@ export function FrontendHeader() {
                                     onClick={closeMobile}
                                     className="flex items-center justify-center gap-2 rounded-full bg-slate-500 px-5 py-3.5 font-sans text-sm font-bold text-white transition hover:bg-slate-600"
                                 >
-                                    <span>Create Your LPA &ndash; Just &pound;99 Each</span>
+                                    <span>Create Your LPA &ndash; Just &pound;139.99 Each</span>
                                     <ChevronRight className="h-4 w-4" />
                                 </Link>
                                 <Link

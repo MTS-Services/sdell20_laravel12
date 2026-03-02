@@ -74,6 +74,13 @@ export function FrontendFooter() {
                             >
                                 Consumer Rights Act 2015
                             </Link>
+
+                        </nav>
+                    </div>
+
+                    {/* Links Column 2 */}
+                    <div className="lg:col-span-2 flex flex-col items-center sm:items-start lg:pl-2">
+                        <nav className="flex flex-col space-y-3 text-center sm:text-left">
                             <Link
                                 href={route('cookies')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
@@ -86,18 +93,6 @@ export function FrontendFooter() {
                             >
                                 Contact us
                             </Link>
-                        </nav>
-                    </div>
-
-                    {/* Links Column 2 */}
-                    <div className="lg:col-span-2 flex flex-col items-center sm:items-start lg:pl-2">
-                        <nav className="flex flex-col space-y-3 text-center sm:text-left">
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
-                                Become an Affiliate
-                            </a>
-                            <a href="#" className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
-                                Affiliate Login
-                            </a>
                         </nav>
                     </div>
 
@@ -147,10 +142,10 @@ export function FrontendFooter() {
             <div className="border-t border-white/10">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
                     <div className="flex flex-col items-center gap-2 text-xs text-white/60 sm:flex-row sm:gap-1 sm:text-left">
-                        <p>Nightingale House, 46/48 East Street, Epsom, Surrey, KT17 1HQ</p>
+                        <p>20-22 Wenlock Road, Islington, London, N1 7GU</p>
                     </div>
                     <p className="mt-1 text-center text-xs text-white/60 sm:text-left">
-                        &copy; 2026 Horizon Wills Ltd. Registered in England &amp; Wales, No. 15576136.
+                        &copy; 2026 Will Write Online. Registered in England &amp; Wales, No. 15576136.
                     </p>
                 </div>
             </div>
