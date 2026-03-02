@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\Admin\TwilioController;
 use App\Http\Controllers\Backend\LpaController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserSelectionController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/payment/select-plan', [PaymentController::class, 'selectPlan'])->name('payment.select-plan');
     Route::post('/payment/intent', [PaymentController::class, 'createIntent']);
     Route::post('/payment/confirm', [PaymentController::class, 'confirmPayment']);
+    Route::post('/payment/verify', [PaymentVerificationController::class, 'check'])->name('payment.verify');
 
     // Dashboard Routes
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
@@ -53,12 +55,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [LpaController::class, 'store'])->name('store');
         Route::get('/{lpa}', [LpaController::class, 'show'])->name('show');
         Route::delete('/{lpa}', [LpaController::class, 'destroy'])->name('destroy');
-        
+
         // PDF Operations
         Route::get('/{lpa}/pdf/download', [LpaController::class, 'downloadPdf'])->name('pdf.download');
         Route::get('/{lpa}/pdf/preview', [LpaController::class, 'previewPdf'])->name('pdf.preview');
         Route::post('/{lpa}/pdf/regenerate', [LpaController::class, 'regeneratePdf'])->name('pdf.regenerate');
-        
+
         // Payment Processing
         Route::post('/{lpa}/payment', [LpaController::class, 'processPayment'])->name('payment');
     });

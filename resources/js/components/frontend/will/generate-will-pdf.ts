@@ -157,9 +157,11 @@ const addWatermark = (doc: jsPDF): void => {
 
 interface GenerateWillPdfOptions {
     preview?: boolean;
+    isDraft?: boolean;
 }
 
 export const generateWillPdf = (data: WillData, options: GenerateWillPdfOptions = {}): void => {
+    const isDraft = options.isDraft !== false; // Default to draft (with watermark)
     const doc = new jsPDF({ unit: 'pt', format: 'a4' });
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
@@ -167,6 +169,7 @@ export const generateWillPdf = (data: WillData, options: GenerateWillPdfOptions 
     let clauseCounter = 1;
 
     const drawDraftWatermark = (): void => {
+        if (!isDraft) return;
         const width = doc.internal.pageSize.getWidth();
         const height = doc.internal.pageSize.getHeight();
         doc.setFont('Times', 'Bold');

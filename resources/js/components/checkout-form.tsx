@@ -51,7 +51,10 @@ async function createPaymentIntent(
     return data.clientSecret;
 }
 
-async function confirmPaymentOnServer(paymentIntentId: string): Promise<void> {
+async function confirmPaymentOnServer(paymentIntentId: string, redirectUrl?: string | null): Promise<{ redirect_url?: string }> {
+    const body: { payment_intent_id: string; redirect_url?: string } = { payment_intent_id: paymentIntentId };
+    if (redirectUrl) body.redirect_url = redirectUrl;
+
     const response = await fetch('/payment/confirm', {
         method: 'POST',
         headers: {
@@ -60,22 +63,25 @@ async function confirmPaymentOnServer(paymentIntentId: string): Promise<void> {
             'X-XSRF-TOKEN': getCsrfToken(),
         },
         credentials: 'same-origin',
-        body: JSON.stringify({ payment_intent_id: paymentIntentId }),
+        body: JSON.stringify(body),
     });
 
     if (!response.ok) {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.message ?? 'Failed to confirm payment');
     }
+
+    return response.json();
 }
 
 interface CheckoutFormInnerProps {
     amount: number;
     currency: string;
-    onSuccess: () => void;
+    redirectUrl?: string | null;
+    onSuccess: (redirectUrl?: string) => void;
 }
 
-function CheckoutFormInner({ amount, currency, onSuccess }: CheckoutFormInnerProps) {
+function CheckoutFormInner({ amount, currency, redirectUrl, onSuccess }: CheckoutFormInnerProps) {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
@@ -99,8 +105,8 @@ function CheckoutFormInner({ amount, currency, onSuccess }: CheckoutFormInnerPro
             setMessage(error.message ?? 'An error occurred.');
         } else if (paymentIntent?.status === 'succeeded') {
             try {
-                await confirmPaymentOnServer(paymentIntent.id);
-                onSuccess();
+                const result = await confirmPaymentOnServer(paymentIntent.id, redirectUrl);
+                onSuccess(result.redirect_url ?? redirectUrl ?? undefined);
             } catch {
                 setMessage('Payment succeeded but confirmation failed. Please contact support.');
             }
@@ -129,7 +135,16 @@ function CheckoutFormInner({ amount, currency, onSuccess }: CheckoutFormInnerPro
     );
 }
 
-function PaymentSuccessScreen() {
+function PaymentSuccessScreen({ redirectUrl }: { redirectUrl?: string }) {
+    useEffect(() => {
+        if (redirectUrl) {
+            const timer = setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [redirectUrl]);
+
     return (
         <div className="flex flex-col items-center justify-center py-12 text-center">
             <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-chart-2 text-white">
@@ -138,6 +153,11 @@ function PaymentSuccessScreen() {
             <h2 className="text-2xl font-bold text-primary-900 dark:text-primary-100">
                 Thanks for your order
             </h2>
+            {redirectUrl && (
+                <p className="mt-4 text-sm text-muted-foreground">
+                    Redirecting you back to download your document...
+                </p>
+            )}
             <p className="mt-8 text-sm text-muted-foreground">
                 Powered by Stripe
                 <span className="mx-2">|</span>
@@ -162,22 +182,55 @@ interface CheckoutProps {
     amount: number;
     currency?: string;
     paymentId?: number | null;
+    product?: string | null;
+    redirectUrl?: string | null;
 }
 
 export default function Checkout({
     amount = 9900,
     currency = 'gbp',
     paymentId = null,
+    product = null,
+    redirectUrl = null,
 }: CheckoutProps) {
     const [clientSecret, setClientSecret] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [paymentSucceeded, setPaymentSucceeded] = useState(false);
+    const [successRedirectUrl, setSuccessRedirectUrl] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        createPaymentIntent(amount, paymentId)
-            .then(setClientSecret)
-            .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'));
-    }, [amount, paymentId]);
+        const setupPayment = async () => {
+            try {
+                // If product is provided and no paymentId, create a plan selection first
+                if (product && !paymentId) {
+                    const selectResponse = await fetch('/payment/select-plan', {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-XSRF-TOKEN': getCsrfToken(),
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({ amount, product }),
+                    });
+
+                    if (selectResponse.ok) {
+                        const selectData = await selectResponse.json();
+                        const secret = await createPaymentIntent(amount, selectData.payment_id);
+                        setClientSecret(secret);
+                        return;
+                    }
+                }
+
+                const secret = await createPaymentIntent(amount, paymentId);
+                setClientSecret(secret);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to load');
+            }
+        };
+
+        setupPayment();
+    }, [amount, paymentId, product]);
 
     useEffect(() => {
         const hideStripeBadge = () => {
@@ -228,7 +281,7 @@ export default function Checkout({
                 <div className="container mx-auto max-w-lg px-4 sm:px-6">
                     <div className="rounded-xl border border-border bg-card p-6 shadow-(--shadow-card) sm:p-8">
                         {paymentSucceeded ? (
-                            <PaymentSuccessScreen />
+                            <PaymentSuccessScreen redirectUrl={successRedirectUrl} />
                         ) : (
                             <>
                                 <h1 className="mb-6 text-xl font-semibold text-primary-700 dark:text-primary-200">
@@ -248,7 +301,11 @@ export default function Checkout({
                                         <CheckoutFormInner
                                             amount={amount}
                                             currency={currency}
-                                            onSuccess={() => setPaymentSucceeded(true)}
+                                            redirectUrl={redirectUrl}
+                                            onSuccess={(resolvedRedirectUrl) => {
+                                                setSuccessRedirectUrl(resolvedRedirectUrl);
+                                                setPaymentSucceeded(true);
+                                            }}
                                         />
                                     </Elements>
                                 ) : (

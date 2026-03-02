@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentProduct;
 use App\Enums\PaymentStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,5 +54,31 @@ class Payment extends Model
     public function isProcessing(): bool
     {
         return $this->status?->isProcessing() ?? false;
+    }
+
+    /**
+     * Scope to filter payments by product type.
+     */
+    public function scopeForProduct(Builder $query, PaymentProduct $product): Builder
+    {
+        return $query->whereJsonContains('metadata->product', $product->value);
+    }
+
+    /**
+     * Scope to filter only completed/succeeded payments.
+     */
+    public function scopeSucceeded(Builder $query): Builder
+    {
+        return $query->where('status', PaymentStatus::Complete);
+    }
+
+    /**
+     * Get the product type from metadata.
+     */
+    public function getProduct(): ?PaymentProduct
+    {
+        $product = $this->metadata['product'] ?? null;
+
+        return $product ? PaymentProduct::tryFrom($product) : null;
     }
 }

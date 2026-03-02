@@ -46,16 +46,44 @@ const MaritalStatusCard: React.FC<{
 );
 
 
+const LAST_STEP = TOTAL_INTERNAL_STEPS - 1; // 12 — Review & Download
+
+function getInitialState(): { phase: 'landing' | 'wizard'; step: number; restoredData: WillData | null; restoredType: 'Me' | 'Mirror' | null } {
+    if (typeof window === 'undefined') return { phase: 'landing', step: 0, restoredData: null, restoredType: null };
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('step') === 'download') {
+        // Came back from payment — jump straight to the last step
+        let restoredData: WillData | null = null;
+        let restoredType: 'Me' | 'Mirror' | null = null;
+        try {
+            const raw = sessionStorage.getItem('will_draft_data');
+            if (raw) restoredData = JSON.parse(raw) as WillData;
+            const rawType = sessionStorage.getItem('will_draft_type');
+            if (rawType === 'Me' || rawType === 'Mirror') restoredType = rawType;
+        } catch { /* ignore */ }
+
+        // Clean up the URL so a refresh doesn't keep jumping
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
+
+        return { phase: 'wizard', step: LAST_STEP, restoredData, restoredType };
+    }
+
+    return { phase: 'landing', step: 0, restoredData: null, restoredType: null };
+}
+
 const WillCreationWizard: React.FC = () => {
-    const [phase, setPhase] = useState<'landing' | 'wizard'>('landing');
-    const [currentStep, setCurrentStep] = useState(0);
+    const initialState = getInitialState();
+    const [phase, setPhase] = useState<'landing' | 'wizard'>(initialState.phase);
+    const [currentStep, setCurrentStep] = useState(initialState.step);
     const [isSaving, setIsSaving] = useState(false);
     const [isSpouseStage, setIsSpouseStage] = useState(false);
     const [spouseStageCompleted, setSpouseStageCompleted] = useState(false);
     const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('left');
     const [isAnimating, setIsAnimating] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
-    const [willData, setWillData] = useState<WillData>({
+    const [willData, setWillData] = useState<WillData>(initialState.restoredData ?? {
         personalInfo: {
             title: '',
             firstName: '',
@@ -620,7 +648,10 @@ const WillCreationWizard: React.FC = () => {
                     />
                 );
             case 12:
-                return <PrintDownloadStep data={willData} />;
+                return <PrintDownloadStep
+                    data={willData}
+                    willType={shouldShowSpouseStep ? 'Mirror' : 'Me'}
+                />;
             default:
                 return null;
         }
