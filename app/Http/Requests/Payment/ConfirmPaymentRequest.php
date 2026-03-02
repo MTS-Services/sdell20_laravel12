@@ -23,6 +23,7 @@ class ConfirmPaymentRequest extends FormRequest
     {
         return [
             'payment_intent_id' => ['required', 'string'],
+            'redirect_url' => ['nullable', 'string', 'max:500'],
         ];
     }
 

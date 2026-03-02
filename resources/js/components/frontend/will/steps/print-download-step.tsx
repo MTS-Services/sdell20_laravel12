@@ -1,6 +1,14 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { usePage } from '@inertiajs/react';
 import generateWillPdf from '@/components/frontend/will/generate-will-pdf';
 import type { WillData } from './will-types';
+
+function getCsrfToken(): string {
+    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+    if (match) return decodeURIComponent(match[1]);
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta?.getAttribute('content') ?? '';
+}
 
 const ReviewItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
     <div>
@@ -11,27 +19,84 @@ const ReviewItem: React.FC<{ label: string; value: string }> = ({ label, value }
 
 export interface PrintDownloadStepProps {
     data: WillData;
+    willType?: 'Me' | 'Mirror';
 }
 
-const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data }) => {
+const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 'Me' }) => {
     const [isGenerating, setIsGenerating] = useState(false);
+    const [hasPaid, setHasPaid] = useState(false);
+    const [isCheckingPayment, setIsCheckingPayment] = useState(false);
+    const page = usePage();
+    const auth = (page.props as { auth?: { user?: { id: number } } }).auth;
+    const isLoggedIn = Boolean(auth?.user?.id);
+
+    const productType = willType === 'Mirror' ? 'mirror_will' : 'single_will';
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            setHasPaid(false);
+            return;
+        }
+
+        const checkPaymentStatus = async () => {
+            setIsCheckingPayment(true);
+            try {
+                const response = await fetch('/payment/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-XSRF-TOKEN': getCsrfToken(),
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({ product: productType }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    setHasPaid(result.paid === true);
+                }
+            } catch {
+                setHasPaid(false);
+            } finally {
+                setIsCheckingPayment(false);
+            }
+        };
+
+        checkPaymentStatus();
+    }, [isLoggedIn, productType]);
 
     const handleDownload = useCallback(async () => {
+        if (!hasPaid) {
+            // Persist will data so it survives the payment round-trip
+            try {
+                sessionStorage.setItem('will_draft_data', JSON.stringify(data));
+                sessionStorage.setItem('will_draft_type', willType);
+            } catch { /* storage full — best effort */ }
+
+            // Not paid — redirect to checkout with step=download so we land back here
+            const amount = willType === 'Mirror' ? 9999 : 6999;
+            const baseUrl = window.location.origin + window.location.pathname;
+            const redirectUrl = encodeURIComponent(`${baseUrl}?step=download`);
+            window.location.href = `/checkout?amount=${amount}&product=${productType}&redirect_url=${redirectUrl}`;
+            return;
+        }
+
         try {
             setIsGenerating(true);
-            await Promise.resolve(generateWillPdf(data));
+            await Promise.resolve(generateWillPdf(data, { isDraft: false }));
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error('Failed to generate will PDF', error);
         } finally {
             setIsGenerating(false);
         }
-    }, [data]);
+    }, [data, hasPaid, willType, productType]);
 
     const handlePreview = useCallback(async () => {
         try {
             setIsGenerating(true);
-            await Promise.resolve(generateWillPdf(data, { preview: true }));
+            await Promise.resolve(generateWillPdf(data, { preview: true, isDraft: true }));
         } catch (error) {
             console.error('Failed to preview will PDF', error);
         } finally {
@@ -87,27 +152,68 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data }) => {
             )}
 
             <div className="bg-secondary/5 border border-secondary/20 rounded-lg p-6 text-center">
-                <p className="text-primary-700 text-sm mb-4">
-                    Once you're satisfied, preview or download your will and sign it with two witnesses.
-                </p>
-                <div className="flex flex-col md:flex-row items-center justify-center gap-3">
-                    <button
-                        type="button"
-                        onClick={handlePreview}
-                        disabled={isGenerating}
-                        className="px-6 py-2 border border-emerald-600 text-accent-green rounded font-semibold text-xs uppercase tracking-wide hover:bg-accent-green/5 transition-colors cursor-pointer"
-                    >
-                        {isGenerating ? 'LOADING…' : 'PREVIEW PDF'}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handleDownload}
-                        disabled={isGenerating}
-                        className="px-10 py-3 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-600 transition-colors cursor-pointer"
-                    >
-                        {isGenerating ? 'PREPARING PDF…' : 'DOWNLOAD WILL DOCUMENT'}
-                    </button>
-                </div>
+                {isCheckingPayment ? (
+                    <p className="text-primary-600 text-sm animate-pulse">Checking payment status...</p>
+                ) : hasPaid ? (
+                    <>
+                        <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-semibold text-emerald-700">
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            Payment Complete
+                        </div>
+                        <p className="text-primary-700 text-sm mb-4">
+                            Your payment has been verified. Download your final Will document below.
+                        </p>
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-3">
+                            <button
+                                type="button"
+                                onClick={handlePreview}
+                                disabled={isGenerating}
+                                className="px-6 py-2 border border-emerald-600 text-accent-green rounded font-semibold text-xs uppercase tracking-wide hover:bg-accent-green/5 transition-colors cursor-pointer"
+                            >
+                                {isGenerating ? 'LOADING…' : 'PREVIEW PDF'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleDownload}
+                                disabled={isGenerating}
+                                className="px-10 py-3 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-colors cursor-pointer"
+                            >
+                                {isGenerating ? 'PREPARING PDF…' : 'DOWNLOAD FINAL WILL'}
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <p className="text-primary-700 text-sm mb-4">
+                            {isLoggedIn
+                                ? 'Purchase your Will to download the final document without the draft watermark.'
+                                : 'Sign in and purchase your Will to download the final document.'}
+                        </p>
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-3">
+                            <button
+                                type="button"
+                                onClick={handlePreview}
+                                disabled={isGenerating}
+                                className="px-6 py-2 border border-emerald-600 text-accent-green rounded font-semibold text-xs uppercase tracking-wide hover:bg-accent-green/5 transition-colors cursor-pointer"
+                            >
+                                {isGenerating ? 'LOADING…' : 'PREVIEW DRAFT'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleDownload}
+                                disabled={isGenerating}
+                                className="px-10 py-3 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-colors cursor-pointer"
+                            >
+                                {isLoggedIn
+                                    ? `PAY & DOWNLOAD (£${willType === 'Mirror' ? '99.99' : '69.99'})`
+                                    : 'SIGN IN TO PURCHASE'}
+                            </button>
+                        </div>
+                        <p className="text-xs text-primary-400 mt-3">
+                            Draft preview includes a watermark. The final version after payment will not.
+                        </p>
+                    </>
+                )}
             </div>
         </div>
     );

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentProduct;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -91,6 +92,34 @@ class User extends Authenticatable
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function lpas(): HasMany
+    {
+        return $this->hasMany(Lpa::class);
+    }
+
+    /**
+     * Check if the user has a completed payment for a specific product.
+     */
+    public function hasPaymentFor(PaymentProduct $product): bool
+    {
+        return $this->payments()
+            ->where('status', 'succeeded')
+            ->whereJsonContains('metadata->product', $product->value)
+            ->exists();
+    }
+
+    /**
+     * Get the completed payment for a specific product.
+     */
+    public function getPaymentFor(PaymentProduct $product): ?Payment
+    {
+        return $this->payments()
+            ->where('status', 'succeeded')
+            ->whereJsonContains('metadata->product', $product->value)
+            ->latest()
+            ->first();
     }
 
     protected function name(): Attribute

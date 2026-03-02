@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Enums\PaymentProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Lpa;
 use App\Services\LpaPdfService;
@@ -17,6 +18,7 @@ use Inertia\Response;
 class LpaController extends Controller
 {
     use AuthorizesRequests;
+
     public function __construct(
         private readonly LpaPdfService $pdfService
     ) {}
@@ -87,14 +89,28 @@ class LpaController extends Controller
     {
         $this->authorize('view', $lpa);
 
+        $product = PaymentProduct::fromLpaType($lpa->document_type);
+        $hasPaid = $lpa->isPaid();
+
         return Inertia::render('backend/User/LpaShow', [
             'lpa' => $lpa->load('user'),
+            'hasPaid' => $hasPaid,
+            'product' => $product->value,
+            'amount' => $product->amountInPence(),
         ]);
     }
 
     public function downloadPdf(Lpa $lpa)
     {
         $this->authorize('view', $lpa);
+
+        // Only allow download of final PDF if the LPA has been paid for
+        if ($lpa->isDraft()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment required to download the final PDF. You can only preview the draft version.',
+            ], 402);
+        }
 
         return $this->pdfService->downloadPdf($lpa);
     }
@@ -103,6 +119,7 @@ class LpaController extends Controller
     {
         $this->authorize('view', $lpa);
 
+        // Preview always shows the current version (draft watermark if unpaid)
         return $this->pdfService->streamPdf($lpa);
     }
 

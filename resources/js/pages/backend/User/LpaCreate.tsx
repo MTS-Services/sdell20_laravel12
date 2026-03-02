@@ -325,11 +325,8 @@ export default function LpaCreate({ user }: Props) {
             const data = await response.json();
 
             if (data.success) {
-                // Show success message
-                alert(`LPA created successfully!\n\nPDF has been generated in DRAFT status.\nAmount: £${data.data.amount}\n\nYou will be redirected to the dashboard.`);
-
-                // Redirect to dashboard
-                window.location.href = '/dashboard';
+                // Redirect to LPA show page for payment and download
+                window.location.href = `/lpas/${data.data.lpa_id}`;
             } else {
                 setSubmitError(data.message || 'Failed to create LPA. Please try again.');
             }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentProduct;
 use App\Enums\PaymentStatus;
 use App\Http\Requests\Payment\ConfirmPaymentRequest;
 use App\Http\Requests\Payment\CreatePaymentIntentRequest;
 use App\Http\Requests\Payment\SelectPlanRequest;
 use App\Models\Payment;
+use App\Services\LpaPdfService;
 use App\Services\Payment\PaymentIntentClientInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,15 +26,18 @@ class PaymentController extends Controller
      */
     public function selectPlan(SelectPlanRequest $request): JsonResponse
     {
+        $metadata = [];
+        if ($request->filled('product')) {
+            $metadata['product'] = $request->validated('product');
+        }
+
         $payment = Payment::query()->create([
             'user_id' => $request->user()->id,
             'stripe_payment_intent_id' => null,
             'amount' => $request->validated('amount'),
             'currency' => 'gbp',
             'status' => PaymentStatus::Pending,
-            'metadata' => $request->filled('product')
-                ? ['product' => $request->validated('product')]
-                : null,
+            'metadata' => ! empty($metadata) ? $metadata : null,
         ]);
 
         return response()->json([
@@ -50,11 +55,15 @@ class PaymentController extends Controller
         $amount = (int) $request->query('amount', 9900);
         $currency = $request->query('currency', 'gbp');
         $paymentId = $request->query('payment_id');
+        $product = $request->query('product');
+        $redirectUrl = $request->query('redirect_url');
 
         return Inertia::render('Checkout', [
             'amount' => $amount,
             'currency' => $currency,
             'paymentId' => $paymentId ? (int) $paymentId : null,
+            'product' => $product,
+            'redirectUrl' => $redirectUrl,
         ]);
     }
 
@@ -126,7 +135,7 @@ class PaymentController extends Controller
     /**
      * Verify payment succeeded and fulfill the order.
      */
-    public function confirmPayment(ConfirmPaymentRequest $request): \Illuminate\Http\JsonResponse
+    public function confirmPayment(ConfirmPaymentRequest $request): JsonResponse
     {
         $paymentIntentId = $request->validated('payment_intent_id');
         $intent = $this->paymentIntentClient->retrieve($paymentIntentId);
@@ -139,12 +148,49 @@ class PaymentController extends Controller
         if ($payment) {
             $status = PaymentStatus::storeFromStripe($intent->status);
             $payment->update(['status' => $status]);
+
+            // If payment succeeded and it's for an LPA, mark the LPA as paid
+            if ($intent->status === 'succeeded') {
+                $this->fulfillLpaPayment($payment, $request->user());
+            }
         }
 
         if ($intent->status === 'succeeded') {
-            return response()->json(['message' => 'Payment successful!']);
+            $redirectUrl = $request->input('redirect_url');
+
+            return response()->json([
+                'message' => 'Payment successful!',
+                'redirect_url' => $redirectUrl,
+            ]);
         }
 
         return response()->json(['message' => 'Payment not completed.'], 422);
+    }
+
+    /**
+     * If the payment is for an LPA product, mark the associated LPA as paid and regenerate PDF.
+     */
+    private function fulfillLpaPayment(Payment $payment, $user): void
+    {
+        $product = $payment->getProduct();
+
+        if (! $product?->isLpa()) {
+            return;
+        }
+
+        $documentType = $product === PaymentProduct::LpaProperty ? 'property' : 'health';
+
+        $lpa = $user->lpas()
+            ->where('document_type', $documentType)
+            ->where('is_draft', true)
+            ->latest()
+            ->first();
+
+        if ($lpa) {
+            $lpa->markAsPaid($payment->stripe_payment_intent_id);
+
+            $pdfService = app(LpaPdfService::class);
+            $pdfService->removeDraftWatermark($lpa);
+        }
     }
 }
