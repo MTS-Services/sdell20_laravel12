@@ -4,7 +4,7 @@ const aboutContent = {
     image: 'https://a.storyblok.com/f/309177/718x1000/f544cb2f60/sam-mum.jpg',
     heading: 'Our job is to bring care to life.',
     paragraphs: [
-        'At Horizon Wills, we move thoughtfully, communicate clearly, and obsess over every detail so families can plan in confidence.',
+        'At Will Write Online, we move thoughtfully, communicate clearly, and obsess over every detail so families can plan in confidence.',
         "We're a team that values kindness, craft, and ownership—building services that genuinely help people prepare for tomorrow.",
     ],
 };

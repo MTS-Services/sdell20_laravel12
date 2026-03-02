@@ -12,7 +12,9 @@ export function useActiveUrl() {
         currentUrl?: string,
     ) {
         const urlToCompare = currentUrl ?? currentUrlPath;
-        return toUrl(urlToCheck) === urlToCompare;
+        const normalizedUrl = new URL(toUrl(urlToCheck), window?.location.origin).pathname;
+
+        return normalizedUrl === urlToCompare;
     }
 
     return {

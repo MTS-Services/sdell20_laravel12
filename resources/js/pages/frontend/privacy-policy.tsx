@@ -7,7 +7,7 @@ const policySections = [
     {
         title: '1. Who we are',
         copy: [
-            'Will Writing Online Ltd provides online Will and Lasting Power of Attorney services for clients across England and Wales. We are registered in England & Wales (#15576136) with our principal office at Nightingale House, 46/48 East Street, Epsom, Surrey, KT17 1HQ.',
+            'Will Writing Online Ltd provides online Will and Lasting Power of Attorney services for clients across England and Wales. We are registered in England & Wales (#15576136) with our principal office at 20-22 Wenlock Road, Islington, London, N1 7GU.',
             'You can contact our Data Protection lead at privacy@willwritingonline.co.uk for any privacy-related questions.'
         ]
     },

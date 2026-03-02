@@ -1,29 +1,19 @@
-import { router } from '@inertiajs/react';
 import React from 'react';
-
-function getCsrfToken(): string {
-    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-    return match ? decodeURIComponent(match[1]) : '';
-}
 
 const pricingOptions = [
     {
         tier: 'single will',
-        product: 'single_will',
-        usualPrice: 'Usual price £149',
-        savings: 'Save £50',
-        price: '£99 for a single will',
-        amount: 99,
+        usualPrice: 'Fixed fee £69.99',
+        savings: 'New price',
+        price: '£69.99 for a single will',
         blurb: "Make a will just for you, whether or not you're in a relationship.",
         bannerColor: 'from-rose-100 via-amber-100 to-rose-50',
     },
     {
         tier: 'mirror wills',
-        product: 'mirror_wills',
-        usualPrice: 'Usual price £200',
-        savings: 'Save £50',
-        price: '£150 for mirror wills',
-        amount: 150,
+        usualPrice: 'Fixed fee £99.99',
+        savings: 'New price',
+        price: '£99.99 for mirror wills',
         blurb: "Make a will with someone who has wishes similar to yours, such as a partner.",
         bannerColor: 'from-emerald-100 via-sky-100 to-emerald-50',
     },
@@ -41,72 +31,7 @@ export function WillWritingPricingSection() {
                     {pricingOptions.map((option) => (
                         <div
                             key={option.tier}
-                            role="button"
-                            tabIndex={0}
-                            onClick={async () => {
-                                const amountPence = option.amount * 100;
-                                try {
-                                    const res = await fetch(route('payment.select-plan'), {
-                                        method: 'POST',
-                                        headers: {
-                                            Accept: 'application/json',
-                                            'Content-Type': 'application/json',
-                                            'X-XSRF-TOKEN': getCsrfToken(),
-                                        },
-                                        credentials: 'same-origin',
-                                        body: JSON.stringify({
-                                            amount: amountPence,
-                                            product: option.product,
-                                        }),
-                                    });
-                                    if (!res.ok) throw new Error('Failed to save selection');
-                                    const data = await res.json();
-                                    router.visit(
-                                        route('checkout', {
-                                            amount: data.amount,
-                                            payment_id: data.payment_id,
-                                        }),
-                                    );
-                                } catch {
-                                    router.visit(
-                                        route('checkout', { amount: amountPence }),
-                                    );
-                                }
-                            }}
-                            onKeyDown={async (e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    e.preventDefault();
-                                    const amountPence = option.amount * 100;
-                                    try {
-                                        const res = await fetch(route('payment.select-plan'), {
-                                            method: 'POST',
-                                            headers: {
-                                                Accept: 'application/json',
-                                                'Content-Type': 'application/json',
-                                                'X-XSRF-TOKEN': getCsrfToken(),
-                                            },
-                                            credentials: 'same-origin',
-                                            body: JSON.stringify({
-                                                amount: amountPence,
-                                                product: option.product,
-                                            }),
-                                        });
-                                        if (!res.ok) throw new Error('Failed to save selection');
-                                        const data = await res.json();
-                                        router.visit(
-                                            route('checkout', {
-                                                amount: data.amount,
-                                                payment_id: data.payment_id,
-                                            }),
-                                        );
-                                    } catch {
-                                        router.visit(
-                                            route('checkout', { amount: amountPence }),
-                                        );
-                                    }
-                                }
-                            }}
-                            className="relative cursor-pointer overflow-hidden rounded-3xl bg-white shadow-[0_15px_35px_rgba(15,23,42,0.1)] transition hover:-translate-y-1 focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                            className="relative overflow-hidden rounded-3xl bg-white shadow-[0_15px_35px_rgba(15,23,42,0.1)] transition hover:-translate-y-1"
                         >
                             <div className={`relative h-40 w-full bg-linear-to-br ${option.bannerColor}`}>
                                 <div className="absolute top-5 left-5 rounded-full bg-rose-600 px-5 py-2 text-sm font-semibold uppercase tracking-wide text-white">
@@ -118,9 +43,6 @@ export function WillWritingPricingSection() {
                                 <p className="text-sm text-primary-500">{option.usualPrice}</p>
                                 <p className="mt-3 text-2xl font-semibold text-primary-900">{option.price}</p>
                                 <p className="mt-3 text-base text-primary-600">{option.blurb}</p>
-                                <p className="mt-4 text-sm font-medium text-primary-600">
-                                    Pay £{option.amount} →
-                                </p>
                             </div>
                         </div>
                     ))}
