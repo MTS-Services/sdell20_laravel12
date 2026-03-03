@@ -73,6 +73,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/save-draft', [WillController::class, 'saveDraft'])->name('save-draft');
         Route::get('/{will}', [WillController::class, 'show'])->name('show');
         Route::delete('/{will}', [WillController::class, 'destroy'])->name('destroy');
+
+        // PDF Operations
+        Route::get('/{will}/pdf/download', [WillController::class, 'downloadPdf'])->name('pdf.download');
+        Route::get('/{will}/pdf/preview', [WillController::class, 'previewPdf'])->name('pdf.preview');
+        Route::post('/{will}/pdf/regenerate', [WillController::class, 'regeneratePdf'])->name('pdf.regenerate');
+
+        // Payment Processing
+        Route::post('/{will}/payment', [WillController::class, 'processPayment'])->name('payment');
     });
 
     // Profile Routes

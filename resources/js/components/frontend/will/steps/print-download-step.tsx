@@ -115,7 +115,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
     }, [isLoggedIn, payload, savedWillId]);
 
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (!isLoggedIn || !savedWillId) {
             setHasPaid(false);
             return;
         }
@@ -136,7 +136,25 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
 
                 if (response.ok) {
                     const result = await response.json();
-                    setHasPaid(result.paid === true);
+                    const isPaid = result.paid === true;
+                    setHasPaid(isPaid);
+
+                    // If payment is verified, update the Will record to mark as paid
+                    if (isPaid && result.payment_id) {
+                        await fetch(`/wills/${savedWillId}/payment`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-XSRF-TOKEN': getCsrfToken(),
+                            },
+                            credentials: 'same-origin',
+                            body: JSON.stringify({
+                                payment_reference: String(result.payment_id),
+                                payment_method: 'stripe',
+                            }),
+                        });
+                    }
                 }
             } catch {
                 setHasPaid(false);
@@ -146,7 +164,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
         };
 
         checkPaymentStatus();
-    }, [isLoggedIn, productType]);
+    }, [isLoggedIn, productType, savedWillId]);
 
     useEffect(() => {
         if (!isLoggedIn || hasAutoSaved) {
@@ -177,18 +195,37 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
             return;
         }
 
+        // User has paid - download the final PDF from backend
+        if (!savedWillId) {
+            console.error('No Will ID found');
+            return;
+        }
+
         try {
             setIsGenerating(true);
-            await Promise.resolve(generateWillPdf(data, { isDraft: false }));
+            window.location.href = `/wills/${savedWillId}/pdf/download`;
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Failed to generate will PDF', error);
+            console.error('Failed to download will PDF', error);
         } finally {
             setIsGenerating(false);
         }
-    }, [data, hasPaid, willType, productType]);
+    }, [data, hasPaid, willType, productType, savedWillId]);
 
     const handlePreview = useCallback(async () => {
+        // If we have a saved Will ID, use backend PDF preview
+        if (savedWillId) {
+            try {
+                setIsGenerating(true);
+                window.open(`/wills/${savedWillId}/pdf/preview`, '_blank');
+            } catch (error) {
+                console.error('Failed to preview will PDF', error);
+            } finally {
+                setIsGenerating(false);
+            }
+            return;
+        }
+
+        // Fallback to client-side PDF generation for non-logged-in users
         try {
             setIsGenerating(true);
             await Promise.resolve(generateWillPdf(data, { preview: true, isDraft: true }));
@@ -197,7 +234,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
         } finally {
             setIsGenerating(false);
         }
-    }, [data]);
+    }, [data, savedWillId]);
 
     return (
         <div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Enums\PaymentProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Will;
+use App\Services\WillPdfService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -17,6 +18,10 @@ use Inertia\Response;
 class WillController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(
+        private readonly WillPdfService $pdfService
+    ) {}
 
     public function index(): Response
     {
@@ -44,13 +49,17 @@ class WillController extends Controller
                 'amount' => $this->calculateAmount($validated['will_type']),
             ]);
 
+            // Generate PDF automatically
+            $this->pdfService->generatePdf($will);
+
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Will created successfully.',
+                'message' => 'Will created successfully. PDF generated in draft status.',
                 'data' => [
                     'will_id' => $will->id,
+                    'pdf_path' => $will->pdf_path,
                     'is_draft' => $will->is_draft,
                     'amount' => $will->amount,
                 ],
@@ -99,6 +108,9 @@ class WillController extends Controller
                 $will = Will::create($payload);
             }
 
+            // Generate PDF automatically
+            $this->pdfService->generatePdf($will);
+
             DB::commit();
 
             return response()->json([
@@ -143,6 +155,89 @@ class WillController extends Controller
 
         return redirect()->route('wills.index')
             ->with('success', 'Will deleted successfully.');
+    }
+
+    public function downloadPdf(Will $will)
+    {
+        $this->authorize('view', $will);
+
+        // Only allow download of final PDF if the Will has been paid for
+        if ($will->isDraft()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment required to download the final PDF. You can only preview the draft version.',
+            ], 402);
+        }
+
+        return $this->pdfService->downloadPdf($will);
+    }
+
+    public function previewPdf(Will $will)
+    {
+        $this->authorize('view', $will);
+
+        // Preview always shows the current version (draft watermark if unpaid)
+        return $this->pdfService->streamPdf($will);
+    }
+
+    public function regeneratePdf(Will $will): JsonResponse
+    {
+        $this->authorize('update', $will);
+
+        try {
+            $this->pdfService->regeneratePdf($will);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'PDF regenerated successfully.',
+                'pdf_path' => $will->fresh()->pdf_path,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to regenerate PDF: '.$e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function processPayment(Request $request, Will $will): JsonResponse
+    {
+        $this->authorize('update', $will);
+
+        $validated = $request->validate([
+            'payment_reference' => 'required|string',
+            'payment_method' => 'required|string',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Mark as paid and remove draft status
+            $will->markAsPaid($validated['payment_reference']);
+
+            // Regenerate PDF without draft watermark
+            $this->pdfService->removeDraftWatermark($will);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment processed successfully. Draft status removed.',
+                'data' => [
+                    'will_id' => $will->id,
+                    'is_draft' => false,
+                    'status' => 'completed',
+                    'paid_at' => $will->paid_at,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment processing failed: '.$e->getMessage(),
+            ], 500);
+        }
     }
 
     private function calculateAmount(string $willType): float
