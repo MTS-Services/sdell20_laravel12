@@ -109,7 +109,7 @@ export function FrontendHeader() {
             </div>
 
             {/* Main Navigation */}
-            <nav className="w-full bg-primary-600">
+            <nav className="w-full bg-primary-700">
                 <div className="mx-auto flex container items-center justify-between px-4 lg:px-6">
                     {/* Logo */}
                     <Link href="/" className="flex shrink-0 items-center py-3">
