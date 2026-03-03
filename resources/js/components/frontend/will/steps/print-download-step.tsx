@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePage } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
 import generateWillPdf from '@/components/frontend/will/generate-will-pdf';
 import type { WillData } from './will-types';
 
@@ -26,11 +27,92 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
     const [isGenerating, setIsGenerating] = useState(false);
     const [hasPaid, setHasPaid] = useState(false);
     const [isCheckingPayment, setIsCheckingPayment] = useState(false);
+    const [savedWillId, setSavedWillId] = useState<number | null>(() => {
+        if (typeof window === 'undefined') {
+            return null;
+        }
+
+        const stored = window.sessionStorage.getItem('saved_will_id');
+        if (!stored) {
+            return null;
+        }
+
+        const parsed = Number(stored);
+        return Number.isNaN(parsed) ? null : parsed;
+    });
+    const [isSavingWill, setIsSavingWill] = useState(false);
+    const [saveError, setSaveError] = useState<string | null>(null);
+    const [hasAutoSaved, setHasAutoSaved] = useState(false);
     const page = usePage();
     const auth = (page.props as { auth?: { user?: { id: number } } }).auth;
     const isLoggedIn = Boolean(auth?.user?.id);
 
     const productType = willType === 'Mirror' ? 'mirror_will' : 'single_will';
+
+    const payload = useMemo(() => ({
+        will_type: willType,
+        personal_info: data.personalInfo,
+        spouse: data.spouse,
+        executors: data.executors,
+        alternate_executors: data.alternateExecutors,
+        children: data.children,
+        guardians: data.guardians,
+        beneficiaries: data.beneficiaries,
+        specific_gifts: data.specificGifts,
+        total_failure_beneficiaries: data.totalFailureBeneficiaries,
+        pets: data.pets,
+        additional_clauses: data.additionalClauses,
+        signing_timeline: data.signingTimeline,
+        signing_date: data.signingDate || null,
+        signing_city: data.signingCity,
+        signing_country: data.signingCountry,
+        form_data: data,
+    }), [data, willType]);
+
+    const saveWillData = useCallback(async () => {
+        if (!isLoggedIn) {
+            return;
+        }
+
+        setIsSavingWill(true);
+        setSaveError(null);
+
+        try {
+            const response = await fetch('/wills/save-draft', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-XSRF-TOKEN': getCsrfToken(),
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    ...payload,
+                    will_id: savedWillId ?? undefined,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save will data');
+            }
+
+            const result = await response.json() as {
+                data?: { will_id?: number };
+            };
+
+            const newId = result?.data?.will_id;
+            if (newId) {
+                setSavedWillId(newId);
+                if (typeof window !== 'undefined') {
+                    window.sessionStorage.setItem('saved_will_id', String(newId));
+                }
+            }
+        } catch (error) {
+            setSaveError('Unable to save your Will details. Please try again.');
+        } finally {
+            setIsSavingWill(false);
+        }
+    }, [isLoggedIn, payload, savedWillId]);
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -65,6 +147,19 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
 
         checkPaymentStatus();
     }, [isLoggedIn, productType]);
+
+    useEffect(() => {
+        if (!isLoggedIn || hasAutoSaved) {
+            return;
+        }
+
+        setHasAutoSaved(true);
+        void saveWillData();
+    }, [hasAutoSaved, isLoggedIn, saveWillData]);
+
+    const handleRetrySave = () => {
+        void saveWillData();
+    };
 
     const handleDownload = useCallback(async () => {
         if (!hasPaid) {
@@ -106,9 +201,40 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
 
     return (
         <div>
-            <h2 className="text-2xl md:text-3xl font-normal text-primary-700 mb-4">
-                Review & Download
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl md:text-3xl font-normal text-primary-700">
+                    Review & Download
+                </h2>
+
+                <button
+                    type="button"
+                    onClick={() => window.location.href = '/wills'}
+                    className="inline-flex items-center gap-2 px-6 py-2 text-primary-600 rounded font-semibold text-xs uppercase tracking-wide hover:bg-primary-50 transition-colors cursor-pointer"
+                >
+                    <ArrowLeft className="h-3.5 w-3.5" />
+                    Back to Wills
+                </button>
+            </div>
+            {isLoggedIn && (
+                <div className="mb-4">
+                    {saveError ? (
+                        <div className="flex flex-col gap-2 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-xs text-amber-800">
+                            <span>{saveError}</span>
+                            <button
+                                type="button"
+                                onClick={handleRetrySave}
+                                className="self-start rounded border border-amber-500 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-700 transition hover:bg-amber-100"
+                            >
+                                Try again
+                            </button>
+                        </div>
+                    ) : (
+                        <p className="text-xs font-medium text-primary-500">
+                            {isSavingWill ? 'Saving your Will details…' : 'Your Will details are safely saved to your account.'}
+                        </p>
+                    )}
+                </div>
+            )}
             <p className="text-sm text-primary-500 mb-8">
                 Review your will details below, then print or download your document.
             </p>
@@ -180,6 +306,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
                             >
                                 {isGenerating ? 'PREPARING PDF…' : 'DOWNLOAD FINAL WILL'}
                             </button>
+
                         </div>
                     </>
                 ) : (

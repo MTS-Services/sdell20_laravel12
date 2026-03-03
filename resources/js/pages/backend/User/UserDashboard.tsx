@@ -20,10 +20,16 @@ const dashboardActions = [
         title: 'Start your Will',
         icon: FileEdit,
     },
+
     {
-        id: 'help',
-        title: 'Help',
-        icon: LifeBuoy,
+        id: 'lpa-list',
+        title: 'LPA Lists',
+        icon: BookOpenText,
+    },
+    {
+        id: 'will-list',
+        title: 'Will Lists',
+        icon: ScrollText,
     },
 ];
 
@@ -38,6 +44,22 @@ export default function UserDashboard({ user }: Props) {
 
         if (actionId === 'help') {
             setHelpOpen(true);
+            return;
+        }
+
+        if (actionId === 'start-will') {
+            router.visit(route('will-writing.start'));
+            return;
+        }
+
+        if (actionId === 'lpa-list') {
+            router.visit(route('lpas.index'));
+            return;
+        }
+
+        if (actionId === 'will-list') {
+            router.visit(route('wills.index'));
+            return;
         }
     };
 
