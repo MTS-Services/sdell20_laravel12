@@ -13,7 +13,7 @@ export function FrontendFooter() {
                             <AppLogo className="h-16 md:h-20 lg:h-24" />
                         </Link>
 
-                        <div className="flex items-center gap-4 sm:pl-14 ">
+                        <div className="flex items-center gap-4  ">
                             {/* Facebook */}
                             <a
                                 href="#"
