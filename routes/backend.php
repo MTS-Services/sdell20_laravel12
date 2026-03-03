@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\Admin\AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\AdminUserController;
 use App\Http\Controllers\Backend\Admin\TwilioController;
 use App\Http\Controllers\Backend\LpaController;
+use App\Http\Controllers\Backend\WillController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentVerificationController;
@@ -63,6 +64,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Payment Processing
         Route::post('/{lpa}/payment', [LpaController::class, 'processPayment'])->name('payment');
+    });
+
+    // Will Routes
+    Route::prefix('wills')->name('wills.')->group(function () {
+        Route::get('/', [WillController::class, 'index'])->name('index');
+        Route::post('/', [WillController::class, 'store'])->name('store');
+        Route::post('/save-draft', [WillController::class, 'saveDraft'])->name('save-draft');
+        Route::get('/{will}', [WillController::class, 'show'])->name('show');
+        Route::delete('/{will}', [WillController::class, 'destroy'])->name('destroy');
     });
 
     // Profile Routes

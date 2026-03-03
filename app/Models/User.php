@@ -99,6 +99,11 @@ class User extends Authenticatable
         return $this->hasMany(Lpa::class);
     }
 
+    public function wills(): HasMany
+    {
+        return $this->hasMany(Will::class);
+    }
+
     /**
      * Check if the user has a completed payment for a specific product.
      */
