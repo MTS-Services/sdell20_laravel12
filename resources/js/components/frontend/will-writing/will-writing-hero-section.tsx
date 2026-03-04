@@ -6,7 +6,7 @@ const heroContent = {
     heading: 'Save £50 when you start your will online',
     description: 'Offer ends 15 February. We’ll apply the discount automatically when you finish the online part of our service.',
     legal: 'This offer is only available in England and Wales. Full terms and conditions apply.',
-    primaryCtaLabel: 'Get started now',
+    primaryCtaLabel: "Let's get started",
 };
 
 
@@ -26,13 +26,9 @@ export function WillWritingHeroSection() {
                         <p className="mt-2 text-sm md:text-base lg:text-lg   text-primary-700">{heroContent.legal}</p>
                         <button
                             onClick={handleGetStarted}
-                            className="mt-6 inline-flex max-w-50 items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-3 text-sm lg:text-base font-semibold text-primary-900 shadow-[0_12px_30px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
+                            className="mt-6 inline-flex w-full sm:w-96 items-center justify-center rounded-xl bg-[#05baf2] px-10 py-4 text-base font-semibold text-white shadow-[0_12px_30px_rgba(5,186,242,0.45)] transition hover:bg-[#04a8db] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#05baf2]"
                         >
                             {heroContent.primaryCtaLabel}
-                            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                                <path d="M5 12h14" />
-                                <path d="M12 5l7 7-7 7" />
-                            </svg>
                         </button>
                     </div>
                     <div className="relative image-card rounded-[30px] border border-slate-100">
