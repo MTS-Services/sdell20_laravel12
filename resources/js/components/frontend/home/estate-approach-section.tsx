@@ -20,7 +20,7 @@ const lpaSteps = [
       "The documents are clearly labelled indicating exactly where to sign. Simply sign and date them and you’re ready to register.",
   },
   {
-    title: "Documents are posted",
+    title: "Documents are downloaded PDF",
     description:
       "Post your document using the envelope provided. Once registered, your document will be sent back to you ready to use.",
   },
