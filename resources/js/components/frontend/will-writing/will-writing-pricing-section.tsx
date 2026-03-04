@@ -1,4 +1,5 @@
 import React from 'react';
+import { router } from '@inertiajs/react';
 
 const pricingOptions = [
     {
@@ -20,6 +21,10 @@ const pricingOptions = [
 ];
 
 export function WillWritingPricingSection() {
+    const handleStart = () => {
+        router.visit('/will-writing/start');
+    };
+
     return (
         <section id="pricing" className="px-4 pt-6 lg:pt-16 sm:px-6 lg:px-10">
             <div className="mx-auto max-w-4xl">
@@ -52,8 +57,8 @@ export function WillWritingPricingSection() {
                     All prices include VAT and this offer is available in England and Wales. Full <span className="text-primary-600 underline">terms and conditions</span> apply.
                 </p>
                 <div className="mt-10 flex justify-center">
-                    <button className="inline-flex items-center gap-2 rounded-full border border-primary-600 bg-primary-600 hover:text-primary-600 px-8 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-transparent">
-                        Get started
+                    <button onClick={handleStart} className="mt-6 inline-flex w-full sm:w-96 items-center justify-center rounded-xl bg-[#05baf2] px-10 py-4 text-base font-semibold text-white shadow-[0_12px_30px_rgba(5,186,242,0.45)] transition hover:bg-[#04a8db] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#05baf2]">
+                        Let's get started
                         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M5 12h14" />
                             <path d="M12 5l7 7-7 7" />
