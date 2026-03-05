@@ -9,10 +9,10 @@ class RegisterResponse implements RegisterResponseContract
 {
     public function toResponse($request)
     {
-        $redirect = route('dashboard');
+        $redirect = $request->input('redirect', route('dashboard'));
 
         return $request->wantsJson()
             ? new JsonResponse(['two_factor' => false])
-            : redirect()->intended($redirect);
+            : redirect()->to($redirect);
     }
 }
