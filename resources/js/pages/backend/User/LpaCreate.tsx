@@ -296,15 +296,19 @@ export default function LpaCreate({ user }: Props) {
         setSubmitError(null);
 
         try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const xsrfMatch = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+            const csrfToken = xsrfMatch
+                ? decodeURIComponent(xsrfMatch[1])
+                : (document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
 
             const response = await fetch('/lpas', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken || '',
+                    'X-XSRF-TOKEN': csrfToken,
                     'Accept': 'application/json',
                 },
+                credentials: 'same-origin',
                 body: JSON.stringify({
                     who_for: selectedWhoOption,
                     document_type: selectedDocumentOption,
