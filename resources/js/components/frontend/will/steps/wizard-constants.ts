@@ -1,4 +1,4 @@
-export const TOTAL_INTERNAL_STEPS = 13;
+export const TOTAL_INTERNAL_STEPS = 14;
 
 export const WIZARD_STEPS = [
     { key: 'get-started', title: 'Get Started' },
@@ -6,6 +6,7 @@ export const WIZARD_STEPS = [
     { key: 'children', title: 'Children' },
     { key: 'gifts', title: 'Gifts' },
     { key: 'remainder', title: 'Remainder' },
+    { key: 'payment', title: 'Payment' },
     { key: 'final-details', title: 'Final Details' },
     { key: 'signing', title: 'Signing' },
     { key: 'print-download', title: 'Print/Download' }

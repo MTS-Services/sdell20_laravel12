@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,9 @@ import AuthLayout from '@/layouts/auth-layout';
 import { store } from '@/routes/register';
 
 export default function Register() {
+    const { url } = usePage();
+    const redirectParam = new URLSearchParams(url.split('?')[1] || '').get('redirect') ?? '';
+
     return (
         <AuthLayout
             title="Create an account"
@@ -34,6 +37,9 @@ export default function Register() {
                 >
                     {({ processing, errors }) => (
                         <>
+                            {redirectParam && (
+                                <input type="hidden" name="redirect" value={redirectParam} />
+                            )}
                             <div className="space-y-3">
                                 {/* Card: Name */}
                                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 sm:p-5 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">

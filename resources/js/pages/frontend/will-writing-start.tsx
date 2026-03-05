@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Users, FileText, Clock, User, Heart } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
 import StepsHeader from '@/components/frontend/will/steps-header';
 import type {
     MaritalStatus, PersonalInfo, Beneficiary, Executor, Child,
@@ -13,6 +14,7 @@ import DelayInheritanceStep from '@/components/frontend/will/steps/delay-inherit
 import GiftsStep from '@/components/frontend/will/steps/gifts-step';
 import RemainderStep from '@/components/frontend/will/steps/remainder-step';
 import TotalFailureClauseStep from '@/components/frontend/will/steps/total-failure-clause-step';
+import PaymentStep from '@/components/frontend/will/steps/payment-step';
 import PetsStep from '@/components/frontend/will/steps/pets-step';
 import AdditionalDetailsStep from '@/components/frontend/will/steps/additional-details-step';
 import SigningStep from '@/components/frontend/will/steps/signing-step';
@@ -48,26 +50,47 @@ const MaritalStatusCard: React.FC<{
 
 const LAST_STEP = TOTAL_INTERNAL_STEPS - 1; // 12 — Review & Download
 
+function restoreSessionData(): { restoredData: WillData | null; restoredType: 'Me' | 'Mirror' | null } {
+    let restoredData: WillData | null = null;
+    let restoredType: 'Me' | 'Mirror' | null = null;
+    try {
+        const raw = sessionStorage.getItem('will_draft_data');
+        if (raw) restoredData = JSON.parse(raw) as WillData;
+        const rawType = sessionStorage.getItem('will_draft_type');
+        if (rawType === 'Me' || rawType === 'Mirror') restoredType = rawType;
+    } catch { /* ignore */ }
+    return { restoredData, restoredType };
+}
+
 function getInitialState(): { phase: 'landing' | 'wizard'; step: number; restoredData: WillData | null; restoredType: 'Me' | 'Mirror' | null } {
     if (typeof window === 'undefined') return { phase: 'landing', step: 0, restoredData: null, restoredType: null };
 
     const params = new URLSearchParams(window.location.search);
-    if (params.get('step') === 'download') {
-        // Came back from payment — jump straight to the last step
-        let restoredData: WillData | null = null;
-        let restoredType: 'Me' | 'Mirror' | null = null;
-        try {
-            const raw = sessionStorage.getItem('will_draft_data');
-            if (raw) restoredData = JSON.parse(raw) as WillData;
-            const rawType = sessionStorage.getItem('will_draft_type');
-            if (rawType === 'Me' || rawType === 'Mirror') restoredType = rawType;
-        } catch { /* ignore */ }
 
-        // Clean up the URL so a refresh doesn't keep jumping
+    // Came back from payment — jump to Final Details (step 10)
+    if (params.get('step') === 'payment-complete') {
+        const { restoredData, restoredType } = restoreSessionData();
         const cleanUrl = window.location.pathname;
         window.history.replaceState({}, '', cleanUrl);
+        return { phase: 'wizard', step: 10, restoredData, restoredType };
+    }
 
+    // Legacy: came back from old payment flow — jump to Print/Download (last step)
+    if (params.get('step') === 'download') {
+        const { restoredData, restoredType } = restoreSessionData();
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
         return { phase: 'wizard', step: LAST_STEP, restoredData, restoredType };
+    }
+
+    // Came back from registration — resume at step 1 (Executors)
+    if (params.get('resume') === 'will') {
+        const { restoredData, restoredType } = restoreSessionData();
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
+        if (restoredData) {
+            return { phase: 'wizard', step: 1, restoredData, restoredType };
+        }
     }
 
     return { phase: 'landing', step: 0, restoredData: null, restoredType: null };
@@ -75,6 +98,9 @@ function getInitialState(): { phase: 'landing' | 'wizard'; step: number; restore
 
 const WillCreationWizard: React.FC = () => {
     const initialState = getInitialState();
+    const page = usePage();
+    const auth = (page.props as { auth?: { user?: { id: number } } }).auth;
+    const isLoggedIn = Boolean(auth?.user?.id);
     const [phase, setPhase] = useState<'landing' | 'wizard'>(initialState.phase);
     const [currentStep, setCurrentStep] = useState(initialState.step);
     const [isSaving, setIsSaving] = useState(false);
@@ -384,6 +410,19 @@ const WillCreationWizard: React.FC = () => {
             }
         }
 
+        // After Get Started step (step 0), redirect to register if not logged in
+        if (currentStep === 0 && !isLoggedIn) {
+            // Save will data to sessionStorage so it survives the registration round-trip
+            try {
+                sessionStorage.setItem('will_draft_data', JSON.stringify(willData));
+                sessionStorage.setItem('will_draft_type', shouldShowSpouseStep ? 'Mirror' : 'Me');
+            } catch { /* storage full — best effort */ }
+
+            // Set intended URL so Fortify redirects back after registration
+            window.location.href = `/register?redirect=${encodeURIComponent('/will-writing/start?resume=will')}`;
+            return;
+        }
+
         if (!isLastStep) {
             setIsSaving(true);
             setTimeout(() => {
@@ -424,17 +463,19 @@ const WillCreationWizard: React.FC = () => {
         }
     };
 
-    // 8 visible nav steps. Executor has 2 sub-steps (1,2). Children has 3 (3,4,5). Remainder has 2 (7,8). Final Details has 2 (9,10).
+    // 9 visible nav steps. Executor has 2 sub-steps (1,2). Children has 3 (3,4,5). Remainder has 2 (7,8). Final Details has 2 (10,11).
     // Internal → nav index mapping:
-    // 0→0(GetStarted), 1,2→1(Executor), 3,4,5→2(Children), 6→3(Gifts), 7,8→4(Remainder), 9,10→5(FinalDetails), 11→6(Signing), 12→7(Print)
+    // 0→0(GetStarted), 1,2→1(Executor), 3,4,5→2(Children), 6→3(Gifts), 7,8→4(Remainder), 9→5(Payment), 10,11→6(FinalDetails), 12→7(Signing), 13→8(Print)
     const getNavIndex = (step: number): number => {
         if (step <= 0) return 0;
         if (step <= 2) return 1;
         if (step <= 5) return 2;
         if (step === 6) return 3;
         if (step <= 8) return 4;
-        if (step <= 10) return 5;
-        return step - 5;
+        if (step === 9) return 5;
+        if (step <= 11) return 6;
+        if (step === 12) return 7;
+        return 8;
     };
 
     const currentNavIndex = getNavIndex(currentStep);
@@ -446,19 +487,21 @@ const WillCreationWizard: React.FC = () => {
         if (step === 2) return (1.90 / WIZARD_STEPS.length) * 100;    // Backup Executor
         if (step === 3) return (2.33 / WIZARD_STEPS.length) * 100;    // Children
         if (step === 4) return (2.66 / WIZARD_STEPS.length) * 100;    // Guardian
-        if (step === 5) return (2.80 / WIZARD_STEPS.length) * 100;       // Delay Inheritance
+        if (step === 5) return (2.80 / WIZARD_STEPS.length) * 100;    // Delay Inheritance
         if (step === 6) return (3.50 / WIZARD_STEPS.length) * 100;    // Gifts
         if (step === 7) return (4 / WIZARD_STEPS.length) * 100;       // Remainder of Estate
         if (step === 8) return (4.66 / WIZARD_STEPS.length) * 100;    // Total Failure Clause
-        if (step === 9) return (5.33 / WIZARD_STEPS.length) * 100;    // Pets
-        if (step === 10) return (5.66 / WIZARD_STEPS.length) * 100;   // Additional Details
-        if (step === 11) return (6.66 / WIZARD_STEPS.length) * 100;   // Signing
-        return (8 / WIZARD_STEPS.length) * 100;                        // Print/Download
+        if (step === 9) return (5.50 / WIZARD_STEPS.length) * 100;    // Payment
+        if (step === 10) return (6.33 / WIZARD_STEPS.length) * 100;   // Pets
+        if (step === 11) return (6.66 / WIZARD_STEPS.length) * 100;   // Additional Details
+        if (step === 12) return (7.50 / WIZARD_STEPS.length) * 100;   // Signing
+        return (9 / WIZARD_STEPS.length) * 100;                        // Print/Download
     };
 
     const progressPercent = getProgressPercent(currentStep);
     const isWizardComplete = currentStep === TOTAL_INTERNAL_STEPS - 1;
-    const shouldShowNavActions = phase === 'wizard' && !isWizardComplete;
+    const isPaymentStep = currentStep === 9;
+    const shouldShowNavActions = phase === 'wizard' && !isWizardComplete && !isPaymentStep;
 
     useEffect(() => {
         if (phase === 'wizard' && currentStep === 1 && willData.executors.length === 0) {
@@ -608,6 +651,18 @@ const WillCreationWizard: React.FC = () => {
                 );
             case 9:
                 return (
+                    <PaymentStep
+                        willType={shouldShowSpouseStep ? 'Mirror' : 'Me'}
+                        willData={willData as unknown as Record<string, unknown>}
+                        onPaymentComplete={() => {
+                            animateTransition('left', () => {
+                                setCurrentStep(10);
+                            });
+                        }}
+                    />
+                );
+            case 10:
+                return (
                     <PetsStep
                         hasPets={willData.hasPets}
                         pets={willData.pets}
@@ -620,7 +675,7 @@ const WillCreationWizard: React.FC = () => {
                         onChangePets={(pets: Pet[]) => setWillData({ ...willData, pets })}
                     />
                 );
-            case 10:
+            case 11:
                 return (
                     <AdditionalDetailsStep
                         wantsClauses={willData.wantsAdditionalClauses}
@@ -634,7 +689,7 @@ const WillCreationWizard: React.FC = () => {
                         onChangeClauses={(clauses: AdditionalClause[]) => setWillData({ ...willData, additionalClauses: clauses })}
                     />
                 );
-            case 11:
+            case 12:
                 return (
                     <SigningStep
                         signingTimeline={willData.signingTimeline}
@@ -647,7 +702,7 @@ const WillCreationWizard: React.FC = () => {
                         onChangeCountry={(value) => setWillData({ ...willData, signingCountry: value })}
                     />
                 );
-            case 12:
+            case 13:
                 return <PrintDownloadStep
                     data={willData}
                     willType={shouldShowSpouseStep ? 'Mirror' : 'Me'}
@@ -665,7 +720,7 @@ const WillCreationWizard: React.FC = () => {
 
                 {/* Dark Header */}
                 <div className="bg-slate-700 px-4 py-14">
-                    <div className="max-w-5xl mx-auto text-center">
+                    <div className="max-w-6xl mx-auto text-center">
                         <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 leading-tight">
                             Create Your Legally Sound Will Online
                         </h1>
@@ -741,7 +796,7 @@ const WillCreationWizard: React.FC = () => {
 
             {/* Dark Header with Step Navigation */}
             <div className="bg-slate-700">
-                <div className="max-w-5xl mx-auto px-4 py-10 lg:py-14">
+                <div className="max-w-6xl mx-auto px-4 py-10 lg:py-14">
                     <h1 className="text-lg md:text-xl lg:text-2xl font-semibold text-white uppercase tracking-wider mb-6">
                         Create Your Legally Sound Will Online
                     </h1>
@@ -756,7 +811,12 @@ const WillCreationWizard: React.FC = () => {
                                 if (navIdx === 0) return 0;
                                 if (navIdx === 1) return 1;
                                 if (navIdx === 2) return 3;
-                                return navIdx + 3;
+                                if (navIdx === 3) return 6;
+                                if (navIdx === 4) return 7;
+                                if (navIdx === 5) return 9;
+                                if (navIdx === 6) return 10;
+                                if (navIdx === 7) return 12;
+                                return 13;
                             };
 
                             return (
