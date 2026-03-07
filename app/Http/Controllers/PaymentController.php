@@ -168,6 +168,41 @@ class PaymentController extends Controller
     }
 
     /**
+     * Process payment for Will Writing Online platform purchase.
+     */
+    public function processPlatformPayment(Request $request): JsonResponse
+    {
+        $product = PaymentProduct::WillWritingPlatform;
+        $amount = $product->amountInPence();
+
+        $metadata = [
+            'product' => $product->value,
+        ];
+
+        $payment = Payment::query()->create([
+            'user_id' => $request->user()->id,
+            'stripe_payment_intent_id' => null,
+            'amount' => $amount,
+            'currency' => 'gbp',
+            'status' => PaymentStatus::Pending,
+            'metadata' => $metadata,
+        ]);
+
+        $checkoutUrl = route('checkout', [
+            'amount' => $amount,
+            'currency' => 'gbp',
+            'payment_id' => $payment->id,
+            'product' => $product->value,
+            'redirect_url' => route('dashboard'),
+        ]);
+
+        return response()->json([
+            'payment_id' => $payment->id,
+            'checkout_url' => $checkoutUrl,
+        ]);
+    }
+
+    /**
      * If the payment is for an LPA product, mark the associated LPA as paid and regenerate PDF.
      */
     private function fulfillLpaPayment(Payment $payment, $user): void

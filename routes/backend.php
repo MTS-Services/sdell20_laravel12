@@ -19,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/payment/intent', [PaymentController::class, 'createIntent']);
     Route::post('/payment/confirm', [PaymentController::class, 'confirmPayment']);
     Route::post('/payment/verify', [PaymentVerificationController::class, 'check'])->name('payment.verify');
+    Route::post('/payment/platform', [PaymentController::class, 'processPlatformPayment'])->name('payment.platform');
 
     // Dashboard Routes
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');

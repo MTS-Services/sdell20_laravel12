@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useReveal } from '@/hooks/use-reveal';
+import { router } from '@inertiajs/react';
 
 const features = [
     {
@@ -24,6 +25,22 @@ const features = [
 export function JobSection() {
     const [textRef, textVisible] = useReveal<HTMLDivElement>();
     const [cardRef, cardVisible] = useReveal<HTMLDivElement>(0.2);
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    const handlePayment = () => {
+        setIsProcessing(true);
+
+        router.visit(
+            route('checkout', {
+                amount: 99500,
+                product: 'will_writing_platform',
+                redirect_url: route('dashboard'),
+            }),
+            {
+                onFinish: () => setIsProcessing(false),
+            },
+        );
+    };
 
     return (
         <section className="py-20 sm:py-24">
@@ -77,12 +94,13 @@ export function JobSection() {
                         </div>
 
                         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-                            <a
-                                href="mailto:support@willwrite.online"
-                                className="inline-flex items-center border border-primary-500 justify-center gap-2 rounded-full bg-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-transparent hover:text-primary-500"
+                            <button
+                                onClick={handlePayment}
+                                disabled={isProcessing}
+                                className="inline-flex items-center border border-primary-500 justify-center gap-2 rounded-full bg-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-transparent hover:text-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Request demo access →
-                            </a>
+                                {isProcessing ? 'Processing...' : 'Purchase Now - £995 →'}
+                            </button>
                             <a
                                 href="mailto:support@willwrite.online"
                                 className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary-900 px-8 py-3 text-sm font-semibold text-primary-900 transition hover:bg-primary-500 hover:text-white"
