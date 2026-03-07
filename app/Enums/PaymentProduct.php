@@ -12,6 +12,8 @@ enum PaymentProduct: string
 
     case LpaHealth = 'lpa_health';
 
+    case WillWritingPlatform = 'will_writing_platform';
+
     public function label(): string
     {
         return match ($this) {
@@ -19,6 +21,7 @@ enum PaymentProduct: string
             self::MirrorWill => 'Mirror Wills',
             self::LpaProperty => 'LPA - Property & Finance',
             self::LpaHealth => 'LPA - Health & Welfare',
+            self::WillWritingPlatform => 'Will Writing Online Platform',
         };
     }
 
@@ -32,6 +35,7 @@ enum PaymentProduct: string
             self::MirrorWill => 9999,
             self::LpaProperty => 13999,
             self::LpaHealth => 13999,
+            self::WillWritingPlatform => 99500,
         };
     }
 
