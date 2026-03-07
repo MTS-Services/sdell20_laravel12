@@ -64,6 +64,18 @@ export function JobSection() {
                         <p className="text-base leading-relaxed text-primary-700 sm:text-lg">
                             We provide deployment guidance plus 30 days of handover support so you can onboard paying clients fast.
                         </p>
+
+                        {/* Pricing Stripe */}
+                        <div className="rounded-2xl border-2 border-primary-500 bg-primary-50/50 p-6 text-center">
+                            <p className="text-sm uppercase tracking-[0.3em] text-primary-600 font-semibold">Business Opportunity</p>
+                            <div className="mt-3 flex items-baseline justify-center gap-2">
+                                <span className="text-5xl font-bold text-primary-900">£995</span>
+                            </div>
+                            <p className="mt-3 text-sm text-primary-700">
+                                One-time payment for complete platform access
+                            </p>
+                        </div>
+
                         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
                             <a
                                 href="mailto:support@willwrite.online"
