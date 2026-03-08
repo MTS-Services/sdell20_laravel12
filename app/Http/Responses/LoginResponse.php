@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Events\UserLoggedIn;
 use App\Jobs\SyncUserAvailabilityJob;
 use App\Jobs\SyncWhenIWorkUsersJob;
 use Illuminate\Http\JsonResponse;
@@ -20,19 +21,24 @@ class LoginResponse implements LoginResponseContract
     {
         $user = $request->user();
 
-        if ($user && $user->wheniwork_token) {
-            // Always sync WhenIWork users on login
-            Log::info('Dispatching WhenIWork users sync job on login', [
-                'user_id' => $user->id,
-            ]);
-            SyncWhenIWorkUsersJob::dispatch($user->id, $user->wheniwork_token);
+        if ($user) {
+            // Dispatch UserLoggedIn event to send welcome email
+            UserLoggedIn::dispatch($user);
 
-            // Sync availability based on config
-            if (config('availability.sync_mode') === 'login') {
-                SyncUserAvailabilityJob::dispatch(
-                    $user->id,
-                    $user->wheniwork_token
-                );
+            if ($user->wheniwork_token) {
+                // Always sync WhenIWork users on login
+                Log::info('Dispatching WhenIWork users sync job on login', [
+                    'user_id' => $user->id,
+                ]);
+                SyncWhenIWorkUsersJob::dispatch($user->id, $user->wheniwork_token);
+
+                // Sync availability based on config
+                if (config('availability.sync_mode') === 'login') {
+                    SyncUserAvailabilityJob::dispatch(
+                        $user->id,
+                        $user->wheniwork_token
+                    );
+                }
             }
         }
 
