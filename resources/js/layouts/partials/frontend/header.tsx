@@ -140,9 +140,9 @@ export function FrontendHeader() {
                                     : 'invisible -translate-y-1 opacity-0 pointer-events-none'
                                     }`}
                             >
-                                <div className="mt-3 flex w-[440px] overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/5">
+                                <div className="mt-3 flex w-80 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/5">
                                     {/* Left dark panel */}
-                                    <div className="w-1/2 space-y-5 bg-linear-to-br from-primary-900 via-primary-800 to-primary-700 p-5">
+                                    <div className="w-full space-y-5 bg-linear-to-br from-primary-900 via-primary-800 to-primary-700 p-5">
                                         <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary-200">
                                             About Us
                                         </p>
@@ -179,7 +179,7 @@ export function FrontendHeader() {
                                         </ul>
                                     </div>
 
-                                    {/* Right white panel */}
+                                    {/* Right white panel
                                     <div className="flex w-1/2 flex-col justify-center bg-white p-6">
                                         <div className="space-y-3">
                                             <div className="flex items-center gap-2 text-primary-700">
@@ -204,7 +204,7 @@ export function FrontendHeader() {
                                                 Take the 1 min quiz to discover the right estate plan for you.
                                             </p>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
