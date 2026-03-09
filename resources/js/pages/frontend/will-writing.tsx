@@ -9,6 +9,7 @@ import { WillWritingProcessSection } from '@/components/frontend/will-writing/wi
 import FrontendLayout from '@/layouts/frontend-layout';
 import { TeamSection } from '@/components/frontend/horizon-wills/team-section';
 import { LpaFaqSection } from '@/components/frontend/lpa/lpa-faq-section';
+import { EstateApproachSection } from '@/components/frontend/home/estate-approach-section';
 
 export default function WillWriting() {
     return (
@@ -22,6 +23,7 @@ export default function WillWriting() {
                 <WillWritingCalloutsSection />
                 <WillWritingAboutSection />
                 {/* <TeamSection /> */}
+                 <EstateApproachSection />
             </main>
         </FrontendLayout>
     );
