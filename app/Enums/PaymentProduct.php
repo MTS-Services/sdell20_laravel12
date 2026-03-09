@@ -14,6 +14,8 @@ enum PaymentProduct: string
 
     case WillWritingPlatform = 'will_writing_platform';
 
+    case ProbateReferral = 'probate_referral';
+
     public function label(): string
     {
         return match ($this) {
@@ -22,6 +24,7 @@ enum PaymentProduct: string
             self::LpaProperty => 'LPA - Property & Finance',
             self::LpaHealth => 'LPA - Health & Welfare',
             self::WillWritingPlatform => 'Will Writing Online Platform',
+            self::ProbateReferral => 'Probate Referral Service',
         };
     }
 
@@ -36,6 +39,7 @@ enum PaymentProduct: string
             self::LpaProperty => 13999,
             self::LpaHealth => 13999,
             self::WillWritingPlatform => 99500,
+            self::ProbateReferral => 35000,
         };
     }
 
@@ -44,7 +48,7 @@ enum PaymentProduct: string
      */
     public function vatAmountInPence(): int
     {
-        if ($this->isWill() || $this->isLpa()) {
+        if ($this->isWill() || $this->isLpa() || $this === self::ProbateReferral) {
             return (int) round($this->baseAmountInPence() * 0.20);
         }
 

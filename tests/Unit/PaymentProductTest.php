@@ -79,12 +79,32 @@ describe('PaymentProduct', function () {
         });
     });
 
+    describe('Probate Referral', function () {
+        it('calculates base amount correctly', function () {
+            expect(PaymentProduct::ProbateReferral->baseAmountInPence())->toBe(35000);
+        });
+
+        it('calculates VAT at 20%', function () {
+            expect(PaymentProduct::ProbateReferral->vatAmountInPence())->toBe(7000);
+        });
+
+        it('has no registrar fee', function () {
+            expect(PaymentProduct::ProbateReferral->registrarFeeInPence())->toBe(0);
+        });
+
+        it('calculates total amount including VAT', function () {
+            $total = PaymentProduct::ProbateReferral->amountInPence();
+            expect($total)->toBe(42000); // £350.00 + £70.00 VAT = £420.00
+        });
+    });
+
     describe('Helper methods', function () {
         it('identifies will products correctly', function () {
             expect(PaymentProduct::SingleWill->isWill())->toBeTrue();
             expect(PaymentProduct::MirrorWill->isWill())->toBeTrue();
             expect(PaymentProduct::LpaProperty->isWill())->toBeFalse();
             expect(PaymentProduct::LpaHealth->isWill())->toBeFalse();
+            expect(PaymentProduct::ProbateReferral->isWill())->toBeFalse();
         });
 
         it('identifies LPA products correctly', function () {
@@ -92,6 +112,7 @@ describe('PaymentProduct', function () {
             expect(PaymentProduct::LpaHealth->isLpa())->toBeTrue();
             expect(PaymentProduct::SingleWill->isLpa())->toBeFalse();
             expect(PaymentProduct::MirrorWill->isLpa())->toBeFalse();
+            expect(PaymentProduct::ProbateReferral->isLpa())->toBeFalse();
         });
     });
 });
