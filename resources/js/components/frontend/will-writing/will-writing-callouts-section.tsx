@@ -14,7 +14,7 @@ export function WillWritingCalloutsSection() {
                 <h3 className="text-2xl font-serif font-semibold text-primary-900">
                     Call us now on{' '}
                     <a href="tel:02045253605" className="font-bold text-primary-600">
-                        020 4525 3605
+                 
                     </a>{' '}
                     to learn more about
                 </h3>
