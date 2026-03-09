@@ -21,7 +21,7 @@ export default function WillWriting() {
                 <LpaFaqSection />
                 <WillWritingCalloutsSection />
                 <WillWritingAboutSection />
-                <TeamSection />
+                {/* <TeamSection /> */}
             </main>
         </FrontendLayout>
     );
