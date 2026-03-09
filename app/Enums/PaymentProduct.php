@@ -26,9 +26,9 @@ enum PaymentProduct: string
     }
 
     /**
-     * Amount in pence for Stripe.
+     * Base amount in pence (before VAT and registrar fees).
      */
-    public function amountInPence(): int
+    public function baseAmountInPence(): int
     {
         return match ($this) {
             self::SingleWill => 6999,
@@ -37,6 +37,38 @@ enum PaymentProduct: string
             self::LpaHealth => 13999,
             self::WillWritingPlatform => 99500,
         };
+    }
+
+    /**
+     * VAT amount in pence (20% for Wills and LPAs).
+     */
+    public function vatAmountInPence(): int
+    {
+        if ($this->isWill() || $this->isLpa()) {
+            return (int) round($this->baseAmountInPence() * 0.20);
+        }
+
+        return 0;
+    }
+
+    /**
+     * Registrar fee in pence (£92 per LPA for Office of Public Guardian).
+     */
+    public function registrarFeeInPence(): int
+    {
+        if ($this->isLpa()) {
+            return 9200;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Total amount in pence for Stripe (base + VAT + registrar fee).
+     */
+    public function amountInPence(): int
+    {
+        return $this->baseAmountInPence() + $this->vatAmountInPence() + $this->registrarFeeInPence();
     }
 
     public function isWill(): bool
