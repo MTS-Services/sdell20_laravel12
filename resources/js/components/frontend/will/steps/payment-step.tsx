@@ -24,8 +24,16 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ willType, willData, onPayment
     const isLoggedIn = Boolean(auth?.user?.id);
 
     const productType = willType === 'Mirror' ? 'mirror_will' : 'single_will';
-    const price = willType === 'Mirror' ? '99.99' : '69.99';
-    const amount = willType === 'Mirror' ? 9999 : 6999;
+
+    // Base prices in pence
+    const baseAmount = willType === 'Mirror' ? 9999 : 6999;
+    const vatAmount = Math.round(baseAmount * 0.20);
+    const amount = baseAmount + vatAmount;
+
+    // Display prices
+    const basePrice = (baseAmount / 100).toFixed(2);
+    const vatPrice = (vatAmount / 100).toFixed(2);
+    const totalPrice = (amount / 100).toFixed(2);
 
     const checkPaymentStatus = useCallback(async () => {
         if (!isLoggedIn) {
@@ -129,9 +137,25 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ willType, willData, onPayment
                                 </p>
                             </div>
                             <div className="text-right">
-                                <span className="text-3xl font-bold text-primary-800">£{price}</span>
-                                <p className="text-xs text-primary-400 mt-0.5">One-time payment</p>
+                                <span className="text-3xl font-bold text-primary-800">£{totalPrice}</span>
+                                <p className="text-xs text-primary-400 mt-0.5">Inc. VAT</p>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Price Breakdown */}
+                    <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 space-y-2">
+                        <div className="flex justify-between text-sm">
+                            <span className="text-primary-600">Base price</span>
+                            <span className="text-primary-800 font-medium">£{basePrice}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                            <span className="text-primary-600">VAT (20%)</span>
+                            <span className="text-primary-800 font-medium">£{vatPrice}</span>
+                        </div>
+                        <div className="flex justify-between text-sm font-semibold pt-2 border-t border-gray-200">
+                            <span className="text-primary-800">Total</span>
+                            <span className="text-primary-800">£{totalPrice}</span>
                         </div>
                     </div>
 
@@ -168,7 +192,7 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ willType, willData, onPayment
                             className="w-full flex items-center justify-center gap-2 px-8 py-3.5 bg-emerald-600 text-white rounded-lg font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                         >
                             <CreditCard className="w-4 h-4" />
-                            {isRedirecting ? 'Redirecting to Payment...' : `Pay £${price} Now`}
+                            {isRedirecting ? 'Redirecting to Payment...' : `Pay £${totalPrice} Now`}
                         </button>
                     </div>
                 </div>

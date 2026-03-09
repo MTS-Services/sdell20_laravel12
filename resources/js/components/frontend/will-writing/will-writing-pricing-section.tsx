@@ -4,17 +4,17 @@ import { router } from '@inertiajs/react';
 const pricingOptions = [
     {
         tier: 'single will',
-        usualPrice: 'Fixed fee £69.99',
-        savings: 'New price',
-        price: '£69.99 for a single will',
+        usualPrice: 'Base price £69.99',
+        savings: 'Inc. VAT',
+        price: '£83.99 for a single will',
         blurb: "Make a will just for you, whether or not you're in a relationship.",
         bannerColor: 'from-rose-100 via-amber-100 to-rose-50',
     },
     {
         tier: 'mirror wills',
-        usualPrice: 'Fixed fee £99.99',
-        savings: 'New price',
-        price: '£99.99 for mirror wills',
+        usualPrice: 'Base price £99.99',
+        savings: 'Inc. VAT',
+        price: '£119.99 for mirror wills',
         blurb: "Make a will with someone who has wishes similar to yours, such as a partner.",
         bannerColor: 'from-emerald-100 via-sky-100 to-emerald-50',
     },
@@ -53,8 +53,8 @@ export function WillWritingPricingSection() {
                     ))}
                 </div>
                 <p className="mt-10 text-sm md:text-base lg:text-lg leading-relaxed text-primary-800">
-                    Your circumstances might mean you need a different type of will which could cost more. We’ll discuss this with you. You do not have to pay anything until you’ve spoken to us.
-                    All prices include VAT and this offer is available in England and Wales. Full <span className="text-primary-600 underline">terms and conditions</span> apply.
+                    Your circumstances might mean you need a different type of will which could cost more. We'll discuss this with you. You do not have to pay anything until you've spoken to us.
+                    All prices include 20% VAT and this offer is available in England and Wales. Full <span className="text-primary-600 underline">terms and conditions</span> apply.
                 </p>
                 <div className="mt-10 flex justify-center">
                     <button onClick={handleStart} className="mt-6 inline-flex w-full sm:w-96 items-center justify-center rounded-xl bg-[#05baf2] px-10 py-4 text-base font-semibold text-white shadow-[0_12px_30px_rgba(5,186,242,0.45)] transition hover:bg-[#04a8db] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#05baf2]">

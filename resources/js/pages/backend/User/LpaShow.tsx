@@ -75,8 +75,8 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                     <p className="mt-1 text-sm text-primary-600">Donor: {donorName}</p>
                                 </div>
                                 <div className={`rounded-full px-3 py-1 text-xs font-semibold ${hasPaid
-                                        ? 'bg-emerald-100 text-emerald-700'
-                                        : 'bg-amber-100 text-amber-700'
+                                    ? 'bg-emerald-100 text-emerald-700'
+                                    : 'bg-amber-100 text-amber-700'
                                     }`}>
                                     {hasPaid ? 'Paid' : 'Draft'}
                                 </div>
@@ -127,15 +127,45 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                     <p className="text-primary-800 font-semibold capitalize">{lpa.status}</p>
                                 </div>
                                 <div>
-                                    <p className="text-primary-500 font-medium">Amount</p>
-                                    <p className="text-primary-800 font-semibold">£{Number(lpa.amount).toFixed(2)}</p>
-                                </div>
-                                <div>
                                     <p className="text-primary-500 font-medium">Created</p>
                                     <p className="text-primary-800 font-semibold">
                                         {new Date(lpa.created_at).toLocaleDateString('en-GB')}
                                     </p>
                                 </div>
+                            </div>
+
+                            {/* Price Breakdown */}
+                            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                                <h3 className="mb-3 text-sm font-semibold text-primary-900">Price Breakdown</h3>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex justify-between">
+                                        <span className="text-primary-600">Base price</span>
+                                        <span className="font-medium text-primary-800">£{((amount - 9200) / 1.20 / 100).toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-primary-600">VAT (20%)</span>
+                                        <span className="font-medium text-primary-800">£{(((amount - 9200) / 1.20 / 100) * 0.20).toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-primary-600">Registrar fee (OPG)</span>
+                                        <span className="font-medium text-primary-800">£92.00</span>
+                                    </div>
+                                    <div className="flex justify-between border-t border-slate-300 pt-2 font-semibold">
+                                        <span className="text-primary-900">Total</span>
+                                        <span className="text-primary-900">£{(amount / 100).toFixed(2)}</span>
+                                    </div>
+                                </div>
+                                <p className="mt-3 text-xs text-primary-500">
+                                    The £92 registrar fee is mandatory for registration with the Office of Public Guardian.{' '}
+                                    <a
+                                        href="https://www.gov.uk/power-of-attorney/register"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="underline hover:text-primary-700"
+                                    >
+                                        Learn more
+                                    </a>
+                                </p>
                             </div>
 
                             {/* Actions */}
@@ -152,8 +182,8 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                     type="button"
                                     onClick={handleDownload}
                                     className={`inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition ${hasPaid
-                                            ? 'bg-emerald-600 hover:bg-emerald-700'
-                                            : 'bg-primary-600 hover:bg-primary-700'
+                                        ? 'bg-emerald-600 hover:bg-emerald-700'
+                                        : 'bg-primary-600 hover:bg-primary-700'
                                         }`}
                                 >
                                     {hasPaid ? (

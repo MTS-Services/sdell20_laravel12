@@ -15,9 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import UserLayout from '@/layouts/user-layout';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY ?? '', {
-    developerTools: { assistant: { enabled: false } },
-});
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY ?? '');
 
 function getCsrfToken(): string {
     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
@@ -186,6 +184,82 @@ interface CheckoutProps {
     redirectUrl?: string | null;
 }
 
+function calculatePriceBreakdown(product: string | null, totalAmount: number) {
+    const isLpa = product === 'lpa_property' || product === 'lpa_health';
+    const isWill = product === 'single_will' || product === 'mirror_will';
+
+    if (!isLpa && !isWill) {
+        return null;
+    }
+
+    const registrarFee = isLpa ? 9200 : 0;
+    const amountBeforeVat = totalAmount - registrarFee;
+    const baseAmount = Math.round(amountBeforeVat / 1.20);
+    const vatAmount = amountBeforeVat - baseAmount;
+
+    return {
+        baseAmount,
+        vatAmount,
+        registrarFee,
+        totalAmount,
+        isLpa,
+        isWill,
+    };
+}
+
+function PriceBreakdown({ product, amount }: { product: string | null; amount: number }) {
+    const breakdown = calculatePriceBreakdown(product, amount);
+
+    if (!breakdown) {
+        return null;
+    }
+
+    const productLabel = product === 'single_will' ? 'Single Will'
+        : product === 'mirror_will' ? 'Mirror Wills'
+            : product === 'lpa_property' ? 'LPA - Property & Finance'
+                : product === 'lpa_health' ? 'LPA - Health & Welfare'
+                    : '';
+
+    return (
+        <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <h3 className="mb-3 text-sm font-semibold text-primary-900">{productLabel}</h3>
+            <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                    <span className="text-primary-600">Base price</span>
+                    <span className="font-medium text-primary-800">£{(breakdown.baseAmount / 100).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-primary-600">VAT (20%)</span>
+                    <span className="font-medium text-primary-800">£{(breakdown.vatAmount / 100).toFixed(2)}</span>
+                </div>
+                {breakdown.isLpa && (
+                    <div className="flex justify-between">
+                        <span className="text-primary-600">Registrar fee (OPG)</span>
+                        <span className="font-medium text-primary-800">£{(breakdown.registrarFee / 100).toFixed(2)}</span>
+                    </div>
+                )}
+                <div className="flex justify-between border-t border-slate-300 pt-2 font-semibold">
+                    <span className="text-primary-900">Total</span>
+                    <span className="text-primary-900">£{(breakdown.totalAmount / 100).toFixed(2)}</span>
+                </div>
+            </div>
+            {breakdown.isLpa && (
+                <p className="mt-3 text-xs text-primary-500">
+                    The £92 registrar fee is mandatory for registration with the Office of Public Guardian.{' '}
+                    <a
+                        href="https://www.gov.uk/power-of-attorney/register"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-primary-700"
+                    >
+                        Learn more
+                    </a>
+                </p>
+            )}
+        </div>
+    );
+}
+
 export default function Checkout({
     amount = 9900,
     currency = 'gbp',
@@ -287,6 +361,7 @@ export default function Checkout({
                                 <h1 className="mb-6 text-xl font-semibold text-primary-700 dark:text-primary-200">
                                     Complete Your Purchase
                                 </h1>
+                                <PriceBreakdown product={product} amount={amount} />
                                 {error && (
                                     <p className="mb-4 text-sm text-destructive">{error}</p>
                                 )}
