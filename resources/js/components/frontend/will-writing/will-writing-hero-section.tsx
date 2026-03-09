@@ -60,13 +60,13 @@ export function WillWritingHeroSection() {
                         </button>
                     </div>
                     <div className="space-y-6 rounded-[30px] border border-slate-100 bg-slate-50/60 p-6">
-                        <div className="relative overflow-hidden rounded-[24px] border border-white/60 bg-white shadow-[0_20px_45px_rgba(15,23,42,0.08)]">
+                        <div className="relative overflow-hidden rounded-3xl border border-white/60 bg-white shadow-[0_20px_45px_rgba(15,23,42,0.08)]">
                             <img src={heroContent.image} alt="Customer completing will online" className="h-64 w-full object-cover" />
-                            <div className="absolute inset-x-6 bottom-6 rounded-2xl bg-primary-900/90 p-4 text-white shadow-lg">
+                            <div className="absolute inset-x-6 bottom-6 rounded-2xl bg-primary-900/40 p-4 text-white shadow-lg">
                                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-200">Limited-time offer</p>
                                 <p className="mt-2 text-xl font-serif font-semibold text-white">{heroContent.offerTitle}</p>
-                                <p className="mt-2 text-sm text-white/80">{heroContent.offerBody}</p>
-                                <p className="mt-1 text-xs text-white/70">{heroContent.offerLegal}</p>
+                                <p className="mt-2 text-sm text-white">{heroContent.offerBody}</p>
+                                <p className="mt-1 text-xs text-white">{heroContent.offerLegal}</p>
                             </div>
                         </div>
                         <div className="rounded-[24px] border border-primary-100 bg-white p-5 text-primary-800">
