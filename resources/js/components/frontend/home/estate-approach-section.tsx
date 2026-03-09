@@ -114,7 +114,7 @@ export function EstateApproachSection() {
                 className="h-64 w-full rounded-2xl object-cover"
               />
               <div className="mt-6 rounded-2xl bg-white/10 p-4 text-sm leading-relaxed text-white/80">
-                If you’d like help at any stage – call <a href="tel:08081693475" className="font-semibold text-primary-200">0808 169 3475</a>.
+                If you’d like help at any stage, our support team is ready to guide you.
               </div>
             </div>
           </div>

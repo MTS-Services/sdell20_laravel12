@@ -4,7 +4,7 @@ use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
-Route::get('/will-writing-online', [FrontendController::class, 'horizonWills'])->name('will-writing-online');
+Route::get('/investment-opportunity', [FrontendController::class, 'horizonWills'])->name('investment-opportunity');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::get('/will-writing', [FrontendController::class, 'willWriting'])->name('will-writing');
 Route::get('/will-writing/start', [FrontendController::class, 'willWritingStart'])->name('will-writing.start');
