@@ -1,30 +1,5 @@
 import React from 'react';
 
-const contactDetails = [
-    {
-        label: 'Email',
-        value: 'support@heirkinestate.com',
-        helper: 'We respond within 24 hours',
-        icon: (
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path d="M4 5h16v14H4z" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M4 7l8 6 8-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-        ),
-    },
-    {
-        label: 'Visit',
-        value: '120 Bishopsgate, London EC2N',
-        helper: 'By appointment only',
-        icon: (
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path d="M12 22s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="12" cy="11" r="3" />
-            </svg>
-        ),
-    },
-];
-
 export function ContactConsultationSection() {
     return (
         <section id="contact-form" className="container mx-auto px-6 py-18 md:py-14 lg:py-20">
@@ -38,17 +13,11 @@ export function ContactConsultationSection() {
                     <p className="max-w-xl text-sm leading-relaxed text-primary-600">
                         We’ll talk through your situation and explain the best next steps. Whether you need a simple Will or help with a more complex estate, we’ll make the process clear and comfortable.
                     </p>
-                    <p className="font-semibold text-primary-800">Contact Details</p>
-                    <div className="space-y-3">
-                        {contactDetails.map((detail) => (
-                            <div key={detail.label} className="flex items-start gap-3 text-sm text-primary-700">
-                                <span className="mt-0.5 text-primary-600">{detail.icon}</span>
-                                <div>
-                                    <p className="font-medium text-primary-800">{detail.value}</p>
-                                    <p className="text-xs text-primary-500">{detail.helper}</p>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="rounded-2xl border border-primary-200/60 bg-primary-50/60 p-4 text-sm text-primary-700">
+                        <p className="font-semibold text-primary-900">How to reach us</p>
+                        <p className="mt-1 text-primary-700">
+                            Share a few details in the form and our estate planning team will reply with personalised next steps. We typically respond within one business day.
+                        </p>
                     </div>
                 </div>
 
