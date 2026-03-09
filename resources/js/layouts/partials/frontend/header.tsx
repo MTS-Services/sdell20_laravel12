@@ -39,7 +39,7 @@ const mobileLinks: Record<
     { label: string; desc: string; route: Parameters<typeof route>[0] }[]
 > = {
     about: [
-        { label: 'Will Writing Online', desc: 'Learn about our mission', route: 'will-writing-online' },
+        { label: 'Investment Opportunity', desc: 'Learn about our mission', route: 'investment-opportunity' },
         { label: 'Contact Us', desc: 'Get in touch with our team', route: 'contact' },
     ],
     estate: [
@@ -149,7 +149,7 @@ export function FrontendHeader() {
                                         <ul className="space-y-1">
                                             <li>
                                                 <Link
-                                                    href={route('will-writing-online')}
+                                                    href={route('investment-opportunity')}
                                                     className="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/10"
                                                 >
                                                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white">
@@ -157,8 +157,8 @@ export function FrontendHeader() {
                                                             <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
                                                         </svg>
                                                     </span>
-                                                    <span className="text-sm font-bold uppercase tracking-wide text-white">
-                                                        Will Writing Online
+                                                    <span className="text-sm font-bold  tracking-wide text-white">
+                                                        Investment Opportunity
                                                     </span>
                                                 </Link>
                                             </li>

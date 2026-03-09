@@ -51,7 +51,7 @@ export function FrontendFooter() {
                     <div className="lg:col-span-4 flex flex-col items-center sm:items-start">
                         <nav className="flex flex-col space-y-3 text-center sm:text-left">
                             <Link
-                                href={route('will-writing-online')}
+                                href={route('investment-opportunity')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
                             >
                                 About us
