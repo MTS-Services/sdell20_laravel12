@@ -10,7 +10,7 @@ export function FrontendFooter() {
                     {/* Logo & Social Icons */}
                     <div className="lg:col-span-3 flex flex-col items-center sm:items-start space-y-6">
                         <Link href="/" className="inline-block">
-                            <AppLogo className="h-16 md:h-20 lg:h-24" />
+                            <AppLogo className="h-20 lg:h-24" />
                         </Link>
 
                         <div className="flex items-center gap-4  ">

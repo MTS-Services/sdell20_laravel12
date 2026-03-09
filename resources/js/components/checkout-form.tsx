@@ -187,8 +187,9 @@ interface CheckoutProps {
 function calculatePriceBreakdown(product: string | null, totalAmount: number) {
     const isLpa = product === 'lpa_property' || product === 'lpa_health';
     const isWill = product === 'single_will' || product === 'mirror_will';
+    const isProbate = product === 'probate_referral';
 
-    if (!isLpa && !isWill) {
+    if (!isLpa && !isWill && !isProbate) {
         return null;
     }
 
@@ -204,6 +205,7 @@ function calculatePriceBreakdown(product: string | null, totalAmount: number) {
         totalAmount,
         isLpa,
         isWill,
+        isProbate,
     };
 }
 
@@ -218,7 +220,8 @@ function PriceBreakdown({ product, amount }: { product: string | null; amount: n
         : product === 'mirror_will' ? 'Mirror Wills'
             : product === 'lpa_property' ? 'LPA - Property & Finance'
                 : product === 'lpa_health' ? 'LPA - Health & Welfare'
-                    : '';
+                    : product === 'probate_referral' ? 'Probate Referral Service'
+                        : '';
 
     return (
         <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
