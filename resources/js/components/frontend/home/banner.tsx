@@ -24,7 +24,7 @@ export default function Banner() {
     const [ctaRef, ctaVisible] = useReveal<HTMLDivElement>(0.1);
 
     return (
-        <section className="relative isolate min-h-screen overflow-hidden bg-slate-900">
+        <section className="relative isolate min-h-[60dvh] sm:min-h-[70dvh] lg:min-h-dvh overflow-hidden bg-slate-900">
             {/* Background Image */}
             <img
                 src="https://heirkinestateplanning.co.uk/wp-content/uploads/2025/12/home-banner-image.png"
@@ -51,15 +51,19 @@ export default function Banner() {
             </div>
 
             {/* Content */}
-            <div className="mx-auto max-w-6xl px-6 py-24 sm:py-28 lg:py-32">
-                <div className="max-w-xl space-y-6">
+            <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 sm:py-24 lg:flex-row lg:items-center lg:justify-between lg:gap-14 xl:gap-20">
+                <div className="w-full max-w-2xl space-y-6 lg:w-[58%]">
                     <div
                         ref={headingRef}
                         className={`space-y-4 mb-15 md:mb-20 lg:mb-25  transition-all duration-700 ease-out ${headingVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     >
-                        <h1 className="text-2xl font-semibold leading-tight text-primary-50  sm:text-3xl lg:text-[45px]">
+                        <p className="text-xs font-semibold uppercase tracking-[0.4em] text-primary-200">Trusted by families across England & Wales</p>
+                        <h1 className="text-3xl font-semibold leading-tight text-primary-50 sm:text-4xl lg:text-[48px]">
                             Protecting Your Assets, Securing Your Family's Future!
                         </h1>
+                        <p className="text-base text-white/80 sm:text-lg">
+                            Draft your legally robust will or LPA online, review it with specialists, and download it the same day. Accessible from desktop, tablet, or phone.
+                        </p>
                     </div>
 
                     {/* checklist */}
@@ -85,15 +89,33 @@ export default function Banner() {
                     {/* CTA */}
                     <div
                         ref={ctaRef}
-                        className={`pt-3 transition-all duration-700 ease-out ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+                        className={`flex flex-col gap-4 pt-3 transition-all duration-700 ease-out sm:flex-row ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
                     >
                         <Link
                             href={route('will-writing.start')}
-                            className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+                            className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent hover:text-primary-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
                         >
                             Create Your Will Now
                         </Link>
+                        <Link
+                            href={route('lpa.start')}
+                            className="inline-flex items-center justify-center rounded-full border border-white/30 px-10 py-4 text-sm font-semibold text-white/90 transition hover:bg-white/10 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/30"
+                        >
+                            Start an LPA
+                        </Link>
                     </div>
+                </div>
+
+                <div className="w-full rounded-3xl border border-white/10 bg-white/5 p-6 text-white shadow-[0_25px_60px_rgba(0,0,0,0.35)] backdrop-blur-sm lg:w-[38%]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">How it works</p>
+                    <ul className="mt-4 space-y-4">
+                        {checklist.map(({ title, description }) => (
+                            <li key={title} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                                <p className="text-sm font-semibold text-white">{title}</p>
+                                <p className="text-xs text-white/80">{description}</p>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </section>

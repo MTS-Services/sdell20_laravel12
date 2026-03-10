@@ -147,7 +147,7 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                         <span className="font-medium text-primary-800">£{(((amount - 9200) / 1.20 / 100) * 0.20).toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                        <span className="text-primary-600">Registrar fee (OPG)</span>
+                                        <span className="text-primary-600">Register fee (OPG)</span>
                                         <span className="font-medium text-primary-800">£92.00</span>
                                     </div>
                                     <div className="flex justify-between border-t border-slate-300 pt-2 font-semibold">
@@ -156,7 +156,7 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                     </div>
                                 </div>
                                 <p className="mt-3 text-xs text-primary-500">
-                                    The £92 registrar fee is mandatory for registration with the Office of Public Guardian.{' '}
+                                    The £92 register fee is mandatory for registration with the Office of Public Guardian.{' '}
                                     <a
                                         href="https://www.gov.uk/power-of-attorney/register"
                                         target="_blank"
