@@ -11,9 +11,9 @@ export function LpaPricingSection() {
                 <div className="rounded-3xl border border-white/70 bg-white/90 p-10 shadow-xl animate-fadeInUp" style={{ animationDelay: '150ms' }}>
                     <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500">Flat pricing</span>
                     <p className="mt-4 text-2xl font-semibold text-primary-900">£259.99 per LPA with specialist review.</p>
-                    <p className="mt-2 text-sm text-primary-600">Includes guided consults, document prep, posting instructions, 20% VAT, and £92 mandatory OPG registrar fee. Add both Health & Welfare and Property & Finance LPAs for £519.98.</p>
+                    <p className="mt-2 text-sm text-primary-600">Includes guided consults, document prep, posting instructions, 20% VAT, and £92 mandatory OPG register fee. Add both Health & Welfare and Property & Finance LPAs for £519.98.</p>
                     <p className="mt-3 text-xs text-primary-500">
-                        The £92 registrar fee is mandatory for registration with the Office of Public Guardian.{' '}
+                        The £92 register fee is mandatory for registration with the Office of Public Guardian.{' '}
                         <a
                             href="https://www.gov.uk/power-of-attorney/register"
                             target="_blank"

@@ -719,7 +719,7 @@ const WillCreationWizard: React.FC = () => {
                 <StepsHeader />
 
                 {/* Dark Header */}
-                <div className="bg-slate-700 px-4 py-14">
+                <div className="bg-primary px-4 py-14">
                     <div className="max-w-6xl mx-auto text-center">
                         <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 leading-tight">
                             Create Your Legally Sound Will Online
@@ -742,11 +742,11 @@ const WillCreationWizard: React.FC = () => {
                 </div>
 
                 {/* Main Content Card */}
-                <div className="max-w-3xl mx-auto mt-8 bg-card rounded shadow-sm border border-border px-10 py-10 md:px-14">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-primary-700 mb-4">
+                <div className="max-w-3xl mx-auto mt-8 bg-white rounded shadow-sm border border-primary-100 px-10 py-10 md:px-14">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">
                         Is the Will just for You? Or You and a Partner?
                     </h2>
-                    <p className="text-base text-primary-600 mb-8">
+                    <p className="text-base text-text-muted mb-8">
                         Select the option that best describes your situation
                     </p>
 
@@ -756,16 +756,16 @@ const WillCreationWizard: React.FC = () => {
                             type="button"
                             onClick={() => updatePersonalInfo('maritalStatus', 'single')}
                             className={`p-6 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${willData.personalInfo.maritalStatus === 'single'
-                                    ? 'border-emerald-600 bg-emerald-50'
-                                    : 'border-gray-200 bg-white hover:border-gray-300'
+                                ? 'border-secondary bg-primary-50'
+                                : 'border-primary-100 bg-white hover:border-primary-200'
                                 }`}
                         >
                             <div className="flex items-start gap-4">
-                                <User className={`w-12 h-12 shrink-0 ${willData.personalInfo.maritalStatus === 'single' ? 'text-emerald-600' : 'text-primary-600'
+                                <User className={`w-12 h-12 shrink-0 ${willData.personalInfo.maritalStatus === 'single' ? 'text-secondary' : 'text-primary-500'
                                     }`} />
                                 <div>
-                                    <h3 className="text-xl font-semibold text-primary-900 mb-2">Single Will</h3>
-                                    <p className="text-sm text-primary-700">
+                                    <h3 className="text-xl font-semibold text-primary mb-2">Single Will</h3>
+                                    <p className="text-sm text-text-muted">
                                         Make a will just for you, whether or not you're in a relationship.
                                     </p>
                                 </div>
@@ -777,18 +777,18 @@ const WillCreationWizard: React.FC = () => {
                             type="button"
                             onClick={() => updatePersonalInfo('maritalStatus', 'married')}
                             className={`p-6 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner'
-                                    ? 'border-emerald-600 bg-emerald-50'
-                                    : 'border-gray-200 bg-white hover:border-gray-300'
+                                ? 'border-secondary bg-primary-50'
+                                : 'border-primary-100 bg-white hover:border-primary-200'
                                 }`}
                         >
                             <div className="flex items-start gap-4">
                                 <Users className={`w-12 h-12 shrink-0 ${willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner'
-                                    ? 'text-emerald-600'
-                                    : 'text-primary-600'
+                                    ? 'text-secondary'
+                                    : 'text-primary-500'
                                     }`} />
                                 <div>
-                                    <h3 className="text-xl font-semibold text-primary-900 mb-2">Mirror Wills</h3>
-                                    <p className="text-sm text-primary-700">
+                                    <h3 className="text-xl font-semibold text-primary mb-2">Mirror Wills</h3>
+                                    <p className="text-sm text-text-muted">
                                         Make a will with someone who has wishes similar to yours, such as a partner.
                                     </p>
                                 </div>
@@ -798,15 +798,15 @@ const WillCreationWizard: React.FC = () => {
 
                     {/* Civil Partner Option - shown after Mirror Wills is selected */}
                     {(willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner') && (
-                        <div className="mb-8 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                            <p className="text-sm font-medium text-primary-700 mb-3">What is your relationship status?</p>
+                        <div className="mb-8 p-4 bg-primary-50 rounded-lg border border-primary-100">
+                            <p className="text-sm font-medium text-primary mb-3">What is your relationship status?</p>
                             <div className="flex gap-4">
                                 <button
                                     type="button"
                                     onClick={() => updatePersonalInfo('maritalStatus', 'married')}
                                     className={`flex-1 px-4 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${willData.personalInfo.maritalStatus === 'married'
-                                            ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
-                                            : 'border-gray-200 bg-white text-primary-700 hover:border-gray-300'
+                                        ? 'border-secondary bg-white text-secondary'
+                                        : 'border-primary-100 bg-white text-primary hover:border-primary-200'
                                         }`}
                                 >
                                     Married
@@ -815,8 +815,8 @@ const WillCreationWizard: React.FC = () => {
                                     type="button"
                                     onClick={() => updatePersonalInfo('maritalStatus', 'civil-partner')}
                                     className={`flex-1 px-4 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${willData.personalInfo.maritalStatus === 'civil-partner'
-                                            ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
-                                            : 'border-gray-200 bg-white text-primary-700 hover:border-gray-300'
+                                        ? 'border-secondary bg-white text-secondary'
+                                        : 'border-primary-100 bg-white text-primary hover:border-primary-200'
                                         }`}
                                 >
                                     Civil Partner
@@ -830,7 +830,7 @@ const WillCreationWizard: React.FC = () => {
                         onClick={handleCreateDocument}
                         disabled={!willData.personalInfo.maritalStatus}
                         className={`w-full px-7 py-3.5 rounded-lg text-base font-bold uppercase tracking-wide transition-all duration-200 ${willData.personalInfo.maritalStatus
-                            ? 'bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer shadow-md'
+                            ? 'bg-secondary text-white hover:bg-primary cursor-pointer shadow-md'
                             : 'bg-muted text-muted-foreground cursor-not-allowed'
                             }`}
                     >
