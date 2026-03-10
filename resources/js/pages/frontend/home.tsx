@@ -10,22 +10,24 @@ import { LoveOnesSection } from '@/components/frontend/home/love-ones-section';
 import { ManagingAffairsSection } from '@/components/frontend/home/managing-affairs-section';
 import { WhyCreateWillCardsGrid } from '@/components/frontend/home/why-create-will-cards-grid';
 import { WhyCreateWillSection } from '@/components/frontend/home/why-create-will-section';
+import { WillChoiceSection } from '@/components/frontend/home/will-choice-section';
 import FrontendLayout from '@/layouts/frontend-layout';
 
 export default function Home() {
     return (
         <FrontendLayout>
             <Banner />
+            <WillChoiceSection />
             {/* <CTASection /> */}
             <WhyCreateWillSection />
             <WhyCreateWillCardsGrid />
             <HowItWorksSection />
             {/* <DashboardPreviewSection /> */}
             <EstateApproachSection />
-             <FindingSupportSection />
+            <FindingSupportSection />
             <ManagingAffairsSection />
             <LoveOnesSection />
-           
+
         </FrontendLayout>
     );
 }

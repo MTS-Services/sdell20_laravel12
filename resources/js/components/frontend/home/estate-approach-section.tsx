@@ -107,14 +107,28 @@ export function EstateApproachSection() {
                 </div>
               ))}
             </div>
-            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 p-6">
-              <img
-                src="https://images.pexels.com/photos/7821914/pexels-photo-7821914.jpeg"
-                alt="Signing legal documents"
-                className="h-64 w-full rounded-2xl object-cover"
-              />
-              <div className="mt-6 rounded-2xl bg-white/10 p-4 text-sm leading-relaxed text-white/80">
-                If you’d like help at any stage, our support team is ready to guide you.
+            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-linear-to-br from-emerald-500/40 via-primary-700/70 to-slate-900/80 p-6 text-white shadow-[0_30px_60px_rgba(0,0,0,0.35)]">
+              <div className="absolute inset-0 opacity-25">
+                <div className="absolute -right-10 top-6 h-32 w-32 rounded-full bg-white/40 blur-3xl" />
+                <div className="absolute left-0 bottom-0 h-40 w-40 rounded-full bg-emerald-300/40 blur-2xl" />
+              </div>
+              <div className="relative z-10 rounded-2xl border border-white/15 bg-white/5 p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">Trusted support</p>
+                <h3 className="mt-3 text-2xl font-semibold">Need a hand completing your LPA?</h3>
+                <p className="mt-4 text-sm leading-relaxed text-white/85">
+                  Book a quick call with our specialists for live guidance on any section of your application. We’ll walk you through each
+                  decision and double-check the paperwork before submission.
+                </p>
+              </div>
+              <div className="relative z-10 mt-6 flex flex-wrap items-center gap-4">
+                <div className="flex-1 rounded-2xl border border-white/20 bg-white/10 p-4">
+                  <p className="text-xs uppercase tracking-[0.35em] text-white/70">Availability</p>
+                  <p className="mt-1 text-lg font-semibold">Daily slots 9am–7pm</p>
+                </div>
+                <div className="flex-1 rounded-2xl border border-white/20 bg-emerald-400/20 p-4">
+                  <p className="text-xs uppercase tracking-[0.35em] text-white/70">Avg. response</p>
+                  <p className="mt-1 text-lg font-semibold">under 10 minutes</p>
+                </div>
               </div>
             </div>
           </div>
