@@ -10,6 +10,7 @@ const options = [
         label: 'Just for Me',
         description: 'Create a will for yourself with guided support and secure storage.',
         icon: <User className="h-12 w-12" />,
+        price: '£69.99',
         accent: 'border-primary-200 hover:border-primary-300',
         highlight: 'text-primary-600',
     },
@@ -18,6 +19,7 @@ const options = [
         label: 'Mirror Wills',
         description: 'Create mirrored wills for you and your partner.',
         icon: <Users className="h-12 w-12" />,
+        price: '£99.99',
         accent: 'border-primary-200 hover:border-primary-300',
         highlight: 'text-primary-600',
     },
@@ -56,6 +58,8 @@ export function WillChoiceSection() {
                             <div>
                                 <p className="text-lg font-semibold text-slate-900">{option.label}</p>
                                 <p className="mt-2 text-sm text-slate-600">{option.description}</p>
+                                <p className="mt-4 text-2xl font-bold text-primary-600">{option.price}</p>
+                                <p className="text-xs uppercase tracking-[0.3em] text-slate-400">One-time fee</p>
                             </div>
                         </button>
                     ))}

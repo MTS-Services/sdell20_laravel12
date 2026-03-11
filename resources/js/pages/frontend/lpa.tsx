@@ -8,6 +8,7 @@ import { LpaPackageOptionsSection } from '@/components/frontend/lpa/lpa-package-
 import { LpaPlanningSection } from '@/components/frontend/lpa/lpa-planning-section';
 import { LpaPricingSection } from '@/components/frontend/lpa/lpa-pricing-section';
 import { LpaSupportSection } from '@/components/frontend/lpa/lpa-support-section';
+import { LpaVideoSection } from '@/components/frontend/lpa/lpa-video-section';
 import { WillWritingAboutSection } from '@/components/frontend/will-writing/will-writing-about-section';
 import FrontendLayout from '@/layouts/frontend-layout';
 
@@ -21,6 +22,7 @@ export default function Lpa() {
                 <LpaCtaSection />
                 <LpaPlanningSection />
                 <LpaPricingSection />
+                <LpaVideoSection />
                 <LpaSupportSection />
                 <WillWritingAboutSection />
                 <LpaFaqSection />

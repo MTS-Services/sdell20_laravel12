@@ -50,13 +50,33 @@ export function FrontendFooter() {
                     {/* Links Column 1 */}
                     <div className="lg:col-span-4 flex flex-col items-center sm:items-start">
                         <nav className="flex flex-col space-y-3 text-center sm:text-left">
+                            <Link href={route('investment-opportunity')} className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                                Investment Opportunity
+                            </Link>
+                            <Link href={route('will-writing')} className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                                Making a Will
+                            </Link>
+                            <Link href={route('lpa')} className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                                Lasting Power of Attorney
+                            </Link>
+                            <Link href={route('probate')} className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
+                               Probate
+                            </Link>
                             <Link
                                 href={route('investment-opportunity')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
                             >
                                 About us
                             </Link>
-                            <Link
+                         
+
+                        </nav>
+                    </div>
+
+                    {/* Links Column 2 */}
+                    <div className="lg:col-span-2 flex flex-col items-center sm:items-start lg:pl-2">
+                        <nav className="flex flex-col space-y-3 text-center sm:text-left">
+                               <Link
                                 href={route('privacy')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
                             >
@@ -72,15 +92,8 @@ export function FrontendFooter() {
                                 href={route('consumer-rights')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
                             >
-                                Consumer Rights Act 2015
+                                Consumer Rights Act 
                             </Link>
-
-                        </nav>
-                    </div>
-
-                    {/* Links Column 2 */}
-                    <div className="lg:col-span-2 flex flex-col items-center sm:items-start lg:pl-2">
-                        <nav className="flex flex-col space-y-3 text-center sm:text-left">
                             <Link
                                 href={route('cookies')}
                                 className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500"
