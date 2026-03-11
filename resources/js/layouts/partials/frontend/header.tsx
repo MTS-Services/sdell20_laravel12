@@ -44,7 +44,7 @@ const mobileLinks: Record<
     ],
     estate: [
         { label: 'Making a Will', desc: 'Write a will tailored to you', route: 'will-writing' },
-        { label: 'Lasting Power of Attorney', desc: 'Choose who makes decisions for you', route: 'lpa' },
+        { label: 'LPA', desc: 'Choose who makes decisions for you', route: 'lpa' },
     ],
     support: [{ label: 'Probate', desc: 'Guidance through probate', route: 'probate' }],
     policies: policyLinks.map((link) => ({
