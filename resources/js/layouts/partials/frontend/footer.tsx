@@ -57,7 +57,7 @@ export function FrontendFooter() {
                                 Making a Will
                             </Link>
                             <Link href={route('lpa')} className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
-                                Lasting Power of Attorney
+                                LPA
                             </Link>
                             <Link href={route('probate')} className="text-base lg:text-lg text-white/90 transition-colors hover:text-slate-500">
                                Probate
