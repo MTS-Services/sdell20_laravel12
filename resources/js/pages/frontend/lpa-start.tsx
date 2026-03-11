@@ -370,13 +370,6 @@ const LpaStartPage: React.FC = () => {
                             {showHelpPanel ? (
                                 <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-primary-700">
                                     <div className="flex items-start gap-3">
-                                        <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
-                                        <div>
-                                            <p className="font-semibold text-primary-900">Call us</p>
-                                            <p>0800 888 6068</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3">
                                         <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>
                                             <p className="font-semibold text-primary-900">Opening hours</p>
@@ -504,13 +497,6 @@ const LpaStartPage: React.FC = () => {
 
                             {showRegionalHelpPanel ? (
                                 <div className="space-y-4 px-1 pb-1 pt-4 text-sm text-primary-700">
-                                    <div className="flex items-start gap-3">
-                                        <Phone className="mt-0.5 h-4 w-4 text-primary-600" />
-                                        <div>
-                                            <p className="font-semibold text-primary-900">Call us</p>
-                                            <p>0800 888 6068</p>
-                                        </div>
-                                    </div>
                                     <div className="flex items-start gap-3">
                                         <Clock3 className="mt-0.5 h-4 w-4 text-primary-600" />
                                         <div>

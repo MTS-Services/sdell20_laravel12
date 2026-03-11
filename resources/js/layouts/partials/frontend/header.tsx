@@ -43,7 +43,7 @@ const mobileLinks: Record<
         { label: 'Contact Us', desc: 'Get in touch with our team', route: 'contact' },
     ],
     estate: [
-        { label: 'Will Writing', desc: 'Write a will tailored to you', route: 'will-writing' },
+        { label: 'Making a Will', desc: 'Write a will tailored to you', route: 'will-writing' },
         { label: 'Lasting Power of Attorney', desc: 'Choose who makes decisions for you', route: 'lpa' },
     ],
     support: [{ label: 'Probate', desc: 'Guidance through probate', route: 'probate' }],
@@ -258,7 +258,7 @@ export function FrontendHeader() {
                                                 </span>
                                                 <div>
                                                     <span className="block text-sm font-bold text-primary-900">
-                                                        Will Writing
+                                                        Making a Will
                                                     </span>
                                                     <span className="block text-xs text-primary-400">
                                                         Write a will tailored to you

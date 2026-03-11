@@ -59,9 +59,6 @@ export function LpaFaqSection() {
                         </div>
                     ))}
                 </div>
-                <div className="mt-10 flex justify-center animate-fadeInUp" style={{ animationDelay: '250ms' }}>
-                    <button className="rounded-full border-2 border-slate-500 px-8 py-3 text-sm font-semibold text-primary-900 transition hover:bg-slate-500 hover:text-white">Show more</button>
-                </div>
             </div>
         </section>
     );

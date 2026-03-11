@@ -24,15 +24,6 @@ export function HeroSection() {
                     Take the stress out of probate, with our fixed-fee service, talk to our team today.
                 </p>
 
-                <div className={`${animatedBase} ${animatedState}`} style={{ transitionDelay: '250ms' }}>
-                    <button className="bg-slate-500 text-white border-2 border-slate-400 px-8 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
-                        Get a quote in 5 minutes
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </button>
-                </div>
 
                 {/* Trust badges */}
                 <div className={`flex flex-wrap justify-center gap-6 ${animatedBase} ${animatedState}`} style={{ transitionDelay: '350ms' }}>

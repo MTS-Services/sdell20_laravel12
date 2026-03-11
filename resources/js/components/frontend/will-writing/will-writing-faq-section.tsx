@@ -24,11 +24,6 @@ export function WillWritingFaqSection() {
                         </button>
                     ))}
                 </div>
-                <div className="mt-8 flex justify-center">
-                    <button className="rounded-full bg-primary-600 px-8 py-3 text-sm font-semibold text-white transition hover:bg-primary-700">
-                        Show more
-                    </button>
-                </div>
             </div>
         </section>
     );

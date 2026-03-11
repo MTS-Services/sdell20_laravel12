@@ -24,7 +24,7 @@ export default function Banner() {
     const [ctaRef, ctaVisible] = useReveal<HTMLDivElement>(0.1);
 
     return (
-        <section className="relative isolate min-h-[60dvh] sm:min-h-[70dvh] lg:min-h-dvh overflow-hidden bg-slate-900">
+        <section className="relative isolate min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] overflow-hidden bg-slate-900">
             {/* Background Image */}
             <img
                 src="https://heirkinestateplanning.co.uk/wp-content/uploads/2025/12/home-banner-image.png"
@@ -66,7 +66,7 @@ export default function Banner() {
                         </p>
                     </div>
 
-                    {/* checklist */}
+                    {/* checklist
                     <ul
                         ref={listRef}
                         className={`space-y-4 text-white transition-all duration-700 ease-out ${listVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
@@ -84,7 +84,7 @@ export default function Banner() {
                                 </div>
                             </li>
                         ))}
-                    </ul>
+                    </ul> */}
 
                     {/* CTA */}
                     <div

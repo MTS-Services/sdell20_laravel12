@@ -90,16 +90,6 @@ export function SpecialistSupportSection() {
                     </div>
                 </div>
 
-                <div className={`rounded-xl p-6 max-w-xl mx-auto ${animatedBase} ${animatedState}`} style={{ transitionDelay: '400ms' }}>
-                    <h4 className="font-bold text-gray-900 mb-3">Get your free quote online</h4>
-                    <button className="bg-slate-500 border-2 text-primary-50 border-slate-400 px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
-                        Get a quote in 5 minutes
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </button>
-                </div>
             </div>
         </section>
     );
