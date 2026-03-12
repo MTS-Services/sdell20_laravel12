@@ -10,21 +10,31 @@ import { LpaPricingSection } from '@/components/frontend/lpa/lpa-pricing-section
 import { LpaSupportSection } from '@/components/frontend/lpa/lpa-support-section';
 import { WillWritingAboutSection } from '@/components/frontend/will-writing/will-writing-about-section';
 import FrontendLayout from '@/layouts/frontend-layout';
+import { Head } from '@inertiajs/react';
 
 export default function Lpa() {
     return (
-        <FrontendLayout>
-            <main >
-                <LpaHeroSection />
-                <LpaPackageOptionsSection />
-                <LpaFeaturedLogosSection />
-                <LpaCtaSection />
-                <LpaPlanningSection />
-                <LpaPricingSection />
-                <LpaSupportSection />
-                <WillWritingAboutSection />
-                <LpaFaqSection />
-            </main>
-        </FrontendLayout>
+        <>
+            <Head>
+                <title>Online Power of Attorney Service</title>
+                <meta name="title" content="Online Power of Attorney Service" />
+                <meta name="description" content="Make your Lasting Power of Attorney Online with our step-by-step tool. Checked by a LPA expert. LPA forms  will be sent to Office for Public Guardian." />
+                <meta name="keywords" content="Power of Attorney Cost, Online Power of Attorney, Power of Attorney Online, Create Lasting Power of Attorney Online, Lasting Power of Attorney Online" />
+            </Head>
+            <FrontendLayout>
+                <main >
+                    <LpaHeroSection />
+                    <LpaPackageOptionsSection />
+                    <LpaFeaturedLogosSection />
+                    <LpaCtaSection />
+                    <LpaPlanningSection />
+                    <LpaPricingSection />
+                    <LpaSupportSection />
+                    <WillWritingAboutSection />
+                    <LpaFaqSection />
+                </main>
+            </FrontendLayout>
+        </>
+
     );
 }
