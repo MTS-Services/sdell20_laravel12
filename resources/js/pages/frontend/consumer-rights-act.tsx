@@ -44,33 +44,41 @@ const consumerRightsSections = [
 
 export default function ConsumerRightsAct() {
     return (
-        <FrontendLayout>
-            <Head title="Consumer Rights Act 2015 | Will Writing Online" />
-            <main className="bg-white py-14 sm:py-16">
-                <section className="container mx-auto px-4 sm:px-6">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="mb-10 sm:mb-12 text-center">
-                            <p className="text-xs sm:text-sm uppercase tracking-[0.4em] text-primary-400">Consumer Rights</p>
-                            <h1 className="mt-4 text-3xl sm:text-4xl font-serif font-semibold text-primary-900">How we comply with the Consumer Rights Act 2015</h1>
-                            <p className="mt-4 text-sm sm:text-base text-primary-700">
-                                Our online-only will and LPA service follows UK legislation for digital services so you always know your protections.
-                            </p>
+        <>
+            <Head>
+                <title>Consumer Rights Act 2015</title>
+                <meta name="title" content="Consumer Rights Act 2015" />
+                <meta name="description" content="Learn about your legal rights under the Consumer Rights Act 2015 when using Online-Will-Write. We are committed to fair, transparent will writing services." />
+                <meta name="keywords" content="Consumer Rights Act 2015, consumer rights, legal rights, Online Will Write consumer policy, fair trading UK, consumer protection" />
+            </Head>
+            <FrontendLayout>
+                <Head title="Consumer Rights Act 2015 | Will Writing Online" />
+                <main className="bg-white py-14 sm:py-16">
+                    <section className="container mx-auto px-4 sm:px-6">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="mb-10 sm:mb-12 text-center">
+                                <p className="text-xs sm:text-sm uppercase tracking-[0.4em] text-primary-400">Consumer Rights</p>
+                                <h1 className="mt-4 text-3xl sm:text-4xl font-serif font-semibold text-primary-900">How we comply with the Consumer Rights Act 2015</h1>
+                                <p className="mt-4 text-sm sm:text-base text-primary-700">
+                                    Our online-only will and LPA service follows UK legislation for digital services so you always know your protections.
+                                </p>
+                            </div>
+                            <div className="space-y-8 sm:space-y-10">
+                                {consumerRightsSections.map((section) => (
+                                    <article key={section.title} className="rounded-3xl border border-slate-200/80 bg-white/70 p-6 sm:p-7 shadow-[0_15px_45px_rgba(15,23,42,0.08)]">
+                                        <h2 className="text-xl sm:text-2xl font-semibold text-primary-900">{section.title}</h2>
+                                        <div className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-primary-700">
+                                            {section.copy.map((paragraph) => (
+                                                <p key={paragraph}>{paragraph}</p>
+                                            ))}
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
                         </div>
-                        <div className="space-y-8 sm:space-y-10">
-                            {consumerRightsSections.map((section) => (
-                                <article key={section.title} className="rounded-3xl border border-slate-200/80 bg-white/70 p-6 sm:p-7 shadow-[0_15px_45px_rgba(15,23,42,0.08)]">
-                                    <h2 className="text-xl sm:text-2xl font-semibold text-primary-900">{section.title}</h2>
-                                    <div className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-primary-700">
-                                        {section.copy.map((paragraph) => (
-                                            <p key={paragraph}>{paragraph}</p>
-                                        ))}
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            </main>
-        </FrontendLayout>
+                    </section>
+                </main>
+            </FrontendLayout>
+        </>
     );
 }
