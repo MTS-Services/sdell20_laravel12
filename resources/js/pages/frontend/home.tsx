@@ -26,6 +26,7 @@ export default function Home() {
             <FrontendLayout>
                 <Banner />
                 {/* <CTASection /> */}
+                <WillChoiceSection />
                 <WhyCreateWillSection />
                 <WhyCreateWillCardsGrid />
                 <HowItWorksSection />
