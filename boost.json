@@ -1,12 +1,12 @@
 {
     "agents": [
         "claude_code",
+        "copilot",
         "cursor",
         "gemini",
         "windsurf"
     ],
     "editors": [
-        "claude_code",
         "cursor",
         "gemini",
         "vscode",
