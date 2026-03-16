@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WillCompletedEmail;
 
 class Will extends Model
 {
@@ -66,12 +68,18 @@ class Will extends Model
 
     public function markAsPaid(string $paymentReference): void
     {
+        $wasDraft = $this->is_draft;
+
         $this->update([
             'is_draft' => false,
             'status' => 'completed',
             'paid_at' => now(),
             'payment_reference' => $paymentReference,
         ]);
+
+        if ($wasDraft) {
+            Mail::to($this->user->email)->send(new WillCompletedEmail($this));
+        }
     }
 
     public function isSingleWill(): bool
@@ -86,7 +94,7 @@ class Will extends Model
 
     public function isPaid(): bool
     {
-        return !is_null($this->paid_at);
+        return ! is_null($this->paid_at);
     }
 
     public function isDraft(): bool
@@ -96,6 +104,6 @@ class Will extends Model
 
     public function hasPdf(): bool
     {
-        return !is_null($this->pdf_path);
+        return ! is_null($this->pdf_path);
     }
 }

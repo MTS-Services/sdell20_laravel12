@@ -64,6 +64,8 @@ class Lpa extends Model
             'paid_at' => now(),
             'payment_reference' => $paymentReference,
         ]);
+
+        \Illuminate\Support\Facades\Mail::to($this->user->email)->send(new \App\Mail\LpaCompletedEmail($this));
     }
 
     public function isPropertyAndFinance(): bool
@@ -78,7 +80,7 @@ class Lpa extends Model
 
     public function isPaid(): bool
     {
-        return !is_null($this->paid_at);
+        return ! is_null($this->paid_at);
     }
 
     public function isDraft(): bool
@@ -88,6 +90,6 @@ class Lpa extends Model
 
     public function hasPdf(): bool
     {
-        return !is_null($this->pdf_path);
+        return ! is_null($this->pdf_path);
     }
 }
