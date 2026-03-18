@@ -21,7 +21,8 @@ export default function Probate() {
             <FrontendLayout>
                 <main>
                     <HeroSection />
-                    <SpecialistSupportSection />
+                    {/* <SpecialistSupportSection /> */}
+                    <ReferralFeeSection />
                     <WhatIsProbateSection />
                     <HowWeHelpSection />
                     <PreferToTalkSection />

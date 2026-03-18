@@ -7,11 +7,13 @@ use App\Enums\PaymentStatus;
 use App\Http\Requests\Payment\ConfirmPaymentRequest;
 use App\Http\Requests\Payment\CreatePaymentIntentRequest;
 use App\Http\Requests\Payment\SelectPlanRequest;
+use App\Mail\PaymentCompletedEmail;
 use App\Models\Payment;
 use App\Services\LpaPdfService;
 use App\Services\Payment\PaymentIntentClientInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -145,17 +147,22 @@ class PaymentController extends Controller
             ->where('user_id', $request->user()->id)
             ->first();
 
-        if ($payment) {
+        if ($payment instanceof Payment) {
+            $wasCompleted = $payment->isCompleted();
             $status = PaymentStatus::storeFromStripe($intent->status);
-            $payment->update(['status' => $status]);
+            Payment::query()->whereKey($payment->getKey())->update(['status' => $status]);
+
+            if ($status->isComplete() && ! $wasCompleted) {
+                Mail::to($request->user())->queue(new PaymentCompletedEmail($payment->fresh()));
+            }
 
             // If payment succeeded and it's for an LPA, mark the LPA as paid
-            if ($intent->status === 'succeeded') {
+            if ($status->isComplete()) {
                 $this->fulfillLpaPayment($payment, $request->user());
             }
         }
 
-        if ($intent->status === 'succeeded') {
+        if (PaymentStatus::storeFromStripe($intent->status)->isComplete()) {
             $redirectUrl = $request->input('redirect_url');
 
             return response()->json([
