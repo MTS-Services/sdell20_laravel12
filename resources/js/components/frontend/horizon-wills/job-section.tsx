@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Link } from '@inertiajs/react';
 import { useReveal } from '@/hooks/use-reveal';
 import { router } from '@inertiajs/react';
 
@@ -32,7 +33,7 @@ export function JobSection() {
 
         router.visit(
             route('checkout', {
-                amount: 99500,
+                amount: 119400, // £1,194.00 in pence
                 product: 'will_writing_platform',
                 redirect_url: route('dashboard'),
             }),
@@ -86,7 +87,24 @@ export function JobSection() {
                         <div className="rounded-2xl border-2 border-primary-500 bg-primary-50/50 p-6 text-center">
                             <p className="text-sm uppercase tracking-[0.3em] text-primary-600 font-semibold">Business Opportunity</p>
                             <div className="mt-3 flex items-baseline justify-center gap-2">
-                                <span className="text-5xl font-bold text-primary-900">£995</span>
+                                <span className="text-5xl font-bold text-primary-900">£1,194</span>
+                                <span className="text-lg text-primary-700">+ VAT</span>
+                            </div>
+                            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-left">
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex justify-between">
+                                        <span className="text-primary-600">Base price</span>
+                                        <span className="font-medium text-primary-800">£995.00</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-primary-600">VAT (20%)</span>
+                                        <span className="font-medium text-primary-800">£199.00</span>
+                                    </div>
+                                    <div className="flex justify-between border-t border-slate-300 pt-2 font-semibold">
+                                        <span className="text-primary-900">Total</span>
+                                        <span className="text-primary-900">£1,194.00</span>
+                                    </div>
+                                </div>
                             </div>
                             <p className="mt-3 text-sm text-primary-700">
                                 One-time payment for complete platform access
@@ -99,14 +117,14 @@ export function JobSection() {
                                 disabled={isProcessing}
                                 className="inline-flex items-center border border-primary-500 justify-center gap-2 rounded-full bg-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-transparent hover:text-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isProcessing ? 'Processing...' : 'Purchase Now - £995 →'}
+                                {isProcessing ? 'Processing...' : 'Purchase Now - £1,194 →'}
                             </button>
-                            <a
-                                href="mailto:support@willwrite.online"
+                            <Link
+                                href={route('contact')}
                                 className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary-900 px-8 py-3 text-sm font-semibold text-primary-900 transition hover:bg-primary-500 hover:text-white"
                             >
                                 Talk to Clara →
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
