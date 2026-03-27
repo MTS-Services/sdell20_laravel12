@@ -76,6 +76,28 @@
             font-weight: 600;
         }
 
+        .link-list {
+            margin-top: 18px;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+
+        .link-list p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .link-list a {
+            color: #1d4ed8;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .link-list a:hover{
+            text-decoration: underline;
+        }
+
         .email-footer {
             background: #f8fafc;
             color: #64748b;
@@ -126,7 +148,16 @@
                 </tr>
             </table>
 
-            <a class="cta-button" href="{{ config('app.url') }}/admin">Open Admin Panel</a>
+            <div class="link-list">
+                <p><strong>PDF Preview:</strong>
+                    <a href="{{ route('lpas.pdf.preview', $lpa) }}">{{ route('lpas.pdf.preview', $lpa) }}</a>
+                </p>
+                <p><strong>PDF Download:</strong>
+                    <a href="{{ route('lpas.pdf.download', $lpa) }}">{{ route('lpas.pdf.download', $lpa) }}</a>
+                </p>
+            </div>
+
+            <a class="cta-button" href="{{ config('app.url') }}/admin/dashboard">Open Admin Panel</a>
         </div>
 
         <div class="email-footer">
