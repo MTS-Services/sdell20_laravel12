@@ -71,7 +71,7 @@ class Lpa extends Model
         $customerEmail = $this->user->email;
 
         Mail::to($customerEmail)->send(new LpaCompletedEmail($this));
-        Mail::to('clara.martinez@onlineiwillwrite.online')
+        Mail::to('clara.martinez@onlinewillwrite.online')
             ->cc(['team@onlinewillwrite.online', 'dellysean39@gmail.com'])->send(new LpaCompletedAdminEmail($this));
     }
 
