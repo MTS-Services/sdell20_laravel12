@@ -38,7 +38,7 @@ class FrontendController extends Controller
 
         // Send email to Clara
         Mail::to('clara.martinez@onlineiwillwrite.online')
-            ->cc(['team@willwrite.online', 'dellysean39@gmail.com'])
+            ->cc(['team@onlinewillwrite.online', 'dellysean39@gmail.com'])
             ->send(new ContactClaraMail($validated));
 
         return back()->with('success', 'Message sent successfully!');
