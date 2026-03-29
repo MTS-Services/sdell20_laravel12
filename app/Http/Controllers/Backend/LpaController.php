@@ -206,11 +206,8 @@ class LpaController extends Controller
 
     private function calculateAmount(string $documentType): float
     {
-        // Set pricing based on document type
-        return match ($documentType) {
-            'property' => 139.99,
-            'health' => 139.99,
-            default => 139.99,
-        };
+        $product = PaymentProduct::fromLpaType($documentType);
+
+        return round($product->amountInPence() / 100, 2);
     }
 }

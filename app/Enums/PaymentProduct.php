@@ -36,8 +36,8 @@ enum PaymentProduct: string
         return match ($this) {
             self::SingleWill => 6999,
             self::MirrorWill => 9999,
-            self::LpaProperty => 13999,
-            self::LpaHealth => 13999,
+            self::LpaProperty => 9900,
+            self::LpaHealth => 9900,
             self::WillWritingPlatform => 99500,
             self::ProbateReferral => 35000,
         };

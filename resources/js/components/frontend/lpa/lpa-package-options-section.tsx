@@ -9,7 +9,7 @@ const packages = [
             'Appoint trusted attorneys for health and care choices',
             'Cover decisions about treatment, living arrangements and routines'
         ],
-        price: '£139.99',
+        price: '£99',
         accent: 'bg-gradient-to-br from-rose-100 via-rose-200 to-rose-300'
     },
     {
@@ -19,7 +19,7 @@ const packages = [
             'Give attorneys authority for banking, bills and assets',
             'Ensure property sales and investments can continue smoothly'
         ],
-        price: '£139.99',
+        price: '£99',
         accent: 'bg-gradient-to-br from-indigo-100 via-indigo-200 to-indigo-300'
     }
 ];
