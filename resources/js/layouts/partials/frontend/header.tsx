@@ -426,10 +426,10 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
-                                    Create Your LPA &ndash; Just &pound;139.99 Each
+                                    &pound;99 + VAT per LPA
                                 </span>
                                 <span className="text-[10px] font-normal text-white/80">
-                                    (plus &pound;92 OPG fee per LPA)
+                                    (20% VAT at checkout; plus &pound;92 OPG fee per LPA)
                                 </span>
                             </span>
                             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 transition-colors group-hover:bg-white/30">
@@ -457,10 +457,10 @@ export function FrontendHeader() {
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-[10px] font-bold tracking-wide">
-                                    Create Your LPA &ndash; Just &pound;139.99 Each
+                                    &pound;99 + VAT per LPA
                                 </span>
                                 <span className="text-[9px] font-normal text-white/70">
-                                    (plus &pound;92 OPG fee per LPA)
+                                    (VAT at checkout; &pound;92 OPG per LPA)
                                 </span>
                             </span>
                             <span className="flex shrink-0 items-center text-slate-200">
@@ -556,7 +556,7 @@ export function FrontendHeader() {
                                     onClick={closeMobile}
                                     className="flex items-center justify-center gap-2 rounded-full bg-slate-500 px-5 py-3.5 font-sans text-sm font-bold text-white transition hover:bg-slate-600"
                                 >
-                                    <span>Create Your LPA &ndash; Just &pound;139.99 Each</span>
+                                    <span>Create Your LPA &ndash; &pound;99 + VAT each</span>
                                     <ChevronRight className="h-4 w-4" />
                                 </Link>
                                 <Link
