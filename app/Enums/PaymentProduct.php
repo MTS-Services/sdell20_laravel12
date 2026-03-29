@@ -30,14 +30,16 @@ enum PaymentProduct: string
 
     /**
      * Base amount in pence (before VAT and registrar fees).
+     *
+     * Client pricing (ex VAT): single will £65, mirror £75, each LPA £85 (£170 for both types combined).
      */
     public function baseAmountInPence(): int
     {
         return match ($this) {
-            self::SingleWill => 6999,
-            self::MirrorWill => 9999,
-            self::LpaProperty => 9900,
-            self::LpaHealth => 9900,
+            self::SingleWill => 6500,
+            self::MirrorWill => 7500,
+            self::LpaProperty => 8500,
+            self::LpaHealth => 8500,
             self::WillWritingPlatform => 99500,
             self::ProbateReferral => 35000,
         };

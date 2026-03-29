@@ -114,17 +114,17 @@ test('payment verification returns correct amount for each product', function ()
     $response = $this->actingAs($user)->postJson('/payment/verify', [
         'product' => 'single_will',
     ]);
-    $response->assertJsonFragment(['amount' => 8399]);
+    $response->assertJsonFragment(['amount' => 7800]);
 
     $response = $this->actingAs($user)->postJson('/payment/verify', [
         'product' => 'mirror_will',
     ]);
-    $response->assertJsonFragment(['amount' => 11999]);
+    $response->assertJsonFragment(['amount' => 9000]);
 
     $response = $this->actingAs($user)->postJson('/payment/verify', [
         'product' => 'lpa_property',
     ]);
-    $response->assertJsonFragment(['amount' => 21080]);
+    $response->assertJsonFragment(['amount' => 19400]);
 });
 
 test('user model hasPaymentFor returns true for matching product', function () {
@@ -162,10 +162,10 @@ test('payment model forProduct scope filters correctly', function () {
 });
 
 test('payment product enum returns correct values', function () {
-    expect(PaymentProduct::SingleWill->amountInPence())->toBe(8399);
-    expect(PaymentProduct::MirrorWill->amountInPence())->toBe(11999);
-    expect(PaymentProduct::LpaProperty->amountInPence())->toBe(21080);
-    expect(PaymentProduct::LpaHealth->amountInPence())->toBe(21080);
+    expect(PaymentProduct::SingleWill->amountInPence())->toBe(7800);
+    expect(PaymentProduct::MirrorWill->amountInPence())->toBe(9000);
+    expect(PaymentProduct::LpaProperty->amountInPence())->toBe(19400);
+    expect(PaymentProduct::LpaHealth->amountInPence())->toBe(19400);
 
     expect(PaymentProduct::SingleWill->isWill())->toBeTrue();
     expect(PaymentProduct::MirrorWill->isWill())->toBeTrue();
@@ -182,7 +182,7 @@ test('select plan stores product in payment metadata', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->postJson(route('payment.select-plan'), [
-        'amount' => 6999,
+        'amount' => 7800,
         'product' => 'single_will',
     ]);
 
@@ -196,7 +196,7 @@ test('checkout page accepts product and redirect_url params', function () {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(route('checkout', [
-        'amount' => 6999,
+        'amount' => 7800,
         'product' => 'single_will',
         'redirect_url' => '/will-writing/start',
     ]));

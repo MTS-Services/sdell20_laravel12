@@ -34,7 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
         Route::get('/users/{user}/details', [AdminUserController::class, 'details'])->name('users.details');
         Route::get('/users/{user}/wills/{will}/pdf', [AdminUserDocumentPdfController::class, 'downloadWill'])->name('users.wills.pdf');
+        Route::get('/users/{user}/wills/{will}/pdf/preview', [AdminUserDocumentPdfController::class, 'previewWill'])->name('users.wills.pdf.preview');
         Route::get('/users/{user}/lpas/{lpa}/pdf', [AdminUserDocumentPdfController::class, 'downloadLpa'])->name('users.lpas.pdf');
+        Route::get('/users/{user}/lpas/{lpa}/pdf/preview', [AdminUserDocumentPdfController::class, 'previewLpa'])->name('users.lpas.pdf.preview');
         Route::resource('users', AdminUserController::class);
         Route::get('/users/list', [UserSelectionController::class, 'getUsers'])->name('users.list');
 

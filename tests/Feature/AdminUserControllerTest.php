@@ -506,4 +506,69 @@ class AdminUserControllerTest extends TestCase
         $response->assertRedirect(route('dashboard'));
         $response->assertSessionHas('error');
     }
+
+    public function test_admin_can_preview_will_pdf_for_user(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $owner = User::factory()->create();
+        $will = Will::create([
+            'user_id' => $owner->id,
+            'will_type' => 'Me',
+            'status' => 'draft',
+            'personal_info' => [
+                'title' => 'Ms',
+                'firstName' => 'Preview',
+                'lastName' => 'Test',
+            ],
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.wills.pdf.preview', [
+            'user' => $owner,
+            'will' => $will,
+        ]));
+
+        $response->assertSuccessful();
+    }
+
+    public function test_admin_can_preview_lpa_pdf_for_user(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $owner = User::factory()->create();
+        $lpa = Lpa::create([
+            'user_id' => $owner->id,
+            'who_for' => 'Me',
+            'document_type' => 'property',
+            'status' => 'draft',
+            'donor_details' => [],
+            'contact_details' => [],
+            'attorneys' => [['name' => 'Attorney']],
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.lpas.pdf.preview', [
+            'user' => $owner,
+            'lpa' => $lpa,
+        ]));
+
+        $response->assertSuccessful();
+    }
+
+    public function test_non_admin_cannot_preview_user_will_pdf(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        $owner = User::factory()->create();
+        $will = Will::create([
+            'user_id' => $owner->id,
+            'will_type' => 'Me',
+            'status' => 'draft',
+            'personal_info' => ['firstName' => 'Z'],
+        ]);
+
+        $response = $this->actingAs($user)->get(route('admin.users.wills.pdf.preview', [
+            'user' => $owner,
+            'will' => $will,
+        ]));
+
+        $response->assertRedirect(route('dashboard'));
+        $response->assertSessionHas('error');
+    }
 }

@@ -10,9 +10,9 @@ export function LpaPricingSection() {
                 </p>
                 <div className="rounded-3xl border border-white/70 bg-white/90 p-10 shadow-xl animate-fadeInUp" style={{ animationDelay: '150ms' }}>
                     <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500">Flat pricing</span>
-                    <p className="mt-4 text-2xl font-semibold text-primary-900">£99 per LPA (excl. VAT) with specialist review.</p>
+                    <p className="mt-4 text-2xl font-semibold text-primary-900">£85 per LPA (excl. VAT) with specialist review.</p>
                     <p className="mt-2 text-sm text-primary-600">
-                        20% VAT is calculated and shown clearly at checkout. Each LPA also includes the £92 mandatory OPG register fee. Order both Health &amp; Welfare and Property &amp; Finance LPAs for £198 (excl. VAT) before VAT and OPG fees.
+                        20% VAT is calculated and shown clearly at checkout. Each LPA also includes the £92 mandatory OPG register fee. Order both Health &amp; Welfare and Property &amp; Finance LPAs for £170 (excl. VAT) before VAT and OPG fees.
                     </p>
                     <p className="mt-3 text-xs text-primary-500">
                         The £92 register fee is mandatory for registration with the Office of Public Guardian.{' '}
