@@ -242,11 +242,9 @@ class WillController extends Controller
 
     private function calculateAmount(string $willType): float
     {
-        return match ($willType) {
-            'Me' => 69.99,
-            'Mirror' => 99.99,
-            default => 69.99,
-        };
+        $product = PaymentProduct::fromWillType($willType);
+
+        return round($product->amountInPence() / 100, 2);
     }
 
     private function willValidationRules(): array

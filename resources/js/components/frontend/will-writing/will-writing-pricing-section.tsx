@@ -4,17 +4,17 @@ import { router } from '@inertiajs/react';
 const pricingOptions = [
     {
         tier: 'single will',
-        usualPrice: 'Base price £69.99',
+        usualPrice: 'Base price £65 (ex VAT)',
         savings: 'Inc. VAT',
-        price: '£83.99 for a single will',
+        price: '£78.00 for a single will',
         blurb: "Make a will just for you, whether or not you're in a relationship.",
         bannerColor: 'from-rose-100 via-amber-100 to-rose-50',
     },
     {
         tier: 'mirror wills',
-        usualPrice: 'Base price £99.99',
+        usualPrice: 'Base price £75 (ex VAT)',
         savings: 'Inc. VAT',
-        price: '£119.99 for mirror wills',
+        price: '£90.00 for mirror wills',
         blurb: "Make a will with someone who has wishes similar to yours, such as a partner.",
         bannerColor: 'from-emerald-100 via-sky-100 to-emerald-50',
     },

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AdminLayout from '@/layouts/admin-layout';
-import { ArrowLeft, CreditCard, Download, FileText, LayoutList, ScrollText } from 'lucide-react';
+import { ArrowLeft, CreditCard, Download, Eye, FileText, LayoutList, ScrollText } from 'lucide-react';
 
 interface UserResource {
     id: number;
@@ -285,7 +285,7 @@ export default function Details({ user, activity, payments, wills, lpas }: Props
                                                     <TableHead>Status</TableHead>
                                                     <TableHead>Paid</TableHead>
                                                     <TableHead>Amount</TableHead>
-                                                    <TableHead className="w-32 text-right">PDF</TableHead>
+                                                    <TableHead className="min-w-[10rem] text-right">PDF</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -310,19 +310,34 @@ export default function Details({ user, activity, payments, wills, lpas }: Props
                                                         </TableCell>
                                                         <TableCell className="text-sm">{formatPounds(w.amount)}</TableCell>
                                                         <TableCell className="text-right">
-                                                            <Button asChild variant="outline" size="sm" className="h-8 gap-1">
-                                                                <a
-                                                                    href={route('admin.users.wills.pdf', {
-                                                                        user: user.id,
-                                                                        will: w.id,
-                                                                    })}
-                                                                    target="_blank"
-                                                                    rel="noreferrer"
-                                                                >
-                                                                    <Download className="h-3.5 w-3.5" />
-                                                                    Download
-                                                                </a>
-                                                            </Button>
+                                                            <div className="flex flex-col items-end gap-1 sm:flex-row sm:justify-end sm:gap-2">
+                                                                <Button asChild variant="secondary" size="sm" className="h-8 gap-1">
+                                                                    <a
+                                                                        href={route('admin.users.wills.pdf.preview', {
+                                                                            user: user.id,
+                                                                            will: w.id,
+                                                                        })}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <Eye className="h-3.5 w-3.5" />
+                                                                        Preview
+                                                                    </a>
+                                                                </Button>
+                                                                <Button asChild variant="outline" size="sm" className="h-8 gap-1">
+                                                                    <a
+                                                                        href={route('admin.users.wills.pdf', {
+                                                                            user: user.id,
+                                                                            will: w.id,
+                                                                        })}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <Download className="h-3.5 w-3.5" />
+                                                                        Download
+                                                                    </a>
+                                                                </Button>
+                                                            </div>
                                                         </TableCell>
                                                     </TableRow>
                                                 ))}
@@ -351,7 +366,7 @@ export default function Details({ user, activity, payments, wills, lpas }: Props
                                                     <TableHead>Status</TableHead>
                                                     <TableHead>Paid</TableHead>
                                                     <TableHead>Amount</TableHead>
-                                                    <TableHead className="w-32 text-right">PDF</TableHead>
+                                                    <TableHead className="min-w-[10rem] text-right">PDF</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
@@ -378,19 +393,34 @@ export default function Details({ user, activity, payments, wills, lpas }: Props
                                                         </TableCell>
                                                         <TableCell className="text-sm">{formatPounds(l.amount)}</TableCell>
                                                         <TableCell className="text-right">
-                                                            <Button asChild variant="outline" size="sm" className="h-8 gap-1">
-                                                                <a
-                                                                    href={route('admin.users.lpas.pdf', {
-                                                                        user: user.id,
-                                                                        lpa: l.id,
-                                                                    })}
-                                                                    target="_blank"
-                                                                    rel="noreferrer"
-                                                                >
-                                                                    <Download className="h-3.5 w-3.5" />
-                                                                    Download
-                                                                </a>
-                                                            </Button>
+                                                            <div className="flex flex-col items-end gap-1 sm:flex-row sm:justify-end sm:gap-2">
+                                                                <Button asChild variant="secondary" size="sm" className="h-8 gap-1">
+                                                                    <a
+                                                                        href={route('admin.users.lpas.pdf.preview', {
+                                                                            user: user.id,
+                                                                            lpa: l.id,
+                                                                        })}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <Eye className="h-3.5 w-3.5" />
+                                                                        Preview
+                                                                    </a>
+                                                                </Button>
+                                                                <Button asChild variant="outline" size="sm" className="h-8 gap-1">
+                                                                    <a
+                                                                        href={route('admin.users.lpas.pdf', {
+                                                                            user: user.id,
+                                                                            lpa: l.id,
+                                                                        })}
+                                                                        target="_blank"
+                                                                        rel="noreferrer"
+                                                                    >
+                                                                        <Download className="h-3.5 w-3.5" />
+                                                                        Download
+                                                                    </a>
+                                                                </Button>
+                                                            </div>
                                                         </TableCell>
                                                     </TableRow>
                                                 ))}

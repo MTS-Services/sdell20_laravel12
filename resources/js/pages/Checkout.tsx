@@ -1,4 +1,5 @@
 import CheckoutForm from '@/components/checkout-form';
+import { PAYMENT_AMOUNT_PENCE } from '@/lib/paymentAmounts';
 
 interface Props {
     amount: number;
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export default function Checkout({
-    amount = 9900,
+    amount = PAYMENT_AMOUNT_PENCE.lpa,
     currency = 'gbp',
     paymentId = null,
     product = null,

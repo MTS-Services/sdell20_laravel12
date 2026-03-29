@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import generateWillPdf from '@/components/frontend/will/generate-will-pdf';
+import { willPaymentTotalPence } from '@/lib/paymentAmounts';
 import type { WillData } from './will-types';
 
 function getCsrfToken(): string {
@@ -188,7 +189,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
             } catch { /* storage full — best effort */ }
 
             // Not paid — redirect to checkout with step=download so we land back here
-            const amount = willType === 'Mirror' ? 9999 : 6999;
+            const amount = willPaymentTotalPence(willType);
             const baseUrl = window.location.origin + window.location.pathname;
             const redirectUrl = encodeURIComponent(`${baseUrl}?step=download`);
             window.location.href = `/checkout?amount=${amount}&product=${productType}&redirect_url=${redirectUrl}`;
@@ -369,7 +370,7 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
                                 className="px-10 py-3 bg-emerald-600 text-white rounded font-bold text-sm uppercase tracking-wider hover:bg-emerald-700 transition-colors cursor-pointer"
                             >
                                 {isLoggedIn
-                                    ? `PAY & DOWNLOAD (£${willType === 'Mirror' ? '99.99' : '69.99'})`
+                                    ? `PAY & DOWNLOAD (£${(willPaymentTotalPence(willType) / 100).toFixed(2)})`
                                     : 'SIGN IN TO PURCHASE'}
                             </button>
                         </div>

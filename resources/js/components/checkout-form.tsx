@@ -14,6 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import UserLayout from '@/layouts/user-layout';
+import { PAYMENT_AMOUNT_PENCE } from '@/lib/paymentAmounts';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY ?? '');
 
@@ -264,7 +265,7 @@ function PriceBreakdown({ product, amount }: { product: string | null; amount: n
 }
 
 export default function Checkout({
-    amount = 9900,
+    amount = PAYMENT_AMOUNT_PENCE.lpa,
     currency = 'gbp',
     paymentId = null,
     product = null,

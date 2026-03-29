@@ -54,7 +54,7 @@ class PaymentController extends Controller
      */
     public function checkout(Request $request): Response
     {
-        $amount = (int) $request->query('amount', 9900);
+        $amount = (int) $request->query('amount', PaymentProduct::LpaProperty->amountInPence());
         $currency = $request->query('currency', 'gbp');
         $paymentId = $request->query('payment_id');
         $product = $request->query('product');

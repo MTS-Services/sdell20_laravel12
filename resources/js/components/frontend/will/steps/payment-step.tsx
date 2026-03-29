@@ -2,6 +2,8 @@ import React, { useCallback, useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import { CreditCard, Shield, CheckCircle } from 'lucide-react';
 
+import { willPaymentTotalPence } from '@/lib/paymentAmounts';
+
 function getCsrfToken(): string {
     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
     if (match) return decodeURIComponent(match[1]);
@@ -25,10 +27,9 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ willType, willData, onPayment
 
     const productType = willType === 'Mirror' ? 'mirror_will' : 'single_will';
 
-    // Base prices in pence
-    const baseAmount = willType === 'Mirror' ? 9999 : 6999;
-    const vatAmount = Math.round(baseAmount * 0.20);
-    const amount = baseAmount + vatAmount;
+    const amount = willPaymentTotalPence(willType);
+    const baseAmount = Math.round(amount / 1.2);
+    const vatAmount = amount - baseAmount;
 
     // Display prices
     const basePrice = (baseAmount / 100).toFixed(2);
