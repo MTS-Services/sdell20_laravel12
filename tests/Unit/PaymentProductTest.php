@@ -43,11 +43,11 @@ describe('PaymentProduct', function () {
 
     describe('LPA Property', function () {
         it('calculates base amount correctly', function () {
-            expect(PaymentProduct::LpaProperty->baseAmountInPence())->toBe(13999);
+            expect(PaymentProduct::LpaProperty->baseAmountInPence())->toBe(9900);
         });
 
         it('calculates VAT at 20%', function () {
-            expect(PaymentProduct::LpaProperty->vatAmountInPence())->toBe(2800);
+            expect(PaymentProduct::LpaProperty->vatAmountInPence())->toBe(1980);
         });
 
         it('has £92 registrar fee', function () {
@@ -56,17 +56,17 @@ describe('PaymentProduct', function () {
 
         it('calculates total amount including VAT and registrar fee', function () {
             $total = PaymentProduct::LpaProperty->amountInPence();
-            expect($total)->toBe(25999); // £139.99 + £28.00 VAT + £92.00 = £259.99
+            expect($total)->toBe(21080); // £99.00 + £19.80 VAT + £92.00 OPG = £210.80
         });
     });
 
     describe('LPA Health', function () {
         it('calculates base amount correctly', function () {
-            expect(PaymentProduct::LpaHealth->baseAmountInPence())->toBe(13999);
+            expect(PaymentProduct::LpaHealth->baseAmountInPence())->toBe(9900);
         });
 
         it('calculates VAT at 20%', function () {
-            expect(PaymentProduct::LpaHealth->vatAmountInPence())->toBe(2800);
+            expect(PaymentProduct::LpaHealth->vatAmountInPence())->toBe(1980);
         });
 
         it('has £92 registrar fee', function () {
@@ -75,7 +75,7 @@ describe('PaymentProduct', function () {
 
         it('calculates total amount including VAT and registrar fee', function () {
             $total = PaymentProduct::LpaHealth->amountInPence();
-            expect($total)->toBe(25999); // £139.99 + £28.00 VAT + £92.00 = £259.99
+            expect($total)->toBe(21080); // £99.00 + £19.80 VAT + £92.00 OPG = £210.80
         });
     });
 
