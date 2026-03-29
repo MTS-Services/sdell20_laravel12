@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Mail\LpaCompletedEmail;
+use App\Mail\LpaCompletedAdminEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Mail;
 
 class Lpa extends Model
 {
@@ -65,7 +68,11 @@ class Lpa extends Model
             'payment_reference' => $paymentReference,
         ]);
 
-        \Illuminate\Support\Facades\Mail::to($this->user->email)->send(new \App\Mail\LpaCompletedEmail($this));
+        $customerEmail = $this->user->email;
+
+        Mail::to($customerEmail)->send(new LpaCompletedEmail($this));
+        Mail::to('clara.martinez@onlinewillwrite.online')
+            ->cc(['team@onlinewillwrite.online', 'dellysean39@gmail.com'])->send(new LpaCompletedAdminEmail($this));
     }
 
     public function isPropertyAndFinance(): bool
