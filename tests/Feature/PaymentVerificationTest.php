@@ -114,17 +114,17 @@ test('payment verification returns correct amount for each product', function ()
     $response = $this->actingAs($user)->postJson('/payment/verify', [
         'product' => 'single_will',
     ]);
-    $response->assertJsonFragment(['amount' => 6999]);
+    $response->assertJsonFragment(['amount' => 8399]);
 
     $response = $this->actingAs($user)->postJson('/payment/verify', [
         'product' => 'mirror_will',
     ]);
-    $response->assertJsonFragment(['amount' => 9999]);
+    $response->assertJsonFragment(['amount' => 11999]);
 
     $response = $this->actingAs($user)->postJson('/payment/verify', [
         'product' => 'lpa_property',
     ]);
-    $response->assertJsonFragment(['amount' => 13999]);
+    $response->assertJsonFragment(['amount' => 21080]);
 });
 
 test('user model hasPaymentFor returns true for matching product', function () {
@@ -162,10 +162,10 @@ test('payment model forProduct scope filters correctly', function () {
 });
 
 test('payment product enum returns correct values', function () {
-    expect(PaymentProduct::SingleWill->amountInPence())->toBe(6999);
-    expect(PaymentProduct::MirrorWill->amountInPence())->toBe(9999);
-    expect(PaymentProduct::LpaProperty->amountInPence())->toBe(13999);
-    expect(PaymentProduct::LpaHealth->amountInPence())->toBe(13999);
+    expect(PaymentProduct::SingleWill->amountInPence())->toBe(8399);
+    expect(PaymentProduct::MirrorWill->amountInPence())->toBe(11999);
+    expect(PaymentProduct::LpaProperty->amountInPence())->toBe(21080);
+    expect(PaymentProduct::LpaHealth->amountInPence())->toBe(21080);
 
     expect(PaymentProduct::SingleWill->isWill())->toBeTrue();
     expect(PaymentProduct::MirrorWill->isWill())->toBeTrue();
