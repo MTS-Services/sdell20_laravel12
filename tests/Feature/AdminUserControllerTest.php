@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Lpa;
+use App\Models\Payment;
 use App\Models\User;
+use App\Models\Will;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -349,5 +352,158 @@ class AdminUserControllerTest extends TestCase
             ->has('users.data', 15)
             ->has('users.links')
         );
+    }
+
+    public function test_users_index_includes_activity_counts(): void
+    {
+        $admin = User::factory()->create([
+            'is_admin' => true,
+            'created_at' => now()->subDay(),
+        ]);
+        $target = User::factory()->create(['created_at' => now()]);
+        Payment::factory()->count(2)->create(['user_id' => $target->id]);
+        Will::create([
+            'user_id' => $target->id,
+            'will_type' => 'Me',
+            'status' => 'draft',
+        ]);
+        Lpa::create([
+            'user_id' => $target->id,
+            'who_for' => 'Me',
+            'document_type' => 'property',
+            'status' => 'draft',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.index'));
+
+        $response->assertOk();
+        $response->assertInertia(fn ($page) => $page
+            ->component('backend/Admin/Users/Index')
+            ->where('users.data.0.id', $target->id)
+            ->where('users.data.0.payments_count', 2)
+            ->where('users.data.0.wills_count', 1)
+            ->where('users.data.0.lpas_count', 1)
+        );
+    }
+
+    public function test_admin_can_view_user_details(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $target = User::factory()->create();
+        Payment::factory()->create([
+            'user_id' => $target->id,
+            'metadata' => ['product' => 'single_will'],
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.details', $target));
+
+        $response->assertOk();
+        $response->assertInertia(fn ($page) => $page
+            ->component('backend/Admin/Users/Details')
+            ->where('user.id', $target->id)
+            ->where('activity.payments_count', 1)
+            ->where('activity.payments_succeeded_count', 1)
+            ->has('payments', 1)
+            ->has('wills', 0)
+            ->has('lpas', 0)
+        );
+    }
+
+    public function test_non_admin_cannot_view_user_details(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        $target = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('admin.users.details', $target));
+
+        $response->assertRedirect(route('dashboard'));
+        $response->assertSessionHas('error');
+    }
+
+    public function test_admin_can_download_will_pdf_for_user(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $owner = User::factory()->create();
+        $will = Will::create([
+            'user_id' => $owner->id,
+            'will_type' => 'Me',
+            'status' => 'draft',
+            'personal_info' => [
+                'title' => 'Mr',
+                'firstName' => 'Test',
+                'lastName' => 'User',
+            ],
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.wills.pdf', [
+            'user' => $owner,
+            'will' => $will,
+        ]));
+
+        $response->assertOk();
+        $response->assertDownload();
+    }
+
+    public function test_admin_can_download_lpa_pdf_for_user(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $owner = User::factory()->create();
+        $lpa = Lpa::create([
+            'user_id' => $owner->id,
+            'who_for' => 'Me',
+            'document_type' => 'property',
+            'status' => 'draft',
+            'donor_details' => [],
+            'contact_details' => [],
+            'attorneys' => [['name' => 'Attorney One']],
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.lpas.pdf', [
+            'user' => $owner,
+            'lpa' => $lpa,
+        ]));
+
+        $response->assertOk();
+        $response->assertDownload();
+    }
+
+    public function test_admin_cannot_download_will_pdf_when_document_belongs_to_another_user(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $owner = User::factory()->create();
+        $otherOwner = User::factory()->create();
+        $will = Will::create([
+            'user_id' => $otherOwner->id,
+            'will_type' => 'Me',
+            'status' => 'draft',
+            'personal_info' => ['firstName' => 'X'],
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.users.wills.pdf', [
+            'user' => $owner,
+            'will' => $will,
+        ]));
+
+        $response->assertNotFound();
+    }
+
+    public function test_non_admin_cannot_download_user_will_pdf(): void
+    {
+        $user = User::factory()->create(['is_admin' => false]);
+        $owner = User::factory()->create();
+        $will = Will::create([
+            'user_id' => $owner->id,
+            'will_type' => 'Me',
+            'status' => 'draft',
+            'personal_info' => ['firstName' => 'Y'],
+        ]);
+
+        $response = $this->actingAs($user)->get(route('admin.users.wills.pdf', [
+            'user' => $owner,
+            'will' => $will,
+        ]));
+
+        $response->assertRedirect(route('dashboard'));
+        $response->assertSessionHas('error');
     }
 }

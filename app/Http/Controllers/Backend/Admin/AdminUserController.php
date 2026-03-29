@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Backend\Admin;
 
+use App\Enums\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Models\Lpa;
+use App\Models\Payment;
 use App\Models\User;
+use App\Models\Will;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,6 +24,7 @@ class AdminUserController extends Controller
 
         $usersQuery = User::query()
             ->select('id', 'name', 'email', 'is_admin', 'account_status', 'created_at')
+            ->withCount(['payments', 'wills', 'lpas'])
             ->latest();
 
         if ($role === 'admin') {
@@ -59,6 +64,79 @@ class AdminUserController extends Controller
                 'updated_at' => $user->updated_at?->toDateTimeString(),
             ],
             'statusOptions' => User::ACCOUNT_STATUS_OPTIONS,
+        ]);
+    }
+
+    public function details(User $user): Response
+    {
+        $user->load([
+            'payments' => fn ($query) => $query->latest(),
+            'wills' => fn ($query) => $query->latest(),
+            'lpas' => fn ($query) => $query->latest(),
+        ]);
+
+        $paymentsSucceeded = $user->payments->filter(
+            fn (Payment $payment) => $payment->status === PaymentStatus::Complete
+        )->count();
+
+        return Inertia::render('backend/Admin/Users/Details', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'is_admin' => $user->is_admin,
+                'account_status' => $user->account_status,
+                'created_at' => $user->created_at?->toDateTimeString(),
+                'updated_at' => $user->updated_at?->toDateTimeString(),
+            ],
+            'activity' => [
+                'payments_count' => $user->payments->count(),
+                'payments_succeeded_count' => $paymentsSucceeded,
+                'wills_count' => $user->wills->count(),
+                'lpas_count' => $user->lpas->count(),
+            ],
+            'payments' => $user->payments->map(function (Payment $payment) {
+                $status = $payment->status instanceof PaymentStatus
+                    ? $payment->status
+                    : PaymentStatus::tryFrom((string) $payment->status) ?? PaymentStatus::Pending;
+
+                return [
+                    'id' => $payment->id,
+                    'amount' => $payment->amount,
+                    'currency' => $payment->currency,
+                    'status' => $status->value,
+                    'status_label' => $status->label(),
+                    'product' => $payment->getProduct()?->value,
+                    'product_label' => $payment->getProduct()?->label(),
+                    'stripe_payment_intent_id' => $payment->stripe_payment_intent_id,
+                    'created_at' => $payment->created_at?->toDateTimeString(),
+                ];
+            })->values()->all(),
+            'wills' => $user->wills->map(function (Will $will) {
+                return [
+                    'id' => $will->id,
+                    'will_type' => $will->will_type,
+                    'status' => $will->status,
+                    'is_draft' => $will->is_draft,
+                    'paid_at' => $will->paid_at?->toDateTimeString(),
+                    'amount' => $will->amount,
+                    'payment_reference' => $will->payment_reference,
+                    'created_at' => $will->created_at?->toDateTimeString(),
+                ];
+            })->values()->all(),
+            'lpas' => $user->lpas->map(function (Lpa $lpa) {
+                return [
+                    'id' => $lpa->id,
+                    'document_type' => $lpa->document_type,
+                    'who_for' => $lpa->who_for,
+                    'status' => $lpa->status,
+                    'is_draft' => $lpa->is_draft,
+                    'paid_at' => $lpa->paid_at?->toDateTimeString(),
+                    'amount' => $lpa->amount,
+                    'payment_reference' => $lpa->payment_reference,
+                    'created_at' => $lpa->created_at?->toDateTimeString(),
+                ];
+            })->values()->all(),
         ]);
     }
 

@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Backend\Admin\AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\AdminUserController;
+use App\Http\Controllers\Backend\Admin\AdminUserDocumentPdfController;
 use App\Http\Controllers\Backend\Admin\TwilioController;
 use App\Http\Controllers\Backend\LpaController;
-use App\Http\Controllers\Backend\WillController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
+use App\Http\Controllers\Backend\WillController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\UserProfileController;
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
+        Route::get('/users/{user}/details', [AdminUserController::class, 'details'])->name('users.details');
+        Route::get('/users/{user}/wills/{will}/pdf', [AdminUserDocumentPdfController::class, 'downloadWill'])->name('users.wills.pdf');
+        Route::get('/users/{user}/lpas/{lpa}/pdf', [AdminUserDocumentPdfController::class, 'downloadLpa'])->name('users.lpas.pdf');
         Route::resource('users', AdminUserController::class);
         Route::get('/users/list', [UserSelectionController::class, 'getUsers'])->name('users.list');
 

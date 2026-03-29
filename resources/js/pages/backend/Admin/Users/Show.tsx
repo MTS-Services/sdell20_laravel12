@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
-import { ArrowLeft, ClipboardCopy, Eye } from 'lucide-react';
+import { ArrowLeft, ClipboardCopy, Eye, LayoutList } from 'lucide-react';
 
 interface UserResource {
     id: number;
@@ -52,7 +52,13 @@ export default function Show({ user }: Props) {
                                 Back to list
                             </Link>
                         </Button>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                            <Button asChild variant="outline">
+                                <Link href={route('admin.users.details', user.id)}>
+                                    <LayoutList className="mr-2 h-4 w-4" />
+                                    Activity details
+                                </Link>
+                            </Button>
                             <Button asChild variant="secondary">
                                 <Link href={route('admin.users.edit', user.id)}>
                                     <ClipboardCopy className="mr-2 h-4 w-4" />

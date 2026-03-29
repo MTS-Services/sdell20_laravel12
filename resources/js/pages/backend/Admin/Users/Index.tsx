@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AdminLayout from '@/layouts/admin-layout';
-import { ArrowLeft, Eye, Pencil, Plus, Settings, Trash2, Users } from 'lucide-react';
+import { Eye, LayoutList, Pencil, Plus, Settings, Trash2, Users } from 'lucide-react';
 
 interface UserItem {
     id: number;
@@ -22,6 +22,9 @@ interface UserItem {
     is_admin: boolean;
     account_status?: string;
     created_at: string;
+    payments_count: number;
+    wills_count: number;
+    lpas_count: number;
 }
 
 interface PaginatedUsers {
@@ -166,13 +169,16 @@ export default function Index({ users, totalUsers, search = '', currentFilter = 
                                             <TableHead className="w-24 text-center">Role</TableHead>
                                             <TableHead className="w-28 text-center">Status</TableHead>
                                             <TableHead className="w-32">Joined</TableHead>
+                                            <TableHead className="w-20 text-center">Payments</TableHead>
+                                            <TableHead className="w-16 text-center">Wills</TableHead>
+                                            <TableHead className="w-16 text-center">LPAs</TableHead>
                                             <TableHead className="w-24 text-center">Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {users.data.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
+                                                <TableCell colSpan={10} className="py-8 text-center text-muted-foreground">
                                                     No users found.
                                                 </TableCell>
                                             </TableRow>
@@ -203,6 +209,15 @@ export default function Index({ users, totalUsers, search = '', currentFilter = 
                                                     <TableCell className="text-sm text-muted-foreground">
                                                         {new Date(u.created_at).toLocaleDateString()}
                                                     </TableCell>
+                                                    <TableCell className="text-center tabular-nums text-sm font-medium">
+                                                        {u.payments_count}
+                                                    </TableCell>
+                                                    <TableCell className="text-center tabular-nums text-sm font-medium">
+                                                        {u.wills_count}
+                                                    </TableCell>
+                                                    <TableCell className="text-center tabular-nums text-sm font-medium">
+                                                        {u.lpas_count}
+                                                    </TableCell>
                                                     <TableCell className="text-center">
                                                         <DropdownMenu>
                                                             <DropdownMenuTrigger asChild>
@@ -216,7 +231,16 @@ export default function Index({ users, totalUsers, search = '', currentFilter = 
                                                                     <span className="sr-only">Open user actions</span>
                                                                 </Button>
                                                             </DropdownMenuTrigger>
-                                                            <DropdownMenuContent align="end" className="w-40">
+                                                            <DropdownMenuContent align="end" className="w-44">
+                                                                <DropdownMenuItem asChild>
+                                                                    <Link
+                                                                        href={route('admin.users.details', u.id)}
+                                                                        className="cursor-pointer flex items-center gap-2"
+                                                                    >
+                                                                        <LayoutList className="h-4 w-4" />
+                                                                        Details
+                                                                    </Link>
+                                                                </DropdownMenuItem>
                                                                 <DropdownMenuItem asChild>
                                                                     <Link href={route('admin.users.show', u.id)} className="cursor-pointer flex items-center gap-2">
                                                                         <Eye className="h-4 w-4" />
