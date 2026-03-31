@@ -11,13 +11,7 @@ export function WillWritingCalloutsSection() {
     return (
         <section className="bg-primary-100 px-4 py-16 sm:px-6 lg:px-10">
             <div className="mx-auto max-w-6xl text-center">
-                <h3 className="text-2xl font-serif font-semibold text-primary-900">
-                    Call us now on{' '}
-                    <a href="tel:02045253605" className="font-bold text-primary-600">
-                 
-                    </a>{' '}
-                    to learn more about
-                </h3>
+                <h3 className="text-2xl font-serif font-semibold text-primary-900">Learn more about</h3>
                 <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
                     {callouts.map((item, index) => (
                         <div
