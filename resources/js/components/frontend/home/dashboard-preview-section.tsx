@@ -87,11 +87,8 @@ export function DashboardPreviewSection() {
                             <div className="rounded-2xl border-2 border-slate-100 bg-cream p-8">
                                 <h3 className="mb-4 font-serif text-3xl font-bold text-primary-900">Welcome John Arnold, to your online will writing service</h3>
                                 <p className="mb-4 font-body leading-relaxed text-primary-700">
-                                    Please fill out the <span className="font-semibold">will checklist</span> to complete your will. If you have any questions call us on{' '}
-                                    <a href="tel:02045253605" className="font-semibold text-primary-600 hover:underline">
-                                        020 4525 3605
-                                    </a>
-                                    .
+                                    Please fill out the <span className="font-semibold">will checklist</span> to complete your will. If you have any
+                                    questions, our support team is here to help.
                                 </p>
                                 <button className="rounded-full bg-slate-600 px-8 py-3 font-sans font-semibold text-white shadow-lg transition-colors hover:bg-slate-700">
                                     Get Started
