@@ -81,9 +81,9 @@ const steps: Step[] = [
         icon: Users,
         illustrationSrc: 'https://online.zenco.com/images/family1.png',
         options: [
-            { label: 'Health & Welfare LPA', value: 'health' },
-            { label: 'Property & Finance LPA', value: 'finance' },
-            { label: 'Both LPAs', value: 'both' },
+            { label: 'Myself', value: 'me' },
+            { label: 'My partner and I', value: 'partner' },
+            { label: 'Someone else', value: 'someone-else' },
         ],
     },
     {
@@ -98,6 +98,19 @@ const steps: Step[] = [
             { label: '1 person', value: 'one' },
             { label: '2 people', value: 'two' },
             { label: 'More than 2 people', value: 'more' },
+        ],
+    },
+    {
+        id: 'lpaType',
+        question: 'Which Lasting Power of Attorney do you need?',
+        highlight: 'Lasting Power of Attorney',
+        description: 'You can choose one type now, or select both if you need to cover health and finances.',
+        icon: ShieldCheck,
+        illustrationSrc: 'https://online.zenco.com/images/family1.png',
+        options: [
+            { label: 'Health & Welfare LPA', value: 'health' },
+            { label: 'Property & Finance LPA', value: 'finance' },
+            { label: 'Both LPAs', value: 'both' },
         ],
     },
     {

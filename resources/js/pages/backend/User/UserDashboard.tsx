@@ -127,16 +127,6 @@ export default function UserDashboard({ user }: Props) {
                                 <div className="overflow-hidden">
                                     <div className={`border-t border-slate-200 px-5 py-6 text-sm text-primary-600 transition-all duration-500 ${helpOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
                                         <div className="flex items-start gap-3">
-                                            <span className="text-primary-500"><Phone className="h-5 w-5" /></span>
-                                            <div>
-                                                <p className="font-semibold text-primary-700">Call us</p>
-                                                <a href="tel:08008886508" className="text-primary-500 underline">
-                                                    0800 888 6508
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div className="mt-6 flex items-start gap-3">
                                             <span className="text-primary-500"><CalendarDays className="h-5 w-5" /></span>
                                             <div className="space-y-1">
                                                 <p className="font-semibold text-primary-700">Opening hours</p>

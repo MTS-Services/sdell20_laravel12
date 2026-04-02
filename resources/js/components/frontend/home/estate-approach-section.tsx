@@ -12,7 +12,7 @@ const lpaSteps = [
   {
     title: "Documents are checked by experts",
     description:
-      "Once our experts have checked your documents they are posted immediately. If you’d like help at any stage call 0808 169 3475.",
+      "Once our experts have checked your documents they are posted immediately. If you’d like help at any stage, our team is on hand to support you.",
   },
   {
     title: "Documents are signed",
