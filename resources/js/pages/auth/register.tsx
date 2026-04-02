@@ -80,6 +80,26 @@ export default function Register() {
                                     <InputError message={errors.email} />
                                 </div>
 
+                                {/* Card: Phone Number */}
+                                <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 sm:p-5 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
+                                    <Label
+                                        htmlFor="phone_number"
+                                        className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500"
+                                    >
+                                        Phone number
+                                    </Label>
+                                    <Input
+                                        id="phone_number"
+                                        name="phone_number"
+                                        type="tel"
+                                        pattern="[0-9]{11}"
+                                        
+                                        placeholder="07xxxxxxxxx"
+                                        className="mt-2 h-11 sm:h-12 rounded-2xl border border-muted/60 bg-white text-sm sm:text-base text-primary-500 placeholder:text-primary-500/60 focus:border-primary-400 focus-visible:ring-2 focus-visible:ring-primary-200"
+                                    />
+                                    <InputError message={errors.phone_number} />
+                                </div>
+
                                 {/* Card: Password */}
                                 <div className="rounded-3xl border border-primary-50/40 bg-primary-50/20 p-4 sm:p-5 text-foreground shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
                                     <Label

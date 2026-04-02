@@ -27,12 +27,12 @@ export default function Lpa() {
                     <LpaHeroSection />
                     <LpaPackageOptionsSection />
                     <LpaFeaturedLogosSection />
-                    <LpaCtaSection />
+                    {/* <LpaCtaSection /> */}
                     <LpaPlanningSection />
                     <LpaPricingSection />
                     <LpaSupportSection />
                     <WillWritingAboutSection />
-                    <LpaFaqSection />
+                    {/* <LpaFaqSection /> */}
                 </main>
             </FrontendLayout>
         </>
