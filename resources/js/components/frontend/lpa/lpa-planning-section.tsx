@@ -23,17 +23,17 @@ export function LpaPlanningSection() {
                 <div className="space-y-6">
                     <p className="text-xs font-semibold uppercase tracking-[0.45em] text-primary-500 animate-fadeInUp">Guided journey</p>
                     <h2 className="text-4xl font-semibold text-primary-900 animate-fadeInUp" style={{ animationDelay: '50ms' }}>
-                        Write your will or LPA in three simple steps.
+                        Write your LPA in three simple steps.
                     </h2>
                     <p className="text-base text-primary-600 animate-fadeInUp" style={{ animationDelay: '100ms' }}>
                         Digital forms plus human experts mean you always know what comes next.
                     </p>
                     <Link
-                        href={route('contact')}
+                        href={route('lpa.start')}
                         className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-800 animate-fadeInUp"
                         style={{ animationDelay: '150ms' }}
                     >
-                        Get a quote
+                        Let's get started
                         <span aria-hidden>→</span>
                     </Link>
                 </div>

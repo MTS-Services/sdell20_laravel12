@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@inertiajs/react';
 
 const floatingBadges = [
     { color: 'bg-primary-500', delay: '0s' },
@@ -31,12 +32,12 @@ export function LpaSupportSection() {
                             ))}
                         </div>
                     </div>
-                    <button className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 animate-fadeInRight" style={{ animationDelay: '150ms' }}>
+                    <Link href={route('contact')} className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-semibold text-primary-900 transition hover:-translate-y-0.5 animate-fadeInRight" style={{ animationDelay: '150ms' }}>
                         Speak to our team
                         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                         </svg>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

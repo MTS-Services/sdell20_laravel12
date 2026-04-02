@@ -20,7 +20,7 @@ const heroContent = {
     closing:
         'If you don’t yet have a Will, putting one in place now gives you peace of mind and certainty for the future. Our online process is straightforward, secure, and includes professional guidance throughout.',
     offerTitle: 'Save £50 when you start your will online',
-    offerBody: 'Offer ends 15 February. We’ll apply the discount automatically when you finish the online part of our service.',
+    offerBody: 'We’ll apply the discount automatically when you finish the online part of our service.',
     offerLegal: 'This offer is only available in England and Wales. Full terms and conditions apply.',
     primaryCtaLabel: "Let's get started",
 };
