@@ -186,7 +186,7 @@ interface CheckoutProps {
 }
 
 function calculatePriceBreakdown(product: string | null, totalAmount: number) {
-    const isLpa = product === 'lpa_property' || product === 'lpa_health';
+    const isLpa = product === 'lpa_property' || product === 'lpa_health' || product === 'lpa_both';
     const isWill = product === 'single_will' || product === 'mirror_will';
     const isProbate = product === 'probate_referral';
 
@@ -194,7 +194,7 @@ function calculatePriceBreakdown(product: string | null, totalAmount: number) {
         return null;
     }
 
-    const registrarFee = isLpa ? 9200 : 0;
+    const registrarFee = product === 'lpa_both' ? 18400 : (isLpa ? 9200 : 0);
     const amountBeforeVat = totalAmount - registrarFee;
     const baseAmount = Math.round(amountBeforeVat / 1.20);
     const vatAmount = amountBeforeVat - baseAmount;
@@ -221,8 +221,9 @@ function PriceBreakdown({ product, amount }: { product: string | null; amount: n
         : product === 'mirror_will' ? 'Mirror Wills'
             : product === 'lpa_property' ? 'LPA - Property & Finance'
                 : product === 'lpa_health' ? 'LPA - Health & Welfare'
-                    : product === 'probate_referral' ? 'Probate Referral Service'
-                        : '';
+                    : product === 'lpa_both' ? 'LPA - Health & Welfare + Property & Finance'
+                        : product === 'probate_referral' ? 'Probate Referral Service'
+                            : '';
 
     return (
         <div className="mb-6 rounded-lg border border-slate-200 bg-slate-50 p-4">

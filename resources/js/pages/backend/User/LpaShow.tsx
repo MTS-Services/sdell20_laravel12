@@ -29,7 +29,14 @@ interface Props {
 export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
     const documentTypeLabel = lpa.document_type === 'property'
         ? 'Property & Financial Affairs'
-        : 'Health & Welfare';
+        : lpa.document_type === 'both'
+            ? 'Health & Welfare + Property & Financial Affairs'
+            : 'Health & Welfare';
+
+    const registrarFee = lpa.document_type === 'both' ? 18400 : 9200;
+    const amountBeforeVat = amount - registrarFee;
+    const baseAmount = amountBeforeVat / 1.2;
+    const vatAmount = amountBeforeVat - baseAmount;
 
     const donorName = [
         lpa.donor_details?.title,
@@ -140,15 +147,15 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                 <div className="space-y-2 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-primary-600">Base price</span>
-                                        <span className="font-medium text-primary-800">£{((amount - 9200) / 1.20 / 100).toFixed(2)}</span>
+                                        <span className="font-medium text-primary-800">£{(baseAmount / 100).toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-primary-600">VAT (20%)</span>
-                                        <span className="font-medium text-primary-800">£{(((amount - 9200) / 1.20 / 100) * 0.20).toFixed(2)}</span>
+                                        <span className="font-medium text-primary-800">£{(vatAmount / 100).toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-primary-600">Register fee (OPG)</span>
-                                        <span className="font-medium text-primary-800">£92.00</span>
+                                        <span className="font-medium text-primary-800">£{(registrarFee / 100).toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between border-t border-slate-300 pt-2 font-semibold">
                                         <span className="text-primary-900">Total</span>

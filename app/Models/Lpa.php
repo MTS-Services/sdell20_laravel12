@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Mail\LpaCompletedEmail;
 use App\Mail\LpaCompletedAdminEmail;
+use App\Mail\LpaCompletedEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -83,6 +83,11 @@ class Lpa extends Model
     public function isHealthAndWelfare(): bool
     {
         return $this->document_type === 'health';
+    }
+
+    public function isBoth(): bool
+    {
+        return $this->document_type === 'both';
     }
 
     public function isPaid(): bool

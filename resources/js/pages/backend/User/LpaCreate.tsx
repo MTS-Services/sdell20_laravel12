@@ -12,15 +12,9 @@ const lpaSteps = [
     { key: 'who', title: 'Who', description: 'Who is the Lasting Power of Attorney for?' },
     { key: 'documents', title: 'Which Documents', description: 'Which documents do you need?' },
     { key: 'donor', title: 'The Donor', description: 'Who is the donor?' },
-    { key: 'attorneys', title: 'Attorneys', description: 'Choose attorneys' },
-    { key: 'decisions', title: 'Health and Finance Decisions', description: 'Health & finance decisions' },
-    { key: 'notify', title: 'People To Notify', description: 'People to notify' },
-    { key: 'application', title: 'Application Information', description: 'Application information' },
-    { key: 'certificate', title: 'Certificate Provider', description: 'Certification provider' },
-    { key: 'fees', title: 'OPG Fees', description: 'Office of the Public Guardian fee' }
 ];
 
-const TOTAL_FORM_STEPS = 12;
+const TOTAL_FORM_STEPS = 3;
 
 const documentOptions = [
     {
@@ -32,6 +26,11 @@ const documentOptions = [
         value: 'health',
         title: 'Health & Welfare LPA',
         description: 'Make decisions about health, care, and living arrangements.'
+    },
+    {
+        value: 'both',
+        title: 'Both LPAs',
+        description: 'Include both health & welfare and property & finance documents.'
     }
 ];
 
@@ -314,15 +313,15 @@ export default function LpaCreate({ user }: Props) {
                     document_type: selectedDocumentOption,
                     donor_details: donorDetails,
                     contact_details: contactDetails,
-                    attorneys: attorneys,
-                    can_view_documents: canViewDocuments === 'yes',
-                    replacement_attorneys: replacementAttorneys,
-                    want_replacement_attorneys: wantReplacementAttorneys === 'yes',
-                    life_sustaining_treatment: lifeSustainingTreatment === 'yes',
-                    notify_people: notifyPeople === 'yes',
-                    applicant: applicant,
-                    document_recipient: documentRecipient,
-                    certificate_choice: certificateChoice === 'yes',
+                    attorneys: [],
+                    can_view_documents: null,
+                    replacement_attorneys: [],
+                    want_replacement_attorneys: null,
+                    life_sustaining_treatment: null,
+                    notify_people: null,
+                    applicant: null,
+                    document_recipient: null,
+                    certificate_choice: null,
                 }),
             });
 
@@ -1849,46 +1848,6 @@ export default function LpaCreate({ user }: Props) {
 
     // Helper function to map currentStep to display step for the progress indicator
     const getDisplayStep = (currentStepIndex: number): number => {
-        // Steps 2 and 3 both map to step 2 in the visual progress ("The Donor")
-        if (currentStepIndex === 3) {
-            return 2;
-        }
-
-        // Steps 5 and 6 are both part of "Attorneys" in the visual progress
-        if (currentStepIndex === 5 || currentStepIndex === 6) {
-            return 3;
-        }
-
-        // Steps between donor and attorneys (contact details) map back one position
-        if (currentStepIndex > 3 && currentStepIndex < 5) {
-            return currentStepIndex - 1;
-        }
-
-        // Life-sustaining treatment maps to "Health and Finance Decisions"
-        if (currentStepIndex === 7) {
-            return 4;
-        }
-
-        // People to notify maps to its own step
-        if (currentStepIndex === 8) {
-            return 5;
-        }
-
-        // Both application sub-steps (who applies, who receives) map to the single Application step
-        if (currentStepIndex === 9 || currentStepIndex === 10) {
-            return 6;
-        }
-
-        // Certificate provider maps to the certificate step
-        if (currentStepIndex === 11) {
-            return 7;
-        }
-
-        // Anything beyond application should advance naturally with an offset of -3
-        if (currentStepIndex > 6) {
-            return currentStepIndex - 3;
-        }
-
         return currentStepIndex;
     };
 

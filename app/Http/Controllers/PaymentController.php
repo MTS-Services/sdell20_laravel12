@@ -114,7 +114,7 @@ class PaymentController extends Controller
 
         $status = PaymentStatus::storeFromStripe($intent->status);
 
-        if ($payment) {
+        if ($payment instanceof Payment) {
             $payment->update([
                 'stripe_payment_intent_id' => $intent->id,
                 'amount' => $intent->amount,
@@ -220,7 +220,11 @@ class PaymentController extends Controller
             return;
         }
 
-        $documentType = $product === PaymentProduct::LpaProperty ? 'property' : 'health';
+        $documentType = match ($product) {
+            PaymentProduct::LpaProperty => 'property',
+            PaymentProduct::LpaBoth => 'both',
+            default => 'health',
+        };
 
         $lpa = $user->lpas()
             ->where('document_type', $documentType)
