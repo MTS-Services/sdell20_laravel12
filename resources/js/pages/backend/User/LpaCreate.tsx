@@ -12,9 +12,10 @@ const lpaSteps = [
     { key: 'who', title: 'Who', description: 'Who is the Lasting Power of Attorney for?' },
     { key: 'documents', title: 'Which Documents', description: 'Which documents do you need?' },
     { key: 'donor', title: 'The Donor', description: 'Who is the donor?' },
+    { key: 'contact', title: 'Contact Details', description: 'Your contact information' },
 ];
 
-const TOTAL_FORM_STEPS = 3;
+const TOTAL_FORM_STEPS = 4;
 
 const documentOptions = [
     {
@@ -42,26 +43,26 @@ export default function LpaCreate({ user }: Props) {
     const [isEditingWho, setIsEditingWho] = useState(false);
     const [selectedDocumentOption, setSelectedDocumentOption] = useState<string | null>(null);
     const [donorDetails, setDonorDetails] = useState({
-        title: 'Mrs',
-        firstName: 'Samson',
-        middleNames: 'Jameson Giles',
-        lastName: 'Lopez',
-        preferredName: 'Mallory Colon',
+        title: '',
+        firstName: '',
+        middleNames: '',
+        lastName: '',
+        preferredName: '',
         otherNames: '',
-        birthDay: '28',
-        birthMonth: '04',
-        birthYear: '2002'
+        birthDay: '',
+        birthMonth: '',
+        birthYear: ''
     });
     const [contactDetails, setContactDetails] = useState({
-        addressLine1: 'bashundhara',
-        addressLine2: 'jomonah',
-        town: 'dhaka',
+        addressLine1: '',
+        addressLine2: '',
+        town: '',
         county: '',
-        country: 'Bangladesh',
-        postcode: '1362',
-        mobile: '01581088986',
+        country: '',
+        postcode: '',
+        mobile: '',
         landline: '',
-        email: 'vudud@mailinator.com'
+        email: ''
     });
     const [showOtherNames, setShowOtherNames] = useState(false);
     const [showAttorneyModal, setShowAttorneyModal] = useState(false);
@@ -82,7 +83,7 @@ export default function LpaCreate({ user }: Props) {
         email: string;
     }>>([]);
     const [currentAttorney, setCurrentAttorney] = useState({
-        title: 'Mr',
+        title: '',
         firstName: '',
         lastName: '',
         middleNames: '',
@@ -119,7 +120,7 @@ export default function LpaCreate({ user }: Props) {
         email: string;
     }>>([]);
     const [currentReplacementAttorney, setCurrentReplacementAttorney] = useState({
-        title: 'Mr',
+        title: '',
         firstName: '',
         lastName: '',
         middleNames: '',
@@ -160,6 +161,10 @@ export default function LpaCreate({ user }: Props) {
                 return Boolean(selectedWhoOption);
             case 1:
                 return Boolean(selectedDocumentOption);
+            case 2:
+                return Boolean(donorDetails.firstName && donorDetails.lastName && donorDetails.birthDay && donorDetails.birthMonth && donorDetails.birthYear);
+            case 3:
+                return Boolean(contactDetails.addressLine1 && contactDetails.town && contactDetails.postcode);
             case 4:
                 return attorneys.length > 0;
             case 5:
@@ -217,7 +222,7 @@ export default function LpaCreate({ user }: Props) {
         };
         setAttorneys((prev) => [...prev, newAttorney]);
         setCurrentAttorney({
-            title: 'Mr',
+            title: '',
             firstName: '',
             lastName: '',
             middleNames: '',
@@ -242,7 +247,7 @@ export default function LpaCreate({ user }: Props) {
         };
         setReplacementAttorneys((prev) => [...prev, newAttorney]);
         setCurrentReplacementAttorney({
-            title: 'Mr',
+            title: '',
             firstName: '',
             lastName: '',
             middleNames: '',
@@ -641,6 +646,9 @@ export default function LpaCreate({ user }: Props) {
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
                                     <input
+                                        type="number"
+                                        min="1"
+                                        max="31"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthDay}
                                         onChange={(event) => handleDonorChange('birthDay', event.target.value)}
@@ -649,6 +657,9 @@ export default function LpaCreate({ user }: Props) {
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
                                     <input
+                                        type="number"
+                                        min="1"
+                                        max="12"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthMonth}
                                         onChange={(event) => handleDonorChange('birthMonth', event.target.value)}
@@ -657,6 +668,9 @@ export default function LpaCreate({ user }: Props) {
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
                                     <input
+                                        type="number"
+                                        min="1900"
+                                        max={new Date().getFullYear()}
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthYear}
                                         onChange={(event) => handleDonorChange('birthYear', event.target.value)}
@@ -734,6 +748,9 @@ export default function LpaCreate({ user }: Props) {
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
                                     <input
+                                        type="text"
+                                        pattern="[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}"
+                                        placeholder="e.g. SW1A 1AA"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.postcode}
                                         onChange={(event) => handleContactChange('postcode', event.target.value)}
@@ -748,6 +765,9 @@ export default function LpaCreate({ user }: Props) {
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-primary-600">What's your mobile number?</label>
                                     <input
+                                        type="tel"
+                                        pattern="[0-9]{11}"
+                                        placeholder="07xxxxxxxxx"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.mobile}
                                         onChange={(event) => handleContactChange('mobile', event.target.value)}
@@ -756,6 +776,9 @@ export default function LpaCreate({ user }: Props) {
                                 <div>
                                     <label className="mb-2 block text-sm font-medium text-primary-600">What's your landline number?</label>
                                     <input
+                                        type="tel"
+                                        pattern="[0-9]{11}"
+                                        placeholder="01xxxxxxxxx"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.landline}
                                         onChange={(event) => handleContactChange('landline', event.target.value)}
@@ -768,6 +791,8 @@ export default function LpaCreate({ user }: Props) {
                             <h3 className="text-lg font-semibold text-primary-900">What's your email address?</h3>
                             <div className="mt-3">
                                 <input
+                                    type="email"
+                                    placeholder="email@example.com"
                                     className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                     value={contactDetails.email}
                                     onChange={(event) => handleContactChange('email', event.target.value)}
@@ -1015,6 +1040,9 @@ export default function LpaCreate({ user }: Props) {
                                                 <div>
                                                     <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
                                                     <input
+                                                        type="text"
+                                                        pattern="[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}"
+                                                        placeholder="e.g. SW1A 1AA"
                                                         className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentAttorney.postcode}
                                                         onChange={(e) => handleAttorneyChange('postcode', e.target.value)}
@@ -1031,6 +1059,9 @@ export default function LpaCreate({ user }: Props) {
                                             <div>
                                                 <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
                                                 <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="31"
                                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.birthDay}
                                                     onChange={(e) => handleAttorneyChange('birthDay', e.target.value)}
@@ -1040,6 +1071,9 @@ export default function LpaCreate({ user }: Props) {
                                             <div>
                                                 <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
                                                 <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="12"
                                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.birthMonth}
                                                     onChange={(e) => handleAttorneyChange('birthMonth', e.target.value)}
@@ -1049,6 +1083,9 @@ export default function LpaCreate({ user }: Props) {
                                             <div>
                                                 <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
                                                 <input
+                                                    type="number"
+                                                    min="1900"
+                                                    max={new Date().getFullYear()}
                                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentAttorney.birthYear}
                                                     onChange={(e) => handleAttorneyChange('birthYear', e.target.value)}
@@ -1417,6 +1454,9 @@ export default function LpaCreate({ user }: Props) {
                                                 <div>
                                                     <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
                                                     <input
+                                                        type="text"
+                                                        pattern="[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}"
+                                                        placeholder="e.g. SW1A 1AA"
                                                         className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                         value={currentReplacementAttorney.postcode}
                                                         onChange={(e) => handleReplacementAttorneyChange('postcode', e.target.value)}
@@ -1433,6 +1473,9 @@ export default function LpaCreate({ user }: Props) {
                                             <div>
                                                 <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
                                                 <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="31"
                                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.birthDay}
                                                     onChange={(e) => handleReplacementAttorneyChange('birthDay', e.target.value)}
@@ -1442,6 +1485,9 @@ export default function LpaCreate({ user }: Props) {
                                             <div>
                                                 <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
                                                 <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="12"
                                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.birthMonth}
                                                     onChange={(e) => handleReplacementAttorneyChange('birthMonth', e.target.value)}
@@ -1451,6 +1497,9 @@ export default function LpaCreate({ user }: Props) {
                                             <div>
                                                 <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
                                                 <input
+                                                    type="number"
+                                                    min="1900"
+                                                    max={new Date().getFullYear()}
                                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
                                                     value={currentReplacementAttorney.birthYear}
                                                     onChange={(e) => handleReplacementAttorneyChange('birthYear', e.target.value)}
