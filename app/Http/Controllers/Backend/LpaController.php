@@ -34,10 +34,10 @@ class LpaController extends Controller
     {
         $validated = $request->validate([
             'who_for' => 'required|in:Me,Mirror',
-            'document_type' => 'required|in:property,health',
+            'document_type' => 'required|in:property,health,both',
             'donor_details' => 'required|array',
             'contact_details' => 'required|array',
-            'attorneys' => 'required|array|min:1',
+            'attorneys' => 'nullable|array',
             'can_view_documents' => 'nullable|boolean',
             'replacement_attorneys' => 'nullable|array',
             'want_replacement_attorneys' => 'nullable|boolean',

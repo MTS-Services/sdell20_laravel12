@@ -6,7 +6,7 @@ import UserLayout from '@/layouts/user-layout';
 
 interface Lpa {
     id: number;
-    document_type: 'property' | 'health';
+    document_type: 'property' | 'health' | 'both';
     status: string;
     is_draft: boolean;
     paid_at: string | null;
@@ -26,6 +26,7 @@ type Props = {
 const documentTypeLabels: Record<Lpa['document_type'], string> = {
     property: 'Property & Financial Affairs',
     health: 'Health & Welfare',
+    both: 'Health & Welfare + Property & Financial Affairs',
 };
 
 export default function LpaIndex({ lpas }: Props): JSX.Element {

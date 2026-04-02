@@ -12,6 +12,8 @@ enum PaymentProduct: string
 
     case LpaHealth = 'lpa_health';
 
+    case LpaBoth = 'lpa_both';
+
     case WillWritingPlatform = 'will_writing_platform';
 
     case ProbateReferral = 'probate_referral';
@@ -23,6 +25,7 @@ enum PaymentProduct: string
             self::MirrorWill => 'Mirror Wills',
             self::LpaProperty => 'LPA - Property & Finance',
             self::LpaHealth => 'LPA - Health & Welfare',
+            self::LpaBoth => 'LPA - Health & Welfare + Property & Finance',
             self::WillWritingPlatform => 'Will Writing Online Platform',
             self::ProbateReferral => 'Probate Referral Service',
         };
@@ -40,6 +43,7 @@ enum PaymentProduct: string
             self::MirrorWill => 7500,
             self::LpaProperty => 8500,
             self::LpaHealth => 8500,
+            self::LpaBoth => 17000,
             self::WillWritingPlatform => 99500,
             self::ProbateReferral => 35000,
         };
@@ -62,6 +66,10 @@ enum PaymentProduct: string
      */
     public function registrarFeeInPence(): int
     {
+        if ($this === self::LpaBoth) {
+            return 18400;
+        }
+
         if ($this->isLpa()) {
             return 9200;
         }
@@ -84,7 +92,7 @@ enum PaymentProduct: string
 
     public function isLpa(): bool
     {
-        return in_array($this, [self::LpaProperty, self::LpaHealth]);
+        return in_array($this, [self::LpaProperty, self::LpaHealth, self::LpaBoth], true);
     }
 
     /**
@@ -100,6 +108,10 @@ enum PaymentProduct: string
      */
     public static function fromLpaType(string $documentType): self
     {
-        return $documentType === 'property' ? self::LpaProperty : self::LpaHealth;
+        return match ($documentType) {
+            'property' => self::LpaProperty,
+            'both' => self::LpaBoth,
+            default => self::LpaHealth,
+        };
     }
 }
