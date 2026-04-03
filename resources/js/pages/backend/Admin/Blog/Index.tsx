@@ -146,7 +146,7 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                         <TableRow>
                                             <TableHead className="w-16">SL</TableHead>
                                             <TableHead>Title</TableHead>
-                                            <TableHead>Slug</TableHead>
+                                            <TableHead>Description</TableHead>
                                             {/* <TableHead className="w-28 text-center">Image</TableHead> */}
                                             <TableHead className="w-32">Created</TableHead>
                                             <TableHead className="w-24 text-center">Actions</TableHead>
@@ -169,7 +169,7 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                         {blog.title}
                                                     </TableCell>
                                                     <TableCell className="text-muted-foreground text-sm">
-                                                        {blog.description}
+                                                        {blog.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 8).join(' ')}{blog.description.replace(/<[^>]*>/g, '').split(' ').length > 8 ? '...' : ''}
                                                     </TableCell>
                                                     {/* <TableCell className="text-center">
                                                         {blog.image ? (
@@ -199,7 +199,7 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end" className="w-44">
-                                                                <DropdownMenuItem asChild>
+                                                                {/* <DropdownMenuItem asChild>
                                                                     <Link
                                                                         href={route('blog.show', blog.slug)}
                                                                         className="cursor-pointer flex items-center gap-2"
@@ -207,7 +207,7 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                                         <Eye className="h-4 w-4" />
                                                                         Show
                                                                     </Link>
-                                                                </DropdownMenuItem>
+                                                                </DropdownMenuItem> */}
                                                                 <DropdownMenuItem asChild>
                                                                     <Link
                                                                         href={route('blog.edit', blog.slug)}

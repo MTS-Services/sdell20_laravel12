@@ -3,7 +3,22 @@ import BlogSection from '@/components/frontend/blog/blog-section';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { Head } from '@inertiajs/react';
 
-export default function Blog() {
+interface Blog {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    image?: string | null;
+    created_at: string;
+}
+
+interface Props {
+    blogs: {
+        data: Blog[];
+    };
+}
+
+export default function Blog({ blogs }: Props) {
     return (
         <>
             <Head>
@@ -15,7 +30,7 @@ export default function Blog() {
             <FrontendLayout>
                 <main className="bg-white">
                     <BlogHeroSection />
-                    <BlogSection />
+                    <BlogSection blogs={blogs.data} />
                 </main>
             </FrontendLayout>
         </>
