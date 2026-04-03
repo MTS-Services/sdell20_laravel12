@@ -3,14 +3,30 @@ import FrontendLayout from '@/layouts/frontend-layout';
 import { Head } from '@inertiajs/react';
 import { Star } from 'lucide-react';
 
-export default function BlogDetails() {
+interface Blog {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    image?: string | null;
+    created_at: string;
+}
+
+interface Props {
+    blog: Blog;
+    latestBlogs: {
+        data: Blog[];
+    };
+}
+
+export default function BlogDetails({ blog, latestBlogs }: Props) {
     return (
         <>
             <Head>
-                <title>Blog Details</title>
-                <meta name="title" content="Blog Details" />
-                <meta name="description" content="Blog Details" />
-                <meta name="keywords" content="Blog Details" />
+                <title>{blog.title}</title>
+                <meta name="title" content={blog.title} />
+                <meta name="description" content={blog.description} />
+                <meta name="keywords" content="blog, power of attorney, legal documents" />
             </Head>
             <FrontendLayout>
                 <main className="bg-white">
@@ -20,122 +36,38 @@ export default function BlogDetails() {
                                 <div className="w-full lg:w-2/2">
                                     <div className="mb-10">
                                         <h2 className="text-5xl font-normal text-primary-600">
-                                            Martin Lewis on Power of Attorney:
-                                            Why It Can Matter More Than a Will
+                                            {blog.title}
                                         </h2>
                                         <p className="mt-2 text-lg text-gray-600">
-                                            02nd March 2026
+                                            {new Date(blog.created_at).toLocaleDateString('en-US', { 
+                                                year: 'numeric', 
+                                                month: 'long', 
+                                                day: 'numeric' 
+                                            })}
                                         </p>
                                     </div>
                                     <div className="">
-                                        <img
-                                            src="/assets/images/blog/POAO_img34-1536x806.jpg"
-                                            alt="Blog Image"
-                                            className="h-auto w-full"
-                                        />
+                                        {blog.image ? (
+                                            <img
+                                                src={`/storage/${blog.image}`}
+                                                alt={blog.title}
+                                                className="h-auto w-full"
+                                            />
+                                        ) : (
+                                            <img
+                                                src="/assets/images/blog/POAO_img34-1536x806.jpg"
+                                                alt="Blog Image"
+                                                className="h-auto w-full"
+                                            />
+                                        )}
                                     </div>
                                     <div className="mt-10">
-                                        <p className="text-lg text-gray-600">
-                                            Martin Lewis on Power of Attorney is
-                                            a topic that often surprises people.
-                                            The well known money expert Martin
-                                            Lewis has repeatedly stressed that,
-                                            for many families, setting up a
-                                            lasting power of attorney can be
-                                            even more urgent than writing a
-                                            will. That is not because wills are
-                                            unimportant. It is because a power
-                                            of attorney protects you while you
-                                            are alive. Understanding why this
-                                            matters can change how you
-                                            prioritise your planning. Why Does
-                                            Martin Lewis Say a Power of Attorney
-                                            Can Be More Crucial Than a Will? A
-                                            will only takes effect after death.
-                                            A lasting power of attorney works
-                                            during your lifetime. If you lose
-                                            mental capacity through illness,
-                                            accident or dementia, no one
-                                            automatically has the legal right to
-                                            manage your finances or make
-                                            decisions about your care. Not your
-                                            spouse. Not your children. Without
-                                            an LPA, your family must apply to
-                                            the Court of Protection for a
-                                            deputyship order. That process can
-                                            be slow, costly and stressful. This
-                                            is the gap Martin Lewis highlights.
-                                            A will cannot help if you are still
-                                            alive but unable to make decisions.
-                                            What Problems Can Happen Without a
-                                            Lasting Power of Attorney? If there
-                                            is no registered LPA in place, banks
-                                            may freeze accounts. Bills can go
-                                            unpaid. Property sales can be
-                                            delayed. Care decisions can be
-                                            harder to organise. Even joint
-                                            accounts do not guarantee full
-                                            access. Families are often shocked
-                                            to discover how limited their
-                                            authority is. The financial and
-                                            emotional strain can be significant
-                                            at an already difficult time. How Is
-                                            a Lasting Power of Attorney
-                                            Different From a Will? A will deals
-                                            with your estate after death. A
-                                            lasting power of attorney covers
-                                            decisions while you are alive but
-                                            lack mental capacity. There are two
-                                            types of LPA in England and Wales:
-                                            Property and Financial Affairs LPA
-                                            Health and Welfare LPA Together,
-                                            they protect both your money and
-                                            your personal wellbeing. A will and
-                                            an LPA do different jobs. They are
-                                            not alternatives. They are
-                                            complementary. Is a Power of
-                                            Attorney Only for Older People? No.
-                                            Loss of capacity can happen at any
-                                            age. Serious accidents, strokes or
-                                            unexpected illness can affect
-                                            younger adults too. That is why
-                                            Martin Lewis often says it is not
-                                            just about later life planning. It
-                                            is about being prepared. Many people
-                                            sort out insurance and pensions but
-                                            delay making an LPA. Yet an LPA can
-                                            be just as important. Why Do So Many
-                                            People Delay Setting Up an LPA? Some
-                                            believe their spouse can
-                                            automatically step in. Others think
-                                            it is complicated or expensive. In
-                                            reality, applying for a lasting
-                                            power of attorney online is
-                                            straightforward when you understand
-                                            the process. The key is getting the
-                                            details right and registering it
-                                            with the Office of the Public
-                                            Guardian. Once registered, it sits
-                                            there quietly, ready if ever needed.
-                                            What Is the Takeaway From Martin
-                                            Lewis’ Advice? The core message is
-                                            simple. A will protects your wishes
-                                            after death. A lasting power of
-                                            attorney protects your control
-                                            during life. For many families, the
-                                            financial and practical consequences
-                                            of not having an LPA can be felt
-                                            immediately. That is why it is often
-                                            described as more urgent. If you are
-                                            planning responsibly, you should
-                                            strongly consider both. Sorting out
-                                            a power of attorney using a service
-                                            like Power of Attorney Online is not
-                                            about fear. It is about making sure
-                                            the people you trust can act quickly
-                                            and legally if life takes an
-                                            unexpected turn.
-                                        </p>
+                                        <div 
+                                            dangerouslySetInnerHTML={{ 
+                                                __html: blog.description 
+                                            }} 
+                                            className="text-lg text-gray-600"
+                                        />
                                     </div>
                                 </div>
                                 <div className="sticky top-60 mt-8 w-full lg:w-1/2">
@@ -250,10 +182,9 @@ export default function BlogDetails() {
                             </h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
-                            <BlogCard />
-                            <BlogCard />
-                            <BlogCard />
-                            <BlogCard />
+                            {latestBlogs.data.map((latestBlog) => (
+                                <BlogCard key={latestBlog.id} blog={latestBlog} />
+                            ))}
                         </div>
                     </section>
                 </main>

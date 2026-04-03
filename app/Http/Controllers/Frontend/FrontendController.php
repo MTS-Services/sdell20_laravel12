@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ContactClaraMail;
+use App\Services\BlogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -11,6 +12,14 @@ use Inertia\Response;
 
 class FrontendController extends Controller
 {
+
+    protected BlogService $blogService;
+    
+    public function __construct(BlogService $blogService)
+    {
+        $this->blogService = $blogService;
+    }
+    
     public function index(): Response
     {
         return Inertia::render('frontend/home');
@@ -91,10 +100,20 @@ class FrontendController extends Controller
 
     public function blog(): Response
     {
-        return Inertia::render('frontend/blog');
+        $blogs = $this->blogService->getAllBlogs();
+
+        return Inertia::render('frontend/blog', [
+            'blogs' => $blogs,
+        ]);
     }
-    public function blogDetails(): Response
+    public function blogDetails(string $slug): Response
     {
-        return Inertia::render('frontend/blog-details');
+        $blog = $this->blogService->getBlogBySlug($slug);
+        $latestBlogs = $this->blogService->getAllBlogs(4);
+
+        return Inertia::render('frontend/blog-details', [
+            'blog' => $blog,
+            'latestBlogs' => $latestBlogs,
+        ]);
     }
 }

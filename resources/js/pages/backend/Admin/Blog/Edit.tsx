@@ -5,8 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import AdminLayout from '@/layouts/admin-layout';
+import TiptapEditor from '@/components/tiptap-editor';
 
 interface Props {
     blog: {
@@ -94,7 +94,7 @@ export default function Edit({ blog }: Props) {
             <Head title="Edit Blog" />
 
             <div className="flex flex-1 items-start justify-center px-4 pb-10">
-                <div className="w-full max-w-4xl space-y-6">
+                <div className="w-full max-w-6xl space-y-6">
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-lg">
@@ -132,13 +132,11 @@ export default function Edit({ blog }: Props) {
                                     <Label htmlFor="description">
                                         Description <span className="text-destructive">*</span>
                                     </Label>
-                                    <Textarea
-                                        id="description"
+                                    <TiptapEditor
                                         value={data.description}
-                                        onChange={(e) => setData('description', e.target.value)}
+                                        onChange={(value) => setData('description', value)}
                                         placeholder="Write your blog content here..."
-                                        rows={8}
-                                        aria-invalid={!!errors.description}
+                                        className="w-full"
                                     />
                                     {errors.description && (
                                         <p className="text-sm text-destructive">{errors.description}</p>
