@@ -39,15 +39,15 @@ interface Props {
 
 export default function Index({ blogs, totalBlogs, search = '' }: Props) {
     const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
-    const [deletingBlogId, setDeletingBlogId] = useState<number | null>(null);
+    const [deletingBlogId, setDeletingBlogId] = useState<string | null>(null);
     const [searchValue, setSearchValue] = useState(search);
     const isInitialLoad = useRef(true);
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-    const handleDelete = (blogId: number) => {
+    const handleDelete = (blogSlug: string) => {
         if (window.confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
-            setDeletingBlogId(blogId);
-            router.delete(route('blog.delete', blogId), {
+            setDeletingBlogId(blogSlug);
+            router.delete(route('blog.delete', blogSlug), {
                 onFinish: () => setDeletingBlogId(null),
             });
         }
@@ -147,7 +147,6 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                             <TableHead className="w-16">SL</TableHead>
                                             <TableHead>Title</TableHead>
                                             <TableHead>Description</TableHead>
-                                            {/* <TableHead className="w-28 text-center">Image</TableHead> */}
                                             <TableHead className="w-32">Created</TableHead>
                                             <TableHead className="w-24 text-center">Actions</TableHead>
                                         </TableRow>
@@ -155,7 +154,7 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                     <TableBody>
                                         {blogs.data.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
+                                                <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
                                                     No blog posts found.
                                                 </TableCell>
                                             </TableRow>
@@ -192,7 +191,7 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                                     variant="ghost"
                                                                     size="icon"
                                                                     className="h-9 w-9 p-0 transition-transform duration-300 hover:rotate-180 data-[state=open]:rotate-180"
-                                                                    disabled={deletingBlogId === blog.id}
+                                                                    disabled={deletingBlogId === blog.slug}
                                                                 >
                                                                     <Settings className="h-4 w-4" />
                                                                     <span className="sr-only">Open blog actions</span>
@@ -221,12 +220,12 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                                     className="cursor-pointer gap-2 text-red-600 focus:bg-red-50"
                                                                     onSelect={(event) => {
                                                                         event.preventDefault();
-                                                                        if (deletingBlogId === blog.id) return;
-                                                                        handleDelete(blog.id);
+                                                                        if (deletingBlogId === blog.slug) return;
+                                                                        handleDelete(blog.slug);
                                                                     }}
                                                                 >
                                                                     <Trash2 className="h-4 w-4" />
-                                                                    <span>{deletingBlogId === blog.id ? 'Deleting…' : 'Delete'}</span>
+                                                                    <span>{deletingBlogId === blog.slug ? 'Deleting…' : 'Delete'}</span>
                                                                 </DropdownMenuItem>
                                                             </DropdownMenuContent>
                                                         </DropdownMenu>
