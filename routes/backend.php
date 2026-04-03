@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\Admin\AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\AdminUserController;
 use App\Http\Controllers\Backend\Admin\AdminUserDocumentPdfController;
 use App\Http\Controllers\Backend\Admin\TwilioController;
+use App\Http\Controllers\Backend\BlogController;
 use App\Http\Controllers\Backend\LpaController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use App\Http\Controllers\Backend\WillController;
@@ -93,6 +94,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Profile Routes
     Route::get('/profile', [UserProfileController::class, 'edit'])->name('user-profile.edit');
     Route::post('/profile', [UserProfileController::class, 'update'])->name('user-profile.update');
+
+    // Blog Routes
+    Route::prefix('blog')->name('blog.')->group(function () {
+        Route::get('/index', [BlogController::class, 'index'])->name('index');
+        Route::get('/create', [BlogController::class, 'create'])->name('create');
+        Route::post('/store', [BlogController::class, 'store'])->name('store');
+        Route::get('/edit/{slug}', [BlogController::class, 'edit'])->name('edit');
+        Route::post('/update/{slug}', [BlogController::class, 'update'])->name('update');
+        Route::get('/show/{slug}', [BlogController::class, 'show'])->name('show');
+        Route::delete('/delete/{slug}', [BlogController::class, 'delete'])->name('delete');
+    });
+
 });
 
 // Twilio Webhook - no auth, no CSRF
