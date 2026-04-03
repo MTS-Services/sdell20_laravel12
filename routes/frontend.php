@@ -16,3 +16,5 @@ Route::get('/privacy-policy', [FrontendController::class, 'privacyPolicy'])->nam
 Route::get('/terms-and-conditions', [FrontendController::class, 'terms'])->name('terms');
 Route::get('/consumer-rights-act-2015', [FrontendController::class, 'consumerRights'])->name('consumer-rights');
 Route::get('/cookie-policy', [FrontendController::class, 'cookiePolicy'])->name('cookies');
+Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
+Route::get('/blog/details', [FrontendController::class, 'blogDetails'])->name('blog.details');

@@ -88,4 +88,13 @@ class FrontendController extends Controller
     {
         return Inertia::render('frontend/cookie-policy');
     }
+
+    public function blog(): Response
+    {
+        return Inertia::render('frontend/blog');
+    }
+    public function blogDetails(): Response
+    {
+        return Inertia::render('frontend/blog-details');
+    }
 }
