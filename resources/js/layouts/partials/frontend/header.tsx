@@ -100,7 +100,7 @@ export function FrontendHeader() {
     return (
         <header className="sticky top-0 z-50">
             {/* Top Announcement Banner */}
-            <div className="bg-slate-500 py-2 text-center">
+            <div className="bg-blue-600 py-2 text-center">
                 <p className="px-4 font-serif  tracking-wide text-white text-base lg:text-xl">
                     <span className="">
                         Trusted by families across England &amp; Wales. Complete your LPA in as little as 15 minutes.
@@ -422,9 +422,12 @@ export function FrontendHeader() {
                     <div className="hidden items-center gap-3 lg:flex">
                         <Link
                             href={route('lpa.start')}
-                            className="group flex items-center gap-3 rounded-full bg-slate-500 py-2 pl-5 pr-2 transition-all hover:bg-slate-600 hover:shadow-lg"
+                            className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
                         >
                             <span className="flex flex-col leading-tight text-white">
+                                <span className="text-xs font-bold tracking-wide xl:text-sm">
+                                    Create Your LPA Now
+                                </span>
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
                                     &pound;99 + VAT per LPA
                                 </span>
@@ -439,7 +442,7 @@ export function FrontendHeader() {
 
                         <Link
                             href={route('login')}
-                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-500 text-white transition-colors hover:bg-slate-600"
+                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700"
                         >
                             <User className="h-5 w-5" />
                         </Link>
@@ -453,9 +456,12 @@ export function FrontendHeader() {
                         {/* CTA pill */}
                         <Link
                             href={route('lpa.start')}
-                            className="group hidden items-center gap-1 rounded-full bg-slate-500 py-1.5 pl-3 pr-1.5 transition-all hover:bg-slate-600 sm:flex"
+                            className="group hidden items-center gap-1 rounded-full bg-blue-600 py-1.5 pl-3 pr-1.5 transition-all hover:bg-blue-700 sm:flex"
                         >
                             <span className="flex flex-col leading-tight text-white">
+                                <span className="text-[10px] font-bold tracking-wide">
+                                    Create Your LPA Now
+                                </span>
                                 <span className="text-[10px] font-bold tracking-wide">
                                     &pound;99 + VAT per LPA
                                 </span>
@@ -554,9 +560,9 @@ export function FrontendHeader() {
                                 <Link
                                     href={route('lpa.start')}
                                     onClick={closeMobile}
-                                    className="flex items-center justify-center gap-2 rounded-full bg-slate-500 px-5 py-3.5 font-sans text-sm font-bold text-white transition hover:bg-slate-600"
+                                    className="flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-3.5 font-sans text-sm font-bold text-white transition hover:bg-blue-700"
                                 >
-                                    <span>Create Your LPA &ndash; &pound;99 + VAT each</span>
+                                    <span>Create Your LPA Now &ndash; &pound;99 + VAT per LPA</span>
                                     <ChevronRight className="h-4 w-4" />
                                 </Link>
                                 <Link
