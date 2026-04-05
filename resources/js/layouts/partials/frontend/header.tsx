@@ -1,52 +1,81 @@
 import AppLogo from '@/components/app-logo';
 import { Link } from '@inertiajs/react';
-import { ChevronDown, ChevronRight, Menu, User, X } from 'lucide-react';
+import { ChevronDown, ChevronRight, User, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { useActiveUrl } from '@/hooks/use-active-url';
 
-type MobileSection = 'about' | 'estate' | 'support' | 'policies' | null;
+type MobileSection =
+    | 'about'
+    | 'estate'
+    | 'support'
+    | 'blog'
+    | 'policies'
+    | null;
 
 const policyLinks: {
     label: string;
     description: string;
     routeName: Parameters<typeof route>[0];
 }[] = [
-        {
-            label: 'Terms & Conditions',
-            description: 'Understand the service agreement',
-            routeName: 'terms',
-        },
-        {
-            label: 'Privacy Policy',
-            description: 'See how we protect your data',
-            routeName: 'privacy',
-        },
-        {
-            label: 'Consumer Rights Act 2015',
-            description: 'Review your statutory protections',
-            routeName: 'consumer-rights',
-        },
-        {
-            label: 'Cookie Policy',
-            description: 'How we use cookies and tracking',
-            routeName: 'cookies',
-        }
-    ];
+    {
+        label: 'Terms & Conditions',
+        description: 'Understand the service agreement',
+        routeName: 'terms',
+    },
+    {
+        label: 'Privacy Policy',
+        description: 'See how we protect your data',
+        routeName: 'privacy',
+    },
+    {
+        label: 'Consumer Rights Act 2015',
+        description: 'Review your statutory protections',
+        routeName: 'consumer-rights',
+    },
+    {
+        label: 'Cookie Policy',
+        description: 'How we use cookies and tracking',
+        routeName: 'cookies',
+    },
+];
 
 const mobileLinks: Record<
     Exclude<MobileSection, null>,
     { label: string; desc: string; route: Parameters<typeof route>[0] }[]
 > = {
     about: [
-        { label: 'Investment Opportunity', desc: 'Learn about our mission', route: 'investment-opportunity' },
-        { label: 'Contact Us', desc: 'Get in touch with our team', route: 'contact' },
+        {
+            label: 'Investment Opportunity',
+            desc: 'Learn about our mission',
+            route: 'investment-opportunity',
+        },
+        {
+            label: 'Contact Us',
+            desc: 'Get in touch with our team',
+            route: 'contact',
+        },
     ],
     estate: [
-        { label: 'Making a Will', desc: 'Write a will tailored to you', route: 'will-writing' },
-        { label: 'LPA', desc: 'Choose who makes decisions for you', route: 'lpa' },
+        {
+            label: 'Making a Will',
+            desc: 'Write a will tailored to you',
+            route: 'will-writing',
+        },
+        {
+            label: 'LPA',
+            desc: 'Choose who makes decisions for you',
+            route: 'lpa',
+        },
     ],
-    support: [{ label: 'Probate', desc: 'Guidance through probate', route: 'probate' }],
+    support: [
+        {
+            label: 'Probate',
+            desc: 'Guidance through probate',
+            route: 'probate',
+        },
+    ],
+    blog: [{ label: 'Blog', desc: 'Read our latest articles', route: 'blog' }],
     policies: policyLinks.map((link) => ({
         label: link.label,
         desc: link.description,
@@ -58,13 +87,16 @@ const sectionLabels: Record<Exclude<MobileSection, null>, string> = {
     about: 'About Us',
     estate: 'Estate Planning',
     support: 'Get Support After Loss',
+    blog: 'Blog',
     policies: 'Help & Policies',
 };
 
 export function FrontendHeader() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [mobileDropdown, setMobileDropdown] = useState<MobileSection>(null);
-    const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<string | null>(null);
+    const [activeDesktopDropdown, setActiveDesktopDropdown] = useState<
+        string | null
+    >(null);
     const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const { urlIsActive } = useActiveUrl();
 
@@ -85,7 +117,10 @@ export function FrontendHeader() {
     };
 
     const closeDropdown = () => {
-        closeTimeout.current = setTimeout(() => setActiveDesktopDropdown(null), 150);
+        closeTimeout.current = setTimeout(
+            () => setActiveDesktopDropdown(null),
+            150,
+        );
     };
 
     const toggleMobileDropdown = (section: Exclude<MobileSection, null>) => {
@@ -103,21 +138,22 @@ export function FrontendHeader() {
             <div className="bg-blue-600 py-2 text-center">
                 <p className="px-4 font-serif  tracking-wide text-white text-base lg:text-xl">
                     <span className="">
-                        Trusted by families across England &amp; Wales. Complete your LPA in as little as 15 minutes.
+                        Trusted by families across England &amp; Wales. Complete
+                        your LPA in as little as 15 minutes.
                     </span>
                 </p>
             </div>
 
             {/* Main Navigation */}
             <nav className="w-full bg-primary-700">
-                <div className="mx-auto flex container items-center justify-between px-4 lg:px-6">
+                <div className="container mx-auto flex items-center justify-between px-4 lg:px-6">
                     {/* Logo */}
                     <Link href="/" className="flex shrink-0 items-center py-3">
                         <AppLogo className="h-20 sm:h-24" />
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden items-center gap-5 xl:gap-7 lg:flex">
+                    <div className="hidden items-center gap-5 lg:flex xl:gap-7">
                         {/* ── About Us Dropdown ── */}
                         <div
                             className="relative"
@@ -135,29 +171,36 @@ export function FrontendHeader() {
                             </button>
 
                             <div
-                                className={`absolute left-1/2 top-full z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'about'
-                                    ? 'visible translate-y-0 opacity-100'
-                                    : 'invisible -translate-y-1 opacity-0 pointer-events-none'
-                                    }`}
+                                className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
+                                    activeDesktopDropdown === 'about'
+                                        ? 'visible translate-y-0 opacity-100'
+                                        : 'pointer-events-none invisible -translate-y-1 opacity-0'
+                                }`}
                             >
                                 <div className="mt-3 flex w-80 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/5">
                                     {/* Left dark panel */}
                                     <div className="w-full space-y-5 bg-linear-to-br from-primary-900 via-primary-800 to-primary-700 p-5">
-                                        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-primary-200">
+                                        <p className="text-[10px] font-bold tracking-[0.25em] text-primary-200 uppercase">
                                             About Us
                                         </p>
                                         <ul className="space-y-1">
                                             <li>
                                                 <Link
-                                                    href={route('investment-opportunity')}
+                                                    href={route(
+                                                        'investment-opportunity',
+                                                    )}
                                                     className="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/10"
                                                 >
                                                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white">
-                                                        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                        <svg
+                                                            className="h-4 w-4"
+                                                            viewBox="0 0 20 20"
+                                                            fill="currentColor"
+                                                        >
                                                             <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
                                                         </svg>
                                                     </span>
-                                                    <span className="text-sm font-bold  tracking-wide text-white">
+                                                    <span className="text-sm font-bold tracking-wide text-white">
                                                         Investment Opportunity
                                                     </span>
                                                 </Link>
@@ -168,12 +211,18 @@ export function FrontendHeader() {
                                                     className="flex items-center gap-3 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/10"
                                                 >
                                                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white">
-                                                        <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                        <svg
+                                                            className="h-4 w-4"
+                                                            viewBox="0 0 20 20"
+                                                            fill="currentColor"
+                                                        >
                                                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                                                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                                         </svg>
                                                     </span>
-                                                    <span className="text-sm font-semibold text-white">Contact Us</span>
+                                                    <span className="text-sm font-semibold text-white">
+                                                        Contact Us
+                                                    </span>
                                                 </Link>
                                             </li>
                                         </ul>
@@ -226,13 +275,14 @@ export function FrontendHeader() {
                             </button>
 
                             <div
-                                className={`absolute left-1/2 top-full z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'estate'
-                                    ? 'visible translate-y-0 opacity-100'
-                                    : 'invisible -translate-y-1 opacity-0 pointer-events-none'
-                                    }`}
+                                className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
+                                    activeDesktopDropdown === 'estate'
+                                        ? 'visible translate-y-0 opacity-100'
+                                        : 'pointer-events-none invisible -translate-y-1 opacity-0'
+                                }`}
                             >
                                 <div className="mt-3 w-[360px] rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
-                                    <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-primary-400">
+                                    <p className="mb-4 text-[10px] font-bold tracking-[0.25em] text-primary-400 uppercase">
                                         Estate Planning
                                     </p>
                                     <ul className="space-y-2">
@@ -261,7 +311,8 @@ export function FrontendHeader() {
                                                         Making a Will
                                                     </span>
                                                     <span className="block text-xs text-primary-400">
-                                                        Write a will tailored to you
+                                                        Write a will tailored to
+                                                        you
                                                     </span>
                                                 </div>
                                             </Link>
@@ -288,10 +339,12 @@ export function FrontendHeader() {
                                                 </span>
                                                 <div>
                                                     <span className="block text-sm font-bold text-primary-900">
-                                                        Lasting Power of Attorney
+                                                        Lasting Power of
+                                                        Attorney
                                                     </span>
                                                     <span className="block text-xs text-primary-400">
-                                                        Choose who makes decisions for you
+                                                        Choose who makes
+                                                        decisions for you
                                                     </span>
                                                 </div>
                                             </Link>
@@ -318,13 +371,14 @@ export function FrontendHeader() {
                             </button>
 
                             <div
-                                className={`absolute left-1/2 top-full z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'support'
-                                    ? 'visible translate-y-0 opacity-100'
-                                    : 'invisible -translate-y-1 opacity-0 pointer-events-none'
-                                    }`}
+                                className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
+                                    activeDesktopDropdown === 'support'
+                                        ? 'visible translate-y-0 opacity-100'
+                                        : 'pointer-events-none invisible -translate-y-1 opacity-0'
+                                }`}
                             >
                                 <div className="mt-3 w-[320px] rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
-                                    <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-primary-400">
+                                    <p className="mb-4 text-[10px] font-bold tracking-[0.25em] text-primary-400 uppercase">
                                         Get Support After Loss
                                     </p>
                                     <ul>
@@ -362,6 +416,13 @@ export function FrontendHeader() {
                                 </div>
                             </div>
                         </div>
+                        {/* ── Blog Link ── */}
+                        <Link
+                            href={route('blog')}
+                            className="flex items-center gap-1.5 py-5 font-sans text-sm font-semibold text-white/90 transition-colors hover:text-white"
+                        >
+                            Blog
+                        </Link>
                     </div>
 
                     {/* Help & Policies Dropdown */}
@@ -372,10 +433,13 @@ export function FrontendHeader() {
                     >
                         <button
                             type="button"
-                            className={`flex items-center gap-1.5 py-5 font-sans text-sm font-semibold transition-colors hover:text-white ${policyLinks.some((link) => urlIsActive(route(link.routeName)))
-                                ? 'text-white'
-                                : 'text-white/90'
-                                }`}
+                            className={`flex items-center gap-1.5 py-5 font-sans text-sm font-semibold transition-colors hover:text-white ${
+                                policyLinks.some((link) =>
+                                    urlIsActive(route(link.routeName)),
+                                )
+                                    ? 'text-white'
+                                    : 'text-white/90'
+                            }`}
                         >
                             Help & Policies
                             <ChevronDown
@@ -384,13 +448,14 @@ export function FrontendHeader() {
                         </button>
 
                         <div
-                            className={`absolute left-1/2 top-full z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'policies'
-                                ? 'visible translate-y-0 opacity-100'
-                                : 'invisible -translate-y-1 opacity-0 pointer-events-none'
-                                }`}
+                            className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
+                                activeDesktopDropdown === 'policies'
+                                    ? 'visible translate-y-0 opacity-100'
+                                    : 'pointer-events-none invisible -translate-y-1 opacity-0'
+                            }`}
                         >
                             <div className="mt-3 w-85 rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
-                                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.25em] text-primary-400">
+                                <p className="mb-4 text-[10px] font-bold tracking-[0.25em] text-primary-400 uppercase">
                                     Helpful Links
                                 </p>
                                 <ul className="space-y-2">
@@ -398,8 +463,13 @@ export function FrontendHeader() {
                                         <li key={link.routeName}>
                                             <Link
                                                 href={route(link.routeName)}
-                                                className={`flex items-start gap-3 rounded-xl p-3 transition hover:bg-primary-50 ${urlIsActive(route(link.routeName)) ? 'bg-primary-50' : ''
-                                                    }`}
+                                                className={`flex items-start gap-3 rounded-xl p-3 transition hover:bg-primary-50 ${
+                                                    urlIsActive(
+                                                        route(link.routeName),
+                                                    )
+                                                        ? 'bg-primary-50'
+                                                        : ''
+                                                }`}
                                             >
                                                 <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary-500" />
                                                 <div>
@@ -432,7 +502,8 @@ export function FrontendHeader() {
                                     &pound;99 + VAT per LPA
                                 </span>
                                 <span className="text-[10px] font-normal text-white/80">
-                                    (20% VAT at checkout; plus &pound;92 OPG fee per LPA)
+                                    (20% VAT at checkout; plus &pound;92 OPG fee
+                                    per LPA)
                                 </span>
                             </span>
                             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 transition-colors group-hover:bg-white/30">
@@ -493,8 +564,17 @@ export function FrontendHeader() {
                             }}
                             aria-label="Toggle menu"
                         >
-                            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                <path d="M3 5h14M3 10h14M3 15h14" strokeLinecap="round" />
+                            <svg
+                                className="h-5 w-5"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                            >
+                                <path
+                                    d="M3 5h14M3 10h14M3 15h14"
+                                    strokeLinecap="round"
+                                />
                             </svg>
                         </button>
                     </div>
@@ -505,7 +585,11 @@ export function FrontendHeader() {
                     <div className="fixed inset-0 z-50 flex flex-col bg-primary-600 lg:hidden">
                         {/* Header row: Logo + Close */}
                         <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-                            <Link href="/" onClick={closeMobile} className="flex shrink-0 items-center">
+                            <Link
+                                href="/"
+                                onClick={closeMobile}
+                                className="flex shrink-0 items-center"
+                            >
                                 <AppLogo className="h-10 w-auto" />
                             </Link>
                             <button
@@ -519,12 +603,22 @@ export function FrontendHeader() {
                         </div>
 
                         {/* Navigation list */}
-                        <div className="flex-1 overflow-y-auto px-4 pb-8 pt-2">
-                            {(Object.keys(mobileLinks) as Exclude<MobileSection, null>[]).map((key) => (
-                                <div key={key} className="border-b border-white/10">
+                        <div className="flex-1 overflow-y-auto px-4 pt-2 pb-8">
+                            {(
+                                Object.keys(mobileLinks) as Exclude<
+                                    MobileSection,
+                                    null
+                                >[]
+                            ).map((key) => (
+                                <div
+                                    key={key}
+                                    className="border-b border-white/10"
+                                >
                                     <button
                                         type="button"
-                                        onClick={() => toggleMobileDropdown(key)}
+                                        onClick={() =>
+                                            toggleMobileDropdown(key)
+                                        }
                                         className="flex w-full items-center justify-between py-4 text-left font-sans text-base font-semibold text-white"
                                     >
                                         {sectionLabels[key]}
@@ -533,8 +627,11 @@ export function FrontendHeader() {
                                         />
                                     </button>
                                     <div
-                                        className={`overflow-hidden transition-all duration-300 ${mobileDropdown === key ? 'max-h-80 pb-3' : 'max-h-0'
-                                            }`}
+                                        className={`overflow-hidden transition-all duration-300 ${
+                                            mobileDropdown === key
+                                                ? 'max-h-80 pb-3'
+                                                : 'max-h-0'
+                                        }`}
                                     >
                                         <div className="space-y-0.5 pl-1">
                                             {mobileLinks[key].map((link) => (
@@ -547,7 +644,9 @@ export function FrontendHeader() {
                                                     <span className="block text-sm font-medium text-white/90">
                                                         {link.label}
                                                     </span>
-                                                    <span className="block text-xs text-white/40">{link.desc}</span>
+                                                    <span className="block text-xs text-white/40">
+                                                        {link.desc}
+                                                    </span>
                                                 </Link>
                                             ))}
                                         </div>
