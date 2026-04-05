@@ -12,13 +12,16 @@ interface Blog {
     created_at: string;
 }
 
-interface Props {
-    blogs: {
-        data: Blog[];
-    };
+interface BlogCategory {
+    category: string;
+    blogs: Blog[];
 }
 
-export default function Blog({ blogs }: Props) {
+interface Props {
+    blogsByCategory: BlogCategory[];
+}
+
+export default function Blog({ blogsByCategory }: Props) {
     return (
         <>
             <Head>
@@ -30,7 +33,13 @@ export default function Blog({ blogs }: Props) {
             <FrontendLayout>
                 <main className="bg-white">
                     <BlogHeroSection />
-                    <BlogSection blogs={blogs.data} />
+                    {blogsByCategory.map((categoryData, index) => (
+                        <BlogSection 
+                            key={index} 
+                            blogs={categoryData.blogs} 
+                            categoryTitle={categoryData.category}
+                        />
+                    ))}
                 </main>
             </FrontendLayout>
         </>

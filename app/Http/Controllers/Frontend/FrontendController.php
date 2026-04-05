@@ -100,20 +100,20 @@ class FrontendController extends Controller
 
     public function blog(): Response
     {
-        $blogs = $this->blogService->getPublishedBlogs();
+        $blogsByCategory = $this->blogService->getBlogsByCategory();
 
         return Inertia::render('frontend/blog', [
-            'blogs' => $blogs,
+            'blogsByCategory' => $blogsByCategory,
         ]);
     }
     public function blogDetails(string $slug): Response
     {
         $blog = $this->blogService->getBlogBySlug($slug);
-        $latestBlogs = $this->blogService->getPublishedBlogs(4);
+        $recentBlogsFromSameCategory = $this->blogService->getRecentBlogsFromSameCategory($blog, 4);
 
         return Inertia::render('frontend/blog-details', [
             'blog' => $blog,
-            'latestBlogs' => $latestBlogs,
+            'recentBlogsFromSameCategory' => $recentBlogsFromSameCategory,
         ]);
     }
 }
