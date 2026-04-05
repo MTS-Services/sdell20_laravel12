@@ -182,7 +182,7 @@ export default function BlogDetails({ blog, recentBlogsFromSameCategory }: Props
                                         <div className="flex items-center justify-center gap-3 lg:flex">
                                             <Link
                                                 href={route('lpa.start')}
-                                                className="group flex items-center gap-3 rounded-full bg-slate-500 py-2 pr-2 pl-5 transition-all hover:bg-slate-600 hover:shadow-lg"
+                                                className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
                                             >
                                                 <span className="flex flex-col leading-tight text-white">
                                                     <span className="text-xs font-bold tracking-wide xl:text-sm">
@@ -266,7 +266,7 @@ export default function BlogDetails({ blog, recentBlogsFromSameCategory }: Props
                                     <div className="flex items-center justify-center gap-3 lg:flex">
                                         <Link
                                             href="#"
-                                            className="group flex items-center gap-3 rounded-full bg-slate-500 py-2 pr-2 pl-5 transition-all hover:bg-slate-600 hover:shadow-lg"
+                                            className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
                                         >
                                             <span className="flex flex-col leading-tight text-white text-xl font-semibold">
                                                 Write a Review
