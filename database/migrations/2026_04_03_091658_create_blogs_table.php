@@ -15,9 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
+            $table->unsignedBigInteger('category_id');
             $table->text('description');
             $table->string('image')->nullable();
+            $table->boolean('status')->default(1);
+            $table->string('meta_title')->nullable();
+            $table->string('meta_description')->nullable();
+            $table->string('meta_keywords')->nullable();
             $table->timestamps();
+            
+            $table->foreign('category_id')->references('id')->on('blog_categories')->onDelete('cascade');
         });
     }
 

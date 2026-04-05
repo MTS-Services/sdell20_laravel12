@@ -11,5 +11,17 @@ class Blog extends Model
         'slug',
         'description',
         'image',
+        'status',
+        'category_id',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'created_at',
+        'updated_at',
     ];
+    
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id', 'id');
+    }
 }
