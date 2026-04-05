@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, ChevronDown, MessageSquare, ShieldCheck, Users } from 'lucide-react';
+import { BarChart3, ChevronDown, MessageSquare, PenTool, ShieldCheck, Users } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
@@ -52,6 +52,18 @@ export function AdminSidebar(): React.ReactElement {
                     href: route('admin.dashboard'),
                     icon: BarChart3,
                     patterns: ['admin.dashboard'],
+                },
+            ],
+        },
+        {
+            title: 'Content Management',
+            links: [
+                {
+                    label: 'Blogs',
+                    description: 'Manage blog posts',
+                    href: route('blog.index'),
+                    icon: PenTool,
+                    patterns: ['admin.blog.*'],
                 },
             ],
         },
@@ -124,6 +136,35 @@ export function AdminSidebar(): React.ReactElement {
                             })}
                         </div>
 
+                        {/* {section.title === 'Content Management' && (
+                            <div className="mt-8 space-y-3">
+                                <p className="text-[11px] font-semibold uppercase tracking-[0.5em] text-muted-foreground/80">
+                                    Content Management
+                                </p>
+                                <button
+                                    type="button"
+                                    className={cn(
+                                        'flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-semibold',
+                                        'border-white/60 bg-white/70 text-slate-900 hover:border-primary/40',
+                                        pageSlug?.includes('Admin/Blogs') && 'border-primary/60 bg-primary/5 text-primary-700 shadow-sm'
+                                    )}
+                                    onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <span className="mt-0.5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary-600">
+                                            <PenTool className="h-4 w-4" />
+                                        </span>
+                                        Content Management
+                                    </span>
+                                    <ChevronDown
+                                        className={cn(
+                                            'h-4 w-4 text-primary-600 transition-transform',
+                                            isUserMenuOpen ? 'rotate-180' : 'rotate-0'
+                                        )}
+                                    />
+                                </button>
+                            </div>
+                        )} */}
                         {section.title === 'Overview' && (
                             <div className="mt-8 space-y-3">
                                 <p className="text-[11px] font-semibold uppercase tracking-[0.5em] text-muted-foreground/80">
