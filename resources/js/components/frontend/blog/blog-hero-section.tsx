@@ -1,6 +1,6 @@
 export function BlogHeroSection() {
     return (
-        <section className="relative isolate overflow-hidden">
+        <section className="relative isolate overflow-hidden mb-18 md:mb-14 lg:mb-20">
             <img
                 src="/assets/images/blog/blog.jpg"
                 alt="Family"

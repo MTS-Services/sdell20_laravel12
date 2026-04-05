@@ -30,7 +30,50 @@ class BlogService
      */
     public function getPublishedBlogs(int $perPage = 10): LengthAwarePaginator
     {
-        return Blog::where('status', 1)->orderBy('created_at', 'desc')->paginate($perPage);
+        return Blog::where('status', 1)->with('category')->orderBy('created_at', 'desc')->paginate($perPage);
+    }
+
+    /**
+     * Get published blogs grouped by category.
+     */
+    public function getBlogsByCategory(): array
+    {
+        $blogs = Blog::where('status', 1)
+            ->with('category')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('category.title');
+
+        $result = [];
+        foreach ($blogs as $categoryTitle => $categoryBlogs) {
+            $result[] = [
+                'category' => $categoryTitle ?: 'Uncategorized',
+                'blogs' => $categoryBlogs->take(4) // Limit to 4 blogs per category
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get recent blogs from the same category (excluding current blog).
+     */
+    public function getRecentBlogsFromSameCategory(Blog $currentBlog, int $limit = 4): array
+    {
+        $blogs = Blog::where('status', 1)
+            ->where('id', '!=', $currentBlog->id)
+            ->where('category_id', $currentBlog->category_id)
+            ->with('category')
+            ->orderBy('created_at', 'desc')
+            ->take($limit)
+            ->get();
+
+        $categoryTitle = $currentBlog->category?->title ?: 'Uncategorized';
+
+        return [
+            'category' => $categoryTitle,
+            'blogs' => $blogs
+        ];
     }
 
     /**

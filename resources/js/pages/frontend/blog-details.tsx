@@ -20,12 +20,13 @@ interface Blog {
 
 interface Props {
     blog: Blog;
-    latestBlogs: {
-        data: Blog[];
+    recentBlogsFromSameCategory: {
+        category: string;
+        blogs: Blog[];
     };
 }
 
-export default function BlogDetails({ blog, latestBlogs }: Props) {
+export default function BlogDetails({ blog, recentBlogsFromSameCategory }: Props) {
     return (
         <>
             <Head>
@@ -209,13 +210,18 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                 Recent blog articles
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            {latestBlogs.data.map((latestBlog) => (
-                                <BlogCard
-                                    key={latestBlog.id}
-                                    blog={latestBlog}
-                                />
-                            ))}
+                        <div className="mb-8">
+                            <h3 className="mb-4 text-xl font-semibold text-primary-600">
+                                {/* {recentBlogsFromSameCategory.category} */}
+                            </h3>
+                            <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {recentBlogsFromSameCategory.blogs.map((recentBlog: Blog) => (
+                                    <BlogCard
+                                        key={recentBlog.id}
+                                        blog={recentBlog}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </section>
                     <section className="px-6 pb-18 md:pb-14 lg:pb-20">
@@ -273,6 +279,7 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                 </div>
                             </div>
                         </div>
+                        <div className="relative">
                         <Swiper
                             modules={[
                                 Navigation,
@@ -317,7 +324,7 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                     spaceBetween: 20,
                                 },
                             }}
-                            className="feedback-swiper"
+                            className="feedback-swiper pb-16"
                         >
                             {[...Array(12)].map((_, index) => (
                                 <SwiperSlide key={index}>
@@ -327,14 +334,15 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                         </Swiper>
 
                         {/* Swiper Navigation */}
-                        {/* <div className="swiper-button-prev !top-1/2 !left-0 !-translate-y-1/2 !text-gray-600 hover:!text-primary-600"></div>
-                        <div className="swiper-button-next !top-1/2 !right-0 !-translate-y-1/2 !text-gray-600 hover:!text-primary-600"></div> */}
+                        {/* <div className="swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 text-gray-600 hover:text-primary-600"></div>
+                        <div className="swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 z-10 text-gray-600 hover:text-primary-600"></div> */}
 
                         {/* Swiper Pagination */}
-                        <div className="swiper-pagination bottom-0! mt-4!"></div>
+                        <div className="swiper-pagination absolute -bottom-10! left-0 right-0 z-10"></div>
 
                         {/* Swiper Scrollbar */}
-                        <div className="swiper-scrollbar bottom-0! mt-2!"></div>
+                        <div className="swiper-scrollbar absolute bottom-0 left-0 right-0 z-10"></div>
+                    </div>
                     </section>
                 </main>
             </FrontendLayout>
