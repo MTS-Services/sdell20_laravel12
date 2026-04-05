@@ -33,7 +33,11 @@ class BlogController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('backend/Admin/Blog/Create');
+        $categories = $this->blogService->getAllCategories();
+        
+        return Inertia::render('backend/Admin/Blog/Create', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -46,6 +50,11 @@ class BlogController extends Controller
             'slug' => 'required|string|max:255|unique:blogs',
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status' => 'required|boolean|in:0,1',
+            'category_id' => 'nullable|exists:blog_categories,id',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:255',
+            'meta_keywords' => 'nullable|string|max:255',
         ]);
 
         // Generate slug if not provided
@@ -89,6 +98,7 @@ class BlogController extends Controller
 
         return Inertia::render('backend/Admin/Blog/Edit', [
             'blog' => $blog,
+            'categories' => $this->blogService->getAllCategories(),
         ]);
     }
 
@@ -108,6 +118,12 @@ class BlogController extends Controller
             'slug' => 'required|string|max:255|unique:blogs,slug,' . $blog->id,
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status' => 'required|boolean|in:0,1',
+            'category_id' => 'nullable|exists:blog_categories,id',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+            'meta_keywords' => 'nullable|string|max:255',
+            'remove_image' => 'nullable|boolean',
         ]);
 
         // Generate slug if not provided

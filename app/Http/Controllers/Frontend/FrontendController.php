@@ -100,7 +100,7 @@ class FrontendController extends Controller
 
     public function blog(): Response
     {
-        $blogs = $this->blogService->getAllBlogs();
+        $blogs = $this->blogService->getPublishedBlogs();
 
         return Inertia::render('frontend/blog', [
             'blogs' => $blogs,
@@ -109,7 +109,7 @@ class FrontendController extends Controller
     public function blogDetails(string $slug): Response
     {
         $blog = $this->blogService->getBlogBySlug($slug);
-        $latestBlogs = $this->blogService->getAllBlogs(4);
+        $latestBlogs = $this->blogService->getPublishedBlogs(4);
 
         return Inertia::render('frontend/blog-details', [
             'blog' => $blog,

@@ -22,6 +22,7 @@ interface BlogItem {
     description: string;
     image: string | null;
     created_at: string;
+    status: boolean;
 }
 
 interface PaginatedBlogs {
@@ -147,6 +148,7 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                             <TableHead className="w-16">SL</TableHead>
                                             <TableHead>Title</TableHead>
                                             <TableHead>Description</TableHead>
+                                            <TableHead>Status</TableHead>
                                             <TableHead className="w-32">Created</TableHead>
                                             <TableHead className="w-24 text-center">Actions</TableHead>
                                         </TableRow>
@@ -170,17 +172,17 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                     <TableCell className="text-muted-foreground text-sm">
                                                         {blog.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 8).join(' ')}{blog.description.replace(/<[^>]*>/g, '').split(' ').length > 8 ? '...' : ''}
                                                     </TableCell>
-                                                    {/* <TableCell className="text-center">
-                                                        {blog.image ? (
-                                                            <Badge className="bg-emerald-50 text-emerald-700">
-                                                                Yes
+                                                    <TableCell className="text-start">
+                                                        {blog.status ? (
+                                                            <Badge className="bg-green-50 text-green-700 border-green-200">
+                                                                Published
                                                             </Badge>
                                                         ) : (
-                                                            <Badge variant="outline" className="text-muted-foreground">
-                                                                No
+                                                            <Badge variant="outline" className="text-gray-600 border-gray-300">
+                                                                Unpublished
                                                             </Badge>
                                                         )}
-                                                    </TableCell> */}
+                                                    </TableCell>
                                                     <TableCell className="text-sm text-muted-foreground">
                                                         {new Date(blog.created_at).toLocaleDateString()}
                                                     </TableCell>
@@ -198,15 +200,6 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                                 </Button>
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent align="end" className="w-44">
-                                                                {/* <DropdownMenuItem asChild>
-                                                                    <Link
-                                                                        href={route('blog.show', blog.slug)}
-                                                                        className="cursor-pointer flex items-center gap-2"
-                                                                    >
-                                                                        <Eye className="h-4 w-4" />
-                                                                        Show
-                                                                    </Link>
-                                                                </DropdownMenuItem> */}
                                                                 <DropdownMenuItem asChild>
                                                                     <Link
                                                                         href={route('blog.edit', blog.slug)}
