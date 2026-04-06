@@ -153,7 +153,7 @@ export function FrontendHeader() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden items-center gap-5 lg:flex xl:gap-7">
+                    <div className="hidden items-center gap-2 xl:flex xl:gap-7">
                         {/* ── About Us Dropdown ── */}
                         <div
                             className="relative"
@@ -162,7 +162,7 @@ export function FrontendHeader() {
                         >
                             <button
                                 type="button"
-                                className="flex items-center gap-1.5 py-5 font-sans text-sm font-semibold text-white/90 transition-colors hover:text-white"
+                                className="flex items-center gap-1.5 py-5  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-white/90 transition-colors hover:text-white"
                             >
                                 About Us
                                 <ChevronDown
@@ -200,7 +200,7 @@ export function FrontendHeader() {
                                                             <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
                                                         </svg>
                                                     </span>
-                                                    <span className="text-sm font-bold tracking-wide text-white">
+                                                    <span className= "text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium tracking-wide text-white">
                                                         Investment Opportunity
                                                     </span>
                                                 </Link>
@@ -220,7 +220,7 @@ export function FrontendHeader() {
                                                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                                         </svg>
                                                     </span>
-                                                    <span className="text-sm font-semibold text-white">
+                                                    <span className= "text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium tracking-wide text-white">
                                                         Contact Us
                                                     </span>
                                                 </Link>
@@ -266,7 +266,7 @@ export function FrontendHeader() {
                         >
                             <button
                                 type="button"
-                                className="flex items-center gap-1.5 py-5 font-sans text-sm font-semibold text-white/90 transition-colors hover:text-white"
+                                className="flex items-center gap-1.5 py-5  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-white/90 transition-colors hover:text-white"
                             >
                                 Estate Planning
                                 <ChevronDown
@@ -307,7 +307,7 @@ export function FrontendHeader() {
                                                     </svg>
                                                 </span>
                                                 <div>
-                                                    <span className="block text-sm font-bold text-primary-900">
+                                                    <span className="block  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-primary-900">
                                                         Making a Will
                                                     </span>
                                                     <span className="block text-xs text-primary-400">
@@ -338,7 +338,7 @@ export function FrontendHeader() {
                                                     </svg>
                                                 </span>
                                                 <div>
-                                                    <span className="block text-sm font-bold text-primary-900">
+                                                    <span className="block  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-primary-900">
                                                         Lasting Power of
                                                         Attorney
                                                     </span>
@@ -362,7 +362,7 @@ export function FrontendHeader() {
                         >
                             <button
                                 type="button"
-                                className="flex items-center gap-1.5 py-5 font-sans text-sm font-semibold text-white/90 transition-colors hover:text-white"
+                                className="flex items-center gap-1.5 py-5  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-white/90 transition-colors hover:text-white"
                             >
                                 Get Support After Loss
                                 <ChevronDown
@@ -403,7 +403,7 @@ export function FrontendHeader() {
                                                     </svg>
                                                 </span>
                                                 <div>
-                                                    <span className="block text-sm font-bold text-primary-900">
+                                                    <span className="block  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-primary-900">
                                                         Probate
                                                     </span>
                                                     <span className="block text-xs text-primary-400">
@@ -419,7 +419,7 @@ export function FrontendHeader() {
                         {/* ── Blog Link ── */}
                         <Link
                             href={route('blog')}
-                            className="flex items-center gap-1.5 py-5 font-sans text-sm font-semibold text-white/90 transition-colors hover:text-white"
+                            className="flex items-center gap-1.5 py-5  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-white/90 transition-colors hover:text-white"
                         >
                             Blog
                         </Link>
@@ -427,13 +427,13 @@ export function FrontendHeader() {
 
                     {/* Help & Policies Dropdown */}
                     <div
-                        className="relative hidden items-center lg:flex"
+                        className="relative hidden items-center xl:flex"
                         onMouseEnter={() => openDropdown('policies')}
                         onMouseLeave={closeDropdown}
                     >
                         <button
                             type="button"
-                            className={`flex items-center gap-1.5 py-5 font-sans text-sm font-semibold transition-colors hover:text-white ${
+                            className={`flex items-center gap-1.5 py-5  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium transition-colors hover:text-white ${
                                 policyLinks.some((link) =>
                                     urlIsActive(route(link.routeName)),
                                 )
@@ -473,7 +473,7 @@ export function FrontendHeader() {
                                             >
                                                 <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary-500" />
                                                 <div>
-                                                    <span className="block text-sm font-bold text-primary-900">
+                                                    <span className="block  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium text-primary-900">
                                                         {link.label}
                                                     </span>
                                                     <span className="block text-xs text-primary-400">
@@ -489,7 +489,7 @@ export function FrontendHeader() {
                     </div>
 
                     {/* Right Side: CTA Button + User Icon */}
-                    <div className="hidden items-center gap-3 lg:flex">
+                    <div className="hidden items-center gap-3 xl:flex">
                         <Link
                             href={route('lpa.start')}
                             className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
@@ -520,7 +520,7 @@ export function FrontendHeader() {
                     </div>
 
                     {/* Right Side: CTA + User + Hamburger (Mobile) */}
-                    <div className="flex items-center lg:hidden">
+                    <div className="flex items-center xl:hidden">
                         {/* Vertical divider */}
                         <div className="mr-3 hidden h-10 w-px bg-white/15 sm:block" />
 

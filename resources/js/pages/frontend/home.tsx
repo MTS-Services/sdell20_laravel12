@@ -11,6 +11,7 @@ import { ManagingAffairsSection } from '@/components/frontend/home/managing-affa
 import { WhyCreateWillCardsGrid } from '@/components/frontend/home/why-create-will-cards-grid';
 import { WhyCreateWillSection } from '@/components/frontend/home/why-create-will-section';
 import { WillChoiceSection } from '@/components/frontend/home/will-choice-section';
+import Feedback from '@/components/feedback';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { Head } from '@inertiajs/react';
 
@@ -35,6 +36,7 @@ export default function Home() {
                 <FindingSupportSection />
                 <ManagingAffairsSection />
                 <LoveOnesSection />
+                <Feedback />
 
             </FrontendLayout>
 

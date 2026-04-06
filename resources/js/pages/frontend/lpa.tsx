@@ -10,6 +10,7 @@ import { LpaPricingSection } from '@/components/frontend/lpa/lpa-pricing-section
 import { LpaSupportSection } from '@/components/frontend/lpa/lpa-support-section';
 import { LpaVideoSection } from '@/components/frontend/lpa/lpa-video-section';
 import { WillWritingAboutSection } from '@/components/frontend/will-writing/will-writing-about-section';
+import Feedback from '@/components/feedback';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { Head } from '@inertiajs/react';
 
@@ -33,6 +34,7 @@ export default function Lpa() {
                     <LpaSupportSection />
                     <WillWritingAboutSection />
                     {/* <LpaFaqSection /> */}
+                    <Feedback />
                 </main>
             </FrontendLayout>
         </>
