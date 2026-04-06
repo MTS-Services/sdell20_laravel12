@@ -12,16 +12,26 @@ interface Blog {
     created_at: string;
 }
 
+interface Pagination {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    has_more_pages: boolean;
+}
+
 interface BlogCategory {
     category: string;
     blogs: Blog[];
+    per_page: number;
+    total: number;
 }
 
 interface Props {
-    blogsByCategory: BlogCategory[];
+    blogData: BlogCategory[];
 }
 
-export default function Blog({ blogsByCategory }: Props) {
+export default function Blog({ blogData }: Props) {
     return (
         <>
             <Head>
@@ -33,11 +43,30 @@ export default function Blog({ blogsByCategory }: Props) {
             <FrontendLayout>
                 <main className="bg-white">
                     <BlogHeroSection />
-                    {blogsByCategory.map((categoryData, index) => (
-                        <BlogSection 
-                            key={index} 
-                            blogs={categoryData.blogs} 
+
+                    <div className="container mx-auto px-6 py-6">
+                        <div className="flex items-center justify-between">
+                            <h1 className="font-ubuntu text-3xl font-bold text-gray-900">
+                                Blog
+                            </h1>
+                            <p className="font-ubuntu text-sm text-gray-600">
+                                Total{' '}
+                                {blogData.reduce(
+                                    (acc: number, cat: any) =>
+                                        acc + cat.blogs.length,
+                                    0,
+                                )}{' '}
+                                blogs
+                            </p>
+                        </div>
+                    </div>
+                    {blogData.map((categoryData, index) => (
+                        <BlogSection
+                            key={index}
+                            blogs={categoryData.blogs}
                             categoryTitle={categoryData.category}
+                            perPage={categoryData.per_page}
+                            total={categoryData.total}
                         />
                     ))}
                 </main>

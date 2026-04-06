@@ -12,19 +12,20 @@ use Inertia\Response;
 
 class BlogController extends Controller
 {
-    public function __construct(private BlogService $blogService)
-    {
-    }
+    public function __construct(private BlogService $blogService) {}
 
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $blogs = $this->blogService->getAllBlogs();
-        
+        $search = $request->get('search');
+        $blogs = $this->blogService->getAllBlogs(15, $search);
+
         return Inertia::render('backend/Admin/Blog/Index', [
             'blogs' => $blogs,
+            'totalBlogs' => $blogs->total(),
+            'search' => $search ?? '',
         ]);
     }
 
@@ -34,7 +35,7 @@ class BlogController extends Controller
     public function create(): Response
     {
         $categories = $this->blogService->getAllCategories();
-        
+
         return Inertia::render('backend/Admin/Blog/Create', [
             'categories' => $categories,
         ]);
@@ -75,7 +76,7 @@ class BlogController extends Controller
     public function show(string $slug): Response
     {
         $blog = $this->blogService->getBlogBySlug($slug);
-        
+
         if (!$blog) {
             abort(404, 'Blog not found');
         }
@@ -91,7 +92,7 @@ class BlogController extends Controller
     public function edit(string $slug): Response
     {
         $blog = $this->blogService->getBlogBySlug($slug);
-        
+
         if (!$blog) {
             abort(404, 'Blog not found');
         }
@@ -108,7 +109,7 @@ class BlogController extends Controller
     public function update(Request $request, string $slug): RedirectResponse
     {
         $blog = $this->blogService->getBlogBySlug($slug);
-        
+
         if (!$blog) {
             abort(404, 'Blog not found');
         }
@@ -144,7 +145,7 @@ class BlogController extends Controller
     public function delete(string $slug): RedirectResponse
     {
         $blog = $this->blogService->getBlogBySlug($slug);
-        
+
         if (!$blog) {
             abort(404, 'Blog not found');
         }
