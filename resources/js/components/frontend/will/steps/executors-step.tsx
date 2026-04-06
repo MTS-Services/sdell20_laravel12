@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Executor } from './will-types';
 import { UK_COUNTRY_OPTIONS } from './wizard-constants';
 import SmoothCollapse from './smooth-collapse';
@@ -35,6 +35,20 @@ export interface ExecutorsStepProps {
     partnerLabel?: string;
 }
 
+const toFullName = (executor: Executor) =>
+    `${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`;
+
+const parseFullName = (value: string): Pick<Executor, 'firstName' | 'lastName'> => {
+    const parts = value.trim().split(/\s+/);
+    if (parts.length === 0 || (parts.length === 1 && parts[0] === '')) {
+        return { firstName: '', lastName: '' };
+    }
+    if (parts.length === 1) {
+        return { firstName: parts[0], lastName: '' };
+    }
+    return { firstName: parts[0], lastName: parts.slice(1).join(' ') };
+};
+
 const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
     executors,
     wantsAlternateExecutor,
@@ -52,6 +66,28 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
     partnerLabel = 'your spouse'
 }) => {
     const [faqTooltip, setFaqTooltip] = useState<{ text: string; top: number } | null>(null);
+
+    // Local name state so spaces aren't swallowed mid-type
+    const [executorNames, setExecutorNames] = useState<string[]>(
+        () => executors.map(toFullName)
+    );
+    const [alternateNames, setAlternateNames] = useState<string[]>(
+        () => alternateExecutors.map(toFullName)
+    );
+
+    // Sync local name arrays when executor list length changes (add/remove)
+    useEffect(() => {
+        setExecutorNames((prev) =>
+            executors.map((ex, i) => (i < prev.length ? prev[i] : toFullName(ex)))
+        );
+    }, [executors.length]);
+
+    useEffect(() => {
+        setAlternateNames((prev) =>
+            alternateExecutors.map((ex, i) => (i < prev.length ? prev[i] : toFullName(ex)))
+        );
+    }, [alternateExecutors.length]);
+
     const spouseFirstName = spouseName?.trim().split(' ')[0] ?? spouseName;
 
     const setExecutorFields = (index: number, fields: Partial<Executor>, isAlternate: boolean = false) => {
@@ -64,24 +100,26 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
         }
     };
 
-    const handleFullNameChange = (index: number, value: string, isAlternate: boolean = false) => {
-        const trimmed = value.trim();
-        if (!trimmed) {
-            setExecutorFields(index, { firstName: '', lastName: '' }, isAlternate);
-            return;
+    const handleNameChange = (index: number, value: string, isAlternate: boolean = false) => {
+        if (isAlternate) {
+            setAlternateNames((prev) => prev.map((n, i) => (i === index ? value : n)));
+        } else {
+            setExecutorNames((prev) => prev.map((n, i) => (i === index ? value : n)));
         }
+    };
 
-        const parts = trimmed.split(/\s+/);
-        const firstName = parts.shift() ?? '';
-        const lastName = parts.join(' ');
-        setExecutorFields(index, { firstName, lastName }, isAlternate);
+    const handleNameBlur = (index: number, value: string, isAlternate: boolean = false) => {
+        const parsed = parseFullName(value);
+        setExecutorFields(index, parsed, isAlternate);
     };
 
     const removeExecutor = (index: number, isAlternate: boolean = false) => {
         if (isAlternate) {
             onChangeAlternates(alternateExecutors.filter((_, i) => i !== index));
+            setAlternateNames((prev) => prev.filter((_, i) => i !== index));
         } else {
             onChangeExecutors(executors.filter((_, i) => i !== index));
+            setExecutorNames((prev) => prev.filter((_, i) => i !== index));
         }
     };
 
@@ -139,7 +177,11 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                             {executors.map((executor, index) => {
                                 const orderLabels = ['First', 'Second', 'Third', 'Fourth'];
                                 const isPrimarySpouseCard = showSpouseQuestion && spouseIsExecutor && index === 0;
-                                const cardTitle = isPrimarySpouseCard ? 'Executor Details' : orderLabels[index] ? `${orderLabels[index]} Executor Details` : `Executor ${index + 1} Details`;
+                                const cardTitle = isPrimarySpouseCard
+                                    ? 'Executor Details'
+                                    : orderLabels[index]
+                                        ? `${orderLabels[index]} Executor Details`
+                                        : `Executor ${index + 1} Details`;
 
                                 return (
                                     <div key={executor.id} className="rounded border border-slate-200 bg-white shadow-lg p-6">
@@ -161,8 +203,9 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                 <label className="block text-sm text-secondary mb-1">Full Name:</label>
                                                 <input
                                                     type="text"
-                                                    value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
-                                                    onChange={(e) => handleFullNameChange(index, e.target.value)}
+                                                    value={executorNames[index] ?? ''}
+                                                    onChange={(e) => handleNameChange(index, e.target.value)}
+                                                    onBlur={(e) => handleNameBlur(index, e.target.value)}
                                                     className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                     placeholder="e.g. William Timothy Smith"
                                                 />
@@ -207,7 +250,6 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                             >
                                 + Add another executor
                             </button>
-
                         </>
                     )}
 
@@ -246,8 +288,9 @@ const ExecutorsStep: React.FC<ExecutorsStepProps> = ({
                                                 <label className="block text-sm text-secondary mb-1">Name:</label>
                                                 <input
                                                     type="text"
-                                                    value={`${executor.firstName}${executor.lastName ? ` ${executor.lastName}` : ''}`}
-                                                    onChange={(e) => handleFullNameChange(index, e.target.value, true)}
+                                                    value={alternateNames[index] ?? ''}
+                                                    onChange={(e) => handleNameChange(index, e.target.value, true)}
+                                                    onBlur={(e) => handleNameBlur(index, e.target.value, true)}
                                                     className="w-full border-b border-slate-300 bg-transparent py-2 text-base text-primary-800 placeholder-primary-400/70 focus:border-secondary focus:outline-none transition-colors"
                                                     placeholder="e.g. William Timothy Smith"
                                                 />
