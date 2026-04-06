@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head } from '@inertiajs/react';
+import Feedback from '@/components/feedback';
 
 import FrontendLayout from '@/layouts/frontend-layout';
 
@@ -87,6 +88,7 @@ export default function PrivacyPolicy() {
                             </div>
                         </div>
                     </section>
+                    <Feedback />
                 </main>
             </FrontendLayout>
         </>

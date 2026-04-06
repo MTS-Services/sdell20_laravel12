@@ -1,3 +1,4 @@
+import Feedback from '@/components/feedback';
 import FeedbackCard from '@/components/feedback-card';
 import BlogCard from '@/components/ui/blog-card';
 import FrontendLayout from '@/layouts/frontend-layout';
@@ -222,125 +223,8 @@ export default function BlogDetails({ blog, recentBlogsFromSameCategory }: Props
                             </div>
                         </div>
                     </section>
-                    <section className="px-6 pb-18 md:pb-14 lg:pb-20">
-                        <div className="container mx-auto px-6">
-                            <div className="mt-5">
-                                <h2 className="mb-6 text-center text-[44px] font-ubuntu font-light text-slate-900">
-                                    What our clients say
-                                </h2>
-                            </div>
-                            <div className="flex flex-col gap-6">
-                                <div className="mb-6 flex flex-col sm:flex-row sm:justify-between gap-4">
-                                    <div className="mb-2 flex items-center gap-2">
-                                        <img
-                                            src="/assets/images/blog/google.png"
-                                            alt="Google"
-                                            className="h-12 sm:h-20 w-12 sm:w-20 object-cover"
-                                        />
-                                        <div>
-                                            <p className="text-sm font-ubuntu">
-                                                Google Rating
-                                            </p>
-                                            <div className="flex items-center gap-0.5">
-                                                <span className="text-base font-bold font-ubuntu">
-                                                    4.4
-                                                </span>
-                                                <div className="flex">
-                                                    {[1, 2, 3, 4, 5].map(
-                                                        (star) => (
-                                                            <Star
-                                                                key={star}
-                                                                className="h-4 w-4 fill-yellow-400 text-yellow-400"
-                                                            />
-                                                        ),
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <p className="text-sm text-slate-600 font-ubuntu">
-                                                (Based on 100+ reviews)
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-3 lg:flex">
-                                        <Link
-                                            href="#"
-                                            className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
-                                        >
-                                            <span className="flex flex-col leading-tight text-white text-xl font-semibold font-ubuntu">
-                                                Write a Review
-                                            </span>
-                                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 transition-colors group-hover:bg-white/30">
-                                                <ChevronRight className="h-4 w-4 text-white transition-transform group-hover:translate-x-0.5" />
-                                            </span>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="relative">
-                        <Swiper
-                            modules={[
-                                Navigation,
-                                Pagination,
-                                Scrollbar,
-                                Autoplay,
-                            ]}
-                            spaceBetween={20}
-                            slidesPerView={1}
-                            autoplay={{
-                                delay: 3000,
-                                disableOnInteraction: false,
-                                pauseOnMouseEnter: true,
-                            }}
-                            navigation={{
-                                nextEl: '.swiper-button-next',
-                                prevEl: '.swiper-button-prev',
-                            }}
-                            pagination={{
-                                clickable: true,
-                                el: '.swiper-pagination',
-                            }}
-                            scrollbar={{
-                                draggable: true,
-                                el: '.swiper-scrollbar',
-                            }}
-                            breakpoints={{
-                                640: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 20,
-                                },
-                                768: {
-                                    slidesPerView: 3,
-                                    spaceBetween: 20,
-                                },
-                                1024: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 20,
-                                },
-                                1280: {
-                                    slidesPerView: 4,
-                                    spaceBetween: 20,
-                                },
-                            }}
-                            className="feedback-swiper pb-16"
-                        >
-                            {[...Array(12)].map((_, index) => (
-                                <SwiperSlide key={index}>
-                                    <FeedbackCard />
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
-
-                        {/* Swiper Navigation */}
-                        {/* <div className="swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 text-gray-600 hover:text-primary-600"></div>
-                        <div className="swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 z-10 text-gray-600 hover:text-primary-600"></div> */}
-
-                        {/* Swiper Pagination */}
-                        <div className="swiper-pagination absolute -bottom-10! left-0 right-0 z-10"></div>
-
-                        {/* Swiper Scrollbar */}
-                        <div className="swiper-scrollbar absolute bottom-0 left-0 right-0 z-10"></div>
-                    </div>
+                    <section>
+                        <Feedback />
                     </section>
                 </main>
             </FrontendLayout>

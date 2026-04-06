@@ -4,6 +4,7 @@ import { HeroSection } from '@/components/frontend/probate/hero-section';
 import { HowWeHelpSection } from '@/components/frontend/probate/how-we-help-section';
 import { WhatIsProbateSection } from '@/components/frontend/probate/what-is-probate-section';
 import { ReferralFeeSection } from '@/components/frontend/probate/referral-fee-section';
+import Feedback from '@/components/feedback';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { Head } from '@inertiajs/react';
 import { SpecialistSupportSection } from '@/components/frontend/probate/specialist-support-section';
@@ -26,6 +27,7 @@ export default function Probate() {
                     <WhatIsProbateSection />
                     <HowWeHelpSection />
                     <PreferToTalkSection />
+                    <Feedback />
                 </main>
             </FrontendLayout>
         </>

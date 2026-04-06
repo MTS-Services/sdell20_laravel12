@@ -4,6 +4,7 @@ import { HorizonHeroSection } from '@/components/frontend/horizon-wills/hero-sec
 import { JobSection } from '@/components/frontend/horizon-wills/job-section';
 import { MissionSection } from '@/components/frontend/horizon-wills/mission-section';
 import { TeamSection } from '@/components/frontend/horizon-wills/team-section';
+import Feedback from '@/components/feedback';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { Head } from '@inertiajs/react';
 
@@ -22,6 +23,7 @@ export default function InvestmentOpportunity() {
                     <MissionSection />
                     <JobSection />
                     <TeamSection />
+                    <Feedback />
                 </main>
             </FrontendLayout>
         </>

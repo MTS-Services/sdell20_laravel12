@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, CheckCircle2, ChevronDown, Clock3, Mail, MapPin, Phone, ShieldCheck, Star, UserCheck, Users } from 'lucide-react';
 import StepsHeader from '@/components/frontend/will/steps-header';
+import Feedback from '@/components/feedback';
 
 
 type StepOption = {
@@ -637,7 +638,6 @@ const LpaStartPage: React.FC = () => {
                                 className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-primary-600 transition hover:text-lpa-step sm:text-base md:text-lg"
                             >
                                 <ArrowLeft className="h-4 w-4" />
-                                Back
                             </button>
                         </div>
                     </div>

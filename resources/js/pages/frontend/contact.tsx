@@ -3,6 +3,7 @@ import React from 'react';
 import { ContactConsultationSection } from '@/components/frontend/contact/contact-consultation-section';
 import { ContactHeroSection } from '@/components/frontend/contact/contact-hero-section';
 import { ContactMapSection } from '@/components/frontend/contact/contact-map-section';
+import Feedback from '@/components/feedback';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { LpaFaqSection } from '@/components/frontend/lpa/lpa-faq-section';
 import { Head } from '@inertiajs/react';
@@ -22,6 +23,7 @@ export default function Contact() {
                     <ContactConsultationSection />
                     <ContactMapSection />
                     <LpaFaqSection />
+                    <Feedback />
                 </main>
             </FrontendLayout>
         </>

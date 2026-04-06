@@ -6,6 +6,7 @@ import { WillWritingHeroSection } from '@/components/frontend/will-writing/will-
 import { WillWritingProtectedSection } from '@/components/frontend/will-writing/will-writing-protected-section';
 import { WillWritingPricingSection } from '@/components/frontend/will-writing/will-writing-pricing-section';
 import { WillWritingProcessSection } from '@/components/frontend/will-writing/will-writing-process-section';
+import Feedback from '@/components/feedback';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { TeamSection } from '@/components/frontend/horizon-wills/team-section';
 import { LpaFaqSection } from '@/components/frontend/lpa/lpa-faq-section';
@@ -32,6 +33,7 @@ export default function WillWriting() {
                     <WillWritingAboutSection />
                     {/* <TeamSection /> */}
                     <EstateApproachSection />
+                    <Feedback />
                 </main>
             </FrontendLayout>
         </>
