@@ -14,12 +14,12 @@ class FrontendController extends Controller
 {
 
     protected BlogService $blogService;
-    
+
     public function __construct(BlogService $blogService)
     {
         $this->blogService = $blogService;
     }
-    
+
     public function index(): Response
     {
         return Inertia::render('frontend/home');
@@ -100,10 +100,19 @@ class FrontendController extends Controller
 
     public function blog(): Response
     {
-        $blogsByCategory = $this->blogService->getBlogsByCategory();
+        $blogData = $this->blogService->getBlogsByCategory(12);
 
         return Inertia::render('frontend/blog', [
-            'blogsByCategory' => $blogsByCategory,
+            'blogData' => $blogData,
+        ]);
+    }
+
+    public function blogCategory(string $category, int $page = 1): Response
+    {
+        $blogData = $this->blogService->getBlogsByCategory(12, $page, $category);
+
+        return Inertia::render('frontend/blog', [
+            'blogData' => $blogData,
         ]);
     }
     public function blogDetails(string $slug): Response

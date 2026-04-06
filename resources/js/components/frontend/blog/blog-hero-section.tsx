@@ -14,13 +14,13 @@ export function BlogHeroSection() {
             <div className="container mx-auto px-6">
                 <div className="flex min-h-90 items-center py-16 md:min-h-105 md:py-20">
                     <div className="animate-fadeInUp space-y-5">
-                        <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+                        <h1 className="text-4xl font-ubuntu font-bold tracking-tight text-white">
                             Online Power of Attorney Blogs
                         </h1>
-                        <h3 className="text-4xl font-normal tracking-tight text-white">
+                        <h3 className="text-[28px] font-ubuntu font-light tracking-tight text-white">
                             Expert Online Power of Attorney Blogs You Can Trust
                         </h3>
-                        <p className="text-base font-semibold leading-relaxed text-white/85">
+                        <p className="text-lg font-ubuntu font-normal leading-relaxed text-white">
                             Our Online Power of Attorney Blogs provide clear,
                             practical guidance written by LPA specialists. Each
                             article focuses on real world issues, common

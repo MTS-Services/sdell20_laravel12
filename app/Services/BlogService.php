@@ -20,36 +20,50 @@ class BlogService
     /**
      * Get all blogs with pagination.
      */
-    public function getAllBlogs(int $perPage = 10): LengthAwarePaginator
+    public function getAllBlogs(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return Blog::orderBy('created_at', 'desc')->paginate($perPage);
+        return Blog::orderBy('created_at', 'desc')
+            ->with('category')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                        ->orWhere('slug', 'like', "%{$search}%");
+                });
+            })
+            ->paginate($perPage);
     }
 
     /**
      * Get published blogs for frontend.
      */
-    public function getPublishedBlogs(int $perPage = 10): LengthAwarePaginator
+    public function getPublishedBlogs(int $perPage = 15): LengthAwarePaginator
     {
         return Blog::where('status', 1)->with('category')->orderBy('created_at', 'desc')->paginate($perPage);
     }
 
     /**
-     * Get published blogs grouped by category.
+     * Get published blogs grouped by category with 12 blogs per category and category-wise pagination.
      */
-    public function getBlogsByCategory(): array
+    public function getBlogsByCategory(int $perPage = 12): array
     {
-        $blogs = Blog::where('status', 1)
-            ->with('category')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->groupBy('category.title');
+        $categories = BlogCategory::with(['blogs' => function ($query) {
+            $query->where('status', 1)
+                ->orderBy('created_at', 'desc');
+        }])->get();
 
         $result = [];
-        foreach ($blogs as $categoryTitle => $categoryBlogs) {
-            $result[] = [
-                'category' => $categoryTitle ?: 'Uncategorized',
-                'blogs' => $categoryBlogs->take(4) // Limit to 4 blogs per category
-            ];
+
+        foreach ($categories as $category) {
+            $categoryBlogs = $category->blogs;
+
+            if ($categoryBlogs->count() > 0) {
+                $result[] = [
+                    'category' => $category->title ?: 'Uncategorized',
+                    'blogs'    => $categoryBlogs->values(),
+                    'per_page' => $perPage,
+                    'total'    => $categoryBlogs->count(),
+                ];
+            }
         }
 
         return $result;
