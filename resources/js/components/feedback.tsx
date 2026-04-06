@@ -1,7 +1,11 @@
-import { ChevronRight, Link, Star } from "lucide-react";
+import { ChevronRight, Star } from "lucide-react";
 import { Autoplay, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import FeedbackCard from "./feedback-card";
+import { Link } from "@inertiajs/react";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export default function Feedback() {
     return (

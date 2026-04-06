@@ -36,7 +36,9 @@ export default function Home() {
                 <FindingSupportSection />
                 <ManagingAffairsSection />
                 <LoveOnesSection />
-                <Feedback />
+                <section>
+                    <Feedback />
+                </section>
 
             </FrontendLayout>
 
