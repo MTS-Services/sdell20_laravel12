@@ -46,9 +46,6 @@ export default function Blog({ blogData }: Props) {
 
                     <div className="container mx-auto px-6 py-6">
                         <div className="flex items-center justify-between">
-                            <h1 className="font-ubuntu text-3xl font-bold text-gray-900">
-                                Blog
-                            </h1>
                             <p className="font-ubuntu text-sm text-gray-600">
                                 Total{' '}
                                 {blogData.reduce(
