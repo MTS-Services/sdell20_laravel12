@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Blog;
+use App\Models\BlogCategory;
+use App\Observers\BlogCategoryObserver;
+use App\Observers\BlogObserver;
 use App\Services\Payment\PaymentIntentClientInterface;
 use App\Services\Payment\StripePaymentIntentClient;
 use App\Services\TwilioService;
@@ -33,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        Blog::observe(BlogObserver::class);
+        BlogCategory::observe(BlogCategoryObserver::class);
     }
 
     protected function configureDefaults(): void

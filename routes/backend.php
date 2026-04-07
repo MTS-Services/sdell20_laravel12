@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Backend\Admin\AdminDashboardController;
+use App\Http\Controllers\Backend\Admin\AdminSeoController;
+use App\Http\Controllers\Backend\Admin\AdminSettingsController;
 use App\Http\Controllers\Backend\Admin\AdminUserController;
 use App\Http\Controllers\Backend\Admin\AdminUserDocumentPdfController;
 use App\Http\Controllers\Backend\Admin\TwilioController;
@@ -33,6 +35,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin Routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
+        Route::get('/seo', [AdminSeoController::class, 'index'])->name('seo.index');
+        Route::get('/seo/{seoPage}/edit', [AdminSeoController::class, 'edit'])->name('seo.edit');
+        Route::put('/seo/{seoPage}', [AdminSeoController::class, 'update'])->name('seo.update');
+        Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings.index');
+        Route::post('/settings/sitemap/generate', [AdminSettingsController::class, 'generateSitemap'])->name('settings.sitemap.generate');
         Route::get('/users/{user}/details', [AdminUserController::class, 'details'])->name('users.details');
         Route::get('/users/{user}/wills/{will}/pdf', [AdminUserDocumentPdfController::class, 'downloadWill'])->name('users.wills.pdf');
         Route::get('/users/{user}/wills/{will}/pdf/preview', [AdminUserDocumentPdfController::class, 'previewWill'])->name('users.wills.pdf.preview');
