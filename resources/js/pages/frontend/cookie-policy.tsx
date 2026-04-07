@@ -1,7 +1,7 @@
 import React from 'react';
-import { Head } from '@inertiajs/react';
 
 import FrontendLayout from '@/layouts/frontend-layout';
+import { SeoHead } from '@/components/seo-head';
 
 const cookieHighlights = [
     {
@@ -27,15 +27,13 @@ const quickFacts = [
 export default function CookiePolicy() {
     return (
         <>
-            <Head>
-                <title>Cookie Policy</title>
-                <meta name="title" content="Cookie Policy" />
-                <meta name="description" content="Read the Cookie Policy for Online-Will-Write to understand how we use cookies and tracking technologies to improve your browsing experience on our website." />
-                <meta name="keywords" content="cookie policy, website cookies, tracking technologies, Online Will Write cookies, manage cookie preferences" />
-            </Head>
+            <SeoHead
+                fallbackTitle="Cookie Policy"
+                fallbackDescription="Read the Cookie Policy for Online-Will-Write to understand how we use cookies and tracking technologies to improve your browsing experience on our website."
+                fallbackKeywords="cookie policy, website cookies, tracking technologies, Online Will Write cookies, manage cookie preferences"
+            />
 
             <FrontendLayout>
-                <Head title="Cookie Policy | Will Writing Online" />
                 <main className="bg-slate-50 py-14 sm:py-20">
                     <section className="container mx-auto px-4 sm:px-6">
                         <div className="grid gap-8 lg:gap-10 lg:grid-cols-[1.1fr_0.9fr]">

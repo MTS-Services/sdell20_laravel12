@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Users, FileText, Clock, User, Heart } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import StepsHeader from '@/components/frontend/will/steps-header';
+import { SeoHead } from '@/components/seo-head';
 import type {
     MaritalStatus, PersonalInfo, Beneficiary, Executor, Child,
     Guardian, SpecificGift, Pet, AdditionalClause, WillData
@@ -715,40 +716,46 @@ const WillCreationWizard: React.FC = () => {
     // ── PHASE 1: LANDING PAGE ──
     if (phase === 'landing') {
         return (
-            <div className="min-h-screen bg-primary-50 font-sans">
-                <StepsHeader />
+            <>
+                <SeoHead
+                    fallbackTitle="Will Writing Start"
+                    fallbackDescription="Start creating your will online in minutes with our guided step-by-step process."
+                    fallbackKeywords="will writing, online will, will start"
+                />
+                <div className="min-h-screen bg-primary-50 font-sans">
+                    <StepsHeader />
 
-                {/* Dark Header */}
-                <div className="bg-primary px-4 py-14">
-                    <div className="max-w-6xl mx-auto text-center">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 leading-tight">
-                            Create Your Legally Sound Will Online
-                        </h1>
-                        <div className="flex flex-wrap justify-center gap-12 md:gap-20">
-                            <div className="flex items-center gap-3 text-white">
-                                <FileText className="w-14 h-14 text-white/70 shrink-0" />
-                                <span className="text-sm  md:text-base lg:text-lg leading-snug text-left">Answer a few simple<br />questions</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-white">
-                                <FileText className="w-14 h-14 text-white/70 shrink-0" />
-                                <span className="text-sm  md:text-base lg:text-lg leading-snug text-left">Print and download<br />instantly</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-white">
-                                <Clock className="w-14 h-14 text-white/70 shrink-0" />
-                                <span className="text-sm  md:text-base lg:text-lg leading-snug text-left">It takes just 5<br />minutes</span>
+                    {/* Dark Header */}
+                    <div className="bg-primary px-4 py-14">
+                        <div className="max-w-6xl mx-auto text-center">
+                            <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 leading-tight">
+                                Create Your Legally Sound Will Online
+                            </h1>
+                            <div className="flex flex-wrap justify-center gap-12 md:gap-20">
+                                <div className="flex items-center gap-3 text-white">
+                                    <FileText className="w-14 h-14 text-white/70 shrink-0" />
+                                    <span className="text-sm  md:text-base lg:text-lg leading-snug text-left">Answer a few simple<br />questions</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-white">
+                                    <FileText className="w-14 h-14 text-white/70 shrink-0" />
+                                    <span className="text-sm  md:text-base lg:text-lg leading-snug text-left">Print and download<br />instantly</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-white">
+                                    <Clock className="w-14 h-14 text-white/70 shrink-0" />
+                                    <span className="text-sm  md:text-base lg:text-lg leading-snug text-left">It takes just 5<br />minutes</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* Main Content Card */}
-                <div className="max-w-3xl mx-auto mt-8 bg-white rounded shadow-sm border border-primary-100 px-10 py-10 md:px-14">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">
-                        Is the Will just for You? Or You and a Partner?
-                    </h2>
-                    <p className="text-base text-text-muted mb-8">
-                        Select the option that best describes your situation
-                    </p>
+                    {/* Main Content Card */}
+                    <div className="max-w-3xl mx-auto mt-8 bg-white rounded shadow-sm border border-primary-100 px-10 py-10 md:px-14">
+                        <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-4">
+                            Is the Will just for You? Or You and a Partner?
+                        </h2>
+                        <p className="text-base text-text-muted mb-8">
+                            Select the option that best describes your situation
+                        </p>
 
                     <div className="grid md:grid-cols-2 gap-6 mb-10">
                         {/* Single Will Option */}
@@ -836,17 +843,24 @@ const WillCreationWizard: React.FC = () => {
                     >
                         {willData.personalInfo.maritalStatus === 'single' ? 'Create Single Will' : 'Create Mirror Wills'}
                     </button>
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 
     // ── PHASE 2: WIZARD ──
     return (
-        <div className="min-h-screen bg-gray-100 font-sans">
-            <StepsHeader />
+        <>
+            <SeoHead
+                fallbackTitle="Will Writing Start"
+                fallbackDescription="Continue creating your will online with our step-by-step process."
+                fallbackKeywords="will writing, online will, will start"
+            />
+            <div className="min-h-screen bg-gray-100 font-sans">
+                <StepsHeader />
 
-            {isSaving && <SavingOverlay />}
+                {isSaving && <SavingOverlay />}
 
             {/* Dark Header with Step Navigation */}
             <div className="bg-slate-700">
@@ -956,7 +970,8 @@ const WillCreationWizard: React.FC = () => {
                     </div>
                 )}
             </div>
-        </div>
+            </div>
+        </>
     );
 };
 

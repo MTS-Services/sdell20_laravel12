@@ -1,8 +1,9 @@
 import Feedback from '@/components/feedback';
 import FeedbackCard from '@/components/feedback-card';
+import { SeoHead } from '@/components/seo-head';
 import BlogCard from '@/components/ui/blog-card';
 import FrontendLayout from '@/layouts/frontend-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { ChevronRight, Star } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -30,15 +31,11 @@ interface Props {
 export default function BlogDetails({ blog, recentBlogsFromSameCategory }: Props) {
     return (
         <>
-            <Head>
-                <title>{blog.title}</title>
-                <meta name="title" content={blog.title} />
-                <meta name="description" content={blog.description} />
-                <meta
-                    name="keywords"
-                    content="blog, power of attorney, legal documents"
-                />
-            </Head>
+            <SeoHead
+                fallbackTitle={blog.title}
+                fallbackDescription={blog.description}
+                fallbackKeywords="blog, power of attorney, legal documents"
+            />
             <FrontendLayout>
                 <main className="bg-white">
                     <section className="bg-[#f8f6f0]">

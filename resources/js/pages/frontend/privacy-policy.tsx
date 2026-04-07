@@ -1,6 +1,6 @@
 import React from 'react';
-import { Head } from '@inertiajs/react';
 import Feedback from '@/components/feedback';
+import { SeoHead } from '@/components/seo-head';
 
 import FrontendLayout from '@/layouts/frontend-layout';
 
@@ -57,12 +57,11 @@ const policySections = [
 export default function PrivacyPolicy() {
     return (
         <>
-            <Head>
-                <title>Privacy Policy</title>
-                <meta name="title" content="Privacy Policy" />
-                <meta name="description" content="Read the Terms and Conditions for Online-Will-Write. Understand our service agreements, limitations of liability, and legal policies for online will creation." />
-                <meta name="keywords" content="privacy policy, data protection, privacy statement, Online Will Write privacy, data security UK, GDPR compliance" />
-            </Head>
+            <SeoHead
+                fallbackTitle="Privacy Policy"
+                fallbackDescription="Read the Terms and Conditions for Online-Will-Write. Understand our service agreements, limitations of liability, and legal policies for online will creation."
+                fallbackKeywords="privacy policy, data protection, privacy statement, Online Will Write privacy, data security UK, GDPR compliance"
+            />
             <FrontendLayout>
                 <main className="bg-white py-14 sm:py-16">
                     <section className="container mx-auto px-4 sm:px-6">

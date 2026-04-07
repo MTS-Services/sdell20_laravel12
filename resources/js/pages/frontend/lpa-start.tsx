@@ -3,6 +3,7 @@ import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, CheckCircle2, ChevronDown, Clock3, Mail, MapPin, Phone, ShieldCheck, Star, UserCheck, Users } from 'lucide-react';
 import StepsHeader from '@/components/frontend/will/steps-header';
 import Feedback from '@/components/feedback';
+import { SeoHead } from '@/components/seo-head';
 
 
 type StepOption = {
@@ -353,6 +354,11 @@ const LpaStartPage: React.FC = () => {
     if (showUnderageNotice) {
         return (
             <>
+                <SeoHead
+                    fallbackTitle="LPA Start"
+                    fallbackDescription="Start creating your lasting power of attorney online in minutes with our guided steps."
+                    fallbackKeywords="lasting power of attorney, lpa, power of attorney"
+                />
                 <StepsHeader />
                 <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
                     <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
@@ -428,6 +434,11 @@ const LpaStartPage: React.FC = () => {
     if (showRegionalNotice) {
         return (
             <>
+                <SeoHead
+                    fallbackTitle="LPA Start"
+                    fallbackDescription="Start creating your lasting power of attorney online in minutes with our guided steps."
+                    fallbackKeywords="lasting power of attorney, lpa, power of attorney"
+                />
                 <StepsHeader />
                 <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
                     <div className="mx-auto w-full max-w-2xl space-y-8 ">
@@ -484,6 +495,11 @@ const LpaStartPage: React.FC = () => {
     if (showRegionalDecline) {
         return (
             <>
+                <SeoHead
+                    fallbackTitle="LPA Start"
+                    fallbackDescription="Start creating your lasting power of attorney online in minutes with our guided steps."
+                    fallbackKeywords="lasting power of attorney, lpa, power of attorney"
+                />
                 <StepsHeader />
                 <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
                     <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
@@ -555,6 +571,11 @@ const LpaStartPage: React.FC = () => {
 
     return (
         <>
+            <SeoHead
+                fallbackTitle="LPA Start"
+                fallbackDescription="Start creating your lasting power of attorney online in minutes with our guided steps."
+                fallbackKeywords="lasting power of attorney, lpa, power of attorney"
+            />
             <StepsHeader />
             <section className="min-h-screen bg-primary-50 px-3 py-10 sm:px-6 sm:py-16 md:px-10 md:py-20 lg:px-0">
                 <div className="mx-auto w-full max-w-2xl md:max-w-3xl lg:max-w-2xl">

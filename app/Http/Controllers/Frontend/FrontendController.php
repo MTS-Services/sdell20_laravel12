@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ContactClaraMail;
+use App\Models\SeoPage;
 use App\Services\BlogService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Services\GoogleReviewService;
@@ -29,9 +31,13 @@ class FrontendController extends Controller
             ? ('https://search.google.com/local/writereview?placeid=' . $placeId)
             : null;
 
+        $routeName = Route::currentRouteName();
+        $seo = $routeName ? SeoPage::where('route_name', $routeName)->first() : null;
+
         return array_merge([
             'reviews' => $this->googleReviewService->getReviews(),
             'googleWriteReviewUrl' => $googleWriteReviewUrl,
+            'seo' => $seo?->only(['meta_title', 'meta_description', 'meta_keywords', 'page_name', 'path', 'route_name']),
         ], $props);
     }
 
