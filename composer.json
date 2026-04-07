@@ -18,6 +18,7 @@
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
         "league/csv": "^9.28",
+        "spatie/laravel-sitemap": "^8.0",
         "stripe/stripe-php": "*",
         "tightenco/ziggy": "^2.6",
         "twilio/sdk": "^8.11"
