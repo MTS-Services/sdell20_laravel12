@@ -1,7 +1,15 @@
+import Feedback from '@/components/feedback';
+import FeedbackCard from '@/components/feedback-card';
+import { SeoHead } from '@/components/seo-head';
 import BlogCard from '@/components/ui/blog-card';
 import FrontendLayout from '@/layouts/frontend-layout';
-import { Head } from '@inertiajs/react';
-import { Star } from 'lucide-react';
+import { Link } from '@inertiajs/react';
+import { ChevronRight, Star } from 'lucide-react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Autoplay, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 interface Blog {
     id: number;
@@ -14,35 +22,37 @@ interface Blog {
 
 interface Props {
     blog: Blog;
-    latestBlogs: {
-        data: Blog[];
+    recentBlogsFromSameCategory: {
+        category: string;
+        blogs: Blog[];
     };
 }
 
-export default function BlogDetails({ blog, latestBlogs }: Props) {
+export default function BlogDetails({ blog, recentBlogsFromSameCategory }: Props) {
     return (
         <>
-            <Head>
-                <title>{blog.title}</title>
-                <meta name="title" content={blog.title} />
-                <meta name="description" content={blog.description} />
-                <meta name="keywords" content="blog, power of attorney, legal documents" />
-            </Head>
+            <SeoHead
+                fallbackTitle={blog.title}
+                fallbackDescription={blog.description}
+                fallbackKeywords="blog, power of attorney, legal documents"
+            />
             <FrontendLayout>
                 <main className="bg-white">
                     <section className="bg-[#f8f6f0]">
                         <div className="container mx-auto px-6 py-18 md:py-14 lg:py-20">
-                            <div className="flex items-start gap-10">
+                            <div className="flex flex-col items-start gap-10 lg:flex-row">
                                 <div className="w-full lg:w-2/2">
                                     <div className="mb-10">
-                                        <h2 className="text-5xl font-normal text-primary-600">
+                                        <h2 className="text-[44px] font-ubuntu font-light text-primary-600">
                                             {blog.title}
                                         </h2>
-                                        <p className="mt-2 text-lg text-gray-600">
-                                            {new Date(blog.created_at).toLocaleDateString('en-US', { 
-                                                year: 'numeric', 
-                                                month: 'long', 
-                                                day: 'numeric' 
+                                        <p className="mt-2 text-lg font-ubuntu text-gray-600">
+                                            {new Date(
+                                                blog.created_at,
+                                            ).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
                                             })}
                                         </p>
                                     </div>
@@ -62,11 +72,11 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                         )}
                                     </div>
                                     <div className="mt-10">
-                                        <div 
-                                            dangerouslySetInnerHTML={{ 
-                                                __html: blog.description 
-                                            }} 
-                                            className="text-lg text-gray-600"
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: blog.description,
+                                            }}
+                                            className="text-lg font-ubuntu text-gray-600"
                                         />
                                     </div>
                                 </div>
@@ -80,11 +90,11 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                                     className="h-20 w-20 object-cover"
                                                 />
                                                 <div>
-                                                    <p className="text-sm">
+                                                    <p className="text-sm font-ubuntu">
                                                         Google Rating
                                                     </p>
                                                     <div className="flex items-center gap-0.5">
-                                                        <span className="text-base font-bold">
+                                                        <span className="text-base font-bold font-ubuntu">
                                                             4.4
                                                         </span>
                                                         <div className="flex">
@@ -102,7 +112,7 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                             </div>
                                         </div>
 
-                                        <h2 className="mb-6 text-xl font-normal">
+                                        <h2 className="mb-6 text-xl font-normal font-ubuntu">
                                             Get your Lasting Power of Attorney
                                             sorted for{' '}
                                             <span className="font-bold">
@@ -111,9 +121,9 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                         </h2>
 
                                         <ul className="mb-8 space-y-3">
-                                            <li className="flex items-start gap-3">
+                                            <li className="flex items-center gap-3">
                                                 <svg
-                                                    className="mt-1 h-5 w-5 shrink-0 text-green-400"
+                                                    className="mt-1 h-6 w-6 shrink-0 rounded-full bg-white text-[#04194e]"
                                                     fill="none"
                                                     stroke="currentColor"
                                                     viewBox="0 0 24 24"
@@ -125,13 +135,13 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                                         d="M5 13l4 4L19 7"
                                                     />
                                                 </svg>
-                                                <span className="text-sm">
+                                                <span className="text-sm font-ubuntu">
                                                     Fixed fee guarantee
                                                 </span>
                                             </li>
-                                            <li className="flex items-start gap-3">
+                                            <li className="flex items-center gap-3">
                                                 <svg
-                                                    className="mt-1 h-5 w-5 shrink-0 text-green-400"
+                                                    className="mt-1 h-6 w-6 shrink-0 rounded-full bg-white text-[#04194e]"
                                                     fill="none"
                                                     stroke="currentColor"
                                                     viewBox="0 0 24 24"
@@ -143,13 +153,13 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                                         d="M5 13l4 4L19 7"
                                                     />
                                                 </svg>
-                                                <span className="text-sm">
+                                                <span className="text-sm font-ubuntu">
                                                     Expert legal support
                                                 </span>
                                             </li>
-                                            <li className="flex items-start gap-3">
+                                            <li className="flex items-center gap-3">
                                                 <svg
-                                                    className="mt-1 h-5 w-5 shrink-0 text-green-400"
+                                                    className="mt-1 h-6 w-6 shrink-0 rounded-full bg-white text-[#04194e]"
                                                     fill="none"
                                                     stroke="currentColor"
                                                     viewBox="0 0 24 24"
@@ -161,15 +171,30 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                                                         d="M5 13l4 4L19 7"
                                                     />
                                                 </svg>
-                                                <span className="text-sm">
-                                                    Simple online process
+                                                <span className="text-sm font-ubuntu">
+                                                    Quick & easy process
                                                 </span>
                                             </li>
                                         </ul>
 
-                                        <button className="w-full rounded-full bg-slate-500 px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-slate-600">
-                                            Create your LPA now
-                                        </button>
+                                        <div className="flex items-center justify-center gap-3 lg:flex">
+                                            <Link
+                                                href={route('lpa.start')}
+                                                className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
+                                            >
+                                                <span className="flex flex-col leading-tight text-white font-ubuntu">
+                                                    <span className="text-xs font-ubuntu">
+                                                        £99 + VAT per LPA
+                                                    </span>
+                                                    <span className="text-[10px] font-normal text-white/80 font-ubuntu">
+                                                        (20% VAT at checkout; plus £92 OPG fee per LPA)
+                                                    </span>
+                                                </span>
+                                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 transition-colors group-hover:bg-white/30">
+                                                    <ChevronRight className="h-4 w-4 text-white transition-transform group-hover:translate-x-0.5" />
+                                                </span>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,15 +202,26 @@ export default function BlogDetails({ blog, latestBlogs }: Props) {
                     </section>
                     <section className="container mx-auto px-6 py-18 md:py-14 lg:py-20">
                         <div className="mt-5">
-                            <h2 className="mb-6 text-2xl font-bold text-slate-900">
+                            <h2 className="mb-6 text-3xl font-ubuntu font-light text-slate-900">
                                 Recent blog articles
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
-                            {latestBlogs.data.map((latestBlog) => (
-                                <BlogCard key={latestBlog.id} blog={latestBlog} />
-                            ))}
+                        <div className="mb-8">
+                            <h3 className="mb-4 text-xl font-semibold text-primary-600 font-ubuntu">
+                                {/* {recentBlogsFromSameCategory.category} */}
+                            </h3>
+                            <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {recentBlogsFromSameCategory.blogs.map((recentBlog: Blog) => (
+                                    <BlogCard
+                                        key={recentBlog.id}
+                                        blog={recentBlog}
+                                    />
+                                ))}
+                            </div>
                         </div>
+                    </section>
+                    <section>
+                        <Feedback />
                     </section>
                 </main>
             </FrontendLayout>

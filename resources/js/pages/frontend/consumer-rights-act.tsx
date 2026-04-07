@@ -1,7 +1,7 @@
 import React from 'react';
-import { Head } from '@inertiajs/react';
 
 import FrontendLayout from '@/layouts/frontend-layout';
+import { SeoHead } from '@/components/seo-head';
 
 const consumerRightsSections = [
     {
@@ -45,14 +45,12 @@ const consumerRightsSections = [
 export default function ConsumerRightsAct() {
     return (
         <>
-            <Head>
-                <title>Consumer Rights Act 2015</title>
-                <meta name="title" content="Consumer Rights Act 2015" />
-                <meta name="description" content="Learn about your legal rights under the Consumer Rights Act 2015 when using Online-Will-Write. We are committed to fair, transparent will writing services." />
-                <meta name="keywords" content="Consumer Rights Act 2015, consumer rights, legal rights, Online Will Write consumer policy, fair trading UK, consumer protection" />
-            </Head>
+            <SeoHead
+                fallbackTitle="Consumer Rights Act 2015"
+                fallbackDescription="Learn about your legal rights under the Consumer Rights Act 2015 when using Online-Will-Write. We are committed to fair, transparent will writing services."
+                fallbackKeywords="Consumer Rights Act 2015, consumer rights, legal rights, Online Will Write consumer policy, fair trading UK, consumer protection"
+            />
             <FrontendLayout>
-                <Head title="Consumer Rights Act 2015 | Will Writing Online" />
                 <main className="bg-white py-14 sm:py-16">
                     <section className="container mx-auto px-4 sm:px-6">
                         <div className="max-w-4xl mx-auto">

@@ -3,7 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,24 +17,38 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import AdminLayout from '@/layouts/admin-layout';
-import { Eye, FileText, Pencil, Plus, Settings, Trash2 } from 'lucide-react';
+import { FileText, Pencil, Plus, Settings, Trash2 } from 'lucide-react';
 
-interface BlogItem {
+interface Blog {
     id: number;
     title: string;
     slug: string;
     description: string;
     image: string | null;
     created_at: string;
+    status: boolean;
+    category: {
+        id: number;
+        title: string;
+    } | null;
 }
 
 interface PaginatedBlogs {
-    data: BlogItem[];
+    data: Blog[];
     current_page: number;
     per_page: number;
     links: Array<{ url: string | null; label: string; active: boolean }>;
+    total: number;
+    last_page: number;
 }
 
 interface Props {
@@ -38,14 +58,20 @@ interface Props {
 }
 
 export default function Index({ blogs, totalBlogs, search = '' }: Props) {
-    const { flash } = usePage<{ flash: { success?: string; error?: string } }>().props;
+    const { flash } = usePage<{ flash: { success?: string; error?: string } }>()
+        .props;
     const [deletingBlogId, setDeletingBlogId] = useState<string | null>(null);
     const [searchValue, setSearchValue] = useState(search);
     const isInitialLoad = useRef(true);
     const debounceRef = useRef<NodeJS.Timeout | null>(null);
+    const prevSearchRef = useRef(search);
 
     const handleDelete = (blogSlug: string) => {
-        if (window.confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+        if (
+            window.confirm(
+                'Are you sure you want to delete this blog post? This action cannot be undone.',
+            )
+        ) {
             setDeletingBlogId(blogSlug);
             router.delete(route('blog.delete', blogSlug), {
                 onFinish: () => setDeletingBlogId(null),
@@ -58,6 +84,8 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
             isInitialLoad.current = false;
             return;
         }
+        if (searchValue === prevSearchRef.current) return;
+        prevSearchRef.current = searchValue;
 
         if (debounceRef.current) {
             clearTimeout(debounceRef.current);
@@ -66,14 +94,8 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
         debounceRef.current = setTimeout(() => {
             router.get(
                 route('blog.index'),
-                {
-                    search: searchValue || undefined,
-                },
-                {
-                    preserveState: true,
-                    preserveScroll: true,
-                    replace: true,
-                },
+                { search: searchValue || undefined },
+                { preserveState: true, preserveScroll: true, replace: true },
             );
         }, 350);
 
@@ -90,7 +112,10 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                 title: 'Blog Management',
                 subtitle: `${totalBlogs} published ${totalBlogs === 1 ? 'post' : 'posts'}`,
                 breadcrumbs: [
-                    { label: 'Admin Dashboard', href: route('admin.dashboard') },
+                    {
+                        label: 'Admin Dashboard',
+                        href: route('admin.dashboard'),
+                    },
                     { label: 'Blog Management' },
                 ],
             }}
@@ -99,15 +124,19 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
             <Head title="Blog Management" />
 
             <div className="flex flex-1 items-start justify-center px-4 pb-10">
-                <div className="w-full container space-y-6">
+                <div className="container w-full space-y-6">
                     {flash?.success && (
-                        <div className="rounded-md bg-green-50 p-4 border border-green-200">
-                            <p className="text-sm font-medium text-green-800">{flash.success}</p>
+                        <div className="rounded-md border border-green-200 bg-green-50 p-4">
+                            <p className="text-sm font-medium text-green-800">
+                                {flash.success}
+                            </p>
                         </div>
                     )}
                     {flash?.error && (
-                        <div className="rounded-md bg-red-50 p-4 border border-red-200">
-                            <p className="text-sm font-medium text-red-800">{flash.error}</p>
+                        <div className="rounded-md border border-red-200 bg-red-50 p-4">
+                            <p className="text-sm font-medium text-red-800">
+                                {flash.error}
+                            </p>
                         </div>
                     )}
 
@@ -116,7 +145,9 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                             <Input
                                 type="search"
                                 value={searchValue}
-                                onChange={(event) => setSearchValue(event.target.value)}
+                                onChange={(event) =>
+                                    setSearchValue(event.target.value)
+                                }
                                 placeholder="Search by title or slug"
                                 className="flex-1"
                             />
@@ -137,24 +168,37 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                 <FileText className="h-5 w-5 text-primary" />
                                 Blog List
                             </CardTitle>
-                            <CardDescription>All blog posts in the system</CardDescription>
+                            <CardDescription>
+                                All blog posts in the system
+                            </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="rounded-md border">
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead className="w-16">SL</TableHead>
+                                            <TableHead className="w-16">
+                                                SL
+                                            </TableHead>
                                             <TableHead>Title</TableHead>
+                                            <TableHead>Category</TableHead>
                                             <TableHead>Description</TableHead>
-                                            <TableHead className="w-32">Created</TableHead>
-                                            <TableHead className="w-24 text-center">Actions</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead className="w-32">
+                                                Created
+                                            </TableHead>
+                                            <TableHead className="w-24 text-center">
+                                                Actions
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {blogs.data.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
+                                                <TableCell
+                                                    colSpan={5}
+                                                    className="py-8 text-center text-muted-foreground"
+                                                >
                                                     No blog posts found.
                                                 </TableCell>
                                             </TableRow>
@@ -162,55 +206,92 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                             blogs.data.map((blog, index) => (
                                                 <TableRow key={blog.id}>
                                                     <TableCell className="font-mono text-sm">
-                                                        {(blogs.current_page - 1) * blogs.per_page + index + 1}
+                                                        {(blogs.current_page -
+                                                            1) *
+                                                            blogs.per_page +
+                                                            index +
+                                                            1}
                                                     </TableCell>
-                                                    <TableCell className="font-medium max-w-xs truncate">
+                                                    <TableCell className="max-w-xs truncate font-medium">
                                                         {blog.title}
                                                     </TableCell>
-                                                    <TableCell className="text-muted-foreground text-sm">
-                                                        {blog.description.replace(/<[^>]*>/g, '').split(' ').slice(0, 8).join(' ')}{blog.description.replace(/<[^>]*>/g, '').split(' ').length > 8 ? '...' : ''}
+                                                    <TableCell className="max-w-xs truncate font-medium">
+                                                        {blog.category?.title ??
+                                                            'Uncategorized'}
                                                     </TableCell>
-                                                    {/* <TableCell className="text-center">
-                                                        {blog.image ? (
-                                                            <Badge className="bg-emerald-50 text-emerald-700">
-                                                                Yes
+                                                    <TableCell className="text-sm text-muted-foreground">
+                                                        {blog.description
+                                                            .replace(
+                                                                /<[^>]*>/g,
+                                                                '',
+                                                            )
+                                                            .split(' ')
+                                                            .slice(0, 8)
+                                                            .join(' ')}
+                                                        {blog.description
+                                                            .replace(
+                                                                /<[^>]*>/g,
+                                                                '',
+                                                            )
+                                                            .split(' ').length >
+                                                        8
+                                                            ? '...'
+                                                            : ''}
+                                                    </TableCell>
+                                                    <TableCell className="text-start">
+                                                        {blog.status ? (
+                                                            <Badge className="border-green-200 bg-green-50 text-green-700">
+                                                                Published
                                                             </Badge>
                                                         ) : (
-                                                            <Badge variant="outline" className="text-muted-foreground">
-                                                                No
+                                                            <Badge
+                                                                variant="outline"
+                                                                className="border-gray-300 text-gray-600"
+                                                            >
+                                                                Unpublished
                                                             </Badge>
                                                         )}
-                                                    </TableCell> */}
+                                                    </TableCell>
                                                     <TableCell className="text-sm text-muted-foreground">
-                                                        {new Date(blog.created_at).toLocaleDateString()}
+                                                        {new Date(
+                                                            blog.created_at,
+                                                        ).toLocaleDateString()}
                                                     </TableCell>
                                                     <TableCell className="text-center">
                                                         <DropdownMenu>
-                                                            <DropdownMenuTrigger asChild>
+                                                            <DropdownMenuTrigger
+                                                                asChild
+                                                            >
                                                                 <Button
                                                                     variant="ghost"
                                                                     size="icon"
                                                                     className="h-9 w-9 p-0 transition-transform duration-300 hover:rotate-180 data-[state=open]:rotate-180"
-                                                                    disabled={deletingBlogId === blog.slug}
+                                                                    disabled={
+                                                                        deletingBlogId ===
+                                                                        blog.slug
+                                                                    }
                                                                 >
                                                                     <Settings className="h-4 w-4" />
-                                                                    <span className="sr-only">Open blog actions</span>
+                                                                    <span className="sr-only">
+                                                                        Open
+                                                                        blog
+                                                                        actions
+                                                                    </span>
                                                                 </Button>
                                                             </DropdownMenuTrigger>
-                                                            <DropdownMenuContent align="end" className="w-44">
-                                                                {/* <DropdownMenuItem asChild>
+                                                            <DropdownMenuContent
+                                                                align="end"
+                                                                className="w-44"
+                                                            >
+                                                                <DropdownMenuItem
+                                                                    asChild
+                                                                >
                                                                     <Link
-                                                                        href={route('blog.show', blog.slug)}
-                                                                        className="cursor-pointer flex items-center gap-2"
-                                                                    >
-                                                                        <Eye className="h-4 w-4" />
-                                                                        Show
-                                                                    </Link>
-                                                                </DropdownMenuItem> */}
-                                                                <DropdownMenuItem asChild>
-                                                                    <Link
-                                                                        href={route('blog.edit', blog.slug)}
-                                                                        className="cursor-pointer flex items-center gap-2"
+                                                                        href={route(
+                                                                            'blog.edit',
+                                                                            blog.slug,
+                                                                        )}
+                                                                        className="flex cursor-pointer items-center gap-2"
                                                                     >
                                                                         <Pencil className="h-4 w-4" />
                                                                         Edit
@@ -218,14 +299,27 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                                                                 </DropdownMenuItem>
                                                                 <DropdownMenuItem
                                                                     className="cursor-pointer gap-2 text-red-600 focus:bg-red-50"
-                                                                    onSelect={(event) => {
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
                                                                         event.preventDefault();
-                                                                        if (deletingBlogId === blog.slug) return;
-                                                                        handleDelete(blog.slug);
+                                                                        if (
+                                                                            deletingBlogId ===
+                                                                            blog.slug
+                                                                        )
+                                                                            return;
+                                                                        handleDelete(
+                                                                            blog.slug,
+                                                                        );
                                                                     }}
                                                                 >
                                                                     <Trash2 className="h-4 w-4" />
-                                                                    <span>{deletingBlogId === blog.slug ? 'Deleting…' : 'Delete'}</span>
+                                                                    <span>
+                                                                        {deletingBlogId ===
+                                                                        blog.slug
+                                                                            ? 'Deleting…'
+                                                                            : 'Delete'}
+                                                                    </span>
                                                                 </DropdownMenuItem>
                                                             </DropdownMenuContent>
                                                         </DropdownMenu>
@@ -245,15 +339,26 @@ export default function Index({ blogs, totalBlogs, search = '' }: Props) {
                             {blogs.links.map((link, i) => (
                                 <Button
                                     key={i}
-                                    variant={link.active ? 'default' : 'outline'}
+                                    variant={
+                                        link.active ? 'default' : 'outline'
+                                    }
                                     size="sm"
                                     disabled={!link.url}
                                     asChild={!!link.url}
                                 >
                                     {link.url ? (
-                                        <Link href={link.url} dangerouslySetInnerHTML={{ __html: link.label }} />
+                                        <Link
+                                            href={link.url}
+                                            dangerouslySetInnerHTML={{
+                                                __html: link.label,
+                                            }}
+                                        />
                                     ) : (
-                                        <span dangerouslySetInnerHTML={{ __html: link.label }} />
+                                        <span
+                                            dangerouslySetInnerHTML={{
+                                                __html: link.label,
+                                            }}
+                                        />
                                     )}
                                 </Button>
                             ))}
