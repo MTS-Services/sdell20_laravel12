@@ -1,5 +1,6 @@
 import { BlogHeroSection } from '@/components/frontend/blog/blog-hero-section';
 import BlogSection from '@/components/frontend/blog/blog-section';
+import Feedback from '@/components/feedback';
 import FrontendLayout from '@/layouts/frontend-layout';
 import { Head } from '@inertiajs/react';
 
@@ -66,6 +67,8 @@ export default function Blog({ blogData }: Props) {
                             total={categoryData.total}
                         />
                     ))}
+
+                    <Feedback />
                 </main>
             </FrontendLayout>
         </>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, ChevronDown, MessageSquare, PenTool, ShieldCheck, Users } from 'lucide-react';
+import { BarChart3, ChevronDown, MessageSquare, PenTool, Settings, ShieldCheck, Users } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
@@ -52,6 +52,13 @@ export function AdminSidebar(): React.ReactElement {
                     href: route('admin.dashboard'),
                     icon: BarChart3,
                     patterns: ['admin.dashboard'],
+                },
+                {
+                    label: 'Settings',
+                    description: 'System settings',
+                    href: route('admin.settings.index'),
+                    icon: Settings,
+                    patterns: ['admin.settings.*'],
                 },
             ],
         },
