@@ -1,7 +1,7 @@
 import React from 'react';
-import { Head } from '@inertiajs/react';
 
 import FrontendLayout from '@/layouts/frontend-layout';
+import { SeoHead } from '@/components/seo-head';
 
 const termsSections = [
     {
@@ -60,12 +60,11 @@ const termsSections = [
 export default function TermsAndConditions() {
     return (
         <>
-            <Head>
-                <title>Terms & Conditions</title>
-                <meta name="title" content="Terms & Conditions" />
-                <meta name="description" content="Read the Terms and Conditions for Online-Will-Write. Understand our service agreements, limitations of liability, and legal policies for online will creation." />
-                <meta name="keywords" content="terms and conditions, terms of service, Online Will Write terms, legal agreement, will writing service terms UK" />
-            </Head>
+            <SeoHead
+                fallbackTitle="Terms & Conditions"
+                fallbackDescription="Read the Terms and Conditions for Online-Will-Write. Understand our service agreements, limitations of liability, and legal policies for online will creation."
+                fallbackKeywords="terms and conditions, terms of service, Online Will Write terms, legal agreement, will writing service terms UK"
+            />
 
             <FrontendLayout>
                 <main className="bg-white py-14 sm:py-16">

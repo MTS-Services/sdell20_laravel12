@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, ChevronDown, MessageSquare, PenTool, Settings, ShieldCheck, Users } from 'lucide-react';
+import { BarChart3, ChevronDown, MessageSquare, PenTool, Search, Settings, ShieldCheck, Users } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
@@ -70,7 +70,14 @@ export function AdminSidebar(): React.ReactElement {
                     description: 'Manage blog posts',
                     href: route('blog.index'),
                     icon: PenTool,
-                    patterns: ['admin.blog.*'],
+                    patterns: ['blog.*'],
+                },
+                {
+                    label: 'SEO',
+                    description: 'Meta tags for public pages',
+                    href: route('admin.seo.index'),
+                    icon: Search,
+                    patterns: ['admin.seo.*'],
                 },
             ],
         },

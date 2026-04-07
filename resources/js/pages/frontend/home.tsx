@@ -12,18 +12,17 @@ import { WhyCreateWillCardsGrid } from '@/components/frontend/home/why-create-wi
 import { WhyCreateWillSection } from '@/components/frontend/home/why-create-will-section';
 import { WillChoiceSection } from '@/components/frontend/home/will-choice-section';
 import Feedback from '@/components/feedback';
+import { SeoHead } from '@/components/seo-head';
 import FrontendLayout from '@/layouts/frontend-layout';
-import { Head } from '@inertiajs/react';
 
 export default function Home() {
     return (
         <>
-            <Head>
-                <title>Online Will Writing Service</title>
-                <meta name="title" content="Online Will Writing Service" />
-                <meta name="description" content="Write your will online with our step-by-step tool. Checked by a will specialist. Great for simple wills and estates." />
-                <meta name="keywords" content="will, online will, will writing, estate planning, inheritance, legal documents" />
-            </Head>
+            <SeoHead
+                fallbackTitle="Online Will Writing Service"
+                fallbackDescription="Write your will online with our step-by-step tool. Checked by a will specialist. Great for simple wills and estates."
+                fallbackKeywords="will, online will, will writing, estate planning, inheritance, legal documents"
+            />
             <FrontendLayout>
                 <Banner />
                 {/* <CTASection /> */}

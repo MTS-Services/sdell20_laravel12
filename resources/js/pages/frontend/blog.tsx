@@ -1,8 +1,8 @@
 import { BlogHeroSection } from '@/components/frontend/blog/blog-hero-section';
 import BlogSection from '@/components/frontend/blog/blog-section';
 import Feedback from '@/components/feedback';
+import { SeoHead } from '@/components/seo-head';
 import FrontendLayout from '@/layouts/frontend-layout';
-import { Head } from '@inertiajs/react';
 
 interface Blog {
     id: number;
@@ -35,12 +35,7 @@ interface Props {
 export default function Blog({ blogData }: Props) {
     return (
         <>
-            <Head>
-                <title>Blog</title>
-                <meta name="title" content="Blog" />
-                <meta name="description" content="Blog" />
-                <meta name="keywords" content="Blog" />
-            </Head>
+            <SeoHead fallbackTitle="Blog" fallbackDescription="Blog" fallbackKeywords="Blog" />
             <FrontendLayout>
                 <main className="bg-white">
                     <BlogHeroSection />
