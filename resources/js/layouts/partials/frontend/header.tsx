@@ -8,7 +8,6 @@ import { useActiveUrl } from '@/hooks/use-active-url';
 type MobileSection =
     | 'about'
     | 'estate'
-    | 'support'
     | 'blog'
     | 'policies'
     | null;
@@ -18,27 +17,27 @@ const policyLinks: {
     description: string;
     routeName: Parameters<typeof route>[0];
 }[] = [
-    {
-        label: 'Terms & Conditions',
-        description: 'Understand the service agreement',
-        routeName: 'terms',
-    },
-    {
-        label: 'Privacy Policy',
-        description: 'See how we protect your data',
-        routeName: 'privacy',
-    },
-    {
-        label: 'Consumer Rights Act 2015',
-        description: 'Review your statutory protections',
-        routeName: 'consumer-rights',
-    },
-    {
-        label: 'Cookie Policy',
-        description: 'How we use cookies and tracking',
-        routeName: 'cookies',
-    },
-];
+        {
+            label: 'Terms & Conditions',
+            description: 'Understand the service agreement',
+            routeName: 'terms',
+        },
+        {
+            label: 'Privacy Policy',
+            description: 'See how we protect your data',
+            routeName: 'privacy',
+        },
+        {
+            label: 'Consumer Rights Act 2015',
+            description: 'Review your statutory protections',
+            routeName: 'consumer-rights',
+        },
+        {
+            label: 'Cookie Policy',
+            description: 'How we use cookies and tracking',
+            routeName: 'cookies',
+        },
+    ];
 
 const mobileLinks: Record<
     Exclude<MobileSection, null>,
@@ -68,13 +67,6 @@ const mobileLinks: Record<
             route: 'lpa',
         },
     ],
-    support: [
-        {
-            label: 'Probate',
-            desc: 'Guidance through probate',
-            route: 'probate',
-        },
-    ],
     blog: [{ label: 'Blog', desc: 'Read our latest articles', route: 'blog' }],
     policies: policyLinks.map((link) => ({
         label: link.label,
@@ -86,7 +78,6 @@ const mobileLinks: Record<
 const sectionLabels: Record<Exclude<MobileSection, null>, string> = {
     about: 'About Us',
     estate: 'Estate Planning',
-    support: 'Get Support After Loss',
     blog: 'Blog',
     policies: 'Help & Policies',
 };
@@ -171,11 +162,10 @@ export function FrontendHeader() {
                             </button>
 
                             <div
-                                className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
-                                    activeDesktopDropdown === 'about'
-                                        ? 'visible translate-y-0 opacity-100'
-                                        : 'pointer-events-none invisible -translate-y-1 opacity-0'
-                                }`}
+                                className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'about'
+                                    ? 'visible translate-y-0 opacity-100'
+                                    : 'pointer-events-none invisible -translate-y-1 opacity-0'
+                                    }`}
                             >
                                 <div className="mt-3 flex w-80 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/5">
                                     {/* Left dark panel */}
@@ -200,7 +190,7 @@ export function FrontendHeader() {
                                                             <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" />
                                                         </svg>
                                                     </span>
-                                                    <span className= "text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium tracking-wide text-white">
+                                                    <span className="text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium tracking-wide text-white">
                                                         Investment Opportunity
                                                     </span>
                                                 </Link>
@@ -220,7 +210,7 @@ export function FrontendHeader() {
                                                             <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                                                         </svg>
                                                     </span>
-                                                    <span className= "text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium tracking-wide text-white">
+                                                    <span className="text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium tracking-wide text-white">
                                                         Contact Us
                                                     </span>
                                                 </Link>
@@ -275,11 +265,10 @@ export function FrontendHeader() {
                             </button>
 
                             <div
-                                className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
-                                    activeDesktopDropdown === 'estate'
-                                        ? 'visible translate-y-0 opacity-100'
-                                        : 'pointer-events-none invisible -translate-y-1 opacity-0'
-                                }`}
+                                className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'estate'
+                                    ? 'visible translate-y-0 opacity-100'
+                                    : 'pointer-events-none invisible -translate-y-1 opacity-0'
+                                    }`}
                             >
                                 <div className="mt-3 w-[360px] rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
                                     <p className="mb-4 text-[10px] font-bold tracking-[0.25em] text-primary-400 uppercase">
@@ -433,13 +422,12 @@ export function FrontendHeader() {
                     >
                         <button
                             type="button"
-                            className={`flex items-center gap-1.5 py-5  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium transition-colors hover:text-white ${
-                                policyLinks.some((link) =>
-                                    urlIsActive(route(link.routeName)),
-                                )
-                                    ? 'text-white'
-                                    : 'text-white/90'
-                            }`}
+                            className={`flex items-center gap-1.5 py-5  text-xs xl:text-sm 2xl:text-lg font-ubuntu font-normal xl:font-medium 2xl:font-medium transition-colors hover:text-white ${policyLinks.some((link) =>
+                                urlIsActive(route(link.routeName)),
+                            )
+                                ? 'text-white'
+                                : 'text-white/90'
+                                }`}
                         >
                             Help & Policies
                             <ChevronDown
@@ -448,11 +436,10 @@ export function FrontendHeader() {
                         </button>
 
                         <div
-                            className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${
-                                activeDesktopDropdown === 'policies'
-                                    ? 'visible translate-y-0 opacity-100'
-                                    : 'pointer-events-none invisible -translate-y-1 opacity-0'
-                            }`}
+                            className={`absolute top-full left-1/2 z-50 -translate-x-1/2 transition-all duration-200 ${activeDesktopDropdown === 'policies'
+                                ? 'visible translate-y-0 opacity-100'
+                                : 'pointer-events-none invisible -translate-y-1 opacity-0'
+                                }`}
                         >
                             <div className="mt-3 w-85 rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
                                 <p className="mb-4 text-[10px] font-bold tracking-[0.25em] text-primary-400 uppercase">
@@ -463,13 +450,12 @@ export function FrontendHeader() {
                                         <li key={link.routeName}>
                                             <Link
                                                 href={route(link.routeName)}
-                                                className={`flex items-start gap-3 rounded-xl p-3 transition hover:bg-primary-50 ${
-                                                    urlIsActive(
-                                                        route(link.routeName),
-                                                    )
-                                                        ? 'bg-primary-50'
-                                                        : ''
-                                                }`}
+                                                className={`flex items-start gap-3 rounded-xl p-3 transition hover:bg-primary-50 ${urlIsActive(
+                                                    route(link.routeName),
+                                                )
+                                                    ? 'bg-primary-50'
+                                                    : ''
+                                                    }`}
                                             >
                                                 <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary-500" />
                                                 <div>
@@ -627,11 +613,10 @@ export function FrontendHeader() {
                                         />
                                     </button>
                                     <div
-                                        className={`overflow-hidden transition-all duration-300 ${
-                                            mobileDropdown === key
-                                                ? 'max-h-80 pb-3'
-                                                : 'max-h-0'
-                                        }`}
+                                        className={`overflow-hidden transition-all duration-300 ${mobileDropdown === key
+                                            ? 'max-h-80 pb-3'
+                                            : 'max-h-0'
+                                            }`}
                                     >
                                         <div className="space-y-0.5 pl-1">
                                             {mobileLinks[key].map((link) => (
