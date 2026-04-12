@@ -355,7 +355,7 @@ export function FrontendHeader() {
                         </div>
 
                         {/* ── Get Support After Loss Dropdown ── */}
-                        <div
+                        {/* <div
                             className="relative"
                             onMouseEnter={() => openDropdown('support')}
                             onMouseLeave={closeDropdown}
@@ -415,7 +415,7 @@ export function FrontendHeader() {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         {/* ── Blog Link ── */}
                         <Link
                             href={route('blog')}
@@ -501,10 +501,10 @@ export function FrontendHeader() {
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
                                     &pound;99 + VAT per LPA
                                 </span>
-                                <span className="text-[10px] font-normal text-white/80">
+                                {/* <span className="text-[10px] font-normal text-white/80">
                                     (20% VAT at checkout; plus &pound;92 OPG fee
                                     per LPA)
-                                </span>
+                                </span> */}
                             </span>
                             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 transition-colors group-hover:bg-white/30">
                                 <ChevronRight className="h-4 w-4 text-white transition-transform group-hover:translate-x-0.5" />
