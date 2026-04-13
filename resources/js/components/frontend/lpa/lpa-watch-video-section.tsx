@@ -20,7 +20,7 @@ export function LpaWatchVideoSection() {
                 <div className="rounded-3xl border border-slate-200 bg-slate-100 p-8 shadow-sm md:p-10 lg:p-12">
                     <RevealMotion show={sectionVisible} mode="fade-up" delayClass="delay-100">
                         <h2 className="text-center font-montserrat text-2xl font-bold tracking-tight text-primary-900 md:text-3xl">
-                            Watch how simple it can be with Power of Attorney Online.
+                            Watch how simple it can be with LPA.
                         </h2>
                     </RevealMotion>
 
