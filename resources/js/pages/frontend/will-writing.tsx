@@ -31,7 +31,7 @@ export default function WillWriting() {
                     <WillWritingCalloutsSection />
                     <WillWritingAboutSection />
                     {/* <TeamSection /> */}
-                    <EstateApproachSection />
+                    {/* <EstateApproachSection /> */}
                     <Feedback />
                 </main>
             </FrontendLayout>

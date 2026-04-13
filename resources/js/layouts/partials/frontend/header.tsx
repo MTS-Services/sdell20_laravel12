@@ -477,7 +477,7 @@ export function FrontendHeader() {
                     {/* Right Side: CTA Button + User Icon */}
                     <div className="hidden items-center gap-3 xl:flex">
                         <Link
-                            href={route('lpa.start')}
+                            href={route('lpa')}
                             className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
                         >
                             <span className="flex flex-col leading-tight text-white">
