@@ -120,12 +120,9 @@ type BannerContent = {
     stats: StatBlock[];
 };
 
-const LPA_HERO_IMG = 'https://powerofattorneyonline.co.uk/wp-content/uploads/2026/01/hero-img@2x-2.jpg';
+const LPA_HERO_IMG = '/Lpa.jpg';
 
-const LPA_HERO_SRC_SET = `${LPA_HERO_IMG} 1350w, https://powerofattorneyonline.co.uk/wp-content/uploads/2026/01/hero-img@2x-2-300x216.jpg 300w, https://powerofattorneyonline.co.uk/wp-content/uploads/2026/01/hero-img@2x-2-1024x736.jpg 1024w, https://powerofattorneyonline.co.uk/wp-content/uploads/2026/01/hero-img@2x-2-768x552.jpg 768w`;
-
-const WILL_HERO_IMG =
-    'https://images.pexels.com/photos/4069291/pexels-photo-4069291.jpeg?auto=compress&cs=tinysrgb&w=1200';
+const WILL_HERO_IMG = '/will.jpg';
 
 const lpaStats: StatBlock[] = [
     {
@@ -216,8 +213,6 @@ const willStats: StatBlock[] = [
 const bannerContent: Record<BannerVariant, BannerContent> = {
     lpa: {
         heroImage: LPA_HERO_IMG,
-        heroSrcSet: LPA_HERO_SRC_SET,
-        heroSizes: '(max-width: 1350px) 100vw, 1350px',
         imageAlt:
             'UK Power of Attorney helping people create LPAs quickly, affordably and correctly, with a clear and jargon free process.',
         h1: 'Create your online Power of Attorney today',
