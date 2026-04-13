@@ -1,8 +1,8 @@
 import React from 'react';
 
+import Banner from '@/components/frontend/home/banner';
 import { WillWritingAboutSection } from '@/components/frontend/will-writing/will-writing-about-section';
 import { WillWritingCalloutsSection } from '@/components/frontend/will-writing/will-writing-callouts-section';
-import { WillWritingHeroSection } from '@/components/frontend/will-writing/will-writing-hero-section';
 import { WillWritingProtectedSection } from '@/components/frontend/will-writing/will-writing-protected-section';
 import { WillWritingPricingSection } from '@/components/frontend/will-writing/will-writing-pricing-section';
 import { WillWritingProcessSection } from '@/components/frontend/will-writing/will-writing-process-section';
@@ -23,7 +23,7 @@ export default function WillWriting() {
             />
             <FrontendLayout>
                 <main className="bg-primary-50">
-                    <WillWritingHeroSection />
+                    <Banner variant="will" />
                     {/* <WillWritingProtectedSection /> */}
                     <WillWritingPricingSection />
                     <WillWritingProcessSection />
