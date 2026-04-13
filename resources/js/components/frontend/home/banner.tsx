@@ -339,9 +339,10 @@ function paragraphStaggerClass(i: number): string {
 
 type BannerProps = {
     variant?: BannerVariant;
+    fullWidth?: boolean;
 };
 
-export default function Banner({ variant = 'lpa' }: BannerProps) {
+export default function Banner({ variant = 'lpa', fullWidth = false }: BannerProps) {
     const copy = bannerContent[variant];
 
     const { props } = usePage<GoogleReviewPageProps>();
@@ -366,116 +367,119 @@ export default function Banner({ variant = 'lpa' }: BannerProps) {
         ? { srcSet: copy.heroSrcSet, sizes: copy.heroSizes ?? '(max-width: 1350px) 100vw, 1350px' }
         : {};
 
+    const isWillVariant = variant === 'will';
+
     return (
-        <section className="bg-primary-800 py-12 text-white">
-            <div className="container mx-auto max-w-7xl px-4">
-                <div className="flex flex-col gap-4 lg:flex-row">
-                    <div className="mb-4 w-full lg:mb-0 lg:w-[58.333%]">
-                        <div
-                            ref={leftRef}
-                            className="h-full rounded-3xl bg-primary-800 px-4 pb-6 pt-2 md:rounded-3xl md:pl-0 md:pr-2 md:pt-12"
-                        >
-                            <RevealMotion show={leftVisible} mode="fade-up" delayClass="delay-100">
-                                <GoogleRatingBadge
-                                    rating={displayRating}
-                                    reviewCount={reviewCount}
-                                    writeReviewUrl={writeReviewUrl}
-                                />
-                            </RevealMotion>
-
-                            <RevealMotion show={leftVisible} mode="fade-up" delayClass="delay-200">
-                                <h1 className="mb-3 mt-0 pt-3 text-2xl font-semibold leading-tight text-white text-balance sm:text-3xl md:text-4xl">
-                                    {copy.h1}
-                                </h1>
-                            </RevealMotion>
-
-                            <RevealMotion show={leftVisible} mode="fade-up" delayClass="delay-300">
-                                <h2 className="mb-0 mt-3 text-base font-light leading-8 text-white sm:text-xl">{copy.h2}</h2>
-                            </RevealMotion>
-
-                            {copy.bodyParagraphs.map((text, i) => (
-                                <RevealMotion
-                                    key={i}
-                                    show={leftVisible}
-                                    mode="fade-up"
-                                    delayClass={paragraphStaggerClass(i)}
-                                >
-                                    <p className={bodyParagraphClass(i, copy.bodyParagraphs.length)}>{text}</p>
+        <section className={isWillVariant ? 'bg-primary-50 py-8 md:py-12 text-white' : 'bg-primary-700 py-12 text-white'}>
+            <div className={fullWidth ? 'w-full px-4 md:px-6 lg:px-8 container mx-auto' : 'container mx-auto max-w-8xl px-4 md:px-6 lg:px-8'}>
+                <div className={isWillVariant ? 'rounded-3xl bg-primary-700 p-3 md:p-6' : ''}>
+                    <div className="flex flex-col gap-4 lg:flex-row">
+                        <div className="mb-4 w-full lg:mb-0 lg:w-[58.333%]">
+                            <div
+                                ref={leftRef}
+                                className="h-full rounded-3xl  px-4 pb-6 pt-2 md:rounded-3xl md:pl-0 md:pr-2 md:pt-12 "
+                            >
+                                <RevealMotion show={leftVisible} mode="fade-up" delayClass="delay-100">
+                                    <GoogleRatingBadge
+                                        rating={displayRating}
+                                        reviewCount={reviewCount}
+                                        writeReviewUrl={writeReviewUrl}
+                                    />
                                 </RevealMotion>
-                            ))}
 
-                            <RevealMotion show={leftVisible} mode="scale-up" delayClass="delay-700" className="mt-4 mb-8 lg:hidden">
-                                <Link href={ctaHref} className={`${heroCtaClassName} w-full sm:w-auto`}>
-                                    {copy.ctaLabel}
-                                </Link>
-                            </RevealMotion>
-                        </div>
-                    </div>
+                                <RevealMotion show={leftVisible} mode="fade-up" delayClass="delay-200">
+                                    <h1 className="mb-3 mt-0 pt-3 text-2xl font-semibold leading-tight text-white text-balance sm:text-3xl md:text-4xl">
+                                        {copy.h1}
+                                    </h1>
+                                </RevealMotion>
 
-                    <div className="w-full lg:w-[41.667%]">
-                        <div ref={rightRef} className="px-4 pb-1">
-                            <RevealMotion show={rightVisible} mode="fade-right" delayClass="delay-200">
-                                <>
-                                    <img
-                                        width={variant === 'lpa' ? 1350 : 1200}
-                                        height={variant === 'lpa' ? 970 : 800}
-                                        src={copy.heroImage}
-                                        alt={copy.imageAlt}
-                                        className="hidden w-full rounded-3xl object-cover lg:block"
-                                        decoding="async"
-                                        {...(variant === 'lpa' ? { fetchPriority: 'high' as const } : {})}
-                                        {...heroImgProps}
-                                    />
-                                    <img
-                                        width={variant === 'lpa' ? 1350 : 1200}
-                                        height={variant === 'lpa' ? 970 : 800}
-                                        src={copy.heroImage}
-                                        alt={copy.imageAlt}
-                                        className="w-full rounded-2xl object-cover lg:hidden"
-                                        decoding="async"
-                                        {...heroImgProps}
-                                    />
-                                </>
-                            </RevealMotion>
-                            <RevealMotion show={rightVisible} mode="scale-up" delayClass="delay-500" className="mt-4 hidden text-center lg:block">
-                                <Link href={ctaHref} className={heroCtaClassName}>
-                                    {copy.ctaLabel}
-                                </Link>
-                            </RevealMotion>
-                        </div>
-                    </div>
-                </div>
+                                <RevealMotion show={leftVisible} mode="fade-up" delayClass="delay-300">
+                                    <h2 className="mb-0 mt-3 text-base font-light leading-8 text-white sm:text-xl">{copy.h2}</h2>
+                                </RevealMotion>
 
-                <div
-                    ref={statsRef}
-                    className="grid grid-cols-2 gap-0 px-3 pb-4 pt-10 lg:grid-cols-4 lg:px-0"
-                >
-                    {copy.stats.map((block, index) => (
-                        <RevealMotion
-                            key={`${variant}-${block.value}-${index}`}
-                            show={statsVisible}
-                            mode="fade-up"
-                            delayClass={revealStagger(index)}
-                            className={index < 3 ? 'lg:border-e lg:border-white/20 lg:pe-2' : ''}
-                        >
-                            <div>
-                                <div className="px-2">
-                                    <h3 className="text-3xl font-medium text-white sm:text-4xl">{block.value}</h3>
-                                    <h5 className="mb-2 min-h-16 pb-2 text-base font-medium leading-snug text-white sm:text-xl">{block.title}</h5>
-                                </div>
-                                <div className="mt-3 mb-4 min-h-80 space-y-2 rounded-2xl border border-white/10 bg-primary-50/15 p-3 text-sm font-light text-primary-50 md:mb-0">
-                                    <p className="border-l-4 border-secondary pl-3 text-lg font-normal leading-7 text-white">
-                                        {block.lead}
-                                    </p>
-                                    {block.paragraphs.map((p, i) => (
-                                        <p key={`${block.value}-${i}`} className="leading-relaxed">
-                                            {p}
-                                        </p>
-                                    ))}
-                                </div>
+                                {copy.bodyParagraphs.map((text, i) => (
+                                    <RevealMotion
+                                        key={i}
+                                        show={leftVisible}
+                                        mode="fade-up"
+                                        delayClass={paragraphStaggerClass(i)}
+                                    >
+                                        <p className={bodyParagraphClass(i, copy.bodyParagraphs.length)}>{text}</p>
+                                    </RevealMotion>
+                                ))}
+
+                                <RevealMotion show={leftVisible} mode="scale-up" delayClass="delay-700" className="mt-4 mb-8 lg:hidden">
+                                    <Link href={ctaHref} className={`${heroCtaClassName} w-full sm:w-auto`}>
+                                        {copy.ctaLabel}
+                                    </Link>
+                                </RevealMotion>
                             </div>
-                        </RevealMotion>
-                    ))}
+                        </div>
+
+                        <div className="w-full lg:w-[41.667%]">
+                            <div ref={rightRef} className="px-4 pb-1">
+                                <RevealMotion show={rightVisible} mode="fade-right" delayClass="delay-200">
+                                    <>
+                                        <img
+                                            width={variant === 'lpa' ? 1350 : 1200}
+                                            height={variant === 'lpa' ? 970 : 800}
+                                            src={copy.heroImage}
+                                            alt={copy.imageAlt}
+                                            className="hidden w-full rounded-3xl object-cover lg:block"
+                                            decoding="async"
+                                            {...(variant === 'lpa' ? { fetchPriority: 'high' as const } : {})}
+                                            {...heroImgProps}
+                                        />
+                                        <img
+                                            width={variant === 'lpa' ? 1350 : 1200}
+                                            height={variant === 'lpa' ? 970 : 800}
+                                            src={copy.heroImage}
+                                            alt={copy.imageAlt}
+                                            className="w-full rounded-2xl object-cover lg:hidden"
+                                            decoding="async"
+                                            {...heroImgProps}
+                                        />
+                                    </>
+                                </RevealMotion>
+                                <RevealMotion show={rightVisible} mode="scale-up" delayClass="delay-500" className="mt-4 hidden text-center lg:block">
+                                    <Link href={ctaHref} className={heroCtaClassName}>
+                                        {copy.ctaLabel}
+                                    </Link>
+                                </RevealMotion>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        ref={statsRef}
+                        className="grid grid-cols-2 gap-0 px-3 pb-4 pt-10 lg:grid-cols-4 lg:px-0"
+                    >
+                        {copy.stats.map((block, index) => (
+                            <RevealMotion
+                                key={`${variant}-${block.value}-${index}`}
+                                show={statsVisible}
+                                mode="fade-up"
+                                delayClass={revealStagger(index)}
+                                className={index < 3 ? 'lg:border-e lg:border-white/20 lg:pe-2' : ''}
+                            >
+                                <div>
+                                    <div className="px-2">
+                                        <h3 className="text-3xl font-medium text-white sm:text-4xl">{block.value}</h3>
+                                        <h5 className="mb-2 min-h-16 pb-2 text-base font-medium leading-snug text-white sm:text-xl">{block.title}</h5>
+                                    </div>
+                                    <div className="mt-3 mb-4 min-h-80 space-y-2 rounded-2xl border border-white/10 bg-primary-50/15 p-3 text-sm font-light text-primary-50 md:mb-0">
+                                        <p className="border-l-4 border-secondary pl-3 text-lg font-normal leading-7 text-white">
+                                            {block.lead}
+                                        </p>
+                                        {block.paragraphs.map((p, i) => (
+                                            <p key={`${block.value}-${i}`} className="leading-relaxed">
+                                                {p}
+                                            </p>
+                                        ))}
+                                    </div>
+                                </div>
+                            </RevealMotion>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

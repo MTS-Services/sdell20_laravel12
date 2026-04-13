@@ -42,20 +42,17 @@ export function LpaWatchVideoSection() {
                         ))}
                     </div>
 
-                    <RevealMotion show={sectionVisible} mode="scale-up" delayClass="delay-300" className="mx-auto mt-10 max-w-4xl">
+                    <RevealMotion show={sectionVisible} mode="scale-up" delayClass="delay-300" className="mx-auto mt-10 max-w-5xl">
                         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-primary-900 shadow-lg">
                             <div className="relative w-full pt-[56.25%]">
-                                <video
-                                    controls
-                                    playsInline
-                                    preload="metadata"
-                                    muted
-                                    autoPlay
-                                    className="absolute inset-0 h-full w-full object-cover"
-                                >
-                                    <source src="/assets/videos/home_page_video.mp4" type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                </video>
+                                <iframe
+                                    src="https://www.youtube.com/embed/ztZWHiixUDg?rel=0"
+                                    title="Power of Attorney Online overview"
+                                    className="absolute inset-0 h-full w-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerPolicy="strict-origin-when-cross-origin"
+                                    allowFullScreen
+                                />
                             </div>
                         </div>
                     </RevealMotion>

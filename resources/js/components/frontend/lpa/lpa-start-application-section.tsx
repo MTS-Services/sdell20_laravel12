@@ -57,7 +57,7 @@ export function LpaStartApplicationSection() {
                         <RevealMotion show={sectionVisible} mode="fade-up" delayClass="delay-100">
                             <div className="mb-10 text-center md:mb-12">
                                 <h1 className="font-montserrat text-3xl tracking-tight text-white md:text-4xl lg:text-5xl">
-                                    Be Ready Before You Begin
+                                Start Your LPA Application Now
                                 </h1>
                                 <p className="mx-auto mt-4 max-w-5xl text-base leading-relaxed text-primary-100 sm:text-lg xl:text-xl">
                                     To keep things smooth and stress-free, before you start your LPA, have this information ready:

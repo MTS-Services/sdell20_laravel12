@@ -15,7 +15,7 @@ export default function AppLogo({ className, variant = 'default', ...props }: Ap
         <img
             src="/logo.png"
             alt="App Logo"
-            className={cn('h-auto w-auto max-w-[320px] object-contain object-left', className)}
+            className={cn('h-auto w-auto max-w-42 lg:max-w-[320px] object-contain object-left', className)}
             {...props}
         />
     );

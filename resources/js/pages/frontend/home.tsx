@@ -24,7 +24,7 @@ export default function Home() {
                 fallbackKeywords="will, online will, will writing, estate planning, inheritance, legal documents"
             />
             <FrontendLayout>
-                <Banner />
+                <Banner fullWidth />
                 {/* <CTASection /> */}
                 <WillChoiceSection />
                 <WhyCreateWillSection />
