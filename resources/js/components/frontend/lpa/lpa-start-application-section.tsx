@@ -115,7 +115,7 @@ export function LpaStartApplicationSection() {
                                         <RevealMotion show={sectionVisible} mode="fade-up" delayClass="delay-100">
                                             <div className="rounded-xl border border-primary-600/60 bg-primary-50/20 p-5 md:p-6">
                                                 <p className="text-base font-bold leading-snug text-white md:text-lg">
-                                                    Power of Attorney Online service fee
+                                                    Service fee
                                                 </p>
                                                 <p className="mt-4 text-sm leading-relaxed text-primary-100 md:text-base">
                                                     This is the £99 payment per LPA application you make today for us to prepare your
