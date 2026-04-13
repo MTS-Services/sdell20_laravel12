@@ -130,7 +130,7 @@ const lpaStats: StatBlock[] = [
         title: 'Every year, LPAs contain errors',
         lead: 'Why do so many LPA applications fail?',
         paragraphs: [
-            'Many people try to complete LPA applications online, but the UK government guidance can feel complex.',
+            'Many people try to complete LPA applications themselves, but the UK government guidance can feel complex.',
             'Small mistakes, like signing in the wrong order or writing unclear instructions, can lead to rejections or delays.',
             'Our professional guidance helps you avoid common LPA mistakes so your application is accurate and processed quickly.',
         ],
@@ -141,7 +141,7 @@ const lpaStats: StatBlock[] = [
         lead: 'Ignore the paperwork and appointments',
         paragraphs: [
             'Conventional legal services can involve weeks of waiting, meetings, and correspondence.',
-            'With Power of Attorney Online, you can complete your LPA paperwork from home in around fifteen minutes, at your own pace.',
+            'With Power of Attorney support, you can complete your LPA paperwork from home in around fifteen minutes, at your own pace.',
             'No office appointments or home visits required.',
         ],
     },
@@ -151,7 +151,7 @@ const lpaStats: StatBlock[] = [
         lead: 'Professional guidance without high expenses',
         paragraphs: [
             'Solicitors often charge up to £1000 for preparing Lasting Powers of Attorney.',
-            'Power of Attorney Online can save you up to 80% while still guiding you through the same legal documents.',
+            'Power of Attorney support can save you up to 80% while still guiding you through the same legal documents.',
             'Clear pricing means you always know exactly what you are paying for.',
         ],
     },
@@ -160,8 +160,8 @@ const lpaStats: StatBlock[] = [
         title: 'customer care whenever you need it',
         lead: 'Start now and finish when it suits you',
         paragraphs: [
-            'Your LPA application can be completed online at any time.',
-            'Power of Attorney Online is available around the clock.',
+            'Your LPA application can be completed at any time.',
+            'Power of Attorney support is available around the clock.',
             'There are no office hours or appointments. Start, pause, and return whenever you like.',
         ],
     },
@@ -179,7 +179,7 @@ const willStats: StatBlock[] = [
         ],
     },
     {
-        value: 'Online',
+        value: 'Guided',
         title: 'guided questions you can finish at home',
         lead: 'No waiting room required to get started',
         paragraphs: [
@@ -215,12 +215,12 @@ const bannerContent: Record<BannerVariant, BannerContent> = {
         heroImage: LPA_HERO_IMG,
         imageAlt:
             'UK Power of Attorney helping people create LPAs quickly, affordably and correctly, with a clear and jargon free process.',
-        h1: 'Create your online Power of Attorney today',
+        h1: 'Create your Power of Attorney today',
         h2: 'Know your wishes are clear. Know your family is protected.',
         bodyParagraphs: [
             'Faster than a solicitor. Easier than the forms on GOV.UK.',
             'Built to help you avoid mistakes.',
-            'Online Will Writing helps you create your legal LPA document in 15 minutes without any stress or confusion.',
+            'Will Writing support helps you create your legal LPA document in 15 minutes without any stress or confusion.',
             'Most people complete their forms in around 15 minutes.',
         ],
         ctaRoute: 'lpa.start',
@@ -229,11 +229,11 @@ const bannerContent: Record<BannerVariant, BannerContent> = {
     },
     will: {
         heroImage: WILL_HERO_IMG,
-        imageAlt: 'Customer planning their Will online at home',
+        imageAlt: 'Customer planning their Will at home',
         h1: 'Make a Will and Update an Existing Will',
         h2: 'Keep your wishes legally clear when life changes.',
         bodyParagraphs: [
-            'Need a new Will or an update? Create or refresh yours quickly, securely, and entirely online with step-by-step guidance.',
+            'Need a new Will or an update? Create or refresh yours quickly and securely with step-by-step guidance.',
             'Births, marriages, divorce, a new home, changing assets, or different executors and beneficiaries can all affect how your estate is handled.',
             'An up-to-date Will helps your family avoid unnecessary disputes and ensures your assets are distributed as you intend.',
             'If you are writing your first Will, you gain peace of mind and certainty for the future—with professional support throughout.',
