@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { LpaAdditionalContentSection } from '@/components/frontend/lpa/lpa-additional-content-section';
 import { LpaStartApplicationSection } from '@/components/frontend/lpa/lpa-start-application-section';
 import { LpaWatchVideoSection } from '@/components/frontend/lpa/lpa-watch-video-section';
 import { RevealMotion } from '@/components/frontend/reveal-motion';
@@ -32,6 +33,7 @@ export default function Lpa() {
                 <main className="bg-white">
                     <LpaStartApplicationSection />
                     <LpaFeedbackSection />
+                    <LpaAdditionalContentSection />
                     <LpaWatchVideoSection />
                 </main>
             </FrontendLayout>
