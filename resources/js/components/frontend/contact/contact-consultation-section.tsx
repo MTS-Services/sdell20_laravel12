@@ -47,8 +47,6 @@ export function ContactConsultationSection() {
                 <div className="space-y-4 animate-fadeInUp">
                     <h2 className="text-3xl font-semibold text-primary-600">
                         Talk to Clara about
-                        <br /> the business
-                        <br /> opportunity
                     </h2>
                     <p className="max-w-xl text-sm leading-relaxed text-primary-600">
                         Interested in the Will Writing Online platform? Clara will walk you through the details and answer any questions about running your own legal document service.

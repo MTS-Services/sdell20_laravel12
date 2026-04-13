@@ -20,8 +20,8 @@ export default function Contact() {
                 <main className="bg-white">
                     <ContactHeroSection />
                     <ContactConsultationSection />
-                    <ContactMapSection />
-                    <LpaFaqSection />
+                    {/* <ContactMapSection /> */}
+                    {/* <LpaFaqSection /> */}
                     <Feedback />
                 </main>
             </FrontendLayout>
