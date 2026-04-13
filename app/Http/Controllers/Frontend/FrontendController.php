@@ -6,18 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Mail\ContactClaraMail;
 use App\Models\SeoPage;
 use App\Services\BlogService;
+use App\Services\GoogleReviewService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Services\GoogleReviewService;
 
 class FrontendController extends Controller
 {
-
     protected BlogService $blogService;
+
     protected GoogleReviewService $googleReviewService;
+
     public function __construct(BlogService $blogService, GoogleReviewService $googleReviewService)
     {
         $this->blogService = $blogService;
@@ -28,14 +29,18 @@ class FrontendController extends Controller
     {
         $placeId = (string) config('services.google.place_id');
         $googleWriteReviewUrl = $placeId !== ''
-            ? ('https://search.google.com/local/writereview?placeid=' . $placeId)
+            ? ('https://search.google.com/local/writereview?placeid='.$placeId)
             : null;
 
         $routeName = Route::currentRouteName();
         $seo = $routeName ? SeoPage::where('route_name', $routeName)->first() : null;
 
+        $google = $this->googleReviewService->getPlaceReviewPayload();
+
         return array_merge([
-            'reviews' => $this->googleReviewService->getReviews(),
+            'reviews' => $google['reviews'],
+            'googlePlaceRating' => $google['rating'],
+            'googleUserRatingsTotal' => $google['user_ratings_total'],
             'googleWriteReviewUrl' => $googleWriteReviewUrl,
             'seo' => $seo?->only(['meta_title', 'meta_description', 'meta_keywords', 'page_name', 'path', 'route_name']),
         ], $props);
@@ -136,6 +141,7 @@ class FrontendController extends Controller
             'blogData' => $blogData,
         ]));
     }
+
     public function blogDetails(string $slug): Response
     {
         $blog = $this->blogService->getBlogBySlug($slug);
