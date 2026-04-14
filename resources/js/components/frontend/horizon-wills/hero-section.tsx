@@ -39,7 +39,6 @@ export function HorizonHeroSection() {
                             </a>
                             <div className="text-sm text-white/80">
                                 Questions? Email Clara Martinez
-                                <br />📧 support@willwrite.online
                             </div>
                         </div>
                     </div>

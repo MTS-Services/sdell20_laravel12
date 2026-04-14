@@ -40,7 +40,7 @@ export function TeamSection() {
                         <div className="rounded-3xl bg-white/10 p-6 text-sm text-white">
                             <p className="font-semibold">What’s next?</p>
                             <p className="mt-2">
-                                Email Clara Martinez (support@willwrite.online) to review numbers, see a live walkthrough, or reserve the next deployment slot.
+                                Email Clara Martinez to review numbers, see a live walkthrough, or reserve the next deployment slot.
                             </p>
                         </div>
                     </div>
