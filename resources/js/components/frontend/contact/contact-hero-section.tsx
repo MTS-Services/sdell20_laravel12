@@ -26,7 +26,7 @@ export function ContactHeroSection() {
                         <div className="pt-2">
                             <a
                                 href="#contact-form"
-                                className="inline-flex items-center justify-center rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-600"
+                                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
                             >
                                 Enquire now
                             </a>

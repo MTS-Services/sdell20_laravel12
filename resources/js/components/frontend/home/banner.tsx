@@ -96,7 +96,7 @@ function RatingStars({ rating, idBase }: { rating: number; idBase: string }) {
 }
 
 const heroCtaClassName =
-    'inline-flex items-center justify-center rounded-full border border-primary-600 bg-primary-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent hover:text-primary-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40';
+    'inline-flex items-center justify-center rounded-full border border-primary-600 bg-blue-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent hover:text-primary-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40';
 
 export type BannerVariant = 'lpa' | 'will';
 
@@ -137,7 +137,7 @@ const lpaStats: StatBlock[] = [
     },
     {
         value: '6X',
-        title: 'quicker than hiring a solicitor',
+        title: 'Quicker than hiring a solicitor',
         lead: 'Ignore the paperwork and appointments',
         paragraphs: [
             'Conventional legal services can involve weeks of waiting, meetings, and correspondence.',
@@ -147,7 +147,7 @@ const lpaStats: StatBlock[] = [
     },
     {
         value: '80%',
-        title: 'cheaper than attorneys',
+        title: 'Cheaper than attorneys',
         lead: 'Professional guidance without high expenses',
         paragraphs: [
             'Solicitors often charge up to £1000 for preparing Lasting Powers of Attorney.',
@@ -157,7 +157,7 @@ const lpaStats: StatBlock[] = [
     },
     {
         value: '24/7',
-        title: 'customer care whenever you need it',
+        title: 'Customer care whenever you need it',
         lead: 'Start now and finish when it suits you',
         paragraphs: [
             'Your LPA application can be completed at any time.',
@@ -180,7 +180,7 @@ const willStats: StatBlock[] = [
     },
     {
         value: 'Guided',
-        title: 'guided questions you can finish at home',
+        title: 'Guided questions you can finish at home',
         lead: 'No waiting room required to get started',
         paragraphs: [
             'Work through plain-English prompts on your own schedule from a secure connection.',
@@ -190,7 +190,7 @@ const willStats: StatBlock[] = [
     },
     {
         value: 'Checked',
-        title: 'specialist review before you sign',
+        title: 'Specialist review before you sign',
         lead: 'Confidence that your Will says what you mean',
         paragraphs: [
             'Experienced reviewers look for common issues so you are not left guessing.',
@@ -200,7 +200,7 @@ const willStats: StatBlock[] = [
     },
     {
         value: 'Flexible',
-        title: 'new Will or refresh an existing one',
+        title: 'New Will or refresh an existing one',
         lead: 'Life events should be reflected in your documents',
         paragraphs: [
             'Marriages, children, property moves, and changes to who you want to benefit all matter.',

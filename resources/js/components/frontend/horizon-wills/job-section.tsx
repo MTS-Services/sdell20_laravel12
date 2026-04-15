@@ -115,7 +115,7 @@ export function JobSection() {
                             <button
                                 onClick={handlePayment}
                                 disabled={isProcessing}
-                                className="inline-flex items-center border border-primary-500 justify-center gap-2 rounded-full bg-primary-500 px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-transparent hover:text-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="inline-flex items-center border border-primary-500 justify-center gap-2 rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-transparent hover:text-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isProcessing ? 'Processing...' : 'Purchase Now - £1,194 →'}
                             </button>

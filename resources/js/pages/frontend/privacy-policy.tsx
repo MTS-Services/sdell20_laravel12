@@ -8,8 +8,8 @@ const policySections = [
     {
         title: '1. Who we are',
         copy: [
-            'Will Writing Online Ltd provides online Will and Lasting Power of Attorney services for clients across England and Wales. We are registered in England & Wales (#15576136) with our principal office at 20-22 Wenlock Road, Islington, London, N1 7GU.',
-            'You can contact our Data Protection lead at privacy@willwritingonline.co.uk for any privacy-related questions.'
+            'Will Writing Ltd provides Will and Lasting Power of Attorney services for clients across England and Wales. We are registered in England & Wales (#15576136) with our principal office at 20-22 Wenlock Road, Islington, London, N1 7GU.',
+            'You can contact our Data Protection lead for any privacy-related questions.'
         ]
     },
     {
@@ -42,7 +42,7 @@ const policySections = [
     {
         title: '6. Your rights',
         copy: [
-            'You can request a copy of your data, ask us to correct inaccuracies, object to marketing, or request deletion where applicable. Contact privacy@willwritingonline.co.uk and we will respond within 30 days.',
+            'You can request a copy of your data, ask us to correct inaccuracies, object to marketing, or request deletion where applicable. Contact us and we will respond within 30 days.',
             'If you are unhappy with how we handle your data you have the right to complain to the Information Commissioner’s Office (ICO).'
         ]
     },
@@ -59,8 +59,8 @@ export default function PrivacyPolicy() {
         <>
             <SeoHead
                 fallbackTitle="Privacy Policy"
-                fallbackDescription="Read the Terms and Conditions for Online-Will-Write. Understand our service agreements, limitations of liability, and legal policies for online will creation."
-                fallbackKeywords="privacy policy, data protection, privacy statement, Online Will Write privacy, data security UK, GDPR compliance"
+                fallbackDescription="Read the Privacy Policy for Will Write. Understand how we handle personal data and legal privacy obligations."
+                fallbackKeywords="privacy policy, data protection, privacy statement, Will Write privacy, data security UK, GDPR compliance"
             />
             <FrontendLayout>
                 <main className="bg-white py-14 sm:py-16">
@@ -70,7 +70,7 @@ export default function PrivacyPolicy() {
                                 <p className="text-xs sm:text-sm uppercase tracking-[0.4em] text-primary-400">Privacy Policy</p>
                                 <h1 className="mt-4 text-3xl sm:text-4xl font-serif font-semibold text-primary-900">Protecting your data while you protect your legacy</h1>
                                 <p className="mt-4 text-sm sm:text-base text-primary-700">
-                                    This policy explains how Will Writing Online Ltd collects, uses, and protects your information when you use our Will & LPA services.
+                                    This policy explains how Will Writing Ltd collects, uses, and protects your information when you use our Will & LPA services.
                                 </p>
                             </div>
                             <div className="space-y-8 sm:space-y-10">

@@ -7,13 +7,13 @@ const consumerRightsSections = [
     {
         title: '1. Why this matters',
         copy: [
-            'Transparent consumer protection is core to Will Writing Online. Every step of your fully digital estate-planning journey follows the Consumer Rights Act 2015 so you can order with confidence without ever visiting an office.'
+            'Transparent consumer protection is core to Will Writing. Every step of your estate-planning journey follows the Consumer Rights Act 2015 so you can order with confidence without ever visiting an office.'
         ]
     },
     {
-        title: '2. Services supplied digitally',
+        title: '2. Services supplied',
         copy: [
-            'Our wills, LPAs, and supporting consultations are classified as digital services. We commit to delivering those services with reasonable care and skill, matching the descriptions and timelines agreed during checkout, and providing clear updates inside your dashboard.'
+            'Our wills, LPAs, and supporting consultations are services. We commit to delivering those services with reasonable care and skill, matching the descriptions and timelines agreed during checkout, and providing clear updates inside your dashboard.'
         ]
     },
     {
@@ -31,13 +31,13 @@ const consumerRightsSections = [
     {
         title: '5. Fixes and remedies',
         copy: [
-            'If any document or digital service we supply fails to meet the agreed specification, we will correct it at no additional cost. Where a remedy cannot be provided within a reasonable timeframe, you may be entitled to a partial or full refund depending on the stage of work completed.'
+            'If any document or service we supply fails to meet the agreed specification, we will correct it at no additional cost. Where a remedy cannot be provided within a reasonable timeframe, you may be entitled to a partial or full refund depending on the stage of work completed.'
         ]
     },
     {
         title: '6. Getting in touch',
         copy: [
-            'Need to raise a concern? Email help@willwritingonline.co.uk or use the secure messaging inside your dashboard. We respond to all consumer-rights enquiries within two UK working days.'
+            'Need to raise a concern? Use the secure messaging inside your dashboard. We respond to all consumer-rights enquiries within two UK working days.'
         ]
     }
 ];
@@ -47,8 +47,8 @@ export default function ConsumerRightsAct() {
         <>
             <SeoHead
                 fallbackTitle="Consumer Rights Act 2015"
-                fallbackDescription="Learn about your legal rights under the Consumer Rights Act 2015 when using Online-Will-Write. We are committed to fair, transparent will writing services."
-                fallbackKeywords="Consumer Rights Act 2015, consumer rights, legal rights, Online Will Write consumer policy, fair trading UK, consumer protection"
+                fallbackDescription="Learn about your legal rights under the Consumer Rights Act 2015. We are committed to fair, transparent will writing services."
+                fallbackKeywords="Consumer Rights Act 2015, consumer rights, legal rights, Will Write consumer policy, fair trading UK, consumer protection"
             />
             <FrontendLayout>
                 <main className="bg-white py-14 sm:py-16">
@@ -58,7 +58,7 @@ export default function ConsumerRightsAct() {
                                 <p className="text-xs sm:text-sm uppercase tracking-[0.4em] text-primary-400">Consumer Rights</p>
                                 <h1 className="mt-4 text-3xl sm:text-4xl font-serif font-semibold text-primary-900">How we comply with the Consumer Rights Act 2015</h1>
                                 <p className="mt-4 text-sm sm:text-base text-primary-700">
-                                    Our online-only will and LPA service follows UK legislation for digital services so you always know your protections.
+                                    Our will and LPA service follows UK legislation so you always know your protections.
                                 </p>
                             </div>
                             <div className="space-y-8 sm:space-y-10">

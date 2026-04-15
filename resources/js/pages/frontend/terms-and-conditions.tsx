@@ -7,9 +7,9 @@ const termsSections = [
     {
         title: '1. Introduction',
         copy: [
-            'These Terms and Conditions govern your use of the Will Writing Online website, applications, and services. By ordering a will, LPA, or related service you agree to these terms in full. If you do not agree, please stop using the service immediately.',
-            'Our estate-planning experience is delivered entirely online—consultations, questionnaires, document reviews, and approvals are completed through our secure digital platform.',
-            'Will Writing Online is registered in England & Wales #15576136 with its principal office at 20-22 Wenlock Road, Islington, London, N1 7GU.'
+            'These Terms and Conditions govern your use of the Will Writing website, applications, and services. By ordering a will, LPA, or related service you agree to these terms in full. If you do not agree, please stop using the service immediately.',
+            'Our estate-planning experience is delivered through consultations, questionnaires, document reviews, and approvals completed through our secure platform.',
+            'Will Writing is registered in England & Wales  with its principal office at 20-22 Wenlock Road, Islington, London, N1 7GU.'
         ]
     },
     {
@@ -34,7 +34,7 @@ const termsSections = [
     {
         title: '5. Intellectual property',
         copy: [
-            'All software, templates, and written content provided through our platform remain the property of Will Writing Online. You may only use generated documents for your personal estate planning and must not resell, copy, or distribute them commercially.'
+            'All software, templates, and written content provided through our platform remain the property of Will Writing. You may only use generated documents for your personal estate planning and must not resell, copy, or distribute them commercially.'
         ]
     },
     {
@@ -62,8 +62,8 @@ export default function TermsAndConditions() {
         <>
             <SeoHead
                 fallbackTitle="Terms & Conditions"
-                fallbackDescription="Read the Terms and Conditions for Online-Will-Write. Understand our service agreements, limitations of liability, and legal policies for online will creation."
-                fallbackKeywords="terms and conditions, terms of service, Online Will Write terms, legal agreement, will writing service terms UK"
+                fallbackDescription="Read the Terms and Conditions for Will Write. Understand our service agreements, limitations of liability, and legal policies for will creation."
+                fallbackKeywords="terms and conditions, terms of service, Will Write terms, legal agreement, will writing service terms UK"
             />
 
             <FrontendLayout>
@@ -74,7 +74,7 @@ export default function TermsAndConditions() {
                                 <p className="text-xs sm:text-sm uppercase tracking-[0.4em] text-primary-400">Terms & Conditions</p>
                                 <h1 className="mt-4 text-3xl sm:text-4xl font-serif font-semibold text-primary-900">Clear, plain-language terms for every client</h1>
                                 <p className="mt-4 text-sm sm:text-base text-primary-700">
-                                    Please read these terms carefully before ordering a Will, LPA, or related service from Will Writing Online.
+                                    Please read these terms carefully before ordering a Will, LPA, or related service from Will Writing.
                                 </p>
                             </div>
                             <div className="space-y-8 sm:space-y-10">

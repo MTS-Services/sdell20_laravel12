@@ -722,11 +722,11 @@ const WillCreationWizard: React.FC = () => {
                     fallbackDescription="Start creating your will online in minutes with our guided step-by-step process."
                     fallbackKeywords="will writing, online will, will start"
                 />
-                <div className="min-h-screen bg-primary-50 font-sans">
+                <div className="min-h-screen bg-blue-50 font-sans">
                     <StepsHeader />
 
                     {/* Dark Header */}
-                    <div className="bg-primary px-4 py-14">
+                    <div className="bg-blue-600 px-4 py-14">
                         <div className="max-w-6xl mx-auto text-center">
                             <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 leading-tight">
                                 Create Your Legally Sound Will Online
@@ -757,92 +757,92 @@ const WillCreationWizard: React.FC = () => {
                             Select the option that best describes your situation
                         </p>
 
-                    <div className="grid md:grid-cols-2 gap-6 mb-10">
-                        {/* Single Will Option */}
-                        <button
-                            type="button"
-                            onClick={() => updatePersonalInfo('maritalStatus', 'single')}
-                            className={`p-6 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${willData.personalInfo.maritalStatus === 'single'
-                                ? 'border-secondary bg-primary-50'
-                                : 'border-primary-100 bg-white hover:border-primary-200'
-                                }`}
-                        >
-                            <div className="flex items-start gap-4">
-                                <User className={`w-12 h-12 shrink-0 ${willData.personalInfo.maritalStatus === 'single' ? 'text-secondary' : 'text-primary-500'
-                                    }`} />
-                                <div>
-                                    <h3 className="text-xl font-semibold text-primary mb-2">Single Will</h3>
-                                    <p className="text-sm text-text-muted">
-                                        Make a will just for you, whether or not you're in a relationship.
-                                    </p>
+                        <div className="grid md:grid-cols-2 gap-6 mb-10">
+                            {/* Single Will Option */}
+                            <button
+                                type="button"
+                                onClick={() => updatePersonalInfo('maritalStatus', 'single')}
+                                className={`p-6 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${willData.personalInfo.maritalStatus === 'single'
+                                    ? 'border-secondary bg-blue-50'
+                                    : 'border-primary-100 bg-white hover:border-primary-200'
+                                    }`}
+                            >
+                                <div className="flex items-start gap-4">
+                                    <User className={`w-12 h-12 shrink-0 ${willData.personalInfo.maritalStatus === 'single' ? 'text-secondary' : 'text-primary-500'
+                                        }`} />
+                                    <div>
+                                        <h3 className="text-xl font-semibold text-primary mb-2">Single Will</h3>
+                                        <p className="text-sm text-text-muted">
+                                            Make a will just for you, whether or not you're in a relationship.
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </button>
+                            </button>
 
-                        {/* Mirror Wills Option */}
-                        <button
-                            type="button"
-                            onClick={() => updatePersonalInfo('maritalStatus', 'married')}
-                            className={`p-6 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner'
-                                ? 'border-secondary bg-primary-50'
-                                : 'border-primary-100 bg-white hover:border-primary-200'
-                                }`}
-                        >
-                            <div className="flex items-start gap-4">
-                                <Users className={`w-12 h-12 shrink-0 ${willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner'
-                                    ? 'text-secondary'
-                                    : 'text-primary-500'
-                                    }`} />
-                                <div>
-                                    <h3 className="text-xl font-semibold text-primary mb-2">Mirror Wills</h3>
-                                    <p className="text-sm text-text-muted">
-                                        Make a will with someone who has wishes similar to yours, such as a partner.
-                                    </p>
+                            {/* Mirror Wills Option */}
+                            <button
+                                type="button"
+                                onClick={() => updatePersonalInfo('maritalStatus', 'married')}
+                                className={`p-6 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner'
+                                    ? 'border-secondary bg-blue-50'
+                                    : 'border-primary-100 bg-white hover:border-primary-200'
+                                    }`}
+                            >
+                                <div className="flex items-start gap-4">
+                                    <Users className={`w-12 h-12 shrink-0 ${willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner'
+                                        ? 'text-secondary'
+                                        : 'text-primary-500'
+                                        }`} />
+                                    <div>
+                                        <h3 className="text-xl font-semibold text-primary mb-2">Mirror Wills</h3>
+                                        <p className="text-sm text-text-muted">
+                                            Make a will with someone who has wishes similar to yours, such as a partner.
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </button>
-                    </div>
-
-                    {/* Civil Partner Option - shown after Mirror Wills is selected */}
-                    {(willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner') && (
-                        <div className="mb-8 p-4 bg-primary-50 rounded-lg border border-primary-100">
-                            <p className="text-sm font-medium text-primary mb-3">What is your relationship status?</p>
-                            <div className="flex gap-4">
-                                <button
-                                    type="button"
-                                    onClick={() => updatePersonalInfo('maritalStatus', 'married')}
-                                    className={`flex-1 px-4 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${willData.personalInfo.maritalStatus === 'married'
-                                        ? 'border-secondary bg-white text-secondary'
-                                        : 'border-primary-100 bg-white text-primary hover:border-primary-200'
-                                        }`}
-                                >
-                                    Married
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => updatePersonalInfo('maritalStatus', 'civil-partner')}
-                                    className={`flex-1 px-4 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${willData.personalInfo.maritalStatus === 'civil-partner'
-                                        ? 'border-secondary bg-white text-secondary'
-                                        : 'border-primary-100 bg-white text-primary hover:border-primary-200'
-                                        }`}
-                                >
-                                    Civil Partner
-                                </button>
-                            </div>
+                            </button>
                         </div>
-                    )}
 
-                    <button
-                        type="button"
-                        onClick={handleCreateDocument}
-                        disabled={!willData.personalInfo.maritalStatus}
-                        className={`w-full px-7 py-3.5 rounded-lg text-base font-bold uppercase tracking-wide transition-all duration-200 ${willData.personalInfo.maritalStatus
-                            ? 'bg-secondary text-white hover:bg-primary cursor-pointer shadow-md'
-                            : 'bg-muted text-muted-foreground cursor-not-allowed'
-                            }`}
-                    >
-                        {willData.personalInfo.maritalStatus === 'single' ? 'Create Single Will' : 'Create Mirror Wills'}
-                    </button>
+                        {/* Civil Partner Option - shown after Mirror Wills is selected */}
+                        {(willData.personalInfo.maritalStatus === 'married' || willData.personalInfo.maritalStatus === 'civil-partner') && (
+                            <div className="mb-8 p-4 bg-blue-50 rounded-lg border border-primary-100">
+                                <p className="text-sm font-medium text-primary mb-3">What is your relationship status?</p>
+                                <div className="flex gap-4">
+                                    <button
+                                        type="button"
+                                        onClick={() => updatePersonalInfo('maritalStatus', 'married')}
+                                        className={`flex-1 px-4 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${willData.personalInfo.maritalStatus === 'married'
+                                            ? 'border-secondary bg-white text-secondary'
+                                            : 'border-primary-100 bg-white text-primary hover:border-primary-200'
+                                            }`}
+                                    >
+                                        Married
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => updatePersonalInfo('maritalStatus', 'civil-partner')}
+                                        className={`flex-1 px-4 py-2 rounded border-2 text-sm font-medium transition-all cursor-pointer ${willData.personalInfo.maritalStatus === 'civil-partner'
+                                            ? 'border-secondary bg-white text-secondary'
+                                            : 'border-primary-100 bg-white text-primary hover:border-primary-200'
+                                            }`}
+                                    >
+                                        Civil Partner
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        <button
+                            type="button"
+                            onClick={handleCreateDocument}
+                            disabled={!willData.personalInfo.maritalStatus}
+                            className={`w-full px-7 py-3.5 rounded-lg text-base font-bold uppercase tracking-wide transition-all duration-200 ${willData.personalInfo.maritalStatus
+                                ? 'bg-secondary text-white hover:bg-blue-700 cursor-pointer shadow-md'
+                                : 'bg-muted text-muted-foreground cursor-not-allowed'
+                                }`}
+                        >
+                            {willData.personalInfo.maritalStatus === 'single' ? 'Create Single Will' : 'Create Mirror Wills'}
+                        </button>
                     </div>
                 </div>
             </>
@@ -862,114 +862,114 @@ const WillCreationWizard: React.FC = () => {
 
                 {isSaving && <SavingOverlay />}
 
-            {/* Dark Header with Step Navigation */}
-            <div className="bg-slate-700">
-                <div className="max-w-6xl mx-auto px-4 py-10 lg:py-14">
-                    <h1 className="text-lg md:text-xl lg:text-2xl font-semibold text-white uppercase tracking-wider mb-6">
-                        Create Your Legally Sound Will Online
-                    </h1>
+                {/* Dark Header with Step Navigation */}
+                <div className="bg-slate-700">
+                    <div className="max-w-6xl mx-auto px-4 py-10 lg:py-14">
+                        <h1 className="text-lg md:text-xl lg:text-2xl font-semibold text-white uppercase tracking-wider mb-6">
+                            Create Your Legally Sound Will Online
+                        </h1>
 
-                    {/* Step Tabs - Show all steps but highlight current logical step */}
-                    <div className="flex flex-wrap gap-2.5">
-                        {WIZARD_STEPS.map((step, index) => {
-                            const isActive = index === currentNavIndex;
-                            const isCompleted = index < currentNavIndex;
+                        {/* Step Tabs - Show all steps but highlight current logical step */}
+                        <div className="flex flex-wrap gap-2.5">
+                            {WIZARD_STEPS.map((step, index) => {
+                                const isActive = index === currentNavIndex;
+                                const isCompleted = index < currentNavIndex;
 
-                            const navToInternal = (navIdx: number): number => {
-                                if (navIdx === 0) return 0;
-                                if (navIdx === 1) return 1;
-                                if (navIdx === 2) return 3;
-                                if (navIdx === 3) return 6;
-                                if (navIdx === 4) return 7;
-                                if (navIdx === 5) return 9;
-                                if (navIdx === 6) return 10;
-                                if (navIdx === 7) return 12;
-                                return 13;
-                            };
+                                const navToInternal = (navIdx: number): number => {
+                                    if (navIdx === 0) return 0;
+                                    if (navIdx === 1) return 1;
+                                    if (navIdx === 2) return 3;
+                                    if (navIdx === 3) return 6;
+                                    if (navIdx === 4) return 7;
+                                    if (navIdx === 5) return 9;
+                                    if (navIdx === 6) return 10;
+                                    if (navIdx === 7) return 12;
+                                    return 13;
+                                };
 
-                            return (
-                                <button
-                                    key={step.key}
-                                    type="button"
-                                    onClick={() => {
-                                        if (isCompleted) {
-                                            setCurrentStep(navToInternal(index));
-                                        }
-                                    }}
-                                    className={`px-3 py-2 text-sm md:text-base lg:text-lg font-normal transition-colors duration-200 ${isActive
-                                        ? 'text-white cursor-default'
-                                        : isCompleted
-                                            ? 'text-white/80 hover:text-white cursor-pointer'
-                                            : 'text-white/60 hover:text-white/80 cursor-pointer'
-                                        }`}
-                                >
-                                    {step.title}
-                                </button>
-                            );
-                        })}
+                                return (
+                                    <button
+                                        key={step.key}
+                                        type="button"
+                                        onClick={() => {
+                                            if (isCompleted) {
+                                                setCurrentStep(navToInternal(index));
+                                            }
+                                        }}
+                                        className={`px-3 py-2 text-sm md:text-base lg:text-lg font-normal transition-colors duration-200 ${isActive
+                                            ? 'text-white cursor-default'
+                                            : isCompleted
+                                                ? 'text-white/80 hover:text-white cursor-pointer'
+                                                : 'text-white/60 hover:text-white/80 cursor-pointer'
+                                            }`}
+                                    >
+                                        {step.title}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        {/* Progress Bar */}
+                        <div className="relative h-3.5 mt-3 bg-slate-800 rounded-full z-50">
+                            <div
+                                className="h-full bg-blue-200 rounded-xs transition-all duration-500"
+                                style={{ width: `${progressPercent}%` }}
+                            />
+                            {isWizardComplete && (
+                                <div className="absolute -right-3 top-1/2 -translate-y-1/2 ">
+                                    <img
+                                        src="https://www.lawdepot.co.uk/images/slate/shield.png"
+                                        alt="Completed"
+                                        className="w-6 h-6"
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
-                    {/* Progress Bar */}
-                    <div className="relative h-3.5 mt-3 bg-slate-800 rounded-full z-50">
-                        <div
-                            className="h-full bg-primary-200 rounded-xs transition-all duration-500"
-                            style={{ width: `${progressPercent}%` }}
-                        />
-                        {isWizardComplete && (
-                            <div className="absolute -right-3 top-1/2 -translate-y-1/2 ">
-                                <img
-                                    src="https://www.lawdepot.co.uk/images/slate/shield.png"
-                                    alt="Completed"
-                                    className="w-6 h-6"
-                                />
-                            </div>
-                        )}
-                    </div>
+
                 </div>
 
-            </div>
+                {/* Main Content with step transition animation */}
+                <div
+                    ref={contentRef}
+                    className={`max-w-5xl mx-auto px-4 py-12 md:px-8 transition-all duration-300 ease-in-out ${isAnimating
+                        ? slideDirection === 'left'
+                            ? 'opacity-0 translate-x-8'
+                            : 'opacity-0 -translate-x-8'
+                        : 'opacity-100 translate-x-0'
+                        }`}
+                >
+                    {renderWizardStepContent()}
 
-            {/* Main Content with step transition animation */}
-            <div
-                ref={contentRef}
-                className={`max-w-5xl mx-auto px-4 py-12 md:px-8 transition-all duration-300 ease-in-out ${isAnimating
-                    ? slideDirection === 'left'
-                        ? 'opacity-0 translate-x-8'
-                        : 'opacity-0 -translate-x-8'
-                    : 'opacity-100 translate-x-0'
-                    }`}
-            >
-                {renderWizardStepContent()}
-
-                {/* Action Buttons */}
-                {shouldShowNavActions && (
-                    <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                        <button
-                            type="button"
-                            onClick={handleBack}
-                            disabled={isSaving}
-                            className="w-full rounded border border-slate-300 bg-slate-100 px-6 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary-700 transition-colors duration-200 hover:bg-slate-200 cursor-pointer disabled:opacity-50 sm:w-auto"
-                        >
-                            BACK
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleSaveAndContinue}
-                            disabled={isSaving}
-                            className="w-full rounded bg-emerald-600 px-8 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-colors duration-200 hover:bg-emerald-700 cursor-pointer disabled:opacity-50 sm:w-auto"
-                        >
-                            {isSaving ? 'SAVING...' : 'SAVE AND CONTINUE'}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={handleSkip}
-                            disabled={isSaving}
-                            className="w-full text-sm font-medium text-secondary transition-colors cursor-pointer bg-transparent border-none hover:text-secondary/80 disabled:opacity-50 sm:w-auto"
-                        >
-                            Skip this step for now
-                        </button>
-                    </div>
-                )}
-            </div>
+                    {/* Action Buttons */}
+                    {shouldShowNavActions && (
+                        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                            <button
+                                type="button"
+                                onClick={handleBack}
+                                disabled={isSaving}
+                                className="w-full rounded border border-slate-300 bg-slate-100 px-6 py-2.5 text-sm font-semibold uppercase tracking-wide text-primary-700 transition-colors duration-200 hover:bg-slate-200 cursor-pointer disabled:opacity-50 sm:w-auto"
+                            >
+                                BACK
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleSaveAndContinue}
+                                disabled={isSaving}
+                                className="w-full rounded bg-emerald-600 px-8 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-colors duration-200 hover:bg-emerald-700 cursor-pointer disabled:opacity-50 sm:w-auto"
+                            >
+                                {isSaving ? 'SAVING...' : 'SAVE AND CONTINUE'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleSkip}
+                                disabled={isSaving}
+                                className="w-full text-sm font-medium text-secondary transition-colors cursor-pointer bg-transparent border-none hover:text-secondary/80 disabled:opacity-50 sm:w-auto"
+                            >
+                                Skip this step for now
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
         </>
     );

@@ -14,7 +14,7 @@ const cookieHighlights = [
     },
     {
         title: 'Marketing cookies',
-        detail: 'Used only when you opt in to hear about new digital will bundles or promotions.'
+        detail: 'Used only when you opt in to hear about new will bundles or promotions.'
     }
 ];
 
@@ -29,8 +29,8 @@ export default function CookiePolicy() {
         <>
             <SeoHead
                 fallbackTitle="Cookie Policy"
-                fallbackDescription="Read the Cookie Policy for Online-Will-Write to understand how we use cookies and tracking technologies to improve your browsing experience on our website."
-                fallbackKeywords="cookie policy, website cookies, tracking technologies, Online Will Write cookies, manage cookie preferences"
+                fallbackDescription="Read the Cookie Policy to understand how we use cookies and tracking technologies on our website."
+                fallbackKeywords="cookie policy, website cookies, tracking technologies, Will Write cookies, manage cookie preferences"
             />
 
             <FrontendLayout>
@@ -40,9 +40,9 @@ export default function CookiePolicy() {
                             <div className="space-y-8 sm:space-y-10">
                                 <header className="rounded-4xl bg-white/90 p-6 sm:p-8 shadow-[0_25px_60px_rgba(15,23,42,0.08)]">
                                     <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.5em] text-primary-400">Cookie Policy</p>
-                                    <h1 className="mt-4 text-3xl sm:text-4xl font-serif font-semibold text-primary-900">Cookies that keep your online will journey smooth</h1>
+                                    <h1 className="mt-4 text-3xl sm:text-4xl font-serif font-semibold text-primary-900">Cookies that keep your will journey smooth</h1>
                                     <p className="mt-4 text-sm sm:text-base leading-relaxed text-primary-700">
-                                        Will Writing Online runs entirely through a secure digital experience. Cookies allow us to keep your answers saved, deliver faster load times, and tailor educational nudges while you complete questionnaires. This page explains what we collect and how to control it.
+                                        Will Writing runs through a secure experience. Cookies allow us to keep your answers saved, deliver faster load times, and tailor educational nudges while you complete questionnaires. This page explains what we collect and how to control it.
                                     </p>
                                 </header>
 
@@ -69,7 +69,7 @@ export default function CookiePolicy() {
                                         <div className="lg:w-1/3">
                                             <div className="rounded-3xl bg-white/10 p-4">
                                                 <p className="text-xs uppercase tracking-[0.4em] text-white/70">Need help?</p>
-                                                <p className="mt-2 text-xs font-semibold">Email privacy@willwritingonline.co.uk</p>
+                                                <p className="mt-2 text-xs font-semibold">Contact support</p>
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +97,7 @@ export default function CookiePolicy() {
                                 <div className="rounded-4xl border border-primary-100 bg-primary-50 p-6 sm:p-7">
                                     <h3 className="text-lg sm:text-xl font-semibold text-primary-900">Retention policy</h3>
                                     <p className="mt-3 text-sm sm:text-base leading-relaxed text-primary-700">
-                                        Cookie data is retained for the minimum period necessary to run your online sessions—typically between 30 days and 12 months. You can delete cookies from your browser at any time to reset identifiers.
+                                        Cookie data is retained for the minimum period necessary to run your sessions-typically between 30 days and 12 months. You can delete cookies from your browser at any time to reset identifiers.
                                     </p>
                                 </div>
                             </aside>
