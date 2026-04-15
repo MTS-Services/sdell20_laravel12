@@ -207,7 +207,7 @@ const OptionButton: React.FC<{
         onClick={onClick}
         className={[
             'w-full cursor-pointer rounded border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-primary-700 sm:px-6 sm:py-3 lg:px-8 lg:py-4 lg:text-base',
-            'shadow-[0_2px_8px_rgba(15,23,42,0.12)] transition duration-300 hover:bg-primary-500 hover:text-primary-50',
+            'shadow-[0_2px_8px_rgba(15,23,42,0.12)] transition duration-300 hover:bg-blue-600 hover:text-white',
             'hover:border-slate-300 hover:shadow-[0_3px_10px_rgba(15,23,42,0.14)]',
             selected ? 'border-primary-400 text-primary-600' : '',
         ].join(' ')}
@@ -644,7 +644,7 @@ const LpaStartPage: React.FC = () => {
 
                                     <Link
                                         href={route('register')}
-                                        className="mt-4 inline-flex w-full items-center justify-center rounded bg-primary-600 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 hover:text-white sm:mt-6 sm:py-3 md:text-base lg:py-4 lg:text-base"
+                                        className="mt-4 inline-flex w-full items-center justify-center rounded bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:text-white sm:mt-6 sm:py-3 md:text-base lg:py-4 lg:text-base"
                                     >
                                         Continue online
                                     </Link>
