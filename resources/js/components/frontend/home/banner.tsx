@@ -115,7 +115,7 @@ type BannerContent = {
     h1: string;
     h2: string;
     bodyParagraphs: string[];
-    ctaRoute: 'lpa.start' | 'will-writing.start';
+    ctaRoute: 'lpa' | 'will-writing';
     ctaLabel: string;
     stats: StatBlock[];
 };
@@ -215,15 +215,14 @@ const bannerContent: Record<BannerVariant, BannerContent> = {
         heroImage: LPA_HERO_IMG,
         imageAlt:
             'UK Power of Attorney helping people create LPAs quickly, affordably and correctly, with a clear and jargon free process.',
-        h1: 'Create your Power of Attorney today',
-        h2: 'Know your wishes are clear. Know your family is protected.',
+        h1: 'LPA Application Online',
+        h2: 'State your wishes are clear. Ensure your family & loved ones are protected.',
         bodyParagraphs: [
-            'Faster than a solicitor. Easier than the forms on GOV.UK.',
-            'Built to help you avoid mistakes.',
-            'Will Writing support helps you create your legal LPA document in 15 minutes without any stress or confusion.',
-            'Most people complete their forms in around 15 minutes.',
+            'Faster than a solicitor. We make it easier than the forms on GOV.UK.',
+            'Designed to help you avoid mistakes.',
+            'Our support helps you create your legal LPA document in 15 minutes without any stress or confusion.',
         ],
-        ctaRoute: 'lpa.start',
+        ctaRoute: 'lpa',
         ctaLabel: 'Create your LPA now',
         stats: lpaStats,
     },
@@ -238,7 +237,7 @@ const bannerContent: Record<BannerVariant, BannerContent> = {
             'An up-to-date Will helps your family avoid unnecessary disputes and ensures your assets are distributed as you intend.',
             'If you are writing your first Will, you gain peace of mind and certainty for the future—with professional support throughout.',
         ],
-        ctaRoute: 'will-writing.start',
+        ctaRoute: 'will-writing',
         ctaLabel: "Let's get started",
         stats: willStats,
     },

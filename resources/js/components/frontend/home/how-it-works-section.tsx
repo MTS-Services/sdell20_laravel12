@@ -86,7 +86,7 @@ export function HowItWorksSection() {
                 </div>
                 <div className="mt-10 flex justify-center">
                     <Link
-                        href={route('will-writing.start')}
+                        href={route('will-writing')}
                         className="inline-flex items-center justify-center rounded-full border border-primary-600 bg-blue-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent hover:text-primary-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
                     >
                         Create Your Will Now
