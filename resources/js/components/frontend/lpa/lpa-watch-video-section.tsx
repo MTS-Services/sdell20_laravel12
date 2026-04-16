@@ -46,9 +46,9 @@ export function LpaWatchVideoSection() {
                         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-primary-900 shadow-lg">
                             <div className="relative w-full pt-[56.25%]">
                                 <iframe
-                                    src="https://www.youtube.com/embed/ztZWHiixUDg?rel=0"
-                                    title="Power of Attorney Online overview"
-                                    className="absolute inset-0 h-full w-full"
+                                    src="https://www.youtube.com/embed/Es_8vge6NaQ?si=ddGGwpxqvEb7-pae"
+                                    title="YouTube video player"
+                                    className="absolute inset-0 h-full w-full border-0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     referrerPolicy="strict-origin-when-cross-origin"
                                     allowFullScreen
