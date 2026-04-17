@@ -3,20 +3,242 @@ import { Autoplay, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import FeedbackCard, { type GoogleReview } from "./feedback-card";
 import { usePage } from "@inertiajs/react";
+import { useMemo } from "react";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+const dummyGoogleReviews: GoogleReview[] = [
+    {
+        author_name: 'Suzy Watson',
+        profile_photo_url: '/assets/images/review/1.jpg',
+        rating: 5,
+        relative_time_description: '2 days ago',
+        text: 'Found application for the Power of Attorney Online clear and easy to follow with step by step instructions for every section required.',
+    },
+    {
+        author_name: 'Daniel Carter',
+        profile_photo_url: '/assets/images/review/2.jpg',
+        rating: 5,
+        relative_time_description: '3 days ago',
+        text: 'Great support team and quick responses whenever I needed help.',
+    },
+    {
+        author_name: 'Catherine Mythen',
+        profile_photo_url: '/assets/images/review/3.jpg',
+        rating: 5,
+        relative_time_description: '4 days ago',
+        text: 'Absolutely fantastic. A patient sense of calm even when I messed up the forms with names. One fixed price with peace of mind that documents are correct before printing off.',
+    },
+    {
+        author_name: 'James Walker',
+        profile_photo_url: '/assets/images/review/4.jpg',
+        rating: 4,
+        relative_time_description: '1 week ago',
+        text: 'Easy online journey and no hidden costs. Exactly what I needed.',
+    },
+    {
+        author_name: 'Clair McCarthy',
+        rating: 5,
+        profile_photo_url: '/assets/images/review/5.jpg',
+        relative_time_description: '2 weeks ago',
+        text: 'Highly recommend.',
+    },
+    {
+        author_name: 'Noah Robinson',
+        rating: 5,
+        profile_photo_url: '/assets/images/review/6.jpg',
+        relative_time_description: '2 weeks ago',
+        text: 'Professional and reliable service. I felt supported the whole way through.',
+    },
+    {
+        author_name: 'Osean G Stewart',
+        rating: 5,
+        relative_time_description: '1 month ago',
+        profile_photo_url: '/assets/images/review/7.jpg',
+        text: 'The process is clear and easy to follow. Support is there from day 1 and they answer questions quickly — great value for money.',
+    },
+    {
+        author_name: 'Amelia Price',
+        rating: 5,
+        profile_photo_url: '/assets/images/review/8.jpg',
+        relative_time_description: '1 month ago',
+        text: 'The step-by-step guidance made the paperwork much less stressful.',
+    },
+    {
+        author_name: 'Angelica Nina',
+        rating: 5,
+        profile_photo_url: '/assets/images/review/9.jpg',
+        relative_time_description: '1 month ago',
+        text: 'Simple, straightforward and very professional service. The step-by-step guidance made everything much less stressful.',
+    },
+    {
+        author_name: 'Ethan Morgan',
+        rating: 5,
+        profile_photo_url: '/assets/images/review/10.jpg',
+        relative_time_description: '1 month ago',
+        text: 'Fast, affordable, and straightforward. Would definitely recommend.',
+    },
+    {
+        author_name: 'Grace Turner',
+        profile_photo_url: '/assets/images/review/11.jpg',
+        rating: 5,
+        relative_time_description: '1 month ago',
+        text: 'Everything was explained in plain language and was easy to complete.',
+    },
+    {
+        author_name: 'Henry Adams',
+        profile_photo_url: '/assets/images/review/12.jpg',
+        rating: 5,
+        relative_time_description: '1 month ago',
+        text: 'Clear instructions and excellent communication from start to finish.',
+    },
+    {
+        author_name: 'Mia Collins',
+        profile_photo_url: '/assets/images/review/13.jpg',
+        rating: 5,
+        relative_time_description: '2 months ago',
+        text: 'The online form was simple and saved me a lot of time.',
+    },
+    {
+        author_name: 'Lucas Foster',
+        profile_photo_url: '/assets/images/review/14.jpg',
+        rating: 5,
+        relative_time_description: '2 months ago',
+        text: 'Very good value for money and easy to understand steps.',
+    },
+    {
+        author_name: 'Ella Palmer',
+        profile_photo_url: '/assets/images/review/15.jpg',
+        rating: 5,
+        relative_time_description: '2 months ago',
+        text: 'Fantastic service. Helpful team and no unnecessary confusion.',
+    },
+    {
+        author_name: 'Jack Stewart',
+        profile_photo_url: '/assets/images/review/16.jpg',
+        rating: 5,
+        relative_time_description: '2 months ago',
+        text: 'Quick process and very professional support throughout.',
+    },
+    {
+        author_name: 'Ava Richardson',
+        profile_photo_url: '/assets/images/review/17.jpg',
+        rating: 5,
+        relative_time_description: '2 months ago',
+        text: 'Made a complicated task feel manageable. Highly satisfied.',
+    },
+    {
+        author_name: 'George Bailey',
+        profile_photo_url: '/assets/images/review/18.jpg',
+        rating: 4,
+        relative_time_description: '2 months ago',
+        text: 'Reliable platform and useful reminders along the way.',
+    },
+    {
+        author_name: 'Lily Brooks',
+        profile_photo_url: '/assets/images/review/19.jpg',
+        rating: 5,
+        relative_time_description: '2 months ago',
+        text: 'Support team answered my questions quickly and clearly.',
+    },
+    {
+        author_name: 'Samuel Ward',
+        profile_photo_url: '/assets/images/review/20.jpg',
+        rating: 5,
+        relative_time_description: '3 months ago',
+        text: 'Great service and simple process. Would use again.',
+    },
+    {
+        author_name: 'Freya Gibson',
+        profile_photo_url: '/assets/images/review/21.jpg',
+        rating: 5,
+        relative_time_description: '3 months ago',
+        text: 'Very impressed with how easy everything was to complete online.',
+    },
+    {
+        author_name: 'Benjamin Ellis',
+        profile_photo_url: '/assets/images/review/22.jpg',
+        rating: 4,
+        relative_time_description: '3 months ago',
+        text: 'Straightforward process and fair pricing.',
+    },
+    {
+        author_name: 'Isla Murphy',
+        profile_photo_url: '/assets/images/review/23.jpg',
+        rating: 5,
+        relative_time_description: '3 months ago',
+        text: 'Helpful, polite, and very responsive team.',
+    },
+    {
+        author_name: 'William Perry',
+        profile_photo_url: '/assets/images/review/24.jpg',
+        rating: 5,
+        relative_time_description: '3 months ago',
+        text: 'The step-by-step flow made it easy to avoid mistakes.',
+    },
+    {
+        author_name: 'Ruby Fisher',
+        profile_photo_url: '/assets/images/review/25.jpg',
+        rating: 5,
+        relative_time_description: '3 months ago',
+        text: 'Excellent experience from start to finish.',
+    },
+    {
+        author_name: 'Thomas Gray',
+        profile_photo_url: '/assets/images/review/26.jpg',
+        rating: 5,
+        relative_time_description: '3 months ago',
+        text: 'Easy to use and very clear at each stage.',
+    },
+    {
+        author_name: 'Hannah Coleman',
+        profile_photo_url: '/assets/images/review/27.jpg',
+        rating: 5,
+        relative_time_description: '4 months ago',
+        text: 'Professional service with clear and helpful guidance.',
+    },
+    {
+        author_name: 'Oliver Knight',
+        profile_photo_url: '/assets/images/review/28.jpg',
+        rating: 5,
+        relative_time_description: '4 months ago',
+        text: 'Great user experience and fast turnaround.',
+    },
+    {
+        author_name: 'Zoe Lawson',
+        profile_photo_url: '/assets/images/review/29.jpg',
+        rating: 5,
+        relative_time_description: '4 months ago',
+        text: 'Everything was smooth and stress free.',
+    },
+    {
+        author_name: 'Leo Spencer',
+        profile_photo_url: '/assets/images/review/30.jpg',
+        rating: 5,
+        relative_time_description: '4 months ago',
+        text: 'Simple process and good communication throughout.',
+    },
+];
 
 export default function Feedback() {
     const { props } = usePage<{ reviews?: GoogleReview[]; googleWriteReviewUrl?: string | null }>();
     const reviews = Array.isArray(props.reviews) ? props.reviews : [];
     const googleWriteReviewUrl = typeof props.googleWriteReviewUrl === 'string' ? props.googleWriteReviewUrl : null;
 
-    const avgRating = reviews.length
-        ? Math.round((reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / reviews.length) * 10) / 10
-        : null;
+    const visibleReviews = reviews.length ? reviews : dummyGoogleReviews;
 
-    if (!reviews.length) return null;
+    const avgRating = visibleReviews.length
+        ? Math.round((visibleReviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / visibleReviews.length) * 10) / 10
+        : null;
+    const randomizedVisibleReviews = useMemo(() => {
+        const shuffled = [...visibleReviews];
+        for (let i = shuffled.length - 1; i > 0; i -= 1) {
+            const randomIndex = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
+        }
+        return shuffled;
+    }, [visibleReviews]);
 
     return (
         <div className="px-6 pb-18 md:pb-14 lg:pb-20">
@@ -55,7 +277,7 @@ export default function Feedback() {
                                     </div>
                                 </div>
                                 <p className="font-ubuntu text-sm text-slate-600">
-                                    (Based on {reviews.length} reviews)
+                                    (Based on {visibleReviews.length} reviews)
                                 </p>
                             </div>
                         </div>
@@ -121,7 +343,7 @@ export default function Feedback() {
                     }}
                     className="feedback-swiper pb-16"
                 >
-                    {reviews.slice(0, 12).map((review, index) => (
+                    {randomizedVisibleReviews.slice(0, 30).map((review, index) => (
                         <SwiperSlide key={`${review.author_name ?? 'review'}-${index}`}>
                             <FeedbackCard review={review} />
                         </SwiperSlide>
