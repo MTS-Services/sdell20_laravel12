@@ -12,7 +12,7 @@ export default function FeedbackCard({ review }: { review: GoogleReview }) {
     const rating = Math.max(0, Math.min(5, Math.round(review.rating ?? 0)));
 
     return (
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+        <div className="flex h-full min-h-[250px] flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl">
             {/* Header with profile and rating */}
             <div className="mb-4 flex items-start justify-between">
                 <div className="flex items-center gap-3">
@@ -59,7 +59,7 @@ export default function FeedbackCard({ review }: { review: GoogleReview }) {
             </div>
 
             {/* Review text */}
-            <div className="feedback-scroll max-h-24 overflow-y-auto">
+            <div className="feedback-scroll h-24 overflow-y-auto">
                 <p className="leading-relaxed text-gray-700">{review.text || ''}</p>
             </div>
         </div>
