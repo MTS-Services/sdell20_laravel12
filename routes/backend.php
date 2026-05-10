@@ -69,6 +69,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [LpaController::class, 'index'])->name('index');
         Route::get('/create', [LpaController::class, 'create'])->name('create');
         Route::post('/', [LpaController::class, 'store'])->name('store');
+        Route::get('/{lpa}/thank-you', [LpaController::class, 'thankYou'])->name('thank-you');
         Route::get('/{lpa}', [LpaController::class, 'show'])->name('show');
         Route::delete('/{lpa}', [LpaController::class, 'destroy'])->name('destroy');
 
@@ -112,7 +113,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/show/{slug}', [BlogController::class, 'show'])->name('show');
         Route::delete('/delete/{slug}', [BlogController::class, 'delete'])->name('delete');
     });
-
 });
 
 // Twilio Webhook - no auth, no CSRF

@@ -310,6 +310,8 @@
             </div>
         </div>
 
+        @include('pdfs.partials.lpa-form-extras', ['lpa' => $lpa])
+
         <div style="margin-top: 8px; font-size: 6pt; text-align: center; color: #666;">
             <p>LPA Form - Health and Welfare | Generated: {{ now()->format('d/m/Y H:i') }}</p>
             @if ($isDraft)

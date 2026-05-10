@@ -41,6 +41,8 @@ return new class extends Migration
             $table->string('document_recipient')->nullable();
             $table->boolean('certificate_choice')->nullable();
 
+            $table->json('lp1h_form')->nullable();
+
             // PDF Generation
             $table->string('pdf_path')->nullable();
             $table->timestamp('pdf_generated_at')->nullable();

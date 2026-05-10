@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Lpa;
+use App\Support\LpaAdminEmailSummary;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -39,6 +40,9 @@ class LpaCompletedAdminEmail extends Mailable implements ShouldQueue
     {
         return new Content(
             view: 'emails.admin.lpa_completed',
+            with: [
+                'summarySections' => LpaAdminEmailSummary::sections($this->lpa),
+            ],
         );
     }
 
