@@ -1,4 +1,4 @@
-import { type ReactElement, useEffect, useRef, useState } from 'react';
+import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 import UserLayout from '@/layouts/user-layout';
@@ -8,14 +8,60 @@ type Props = {
     user: User;
 };
 
-const lpaSteps = [
-    { key: 'who', title: 'Who', description: 'Who is the Lasting Power of Attorney for?' },
-    { key: 'documents', title: 'Which Documents', description: 'Which documents do you need?' },
-    { key: 'donor', title: 'The Donor', description: 'Who is the donor?' },
-    { key: 'contact', title: 'Contact Details', description: 'Your contact information' },
+const INTRO_STEPPER_STEPS = [
+    { key: 'who', title: 'Who', description: 'Who is this LPA for?' },
+    { key: 'documents', title: 'Document type', description: 'Health & welfare, property & finance, or both' },
+    { key: 'donor', title: 'The donor', description: 'LP1H / LP1F Section 1 — donor details' },
+    { key: 'contact', title: 'Contact details', description: 'Address and how we reach you' },
 ];
 
-const TOTAL_FORM_STEPS = 4;
+const HEALTH_WELFARE_STEPPER_STEPS = [
+    { key: 'who', title: 'Who', description: 'Who this LPA is for' },
+    { key: 'documents', title: 'Document', description: 'Health & welfare (LP1H)' },
+    { key: 'donor', title: 'Section 1: Donor', description: 'The donor' },
+    { key: 'contact', title: 'Section 1: Contact', description: 'Address & contact' },
+    { key: 'attorneys', title: 'Section 2: Attorneys', description: 'Your attorneys' },
+    { key: 'view_docs', title: 'Section 3 & access', description: 'How attorneys act & legal documents' },
+    { key: 'replacement', title: 'Section 4: Replacements', description: 'Replacement attorneys' },
+    { key: 'life', title: 'Life-sustaining treatment', description: 'Health & welfare decision' },
+    { key: 'notify', title: 'People to notify', description: 'Optional safeguards' },
+    { key: 'applicant', title: 'Registration', description: 'Who applies to the OPG' },
+    { key: 'recipient', title: 'Document recipient', description: 'Where the registered LPA is sent' },
+    { key: 'certificate', title: 'Certificate provider', description: 'Confirming capacity' },
+    { key: 'declarations', title: 'LP1H: Sign & declare', description: 'Preferences, witnesses, typed signatures' },
+    { key: 'pay', title: 'Review & payment', description: 'Pay to finalise' },
+];
+
+const PROPERTY_FINANCE_STEPPER_STEPS = [
+    { key: 'who', title: 'Who', description: 'Who this LPA is for' },
+    { key: 'documents', title: 'Document', description: 'Property & financial affairs' },
+    { key: 'donor', title: 'Section 1: Donor', description: 'The donor' },
+    { key: 'contact', title: 'Section 1: Contact', description: 'Address & contact' },
+    { key: 'attorneys', title: 'Section 2: Attorneys', description: 'Your attorneys' },
+    { key: 'view_docs', title: 'Section 3 & access', description: 'How attorneys act & legal documents' },
+    { key: 'replacement', title: 'Section 4: Replacements', description: 'Replacement attorneys' },
+    { key: 'when_act', title: 'LP1F: When attorneys act', description: 'Section 5 — after registration or only without capacity' },
+    { key: 'notify', title: 'People to notify', description: 'Optional safeguards' },
+    { key: 'applicant', title: 'Registration', description: 'Who applies to the OPG' },
+    { key: 'recipient', title: 'Document recipient', description: 'Where the registered LPA is sent' },
+    { key: 'certificate', title: 'Certificate provider', description: 'Confirming capacity' },
+    { key: 'declarations', title: 'LP1F: Sign & declare', description: 'Preferences, witnesses, typed signatures' },
+    { key: 'pay', title: 'Review & payment', description: 'Pay to finalise' },
+];
+
+const MAX_STEP_INDEX = 13;
+
+function usesLifeSustainingStep(documentType: string | null): boolean {
+    return documentType === 'health' || documentType === 'both';
+}
+
+function usesPropertyFinancialLpa(documentType: string | null): boolean {
+    return documentType === 'property' || documentType === 'both';
+}
+
+function contentStepToStepperIndex(step: number, documentType: string | null): number {
+    return step;
+}
 
 const documentOptions = [
     {
@@ -139,11 +185,88 @@ export default function LpaCreate({ user }: Props) {
     // States for new steps
     const [notifyPeople, setNotifyPeople] = useState<'yes' | 'no' | null>(null);
     const [lifeSustainingTreatment, setLifeSustainingTreatment] = useState<'yes' | 'no' | null>(null);
+    /** LP1F section 5 — when attorneys may act (property & both). */
+    const [whenAttorneysCanAct, setWhenAttorneysCanAct] = useState<'as_soon_registered' | 'only_without_capacity' | null>(null);
     const [applicant, setApplicant] = useState<string>('');
     const [documentRecipient, setDocumentRecipient] = useState<string>('');
     const [certificateChoice, setCertificateChoice] = useState<'yes' | 'no' | null>(null);
+    const [attorneyActingTogether, setAttorneyActingTogether] = useState<
+        '' | 'jointly_and_severally' | 'jointly' | 'mixed' | 'single_attorney'
+    >('');
+    const [preferencesText, setPreferencesText] = useState('');
+    const [instructionsText, setInstructionsText] = useState('');
+    const [peopleToNotifyRows, setPeopleToNotifyRows] = useState<
+        Array<{ id: string; title: string; firstName: string; lastName: string; addressLine1: string; postcode: string }>
+    >([]);
+    const [recipientOther, setRecipientOther] = useState({
+        title: '',
+        firstName: '',
+        lastName: '',
+        company: '',
+        addressLine1: '',
+        postcode: '',
+    });
+    const [recipientPrefPost, setRecipientPrefPost] = useState(false);
+    const [recipientPrefPhone, setRecipientPrefPhone] = useState(false);
+    const [recipientPrefEmail, setRecipientPrefEmail] = useState(false);
+    const [recipientPrefWelsh, setRecipientPrefWelsh] = useState(false);
+    const [certificateProvider, setCertificateProvider] = useState({
+        title: '',
+        firstName: '',
+        lastName: '',
+        addressLine1: '',
+        postcode: '',
+        typedSignature: '',
+        signDay: '',
+        signMonth: '',
+        signYear: '',
+    });
+    const [lifeSustainingSignBlock, setLifeSustainingSignBlock] = useState({
+        donorTypedSignature: '',
+        signDay: '',
+        signMonth: '',
+        signYear: '',
+        witnessFullName: '',
+        witnessAddress: '',
+        witnessPostcode: '',
+        witnessTypedSignature: '',
+    });
+    const [section9, setSection9] = useState({
+        donorTypedSignature: '',
+        signDay: '',
+        signMonth: '',
+        signYear: '',
+        witnessFullName: '',
+        witnessAddress: '',
+        witnessPostcode: '',
+    });
+    const [attorneyDeedRows, setAttorneyDeedRows] = useState<
+        Array<{
+            partyId: string;
+            roleLabel: string;
+            typedSignature: string;
+            signDay: string;
+            signMonth: string;
+            signYear: string;
+            witnessFullName: string;
+            witnessAddress: string;
+            witnessPostcode: string;
+        }>
+    >([]);
+    const [section15, setSection15] = useState({
+        typedSignature: '',
+        signDay: '',
+        signMonth: '',
+        signYear: '',
+    });
+    const [completeSignaturesOnPaper, setCompleteSignaturesOnPaper] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
+    const [createdLpaCheckout, setCreatedLpaCheckout] = useState<{
+        id: number;
+        amountPence: number;
+        product: string;
+    } | null>(null);
 
     const dropdownRef = useRef<HTMLSpanElement | null>(null);
     const modalRef = useRef<HTMLDivElement | null>(null);
@@ -168,19 +291,122 @@ export default function LpaCreate({ user }: Props) {
             case 4:
                 return attorneys.length > 0;
             case 5:
-                return Boolean(canViewDocuments);
-            case 6:
-                return Boolean(wantReplacementAttorneys);
-            case 7:
-                return Boolean(lifeSustainingTreatment);
+                return Boolean(attorneyActingTogether && canViewDocuments);
+            case 6: {
+                if (!wantReplacementAttorneys) {
+                    return false;
+                }
+
+                if (wantReplacementAttorneys === 'yes') {
+                    return replacementAttorneys.length > 0;
+                }
+
+                return true;
+            }
+            case 7: {
+                const needLife = usesLifeSustainingStep(selectedDocumentOption);
+                const needWhen = usesPropertyFinancialLpa(selectedDocumentOption);
+                if (needLife && !lifeSustainingTreatment) {
+                    return false;
+                }
+                if (needWhen && !whenAttorneysCanAct) {
+                    return false;
+                }
+
+                return true;
+            }
             case 8:
-                return Boolean(notifyPeople);
+                if (!notifyPeople) {
+                    return false;
+                }
+
+                if (notifyPeople === 'yes') {
+                    return (
+                        peopleToNotifyRows.length > 0 &&
+                        peopleToNotifyRows.every(
+                            (r) => r.firstName && r.lastName && r.addressLine1 && r.postcode,
+                        )
+                    );
+                }
+
+                return true;
             case 9:
                 return Boolean(applicant);
-            case 10:
-                return Boolean(documentRecipient);
-            case 11:
-                return Boolean(certificateChoice);
+            case 10: {
+                if (!documentRecipient) {
+                    return false;
+                }
+
+                if (documentRecipient === 'other') {
+                    return Boolean(
+                        recipientOther.firstName &&
+                        recipientOther.lastName &&
+                        recipientOther.addressLine1 &&
+                        recipientOther.postcode,
+                    );
+                }
+
+                return true;
+            }
+            case 11: {
+                if (!certificateChoice) {
+                    return false;
+                }
+
+                if (certificateChoice === 'yes') {
+                    return Boolean(
+                        certificateProvider.firstName &&
+                        certificateProvider.lastName &&
+                        certificateProvider.addressLine1 &&
+                        certificateProvider.postcode &&
+                        certificateProvider.typedSignature &&
+                        certificateProvider.signDay &&
+                        certificateProvider.signMonth &&
+                        certificateProvider.signYear,
+                    );
+                }
+
+                return true;
+            }
+            case 12: {
+                if (completeSignaturesOnPaper) {
+                    return true;
+                }
+
+                const s9Ok =
+                    Boolean(section9.donorTypedSignature) &&
+                    Boolean(section9.witnessFullName) &&
+                    Boolean(section9.witnessAddress) &&
+                    Boolean(section9.signDay && section9.signMonth && section9.signYear);
+                const s15Ok =
+                    Boolean(section15.typedSignature) &&
+                    Boolean(section15.signDay && section15.signMonth && section15.signYear);
+                const deedsOk =
+                    attorneyDeedRows.length > 0 &&
+                    attorneyDeedRows.every(
+                        (r) =>
+                            r.typedSignature &&
+                            r.witnessFullName &&
+                            r.witnessAddress &&
+                            r.signDay &&
+                            r.signMonth &&
+                            r.signYear,
+                    );
+                const lifeOk =
+                    !usesLifeSustainingStep(selectedDocumentOption) ||
+                    Boolean(
+                        lifeSustainingSignBlock.donorTypedSignature &&
+                        lifeSustainingSignBlock.witnessFullName &&
+                        lifeSustainingSignBlock.witnessAddress &&
+                        lifeSustainingSignBlock.signDay &&
+                        lifeSustainingSignBlock.signMonth &&
+                        lifeSustainingSignBlock.signYear,
+                    );
+
+                return Boolean(s9Ok && s15Ok && deedsOk && lifeOk);
+            }
+            case 13:
+                return true;
             default:
                 return true;
         }
@@ -280,15 +506,27 @@ export default function LpaCreate({ user }: Props) {
             return;
         }
 
-        // If on the last step and moving forward, submit the form
-        if (direction === 'next' && currentStep === TOTAL_FORM_STEPS - 1) {
+        if (direction === 'next' && currentStep === 12) {
             await handleSubmit();
+
+            return;
+        }
+
+        if (direction === 'next' && currentStep >= MAX_STEP_INDEX) {
             return;
         }
 
         setCurrentStep((prev) => {
             if (direction === 'next') {
-                return Math.min(prev + 1, TOTAL_FORM_STEPS - 1);
+                if (prev >= MAX_STEP_INDEX) {
+                    return prev;
+                }
+
+                return prev + 1;
+            }
+
+            if (prev === MAX_STEP_INDEX) {
+                return 12;
             }
 
             return Math.max(prev - 1, 0);
@@ -296,6 +534,12 @@ export default function LpaCreate({ user }: Props) {
     };
 
     const handleSubmit = async () => {
+        if (createdLpaCheckout) {
+            setCurrentStep(13);
+
+            return;
+        }
+
         setIsSubmitting(true);
         setSubmitError(null);
 
@@ -304,6 +548,90 @@ export default function LpaCreate({ user }: Props) {
             const csrfToken = xsrfMatch
                 ? decodeURIComponent(xsrfMatch[1])
                 : (document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
+
+            const attorneysPayload = attorneys.map(({ id: _id, ...rest }) => rest);
+            const replacementPayload = replacementAttorneys.map(({ id: _id, ...rest }) => rest);
+
+            const lp1hForm = {
+                attorney_acting: attorneyActingTogether,
+                when_attorneys_can_act: usesPropertyFinancialLpa(selectedDocumentOption) ? whenAttorneysCanAct : null,
+                preferences: preferencesText || null,
+                instructions: instructionsText || null,
+                people_to_notify:
+                    notifyPeople === 'yes'
+                        ? peopleToNotifyRows.map(({ id: _id, ...row }) => row)
+                        : [],
+                life_sustaining: usesLifeSustainingStep(selectedDocumentOption)
+                    ? {
+                        donor_typed_signature: lifeSustainingSignBlock.donorTypedSignature,
+                        sign_day: lifeSustainingSignBlock.signDay,
+                        sign_month: lifeSustainingSignBlock.signMonth,
+                        sign_year: lifeSustainingSignBlock.signYear,
+                        witness_full_name: lifeSustainingSignBlock.witnessFullName,
+                        witness_address: lifeSustainingSignBlock.witnessAddress,
+                        witness_postcode: lifeSustainingSignBlock.witnessPostcode,
+                        witness_typed_signature: lifeSustainingSignBlock.witnessTypedSignature,
+                    }
+                    : null,
+                section_9: {
+                    donor_typed_signature: section9.donorTypedSignature,
+                    sign_day: section9.signDay,
+                    sign_month: section9.signMonth,
+                    sign_year: section9.signYear,
+                    witness_full_name: section9.witnessFullName,
+                    witness_address: section9.witnessAddress,
+                    witness_postcode: section9.witnessPostcode,
+                },
+                certificate_provider:
+                    certificateChoice === 'yes'
+                        ? {
+                            title: certificateProvider.title,
+                            first_name: certificateProvider.firstName,
+                            last_name: certificateProvider.lastName,
+                            address_line1: certificateProvider.addressLine1,
+                            postcode: certificateProvider.postcode,
+                            typed_signature: certificateProvider.typedSignature,
+                            sign_day: certificateProvider.signDay,
+                            sign_month: certificateProvider.signMonth,
+                            sign_year: certificateProvider.signYear,
+                        }
+                        : null,
+                attorney_deed_signatures: attorneyDeedRows.map((r) => ({
+                    party_id: r.partyId,
+                    role_label: r.roleLabel,
+                    typed_signature: r.typedSignature,
+                    sign_day: r.signDay,
+                    sign_month: r.signMonth,
+                    sign_year: r.signYear,
+                    witness_full_name: r.witnessFullName,
+                    witness_address: r.witnessAddress,
+                    witness_postcode: r.witnessPostcode,
+                })),
+                section_15: {
+                    typed_signature: section15.typedSignature,
+                    sign_day: section15.signDay,
+                    sign_month: section15.signMonth,
+                    sign_year: section15.signYear,
+                },
+                recipient_other:
+                    documentRecipient === 'other'
+                        ? {
+                            title: recipientOther.title,
+                            first_name: recipientOther.firstName,
+                            last_name: recipientOther.lastName,
+                            company: recipientOther.company || null,
+                            address_line1: recipientOther.addressLine1,
+                            postcode: recipientOther.postcode,
+                        }
+                        : null,
+                recipient_contact_prefs: {
+                    post: recipientPrefPost,
+                    phone: recipientPrefPhone,
+                    email: recipientPrefEmail,
+                    welsh: recipientPrefWelsh,
+                },
+                complete_signatures_on_paper: completeSignaturesOnPaper,
+            };
 
             const response = await fetch('/lpas', {
                 method: 'POST',
@@ -318,23 +646,30 @@ export default function LpaCreate({ user }: Props) {
                     document_type: selectedDocumentOption,
                     donor_details: donorDetails,
                     contact_details: contactDetails,
-                    attorneys: [],
-                    can_view_documents: null,
-                    replacement_attorneys: [],
-                    want_replacement_attorneys: null,
-                    life_sustaining_treatment: null,
-                    notify_people: null,
-                    applicant: null,
-                    document_recipient: null,
-                    certificate_choice: null,
+                    attorneys: attorneysPayload,
+                    can_view_documents: canViewDocuments === 'yes',
+                    replacement_attorneys: replacementPayload,
+                    want_replacement_attorneys: wantReplacementAttorneys === 'yes',
+                    life_sustaining_treatment: usesLifeSustainingStep(selectedDocumentOption)
+                        ? lifeSustainingTreatment === 'yes'
+                        : null,
+                    notify_people: notifyPeople === 'yes',
+                    applicant: applicant || null,
+                    document_recipient: documentRecipient || null,
+                    certificate_choice: certificateChoice === 'yes',
+                    lp1h_form: lp1hForm,
                 }),
             });
 
             const data = await response.json();
 
             if (data.success) {
-                // Redirect to LPA show page for payment and download
-                window.location.href = `/lpas/${data.data.lpa_id}`;
+                setCreatedLpaCheckout({
+                    id: data.data.lpa_id,
+                    amountPence: data.data.checkout_amount_pence,
+                    product: data.data.checkout_product,
+                });
+                setCurrentStep(13);
             } else {
                 setSubmitError(data.message || 'Failed to create LPA. Please try again.');
             }
@@ -346,10 +681,42 @@ export default function LpaCreate({ user }: Props) {
         }
     };
 
+    const handleProceedToCheckout = (): void => {
+        if (!createdLpaCheckout) {
+            return;
+        }
+
+        const redirectUrl = encodeURIComponent(`${window.location.origin}/lpas/${createdLpaCheckout.id}/thank-you`);
+        const checkoutUrl = `/checkout?amount=${createdLpaCheckout.amountPence}&product=${encodeURIComponent(createdLpaCheckout.product)}&redirect_url=${redirectUrl}`;
+        window.location.href = checkoutUrl;
+    };
+
+    const stepperSteps = useMemo(() => {
+        if (!selectedDocumentOption || currentStep < 2) {
+            return INTRO_STEPPER_STEPS;
+        }
+
+        if (selectedDocumentOption === 'property') {
+            return PROPERTY_FINANCE_STEPPER_STEPS;
+        }
+
+        return HEALTH_WELFARE_STEPPER_STEPS;
+    }, [selectedDocumentOption, currentStep]);
+
+    const activeStepperIndex = useMemo(() => {
+        if (!selectedDocumentOption || currentStep < 2) {
+            return Math.min(currentStep, INTRO_STEPPER_STEPS.length - 1);
+        }
+
+        return Math.min(
+            contentStepToStepperIndex(currentStep, selectedDocumentOption),
+            stepperSteps.length - 1,
+        );
+    }, [currentStep, selectedDocumentOption, stepperSteps]);
+
     // Auto-scroll active step into view on mobile
     useEffect(() => {
-        const displayStep = getDisplayStep(currentStep);
-        const stepElement = stepRefs.current[displayStep];
+        const stepElement = stepRefs.current[activeStepperIndex];
         const container = stepperContainerRef.current;
 
         if (stepElement && container) {
@@ -369,7 +736,7 @@ export default function LpaCreate({ user }: Props) {
                 });
             }
         }
-    }, [currentStep]);
+    }, [activeStepperIndex]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -425,7 +792,123 @@ export default function LpaCreate({ user }: Props) {
         };
     }, [showReplacementAttorneyModal]);
 
+    useEffect(() => {
+        const nextRows: Array<{
+            partyId: string;
+            roleLabel: string;
+            typedSignature: string;
+            signDay: string;
+            signMonth: string;
+            signYear: string;
+            witnessFullName: string;
+            witnessAddress: string;
+            witnessPostcode: string;
+        }> = [];
+        attorneys.forEach((a) => {
+            nextRows.push({
+                partyId: `attorney:${a.id}`,
+                roleLabel: 'Attorney',
+                typedSignature: '',
+                signDay: '',
+                signMonth: '',
+                signYear: '',
+                witnessFullName: '',
+                witnessAddress: '',
+                witnessPostcode: '',
+            });
+        });
+        replacementAttorneys.forEach((a) => {
+            nextRows.push({
+                partyId: `replacement:${a.id}`,
+                roleLabel: 'Replacement attorney',
+                typedSignature: '',
+                signDay: '',
+                signMonth: '',
+                signYear: '',
+                witnessFullName: '',
+                witnessAddress: '',
+                witnessPostcode: '',
+            });
+        });
+        setAttorneyDeedRows((prev) => {
+            if (prev.length === nextRows.length && prev.every((p, i) => p.partyId === nextRows[i]?.partyId)) {
+                return prev;
+            }
+
+            return nextRows.map((nr) => {
+                const existing = prev.find((p) => p.partyId === nr.partyId);
+
+                return existing ? { ...nr, ...existing, partyId: nr.partyId, roleLabel: nr.roleLabel } : nr;
+            });
+        });
+    }, [attorneys, replacementAttorneys]);
+
     const renderStepContent = (): ReactElement => {
+        if (currentStep === 13) {
+            const donorLabel = [donorDetails.title, donorDetails.firstName, donorDetails.middleNames, donorDetails.lastName]
+                .filter(Boolean)
+                .join(' ');
+            const docLabel = selectedDocumentOption === 'property'
+                ? 'Property & financial affairs'
+                : selectedDocumentOption === 'both'
+                    ? 'Health & welfare and property & finance'
+                    : 'Health & welfare (LP1H)';
+
+            return (
+                <div className="mx-auto max-w-3xl space-y-6">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-6 text-primary-800 shadow-sm sm:p-8">
+                        <h2 className="text-2xl font-bold text-primary-900">Review your LPA</h2>
+                        <p className="mt-2 text-sm text-primary-600">
+                            Your application has been saved and a draft document prepared for our team. Complete secure payment to continue — you will receive a confirmation email with your answers and see a thank-you page with what happens next.
+                        </p>
+
+                        <dl className="mt-6 space-y-3 border-t border-slate-100 pt-6 text-sm">
+                            <div className="flex flex-wrap justify-between gap-2">
+                                <dt className="font-medium text-primary-600">Document</dt>
+                                <dd className="text-right text-primary-900">{docLabel}</dd>
+                            </div>
+                            <div className="flex flex-wrap justify-between gap-2">
+                                <dt className="font-medium text-primary-600">Donor</dt>
+                                <dd className="text-right text-primary-900">{donorLabel || '—'}</dd>
+                            </div>
+                            <div className="flex flex-wrap justify-between gap-2">
+                                <dt className="font-medium text-primary-600">Attorneys</dt>
+                                <dd className="text-right text-primary-900">{attorneys.length}</dd>
+                            </div>
+                            {usesLifeSustainingStep(selectedDocumentOption) && (
+                                <div className="flex flex-wrap justify-between gap-2">
+                                    <dt className="font-medium text-primary-600">Life-sustaining treatment</dt>
+                                    <dd className="text-right text-primary-900">{lifeSustainingTreatment === 'yes' ? 'Attorneys may decide' : 'Doctors decide'}</dd>
+                                </div>
+                            )}
+                        </dl>
+
+                        {submitError && (
+                            <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{submitError}</p>
+                        )}
+                    </div>
+
+                    <div className="rounded-2xl border border-primary-200 bg-primary-50/80 p-6 sm:p-8">
+                        <h3 className="text-lg font-semibold text-primary-900">Payment</h3>
+                        <p className="mt-2 text-sm text-primary-700">
+                            You will be redirected to our card checkout (Stripe). After payment succeeds, you will see a thank-you page and we will email you a full summary. Our team will contact you within 24 hours with next steps.
+                        </p>
+                        <button
+                            type="button"
+                            onClick={handleProceedToCheckout}
+                            disabled={!createdLpaCheckout}
+                            className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-primary-700 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
+                        >
+                            Pay securely now
+                        </button>
+                        {!createdLpaCheckout && !isSubmitting && (
+                            <p className="mt-3 text-xs text-primary-600">Complete the previous step to create your draft before paying.</p>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
         if (currentStep === 0) {
             return (
                 <div className="space-y-5 rounded-2xl bg-white p-5 text-primary-800 shadow-md sm:space-y-6 sm:p-8 sm:pl-12 lg:shadow-lg">
@@ -1125,10 +1608,62 @@ export default function LpaCreate({ user }: Props) {
             );
         }
 
-        // Step 5: Can attorneys view your legal documents?
+        // Step 5: LP1H Section 3 — how attorneys act + viewing legal documents
         if (currentStep === 5) {
+            const actingOptions: Array<{
+                value: 'jointly_and_severally' | 'jointly' | 'mixed' | 'single_attorney';
+                label: string;
+                hint: string;
+            }> = [
+                    {
+                        value: 'jointly_and_severally',
+                        label: 'Jointly and severally',
+                        hint: 'Attorneys can act alone or together. If one stops acting, the LPA usually still works.',
+                    },
+                    {
+                        value: 'jointly',
+                        label: 'Jointly',
+                        hint: 'Attorneys must agree on every decision. If one cannot act, the whole group may be unable to act unless you have replacements.',
+                    },
+                    {
+                        value: 'mixed',
+                        label: 'Jointly for some decisions, jointly and severally for others',
+                        hint: 'You must list joint decisions on OPG continuation sheet 2.',
+                    },
+                    {
+                        value: 'single_attorney',
+                        label: 'I only appointed one attorney',
+                        hint: 'Choose this if there is a single attorney (turn to replacement attorneys next).',
+                    },
+                ];
+
             return (
                 <div className="max-w-4xl space-y-6">
+                    <div className="rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:p-6 lg:p-8">
+                        <h2 className="text-xl font-semibold text-primary-900 mb-4 sm:mb-6 sm:text-2xl">
+                            Section 3: How should your <span className="text-cyan-500">attorneys</span> make decisions?
+                        </h2>
+                        <p className="mb-4 text-sm text-primary-700 sm:text-base">
+                            This matches LP1H and LP1F section 3. Tick one option only on the paper form; here, choose one below.
+                        </p>
+                        <div className="space-y-2">
+                            {actingOptions.map((opt) => (
+                                <button
+                                    key={opt.value}
+                                    type="button"
+                                    onClick={() => setAttorneyActingTogether(opt.value)}
+                                    className={`w-full rounded-lg border px-4 py-3 text-left text-sm transition sm:text-base ${attorneyActingTogether === opt.value
+                                        ? 'border-primary-500 bg-primary-50 ring-1 ring-primary-400'
+                                        : 'border-slate-200 bg-white hover:border-slate-300'
+                                        }`}
+                                >
+                                    <span className="font-semibold text-primary-900">{opt.label}</span>
+                                    <span className="mt-1 block text-xs text-primary-600 sm:text-sm">{opt.hint}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:p-6 lg:p-8">
                         <h2 className="text-xl font-semibold text-primary-900 mb-4 sm:mb-6 sm:text-2xl">
                             Can attorneys <span className="text-cyan-500">view your legal documents?</span>
@@ -1541,57 +2076,106 @@ export default function LpaCreate({ user }: Props) {
 
 
 
-        // Step 7: Life-sustaining Treatment
-        if (currentStep === 7) {
+        // Step 7: LP1H life-sustaining (health / both) + LP1F when attorneys may act (property / both)
+        if (
+            currentStep === 7 &&
+            (usesLifeSustainingStep(selectedDocumentOption) || usesPropertyFinancialLpa(selectedDocumentOption))
+        ) {
             return (
-                <div className="max-w-4xl space-y-6">
-                    <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                        <h2 className="text-3xl font-semibold text-center text-primary-900 mb-8">
-                            Life-sustaining <span className="text-cyan-500">Treatment</span>
-                        </h2>
+                <div className="max-w-4xl space-y-8">
+                    {usesLifeSustainingStep(selectedDocumentOption) && (
+                        <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                            <h2 className="text-3xl font-semibold text-center text-primary-900 mb-8">
+                                Life-sustaining <span className="text-cyan-500">Treatment</span>
+                                {selectedDocumentOption === 'both' && (
+                                    <span className="mt-2 block text-center text-base font-normal text-primary-600">(LP1H Section 5)</span>
+                                )}
+                            </h2>
 
-                        <div className="space-y-6 text-base text-primary-900 mb-8">
-                            <p>
-                                <span className="text-cyan-500">You</span> must choose what you want to happen if you needed medical help to keep you alive and you no longer had mental capacity.
-                            </p>
+                            <div className="space-y-6 text-base text-primary-900 mb-8">
+                                <p>
+                                    <span className="text-cyan-500">You</span> must choose what you want to happen if you needed medical help to keep you alive and you no longer had mental capacity.
+                                </p>
 
-                            <p>
-                                If you choose YES and <span className="text-cyan-500">you</span> ever needed life-sustaining treatment but can't make decisions, the attorneys can speak to doctors on your behalf as if they were <span className="text-cyan-500">you</span>.
-                            </p>
+                                <p>
+                                    If you choose YES and <span className="text-cyan-500">you</span> ever needed life-sustaining treatment but{' '}
+                                    <span className="text-cyan-500">cannot</span> make decisions, the attorneys can speak to doctors on your behalf as if they were <span className="text-cyan-500">you</span>.
+                                </p>
 
-                            <p>
-                                If you choose NO doctors will make decisions about life-sustaining treatment for <span className="text-cyan-500">you</span>.
-                            </p>
+                                <p>
+                                    If you choose NO doctors will make decisions about life-sustaining treatment for <span className="text-cyan-500">you</span>.
+                                </p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold text-primary-900">
+                                    Do you want the attorneys to make decisions about life-sustaining treatment?
+                                </h3>
+                                <div className="overflow-hidden rounded-md border border-slate-200">
+                                    <button
+                                        type="button"
+                                        onClick={() => setLifeSustainingTreatment('yes')}
+                                        className={`w-full px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'yes'
+                                            ? 'bg-slate-600 text-white'
+                                            : 'bg-white text-primary-800 hover:bg-slate-50'
+                                            }`}
+                                    >
+                                        Yes - give the attorneys authority
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setLifeSustainingTreatment('no')}
+                                        className={`w-full border-t border-slate-200 px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'no'
+                                            ? 'bg-slate-600 text-white'
+                                            : 'bg-white text-primary-800 hover:bg-slate-50'
+                                            }`}
+                                    >
+                                        No - do not give the attorneys authority
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                    )}
 
-                        <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-primary-900">
-                                Do you want the attorneys to make decisions about life-sustaining treatment?
-                            </h3>
+                    {usesPropertyFinancialLpa(selectedDocumentOption) && (
+                        <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
+                            <h2 className="text-2xl font-semibold text-primary-900 mb-2">
+                                When can your attorneys make decisions?
+                            </h2>
+                            <p className="mb-1 text-sm font-medium text-primary-600">LP1F Section 5 — property and financial affairs</p>
+                            <p className="mb-6 text-sm text-primary-700">
+                                Choose one. This matches the official LP1F form: either as soon as the LPA is registered (your attorneys still need your consent while you have capacity), or only when you do not have mental capacity.
+                            </p>
                             <div className="overflow-hidden rounded-md border border-slate-200">
                                 <button
                                     type="button"
-                                    onClick={() => setLifeSustainingTreatment('yes')}
-                                    className={`w-full px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'yes'
+                                    onClick={() => setWhenAttorneysCanAct('as_soon_registered')}
+                                    className={`w-full px-6 py-4 text-left text-base font-medium transition ${whenAttorneysCanAct === 'as_soon_registered'
                                         ? 'bg-slate-600 text-white'
                                         : 'bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
-                                    Yes - give the attorneys authority
+                                    <span className="block font-semibold">As soon as my LPA has been registered</span>
+                                    <span className={`mt-1 block text-sm ${whenAttorneysCanAct === 'as_soon_registered' ? 'text-slate-100' : 'text-primary-600'}`}>
+                                        (and also when you do not have mental capacity). Most people choose this — attorneys can help with practical matters with your agreement while you have capacity.
+                                    </span>
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setLifeSustainingTreatment('no')}
-                                    className={`w-full border-t border-slate-200 px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'no'
+                                    onClick={() => setWhenAttorneysCanAct('only_without_capacity')}
+                                    className={`w-full border-t border-slate-200 px-6 py-4 text-left text-base font-medium transition ${whenAttorneysCanAct === 'only_without_capacity'
                                         ? 'bg-slate-600 text-white'
                                         : 'bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
-                                    No - do not give the attorneys authority
+                                    <span className="block font-semibold">Only when I do not have mental capacity</span>
+                                    <span className={`mt-1 block text-sm ${whenAttorneysCanAct === 'only_without_capacity' ? 'text-slate-100' : 'text-primary-600'}`}>
+                                        The LPA is harder to use in practice because attorneys may need to prove lack of capacity each time.
+                                    </span>
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             );
         }
@@ -1635,7 +2219,10 @@ export default function LpaCreate({ user }: Props) {
                             <div className="space-y-3">
                                 <button
                                     type="button"
-                                    onClick={() => setNotifyPeople('no')}
+                                    onClick={() => {
+                                        setNotifyPeople('no');
+                                        setPeopleToNotifyRows([]);
+                                    }}
                                     className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${notifyPeople === 'no'
                                         ? 'bg-slate-700 text-white'
                                         : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
@@ -1655,6 +2242,122 @@ export default function LpaCreate({ user }: Props) {
                                 </button>
                             </div>
                         </div>
+
+                        {notifyPeople === 'yes' && (
+                            <div className="mt-8 space-y-4 border-t border-slate-200 pt-6">
+                                <h3 className="text-lg font-semibold text-primary-900">Section 6 — People to notify (max 5)</h3>
+                                <p className="text-sm text-primary-600">
+                                    {'Use CAPITAL LETTERS on the paper LP1H. Enter each person\'s details below.'}
+                                </p>
+                                {peopleToNotifyRows.map((row, idx) => (
+                                    <div key={row.id} className="rounded-lg border border-slate-200 bg-slate-50/80 p-4 space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-sm font-semibold text-primary-800">Person {idx + 1}</span>
+                                            <button
+                                                type="button"
+                                                className="text-sm font-medium text-red-600 hover:text-red-700"
+                                                onClick={() => setPeopleToNotifyRows((prev) => prev.filter((r) => r.id !== row.id))}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                        <div className="grid gap-3 sm:grid-cols-3">
+                                            <div>
+                                                <label className="mb-1 block text-xs font-medium text-primary-600">Title</label>
+                                                <select
+                                                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                    value={row.title}
+                                                    onChange={(e) => {
+                                                        const v = e.target.value;
+                                                        setPeopleToNotifyRows((prev) =>
+                                                            prev.map((r) => (r.id === row.id ? { ...r, title: v } : r)),
+                                                        );
+                                                    }}
+                                                >
+                                                    <option value="">—</option>
+                                                    {donorTitleOptions.map((t) => (
+                                                        <option key={t} value={t}>{t}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="mb-1 block text-xs font-medium text-primary-600">First names</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                    value={row.firstName}
+                                                    onChange={(e) => {
+                                                        const v = e.target.value;
+                                                        setPeopleToNotifyRows((prev) =>
+                                                            prev.map((r) => (r.id === row.id ? { ...r, firstName: v } : r)),
+                                                        );
+                                                    }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="mb-1 block text-xs font-medium text-primary-600">Last name</label>
+                                                <input
+                                                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                    value={row.lastName}
+                                                    onChange={(e) => {
+                                                        const v = e.target.value;
+                                                        setPeopleToNotifyRows((prev) =>
+                                                            prev.map((r) => (r.id === row.id ? { ...r, lastName: v } : r)),
+                                                        );
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">Address</label>
+                                            <input
+                                                className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                value={row.addressLine1}
+                                                onChange={(e) => {
+                                                    const v = e.target.value;
+                                                    setPeopleToNotifyRows((prev) =>
+                                                        prev.map((r) => (r.id === row.id ? { ...r, addressLine1: v } : r)),
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="max-w-xs">
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">Postcode</label>
+                                            <input
+                                                className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                value={row.postcode}
+                                                onChange={(e) => {
+                                                    const v = e.target.value;
+                                                    setPeopleToNotifyRows((prev) =>
+                                                        prev.map((r) => (r.id === row.id ? { ...r, postcode: v } : r)),
+                                                    );
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                                {peopleToNotifyRows.length < 5 && (
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setPeopleToNotifyRows((prev) => [
+                                                ...prev,
+                                                {
+                                                    id: Date.now().toString(),
+                                                    title: '',
+                                                    firstName: '',
+                                                    lastName: '',
+                                                    addressLine1: '',
+                                                    postcode: '',
+                                                },
+                                            ])
+                                        }
+                                        className="w-full rounded-md border-2 border-dashed border-primary-300 py-3 text-sm font-semibold text-primary-700 hover:bg-primary-50"
+                                    >
+                                        + Add person to notify
+                                    </button>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             );
@@ -1834,8 +2537,104 @@ export default function LpaCreate({ user }: Props) {
                             )}
 
                             {documentRecipient === 'other' && (
-                                <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-primary-600">
-                                    You'll be able to provide the recipient's details in the following step.
+                                <div className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-slate-50/80 p-4">
+                                    <h3 className="text-base font-semibold text-primary-900">Other recipient (LP1H section 13)</h3>
+                                    <div className="grid gap-3 sm:grid-cols-2">
+                                        <div>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">Title</label>
+                                            <select
+                                                className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                value={recipientOther.title}
+                                                onChange={(e) => setRecipientOther((p) => ({ ...p, title: e.target.value }))}
+                                            >
+                                                <option value="">—</option>
+                                                {donorTitleOptions.map((t) => (
+                                                    <option key={t} value={t}>{t}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">Company (optional)</label>
+                                            <input
+                                                className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                value={recipientOther.company}
+                                                onChange={(e) => setRecipientOther((p) => ({ ...p, company: e.target.value }))}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">First names</label>
+                                            <input
+                                                className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                value={recipientOther.firstName}
+                                                onChange={(e) => setRecipientOther((p) => ({ ...p, firstName: e.target.value }))}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">Last name</label>
+                                            <input
+                                                className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                                value={recipientOther.lastName}
+                                                onChange={(e) => setRecipientOther((p) => ({ ...p, lastName: e.target.value }))}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="mb-1 block text-xs font-medium text-primary-600">Address</label>
+                                        <input
+                                            className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                            value={recipientOther.addressLine1}
+                                            onChange={(e) => setRecipientOther((p) => ({ ...p, addressLine1: e.target.value }))}
+                                        />
+                                    </div>
+                                    <div className="max-w-xs">
+                                        <label className="mb-1 block text-xs font-medium text-primary-600">Postcode</label>
+                                        <input
+                                            className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                            value={recipientOther.postcode}
+                                            onChange={(e) => setRecipientOther((p) => ({ ...p, postcode: e.target.value }))}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {documentRecipient && (
+                                <div className="mt-8 space-y-3 border-t border-slate-200 pt-6">
+                                    <h3 className="text-base font-semibold text-primary-900">How should OPG contact that person? (section 13)</h3>
+                                    <p className="text-sm text-primary-600">You may choose more than one.</p>
+                                    <div className="flex flex-wrap gap-4">
+                                        <label className="flex items-center gap-2 text-sm">
+                                            <input
+                                                type="checkbox"
+                                                checked={recipientPrefPost}
+                                                onChange={(e) => setRecipientPrefPost(e.target.checked)}
+                                            />
+                                            Post
+                                        </label>
+                                        <label className="flex items-center gap-2 text-sm">
+                                            <input
+                                                type="checkbox"
+                                                checked={recipientPrefPhone}
+                                                onChange={(e) => setRecipientPrefPhone(e.target.checked)}
+                                            />
+                                            Phone
+                                        </label>
+                                        <label className="flex items-center gap-2 text-sm">
+                                            <input
+                                                type="checkbox"
+                                                checked={recipientPrefEmail}
+                                                onChange={(e) => setRecipientPrefEmail(e.target.checked)}
+                                            />
+                                            Email
+                                        </label>
+                                        <label className="flex items-center gap-2 text-sm">
+                                            <input
+                                                type="checkbox"
+                                                checked={recipientPrefWelsh}
+                                                onChange={(e) => setRecipientPrefWelsh(e.target.checked)}
+                                            />
+                                            Welsh correspondence
+                                        </label>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -1882,22 +2681,368 @@ export default function LpaCreate({ user }: Props) {
                             ))}
                         </div>
                     </div>
+
+                    {certificateChoice === 'yes' && (
+                        <div className="mt-8 space-y-4 border-t border-slate-200 pt-6">
+                            <h3 className="text-lg font-semibold text-primary-900">Certificate provider details (section 10)</h3>
+                            <p className="text-sm text-primary-600">They cannot be an attorney on this LPA. Typed name below can stand in for a wet ink signature until you print the LP1H.</p>
+                            <div className="grid gap-3 sm:grid-cols-3">
+                                <div>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">Title</label>
+                                    <select
+                                        className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={certificateProvider.title}
+                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, title: e.target.value }))}
+                                    >
+                                        <option value="">—</option>
+                                        {donorTitleOptions.map((t) => (
+                                            <option key={t} value={t}>{t}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">First names</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={certificateProvider.firstName}
+                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, firstName: e.target.value }))}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">Last name</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={certificateProvider.lastName}
+                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, lastName: e.target.value }))}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="mb-1 block text-xs font-medium text-primary-600">Address</label>
+                                <input
+                                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={certificateProvider.addressLine1}
+                                    onChange={(e) => setCertificateProvider((p) => ({ ...p, addressLine1: e.target.value }))}
+                                />
+                            </div>
+                            <div className="max-w-xs">
+                                <label className="mb-1 block text-xs font-medium text-primary-600">Postcode</label>
+                                <input
+                                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={certificateProvider.postcode}
+                                    onChange={(e) => setCertificateProvider((p) => ({ ...p, postcode: e.target.value }))}
+                                />
+                            </div>
+                            <div>
+                                <label className="mb-1 block text-xs font-medium text-primary-600">Typed signature (full name as on the form)</label>
+                                <input
+                                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={certificateProvider.typedSignature}
+                                    onChange={(e) => setCertificateProvider((p) => ({ ...p, typedSignature: e.target.value }))}
+                                />
+                            </div>
+                            <div className="grid max-w-md grid-cols-3 gap-2">
+                                <div>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">Day</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={certificateProvider.signDay}
+                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, signDay: e.target.value }))}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">Month</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={certificateProvider.signMonth}
+                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, signMonth: e.target.value }))}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">Year</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={certificateProvider.signYear}
+                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, signYear: e.target.value }))}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         }
 
-        const nextStep = lpaSteps[currentStep];
+        // Step 12: LP1H preferences, life-sustaining witness block, sections 9, 11, 15
+        if (currentStep === 12) {
+            const updateDeedRow = (partyId: string, patch: Partial<(typeof attorneyDeedRows)[0]>): void => {
+                setAttorneyDeedRows((prev) => prev.map((r) => (r.partyId === partyId ? { ...r, ...patch } : r)));
+            };
+
+            return (
+                <div className="max-w-4xl space-y-8 pb-4">
+                    <div className="rounded-2xl bg-white p-6 text-primary-800 shadow-sm sm:p-8">
+                        <h2 className="text-2xl font-semibold text-primary-900">
+                            {selectedDocumentOption === 'property'
+                                ? 'LP1F: preferences, instructions & signatures'
+                                : 'LP1H / LP1F: preferences, instructions & signatures'}
+                        </h2>
+                        <p className="mt-2 text-sm text-primary-600">
+                            These fields mirror the official OPG forms (LP1H / LP1F, Aug 2025). Typed full names are collected as an electronic record; you will normally re-sign in ink on the paper form sent to you.
+                        </p>
+                        <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                            <input
+                                type="checkbox"
+                                className="mt-1"
+                                checked={completeSignaturesOnPaper}
+                                onChange={(e) => setCompleteSignaturesOnPaper(e.target.checked)}
+                            />
+                            <span>
+                                <span className="font-semibold text-primary-900">I will complete wet ink signatures on the printed LP1H only.</span>
+                                <span className="mt-1 block text-sm text-primary-600">Tick this to skip the detailed signature fields below and continue.</span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                        <h3 className="text-lg font-semibold text-primary-900">Section 7 — Preferences & instructions (optional)</h3>
+                        <div className="mt-4 space-y-3">
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-primary-700">Preferences</label>
+                                <textarea
+                                    rows={4}
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    placeholder={'Use words like "prefer" and "would like"…'}
+                                    value={preferencesText}
+                                    onChange={(e) => setPreferencesText(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-primary-700">Instructions (your attorneys must follow valid instructions)</label>
+                                <textarea
+                                    rows={4}
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    placeholder={'Use words like "must" and "have to"…'}
+                                    value={instructionsText}
+                                    onChange={(e) => setInstructionsText(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {usesLifeSustainingStep(selectedDocumentOption) && (
+                        <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                            <h3 className="text-lg font-semibold text-primary-900">Section 5 — Life-sustaining treatment (signature / witness)</h3>
+                            <p className="mt-1 text-sm text-primary-600">For the option you chose earlier, record how you would sign section 5 on LP1H page 6.</p>
+                            <div className="mt-4 space-y-3">
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium">Donor typed name / mark</label>
+                                    <input
+                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                        value={lifeSustainingSignBlock.donorTypedSignature}
+                                        onChange={(e) =>
+                                            setLifeSustainingSignBlock((p) => ({ ...p, donorTypedSignature: e.target.value }))
+                                        }
+                                    />
+                                </div>
+                                <div className="grid max-w-md grid-cols-3 gap-2">
+                                    <input
+                                        placeholder="DD"
+                                        className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={lifeSustainingSignBlock.signDay}
+                                        onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, signDay: e.target.value }))}
+                                    />
+                                    <input
+                                        placeholder="MM"
+                                        className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={lifeSustainingSignBlock.signMonth}
+                                        onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, signMonth: e.target.value }))}
+                                    />
+                                    <input
+                                        placeholder="YYYY"
+                                        className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={lifeSustainingSignBlock.signYear}
+                                        onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, signYear: e.target.value }))}
+                                    />
+                                </div>
+                                <input
+                                    placeholder="Witness full name"
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={lifeSustainingSignBlock.witnessFullName}
+                                    onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, witnessFullName: e.target.value }))}
+                                />
+                                <input
+                                    placeholder="Witness address"
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={lifeSustainingSignBlock.witnessAddress}
+                                    onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, witnessAddress: e.target.value }))}
+                                />
+                                <input
+                                    placeholder="Witness postcode"
+                                    className="max-w-xs rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={lifeSustainingSignBlock.witnessPostcode}
+                                    onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, witnessPostcode: e.target.value }))}
+                                />
+                                <input
+                                    placeholder="Witness typed name"
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={lifeSustainingSignBlock.witnessTypedSignature}
+                                    onChange={(e) =>
+                                        setLifeSustainingSignBlock((p) => ({ ...p, witnessTypedSignature: e.target.value }))
+                                    }
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                        <h3 className="text-lg font-semibold text-primary-900">Section 9 — Donor signature & witness</h3>
+                        <div className="mt-4 grid gap-3">
+                            <input
+                                placeholder="Donor typed name / mark"
+                                className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                value={section9.donorTypedSignature}
+                                onChange={(e) => setSection9((p) => ({ ...p, donorTypedSignature: e.target.value }))}
+                            />
+                            <div className="grid max-w-md grid-cols-3 gap-2">
+                                <input
+                                    placeholder="DD"
+                                    className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={section9.signDay}
+                                    onChange={(e) => setSection9((p) => ({ ...p, signDay: e.target.value }))}
+                                />
+                                <input
+                                    placeholder="MM"
+                                    className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={section9.signMonth}
+                                    onChange={(e) => setSection9((p) => ({ ...p, signMonth: e.target.value }))}
+                                />
+                                <input
+                                    placeholder="YYYY"
+                                    className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={section9.signYear}
+                                    onChange={(e) => setSection9((p) => ({ ...p, signYear: e.target.value }))}
+                                />
+                            </div>
+                            <input
+                                placeholder="Witness full name"
+                                className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                value={section9.witnessFullName}
+                                onChange={(e) => setSection9((p) => ({ ...p, witnessFullName: e.target.value }))}
+                            />
+                            <input
+                                placeholder="Witness address"
+                                className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                value={section9.witnessAddress}
+                                onChange={(e) => setSection9((p) => ({ ...p, witnessAddress: e.target.value }))}
+                            />
+                            <input
+                                placeholder="Witness postcode"
+                                className="max-w-xs rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                value={section9.witnessPostcode}
+                                onChange={(e) => setSection9((p) => ({ ...p, witnessPostcode: e.target.value }))}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                        <h3 className="text-lg font-semibold text-primary-900">Section 11 — Each attorney & replacement (deed signature)</h3>
+                        {attorneyDeedRows.length === 0 && (
+                            <p className="text-sm text-primary-600">Add attorneys (and optional replacements) in the earlier steps.</p>
+                        )}
+                        {attorneyDeedRows.map((row) => (
+                            <div key={row.partyId} className="mt-4 space-y-2 border-t border-slate-100 pt-4 first:mt-0 first:border-t-0 first:pt-0">
+                                <p className="text-sm font-semibold text-primary-800">{row.roleLabel}</p>
+                                <input
+                                    placeholder="Typed signature (full name)"
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={row.typedSignature}
+                                    onChange={(e) => updateDeedRow(row.partyId, { typedSignature: e.target.value })}
+                                />
+                                <div className="grid max-w-md grid-cols-3 gap-2">
+                                    <input
+                                        placeholder="DD"
+                                        className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={row.signDay}
+                                        onChange={(e) => updateDeedRow(row.partyId, { signDay: e.target.value })}
+                                    />
+                                    <input
+                                        placeholder="MM"
+                                        className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={row.signMonth}
+                                        onChange={(e) => updateDeedRow(row.partyId, { signMonth: e.target.value })}
+                                    />
+                                    <input
+                                        placeholder="YYYY"
+                                        className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                        value={row.signYear}
+                                        onChange={(e) => updateDeedRow(row.partyId, { signYear: e.target.value })}
+                                    />
+                                </div>
+                                <input
+                                    placeholder="Witness full name"
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={row.witnessFullName}
+                                    onChange={(e) => updateDeedRow(row.partyId, { witnessFullName: e.target.value })}
+                                />
+                                <input
+                                    placeholder="Witness address"
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={row.witnessAddress}
+                                    onChange={(e) => updateDeedRow(row.partyId, { witnessAddress: e.target.value })}
+                                />
+                                <input
+                                    placeholder="Witness postcode"
+                                    className="max-w-xs rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                    value={row.witnessPostcode}
+                                    onChange={(e) => updateDeedRow(row.partyId, { witnessPostcode: e.target.value })}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+                        <h3 className="text-lg font-semibold text-primary-900">Section 15 — Person applying to register the LPA</h3>
+                        <p className="text-sm text-primary-600">Same person as in section 12 on the paper form (donor or attorney applying).</p>
+                        <div className="mt-4 grid gap-3 max-w-lg">
+                            <input
+                                placeholder="Typed name / mark"
+                                className="rounded-md border border-slate-300 px-3 py-2 text-sm"
+                                value={section15.typedSignature}
+                                onChange={(e) => setSection15((p) => ({ ...p, typedSignature: e.target.value }))}
+                            />
+                            <div className="grid grid-cols-3 gap-2">
+                                <input
+                                    placeholder="DD"
+                                    className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={section15.signDay}
+                                    onChange={(e) => setSection15((p) => ({ ...p, signDay: e.target.value }))}
+                                />
+                                <input
+                                    placeholder="MM"
+                                    className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={section15.signMonth}
+                                    onChange={(e) => setSection15((p) => ({ ...p, signMonth: e.target.value }))}
+                                />
+                                <input
+                                    placeholder="YYYY"
+                                    className="rounded-md border border-slate-300 px-2 py-2 text-sm"
+                                    value={section15.signYear}
+                                    onChange={(e) => setSection15((p) => ({ ...p, signYear: e.target.value }))}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="rounded-2xl bg-white p-8 text-primary-700 shadow-sm">
-                <p className="text-lg font-semibold text-primary-900">{nextStep?.title ?? 'Upcoming Step'}</p>
-                <p className="mt-2 text-sm text-primary-500">This part of the journey will be completed in the next iteration.</p>
+                <p className="text-lg font-semibold text-primary-900">Step unavailable</p>
+                <p className="mt-2 text-sm text-primary-500">Please use the step indicator above or go back and continue in order.</p>
             </div>
         );
-    };
-
-    // Helper function to map currentStep to display step for the progress indicator
-    const getDisplayStep = (currentStepIndex: number): number => {
-        return currentStepIndex;
     };
 
     return (
@@ -1913,16 +3058,13 @@ export default function LpaCreate({ user }: Props) {
 
                                 {/* Steps */}
                                 <div className="relative flex min-w-max items-start justify-between gap-1 px-2 sm:gap-2 md:gap-0 md:px-0">
-                                    {lpaSteps.map((step, index) => {
-                                        // Map currentStep to display step
-                                        const displayStep = getDisplayStep(currentStep);
-
-                                        const isActive = displayStep === index;
-                                        const isCompleted = displayStep > index;
+                                    {stepperSteps.map((step, index) => {
+                                        const isActive = activeStepperIndex === index;
+                                        const isCompleted = activeStepperIndex > index;
 
                                         return (
                                             <div
-                                                key={step.key}
+                                                key={`${step.key}-${index}`}
                                                 ref={(el) => { stepRefs.current[index] = el; }}
                                                 className="flex flex-col items-center text-center"
                                                 style={{ minWidth: '75px' }}
@@ -1966,7 +3108,7 @@ export default function LpaCreate({ user }: Props) {
                         {renderStepContent()}
 
                         {/* Error Message */}
-                        {submitError && (
+                        {submitError && currentStep !== 13 && (
                             <div className="rounded-lg border-2 border-red-500 bg-red-50 px-4 py-3 text-sm text-red-700">
                                 <p className="font-semibold">Error</p>
                                 <p>{submitError}</p>
@@ -1979,32 +3121,38 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-500 px-5 py-2.5 text-sm font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                                 onClick={() => handleStepChange('prev')}
-                                disabled={currentStep === 0 || isSubmitting}
+                                disabled={currentStep === 0 || currentStep === 13 || isSubmitting}
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
                             </button>
-                            <button
-                                type="button"
-                                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
-                                onClick={() => handleStepChange('next')}
-                                disabled={!canAdvanceFromStep(currentStep) || isSubmitting}
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Creating LPA & Generating PDF...
-                                    </>
-                                ) : (
-                                    <>
-                                        {(currentStep === 5 || currentStep === 6 || currentStep === 7 || currentStep === 8 || currentStep === 9 || currentStep === 10 || currentStep === 11) ? 'Save and continue' : 'Continue'}
-                                        <ArrowRight className="h-4 w-4" />
-                                    </>
-                                )}
-                            </button>
+                            {currentStep < 13 && (
+                                <button
+                                    type="button"
+                                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
+                                    onClick={() => handleStepChange('next')}
+                                    disabled={!canAdvanceFromStep(currentStep) || isSubmitting}
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Creating LPA & Generating PDF...
+                                        </>
+                                    ) : (
+                                        <>
+                                            {currentStep === 12
+                                                ? 'Create draft & continue'
+                                                : ([5, 6, 8, 9, 10, 11].includes(currentStep) || (currentStep === 7 && (usesLifeSustainingStep(selectedDocumentOption) || usesPropertyFinancialLpa(selectedDocumentOption))))
+                                                    ? 'Save and continue'
+                                                    : 'Continue'}
+                                            <ArrowRight className="h-4 w-4" />
+                                        </>
+                                    )}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

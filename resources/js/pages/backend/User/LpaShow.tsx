@@ -1,5 +1,5 @@
-import { router } from '@inertiajs/react';
-import { ArrowLeft, Check, Download, Eye, Lock } from 'lucide-react';
+import { Link, router } from '@inertiajs/react';
+import { ArrowLeft, Check, CreditCard, Lock } from 'lucide-react';
 
 import UserLayout from '@/layouts/user-layout';
 
@@ -44,18 +44,11 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
         lpa.donor_details?.lastName,
     ].filter(Boolean).join(' ') || 'Not specified';
 
-    const handlePreview = () => {
-        window.open(`/lpas/${lpa.id}/pdf/preview`, '_blank');
-    };
+    const thankYouUrl = `${window.location.origin}/lpas/${lpa.id}/thank-you`;
 
-    const handleDownload = () => {
-        if (!hasPaid) {
-            const redirectUrl = encodeURIComponent(window.location.href);
-            router.visit(`/checkout?amount=${amount}&product=${product}&redirect_url=${redirectUrl}`);
-            return;
-        }
-
-        window.location.href = `/lpas/${lpa.id}/pdf/download`;
+    const handleCompletePayment = (): void => {
+        const redirectUrl = encodeURIComponent(thankYouUrl);
+        router.visit(`/checkout?amount=${amount}&product=${product}&redirect_url=${redirectUrl}`);
     };
 
     return (
@@ -72,7 +65,6 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                     </button>
 
                     <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-                        {/* Header */}
                         <div className="border-b border-slate-200 bg-primary-50 px-6 py-5">
                             <div className="flex items-center justify-between">
                                 <div>
@@ -90,9 +82,7 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                             </div>
                         </div>
 
-                        {/* Content */}
                         <div className="p-6 space-y-6">
-                            {/* Status Section */}
                             {hasPaid ? (
                                 <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
                                     <div className="flex items-center gap-3">
@@ -100,12 +90,20 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                             <Check className="h-4 w-4" />
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-emerald-800">Payment Complete</p>
+                                            <p className="font-semibold text-emerald-800">Payment complete</p>
                                             <p className="text-sm text-emerald-600">
-                                                Your LPA is ready for download without the draft watermark.
+                                                Thank you. Our team will be in touch shortly with next steps for your LPA.
                                             </p>
                                         </div>
                                     </div>
+                                    <p className="mt-4 text-sm text-emerald-800">
+                                        <Link
+                                            href={`/lpas/${lpa.id}/thank-you`}
+                                            className="font-semibold underline hover:text-emerald-950"
+                                        >
+                                            View your thank-you &amp; what happens next
+                                        </Link>
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
@@ -114,16 +112,15 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                             <Lock className="h-4 w-4" />
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-amber-800">Draft Status</p>
+                                            <p className="font-semibold text-amber-800">Draft — payment required</p>
                                             <p className="text-sm text-amber-600">
-                                                Your LPA document has been generated as a draft. Complete your payment to download the final version without the watermark.
+                                                Your answers are saved and a draft has been prepared. Complete payment to finalise your order; after payment you will see a confirmation page and we will contact you within 24 hours.
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             )}
 
-                            {/* Details */}
                             <div className="grid grid-cols-2 gap-4 text-sm">
                                 <div>
                                     <p className="text-primary-500 font-medium">Document Type</p>
@@ -141,7 +138,6 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                 </div>
                             </div>
 
-                            {/* Price Breakdown */}
                             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
                                 <h3 className="mb-3 text-sm font-semibold text-primary-900">Price Breakdown</h3>
                                 <div className="space-y-2 text-sm">
@@ -175,37 +171,18 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                 </p>
                             </div>
 
-                            {/* Actions */}
-                            <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-                                <button
-                                    type="button"
-                                    onClick={handlePreview}
-                                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg border border-primary-300 px-5 py-2.5 text-sm font-semibold text-primary-700 hover:bg-primary-50 transition"
-                                >
-                                    <Eye className="h-4 w-4" />
-                                    {hasPaid ? 'Preview PDF' : 'Preview Draft'}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleDownload}
-                                    className={`inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition ${hasPaid
-                                        ? 'bg-emerald-600 hover:bg-emerald-700'
-                                        : 'bg-primary-600 hover:bg-primary-700'
-                                        }`}
-                                >
-                                    {hasPaid ? (
-                                        <>
-                                            <Download className="h-4 w-4" />
-                                            Download Final PDF
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Lock className="h-4 w-4" />
-                                            Pay £{(amount / 100).toFixed(2)} & Download
-                                        </>
-                                    )}
-                                </button>
-                            </div>
+                            {!hasPaid && (
+                                <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row">
+                                    <button
+                                        type="button"
+                                        onClick={handleCompletePayment}
+                                        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700 sm:w-auto"
+                                    >
+                                        <CreditCard className="h-4 w-4" />
+                                        Pay £{(amount / 100).toFixed(2)} securely
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -153,7 +153,9 @@ class PaymentController extends Controller
             Payment::query()->whereKey($payment->getKey())->update(['status' => $status]);
 
             if ($status->isComplete() && ! $wasCompleted) {
-                Mail::to($request->user())->queue(new PaymentCompletedEmail($payment->fresh()));
+                Mail::to($request->user())->queue(
+                    (new PaymentCompletedEmail($payment->fresh()))->delay(now()->addSecond())
+                );
             }
 
             // If payment succeeded and it's for an LPA, mark the LPA as paid

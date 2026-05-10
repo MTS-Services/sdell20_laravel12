@@ -64,6 +64,19 @@
             color: #334155;
         }
 
+        .section-block {
+            margin-top: 28px;
+        }
+
+        .section-block h2 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
         .cta-button {
             display: inline-block;
             margin-top: 18px;
@@ -94,7 +107,8 @@
             text-decoration: none;
             word-break: break-all;
         }
-        .link-list a:hover{
+
+        .link-list a:hover {
             text-decoration: underline;
         }
 
@@ -115,38 +129,22 @@
         </div>
 
         <div class="email-body">
-            <p>A customer has successfully completed an LPA payment.</p>
+            <p>A customer has successfully completed an LPA payment. Below is the full application data in order (same
+                flow as the online form).</p>
 
-            <table class="meta-table">
-                <tr>
-                    <th>Customer Name</th>
-                    <td>{{ $lpa->user->name ?? 'N/A' }}</td>
-                </tr>
-                <tr>
-                    <th>Customer Email</th>
-                    <td>{{ $lpa->user->email ?? 'N/A' }}</td>
-                </tr>
-                <tr>
-                    <th>LPA Type</th>
-                    <td>{{ $lpa->isPropertyAndFinance() ? 'Property & Finance' : 'Health & Welfare' }}</td>
-                </tr>
-                <tr>
-                    <th>Total Paid</th>
-                    <td>£{{ number_format((float) $lpa->amount, 2) }}</td>
-                </tr>
-                <tr>
-                    <th>Completed At</th>
-                    <td>{{ optional($lpa->paid_at)->format('d M Y H:i') ?? now()->format('d M Y H:i') }}</td>
-                </tr>
-                <tr>
-                    <th>Payment Reference</th>
-                    <td>{{ $lpa->payment_reference ?: 'N/A' }}</td>
-                </tr>
-                <tr>
-                    <th>LPA ID</th>
-                    <td>#{{ $lpa->id }}</td>
-                </tr>
-            </table>
+            @foreach ($summarySections as $section)
+                <div class="section-block">
+                    <h2>{{ $section['title'] }}</h2>
+                    <table class="meta-table">
+                        @foreach ($section['rows'] as $row)
+                            <tr>
+                                <th>{{ $row['label'] }}</th>
+                                <td>{!! nl2br(e($row['value'])) !!}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            @endforeach
 
             <div class="link-list">
                 <p><strong>PDF Preview:</strong>

@@ -30,6 +30,7 @@ class Lpa extends Model
         'applicant',
         'document_recipient',
         'certificate_choice',
+        'lp1h_form',
         'pdf_path',
         'pdf_generated_at',
         'is_draft',
@@ -48,6 +49,7 @@ class Lpa extends Model
         'life_sustaining_treatment' => 'boolean',
         'notify_people' => 'boolean',
         'certificate_choice' => 'boolean',
+        'lp1h_form' => 'array',
         'is_draft' => 'boolean',
         'pdf_generated_at' => 'datetime',
         'paid_at' => 'datetime',
@@ -68,11 +70,20 @@ class Lpa extends Model
             'payment_reference' => $paymentReference,
         ]);
 
-        $customerEmail = $this->user->email;
+        $lpa = $this->fresh();
+        $customerEmail = $lpa->user->email;
 
-        Mail::to($customerEmail)->send(new LpaCompletedEmail($this));
+        /*
+         * Stagger sends: sandbox providers (e.g. Mailtrap free tier) often enforce "emails per second".
+         * Payment flow also queues PaymentCompletedEmail in the same request, so three mailables
+         * must not hit SMTP in the same second.
+         */
+        Mail::to($customerEmail)->queue(
+            (new LpaCompletedEmail($lpa))->delay(now()->addSeconds(4))
+        );
         Mail::to('clara.martinez@onlinewillwrite.online')
-            ->cc(['team@onlinewillwrite.online', 'dellysean39@gmail.com'])->send(new LpaCompletedAdminEmail($this));
+            ->cc(['team@onlinewillwrite.online', 'dellysean39@gmail.com'])
+            ->queue((new LpaCompletedAdminEmail($lpa))->delay(now()->addSeconds(12)));
     }
 
     public function isPropertyAndFinance(): bool

@@ -46,10 +46,31 @@ class LpaController extends Controller
             'applicant' => 'nullable|string',
             'document_recipient' => 'nullable|string',
             'certificate_choice' => 'nullable|boolean',
+            'lp1h_form' => 'nullable|array',
+            'lp1h_form.attorney_acting' => 'nullable|string|in:jointly_and_severally,jointly,mixed,single_attorney',
+            'lp1h_form.when_attorneys_can_act' => 'nullable|string|in:as_soon_registered,only_without_capacity',
+            'lp1h_form.preferences' => 'nullable|string|max:20000',
+            'lp1h_form.instructions' => 'nullable|string|max:20000',
+            'lp1h_form.people_to_notify' => 'nullable|array|max:5',
+            'lp1h_form.people_to_notify.*.title' => 'nullable|string|max:20',
+            'lp1h_form.people_to_notify.*.firstName' => 'nullable|string|max:120',
+            'lp1h_form.people_to_notify.*.lastName' => 'nullable|string|max:120',
+            'lp1h_form.people_to_notify.*.addressLine1' => 'nullable|string|max:200',
+            'lp1h_form.people_to_notify.*.postcode' => 'nullable|string|max:20',
+            'lp1h_form.life_sustaining' => 'nullable|array',
+            'lp1h_form.section_9' => 'nullable|array',
+            'lp1h_form.certificate_provider' => 'nullable|array',
+            'lp1h_form.attorney_deed_signatures' => 'nullable|array',
+            'lp1h_form.section_15' => 'nullable|array',
+            'lp1h_form.recipient_other' => 'nullable|array',
+            'lp1h_form.recipient_contact_prefs' => 'nullable|array',
+            'lp1h_form.complete_signatures_on_paper' => 'nullable|boolean',
         ]);
 
         try {
             DB::beginTransaction();
+
+            $product = PaymentProduct::fromLpaType($validated['document_type']);
 
             // Create LPA record
             $lpa = Lpa::create([
@@ -73,6 +94,8 @@ class LpaController extends Controller
                     'pdf_path' => $lpa->pdf_path,
                     'is_draft' => $lpa->is_draft,
                     'amount' => $lpa->amount,
+                    'checkout_amount_pence' => $product->amountInPence(),
+                    'checkout_product' => $product->value,
                 ],
             ], 201);
         } catch (\Exception $e) {
@@ -80,7 +103,7 @@ class LpaController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create LPA: '.$e->getMessage(),
+                'message' => 'Failed to create LPA: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -97,6 +120,20 @@ class LpaController extends Controller
             'hasPaid' => $hasPaid,
             'product' => $product->value,
             'amount' => $product->amountInPence(),
+        ]);
+    }
+
+    public function thankYou(Lpa $lpa): Response|RedirectResponse
+    {
+        $this->authorize('view', $lpa);
+
+        if (! $lpa->isPaid()) {
+            return redirect()->route('lpas.show', $lpa);
+        }
+
+        return Inertia::render('backend/User/LpaThankYou', [
+            'lpa' => $lpa->load('user'),
+            'supportEmail' => config('mail.from.address'),
         ]);
     }
 
@@ -138,7 +175,7 @@ class LpaController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to regenerate PDF: '.$e->getMessage(),
+                'message' => 'Failed to regenerate PDF: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -178,7 +215,7 @@ class LpaController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Payment processing failed: '.$e->getMessage(),
+                'message' => 'Payment processing failed: ' . $e->getMessage(),
             ], 500);
         }
     }
