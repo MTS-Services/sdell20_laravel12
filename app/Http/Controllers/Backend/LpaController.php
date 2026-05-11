@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backend;
 use App\Enums\PaymentProduct;
 use App\Http\Controllers\Controller;
 use App\Models\Lpa;
-use App\Services\LpaPdfService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -18,10 +17,6 @@ use Inertia\Response;
 class LpaController extends Controller
 {
     use AuthorizesRequests;
-
-    public function __construct(
-        private readonly LpaPdfService $pdfService
-    ) {}
 
     public function create(): Response
     {
@@ -81,17 +76,13 @@ class LpaController extends Controller
                 'amount' => $this->calculateAmount($validated['document_type']),
             ]);
 
-            // Generate PDF automatically
-            $this->pdfService->generatePdf($lpa);
-
             DB::commit();
 
             return response()->json([
                 'success' => true,
-                'message' => 'LPA created successfully. PDF generated in draft status.',
+                'message' => 'LPA created successfully.',
                 'data' => [
                     'lpa_id' => $lpa->id,
-                    'pdf_path' => $lpa->pdf_path,
                     'is_draft' => $lpa->is_draft,
                     'amount' => $lpa->amount,
                     'checkout_amount_pence' => $product->amountInPence(),
@@ -137,49 +128,6 @@ class LpaController extends Controller
         ]);
     }
 
-    public function downloadPdf(Lpa $lpa)
-    {
-        $this->authorize('view', $lpa);
-
-        // Only allow download of final PDF if the LPA has been paid for
-        if ($lpa->isDraft()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Payment required to download the final PDF. You can only preview the draft version.',
-            ], 402);
-        }
-
-        return $this->pdfService->downloadPdf($lpa);
-    }
-
-    public function previewPdf(Lpa $lpa)
-    {
-        $this->authorize('view', $lpa);
-
-        // Preview always shows the current version (draft watermark if unpaid)
-        return $this->pdfService->streamPdf($lpa);
-    }
-
-    public function regeneratePdf(Lpa $lpa): JsonResponse
-    {
-        $this->authorize('update', $lpa);
-
-        try {
-            $this->pdfService->regeneratePdf($lpa);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'PDF regenerated successfully.',
-                'pdf_path' => $lpa->fresh()->pdf_path,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to regenerate PDF: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
-
     public function processPayment(Request $request, Lpa $lpa): JsonResponse
     {
         $this->authorize('update', $lpa);
@@ -194,9 +142,6 @@ class LpaController extends Controller
 
             // Mark as paid and remove draft status
             $lpa->markAsPaid($validated['payment_reference']);
-
-            // Regenerate PDF without draft watermark
-            $this->pdfService->removeDraftWatermark($lpa);
 
             DB::commit();
 

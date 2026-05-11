@@ -10,6 +10,7 @@ use App\Models\Lpa;
 use App\Models\Payment;
 use App\Models\User;
 use App\Models\Will;
+use App\Support\LpaAdminEmailSummary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -70,13 +71,13 @@ class AdminUserController extends Controller
     public function details(User $user): Response
     {
         $user->load([
-            'payments' => fn ($query) => $query->latest(),
-            'wills' => fn ($query) => $query->latest(),
-            'lpas' => fn ($query) => $query->latest(),
+            'payments' => fn($query) => $query->latest(),
+            'wills' => fn($query) => $query->latest(),
+            'lpas' => fn($query) => $query->latest(),
         ]);
 
         $paymentsSucceeded = $user->payments->filter(
-            fn (Payment $payment) => $payment->status === PaymentStatus::Complete
+            fn(Payment $payment) => $payment->status === PaymentStatus::Complete
         )->count();
 
         return Inertia::render('backend/Admin/Users/Details', [
@@ -124,7 +125,9 @@ class AdminUserController extends Controller
                     'created_at' => $will->created_at?->toDateTimeString(),
                 ];
             })->values()->all(),
-            'lpas' => $user->lpas->map(function (Lpa $lpa) {
+            'lpas' => $user->lpas->map(function (Lpa $lpa) use ($user) {
+                $lpa->setRelation('user', $user);
+
                 return [
                     'id' => $lpa->id,
                     'document_type' => $lpa->document_type,
@@ -135,6 +138,7 @@ class AdminUserController extends Controller
                     'amount' => $lpa->amount,
                     'payment_reference' => $lpa->payment_reference,
                     'created_at' => $lpa->created_at?->toDateTimeString(),
+                    'summary_sections' => LpaAdminEmailSummary::sections($lpa),
                 ];
             })->values()->all(),
         ]);

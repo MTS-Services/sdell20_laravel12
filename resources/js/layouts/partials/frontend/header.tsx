@@ -523,7 +523,7 @@ export function FrontendHeader() {
                                     &pound;99 + VAT per LPA
                                 </span>
                                 <span className="text-[9px] font-normal text-white/70">
-                                    (VAT at checkout; &pound;92 OPG per LPA)
+                                    (VAT at checkout)
                                 </span>
                             </span>
                             <span className="flex shrink-0 items-center text-slate-200">

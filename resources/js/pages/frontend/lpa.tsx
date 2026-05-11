@@ -26,7 +26,7 @@ export default function Lpa() {
         <>
             <SeoHead
                 fallbackTitle="LPA Application Online"
-                fallbackDescription="Before you start your LPA, have names, dates of birth and addresses ready. Understand the £99 service fee and £92 OPG registration fee, then create your LPA online."
+                fallbackDescription="Before you start your LPA, have names, dates of birth and addresses ready. Our service fee is £99 per LPA (excl. VAT); the £92 OPG registration fee is paid separately to the Office of the Public Guardian."
                 fallbackKeywords="LPA application, start LPA, lasting power of attorney UK, LPA fees, OPG registration fee"
             />
             <FrontendLayout>

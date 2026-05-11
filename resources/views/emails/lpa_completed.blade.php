@@ -296,10 +296,12 @@
                         <th>VAT (20%)</th>
                         <td>£{{ number_format($vatPounds, 2) }}</td>
                     </tr>
-                    <tr>
-                        <th>OPG registration fee</th>
-                        <td>£{{ number_format($registrarPounds, 2) }}</td>
-                    </tr>
+                    @if ($registrarPounds > 0)
+                        <tr>
+                            <th>OPG registration fee</th>
+                            <td>£{{ number_format($registrarPounds, 2) }}</td>
+                        </tr>
+                    @endif
                     <tr>
                         <th>Total paid</th>
                         <td>£{{ number_format((float) $lpa->amount, 2) }}</td>

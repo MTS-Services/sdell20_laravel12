@@ -43,39 +43,58 @@ describe('PaymentProduct', function () {
 
     describe('LPA Property', function () {
         it('calculates base amount correctly', function () {
-            expect(PaymentProduct::LpaProperty->baseAmountInPence())->toBe(8500);
+            expect(PaymentProduct::LpaProperty->baseAmountInPence())->toBe(9900);
         });
 
         it('calculates VAT at 20%', function () {
-            expect(PaymentProduct::LpaProperty->vatAmountInPence())->toBe(1700);
+            expect(PaymentProduct::LpaProperty->vatAmountInPence())->toBe(1980);
         });
 
-        it('has £92 registrar fee', function () {
-            expect(PaymentProduct::LpaProperty->registrarFeeInPence())->toBe(9200);
+        it('does not collect the OPG registrar fee through checkout', function () {
+            expect(PaymentProduct::LpaProperty->registrarFeeInPence())->toBe(0);
         });
 
-        it('calculates total amount including VAT and registrar fee', function () {
+        it('calculates total amount including VAT only', function () {
             $total = PaymentProduct::LpaProperty->amountInPence();
-            expect($total)->toBe(19400);
+            expect($total)->toBe(11880);
         });
     });
 
     describe('LPA Health', function () {
         it('calculates base amount correctly', function () {
-            expect(PaymentProduct::LpaHealth->baseAmountInPence())->toBe(8500);
+            expect(PaymentProduct::LpaHealth->baseAmountInPence())->toBe(9900);
         });
 
         it('calculates VAT at 20%', function () {
-            expect(PaymentProduct::LpaHealth->vatAmountInPence())->toBe(1700);
+            expect(PaymentProduct::LpaHealth->vatAmountInPence())->toBe(1980);
         });
 
-        it('has £92 registrar fee', function () {
-            expect(PaymentProduct::LpaHealth->registrarFeeInPence())->toBe(9200);
+        it('does not collect the OPG registrar fee through checkout', function () {
+            expect(PaymentProduct::LpaHealth->registrarFeeInPence())->toBe(0);
         });
 
-        it('calculates total amount including VAT and registrar fee', function () {
+        it('calculates total amount including VAT only', function () {
             $total = PaymentProduct::LpaHealth->amountInPence();
-            expect($total)->toBe(19400);
+            expect($total)->toBe(11880);
+        });
+    });
+
+    describe('LPA Both', function () {
+        it('calculates base amount correctly', function () {
+            expect(PaymentProduct::LpaBoth->baseAmountInPence())->toBe(19800);
+        });
+
+        it('calculates VAT at 20%', function () {
+            expect(PaymentProduct::LpaBoth->vatAmountInPence())->toBe(3960);
+        });
+
+        it('does not collect the OPG registrar fee through checkout', function () {
+            expect(PaymentProduct::LpaBoth->registrarFeeInPence())->toBe(0);
+        });
+
+        it('calculates total amount including VAT only', function () {
+            $total = PaymentProduct::LpaBoth->amountInPence();
+            expect($total)->toBe(23760);
         });
     });
 

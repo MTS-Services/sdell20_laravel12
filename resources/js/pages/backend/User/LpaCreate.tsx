@@ -1,5 +1,5 @@
-import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { type ReactElement, useEffect, useMemo, useRef, useState } from 'react';
 
 import UserLayout from '@/layouts/user-layout';
 import { type User } from '@/types';
@@ -10,42 +10,142 @@ type Props = {
 
 const INTRO_STEPPER_STEPS = [
     { key: 'who', title: 'Who', description: 'Who is this LPA for?' },
-    { key: 'documents', title: 'Document type', description: 'Health & welfare, property & finance, or both' },
-    { key: 'donor', title: 'The donor', description: 'LP1H / LP1F Section 1 — donor details' },
-    { key: 'contact', title: 'Contact details', description: 'Address and how we reach you' },
+    {
+        key: 'documents',
+        title: 'Document type',
+        description: 'Health & welfare, property & finance, or both',
+    },
+    {
+        key: 'donor',
+        title: 'The donor',
+        description: 'LP1H / LP1F Section 1 — donor details',
+    },
+    {
+        key: 'contact',
+        title: 'Contact details',
+        description: 'Address and how we reach you',
+    },
 ];
 
 const HEALTH_WELFARE_STEPPER_STEPS = [
     { key: 'who', title: 'Who', description: 'Who this LPA is for' },
-    { key: 'documents', title: 'Document', description: 'Health & welfare (LP1H)' },
+    {
+        key: 'documents',
+        title: 'Document',
+        description: 'Health & welfare (LP1H)',
+    },
     { key: 'donor', title: 'Section 1: Donor', description: 'The donor' },
-    { key: 'contact', title: 'Section 1: Contact', description: 'Address & contact' },
-    { key: 'attorneys', title: 'Section 2: Attorneys', description: 'Your attorneys' },
-    { key: 'view_docs', title: 'Section 3 & access', description: 'How attorneys act & legal documents' },
-    { key: 'replacement', title: 'Section 4: Replacements', description: 'Replacement attorneys' },
-    { key: 'life', title: 'Life-sustaining treatment', description: 'Health & welfare decision' },
-    { key: 'notify', title: 'People to notify', description: 'Optional safeguards' },
-    { key: 'applicant', title: 'Registration', description: 'Who applies to the OPG' },
-    { key: 'recipient', title: 'Document recipient', description: 'Where the registered LPA is sent' },
-    { key: 'certificate', title: 'Certificate provider', description: 'Confirming capacity' },
-    { key: 'declarations', title: 'LP1H: Sign & declare', description: 'Preferences, witnesses, typed signatures' },
+    {
+        key: 'contact',
+        title: 'Section 1: Contact',
+        description: 'Address & contact',
+    },
+    {
+        key: 'attorneys',
+        title: 'Section 2: Attorneys',
+        description: 'Your attorneys',
+    },
+    {
+        key: 'view_docs',
+        title: 'Section 3 & access',
+        description: 'How attorneys act & legal documents',
+    },
+    {
+        key: 'replacement',
+        title: 'Section 4: Replacements',
+        description: 'Replacement attorneys',
+    },
+    {
+        key: 'life',
+        title: 'Life-sustaining treatment',
+        description: 'Health & welfare decision',
+    },
+    {
+        key: 'notify',
+        title: 'People to notify',
+        description: 'Optional safeguards',
+    },
+    {
+        key: 'applicant',
+        title: 'Registration',
+        description: 'Who applies to the OPG',
+    },
+    {
+        key: 'recipient',
+        title: 'Document recipient',
+        description: 'Where the registered LPA is sent',
+    },
+    {
+        key: 'certificate',
+        title: 'Certificate provider',
+        description: 'Confirming capacity',
+    },
+    {
+        key: 'declarations',
+        title: 'LP1H: Sign & declare',
+        description: 'Preferences, witnesses, typed signatures',
+    },
     { key: 'pay', title: 'Review & payment', description: 'Pay to finalise' },
 ];
 
 const PROPERTY_FINANCE_STEPPER_STEPS = [
     { key: 'who', title: 'Who', description: 'Who this LPA is for' },
-    { key: 'documents', title: 'Document', description: 'Property & financial affairs' },
+    {
+        key: 'documents',
+        title: 'Document',
+        description: 'Property & financial affairs',
+    },
     { key: 'donor', title: 'Section 1: Donor', description: 'The donor' },
-    { key: 'contact', title: 'Section 1: Contact', description: 'Address & contact' },
-    { key: 'attorneys', title: 'Section 2: Attorneys', description: 'Your attorneys' },
-    { key: 'view_docs', title: 'Section 3 & access', description: 'How attorneys act & legal documents' },
-    { key: 'replacement', title: 'Section 4: Replacements', description: 'Replacement attorneys' },
-    { key: 'when_act', title: 'LP1F: When attorneys act', description: 'Section 5 — after registration or only without capacity' },
-    { key: 'notify', title: 'People to notify', description: 'Optional safeguards' },
-    { key: 'applicant', title: 'Registration', description: 'Who applies to the OPG' },
-    { key: 'recipient', title: 'Document recipient', description: 'Where the registered LPA is sent' },
-    { key: 'certificate', title: 'Certificate provider', description: 'Confirming capacity' },
-    { key: 'declarations', title: 'LP1F: Sign & declare', description: 'Preferences, witnesses, typed signatures' },
+    {
+        key: 'contact',
+        title: 'Section 1: Contact',
+        description: 'Address & contact',
+    },
+    {
+        key: 'attorneys',
+        title: 'Section 2: Attorneys',
+        description: 'Your attorneys',
+    },
+    {
+        key: 'view_docs',
+        title: 'Section 3 & access',
+        description: 'How attorneys act & legal documents',
+    },
+    {
+        key: 'replacement',
+        title: 'Section 4: Replacements',
+        description: 'Replacement attorneys',
+    },
+    {
+        key: 'when_act',
+        title: 'LP1F: When attorneys act',
+        description: 'Section 5 — after registration or only without capacity',
+    },
+    {
+        key: 'notify',
+        title: 'People to notify',
+        description: 'Optional safeguards',
+    },
+    {
+        key: 'applicant',
+        title: 'Registration',
+        description: 'Who applies to the OPG',
+    },
+    {
+        key: 'recipient',
+        title: 'Document recipient',
+        description: 'Where the registered LPA is sent',
+    },
+    {
+        key: 'certificate',
+        title: 'Certificate provider',
+        description: 'Confirming capacity',
+    },
+    {
+        key: 'declarations',
+        title: 'LP1F: Sign & declare',
+        description: 'Preferences, witnesses, typed signatures',
+    },
     { key: 'pay', title: 'Review & payment', description: 'Pay to finalise' },
 ];
 
@@ -59,7 +159,10 @@ function usesPropertyFinancialLpa(documentType: string | null): boolean {
     return documentType === 'property' || documentType === 'both';
 }
 
-function contentStepToStepperIndex(step: number, documentType: string | null): number {
+function contentStepToStepperIndex(
+    step: number,
+    documentType: string | null,
+): number {
     return step;
 }
 
@@ -67,27 +170,33 @@ const documentOptions = [
     {
         value: 'property',
         title: 'Property & Finance LPA',
-        description: 'Manage money, property, and financial decisions.'
+        description: 'Manage money, property, and financial decisions.',
     },
     {
         value: 'health',
         title: 'Health & Welfare LPA',
-        description: 'Make decisions about health, care, and living arrangements.'
+        description:
+            'Make decisions about health, care, and living arrangements.',
     },
     {
         value: 'both',
         title: 'Both LPAs',
-        description: 'Include both health & welfare and property & finance documents.'
-    }
+        description:
+            'Include both health & welfare and property & finance documents.',
+    },
 ];
 
 const donorTitleOptions = ['Mr', 'Mrs', 'Miss', 'Ms', 'Mx', 'Dr'];
 
 export default function LpaCreate({ user }: Props) {
     const [currentStep, setCurrentStep] = useState(0);
-    const [selectedWhoOption, setSelectedWhoOption] = useState<'Me' | 'Mirror'>('Me');
+    const [selectedWhoOption, setSelectedWhoOption] = useState<'Me' | 'Mirror'>(
+        'Me',
+    );
     const [isEditingWho, setIsEditingWho] = useState(false);
-    const [selectedDocumentOption, setSelectedDocumentOption] = useState<string | null>(null);
+    const [selectedDocumentOption, setSelectedDocumentOption] = useState<
+        string | null
+    >(null);
     const [donorDetails, setDonorDetails] = useState({
         title: '',
         firstName: '',
@@ -97,7 +206,7 @@ export default function LpaCreate({ user }: Props) {
         otherNames: '',
         birthDay: '',
         birthMonth: '',
-        birthYear: ''
+        birthYear: '',
     });
     const [contactDetails, setContactDetails] = useState({
         addressLine1: '',
@@ -108,26 +217,28 @@ export default function LpaCreate({ user }: Props) {
         postcode: '',
         mobile: '',
         landline: '',
-        email: ''
+        email: '',
     });
     const [showOtherNames, setShowOtherNames] = useState(false);
     const [showAttorneyModal, setShowAttorneyModal] = useState(false);
-    const [attorneys, setAttorneys] = useState<Array<{
-        id: string;
-        title: string;
-        firstName: string;
-        lastName: string;
-        middleNames: string;
-        postcode: string;
-        addressLine1: string;
-        addressLine2: string;
-        town: string;
-        county: string;
-        birthDay: string;
-        birthMonth: string;
-        birthYear: string;
-        email: string;
-    }>>([]);
+    const [attorneys, setAttorneys] = useState<
+        Array<{
+            id: string;
+            title: string;
+            firstName: string;
+            lastName: string;
+            middleNames: string;
+            postcode: string;
+            addressLine1: string;
+            addressLine2: string;
+            town: string;
+            county: string;
+            birthDay: string;
+            birthMonth: string;
+            birthYear: string;
+            email: string;
+        }>
+    >([]);
     const [currentAttorney, setCurrentAttorney] = useState({
         title: '',
         firstName: '',
@@ -141,62 +252,84 @@ export default function LpaCreate({ user }: Props) {
         birthDay: '',
         birthMonth: '',
         birthYear: '',
-        email: ''
+        email: '',
     });
     const [isManualAddress, setIsManualAddress] = useState(false);
 
     // New states for the additional attorney steps
-    const [canViewDocuments, setCanViewDocuments] = useState<'yes' | 'no' | null>(null);
-    const [wantReplacementAttorneys, setWantReplacementAttorneys] = useState<'yes' | 'no' | null>(null);
-    const [showReplacementAttorneyModal, setShowReplacementAttorneyModal] = useState(false);
-    const [replacementAttorneys, setReplacementAttorneys] = useState<Array<{
-        id: string;
-        title: string;
-        firstName: string;
-        lastName: string;
-        middleNames: string;
-        postcode: string;
-        addressLine1: string;
-        addressLine2: string;
-        town: string;
-        county: string;
-        birthDay: string;
-        birthMonth: string;
-        birthYear: string;
-        email: string;
-    }>>([]);
-    const [currentReplacementAttorney, setCurrentReplacementAttorney] = useState({
-        title: '',
-        firstName: '',
-        lastName: '',
-        middleNames: '',
-        postcode: '',
-        addressLine1: '',
-        addressLine2: '',
-        town: '',
-        county: '',
-        birthDay: '',
-        birthMonth: '',
-        birthYear: '',
-        email: ''
-    });
-    const [isManualReplacementAddress, setIsManualReplacementAddress] = useState(false);
+    const [canViewDocuments, setCanViewDocuments] = useState<
+        'yes' | 'no' | null
+    >(null);
+    const [wantReplacementAttorneys, setWantReplacementAttorneys] = useState<
+        'yes' | 'no' | null
+    >(null);
+    const [showReplacementAttorneyModal, setShowReplacementAttorneyModal] =
+        useState(false);
+    const [replacementAttorneys, setReplacementAttorneys] = useState<
+        Array<{
+            id: string;
+            title: string;
+            firstName: string;
+            lastName: string;
+            middleNames: string;
+            postcode: string;
+            addressLine1: string;
+            addressLine2: string;
+            town: string;
+            county: string;
+            birthDay: string;
+            birthMonth: string;
+            birthYear: string;
+            email: string;
+        }>
+    >([]);
+    const [currentReplacementAttorney, setCurrentReplacementAttorney] =
+        useState({
+            title: '',
+            firstName: '',
+            lastName: '',
+            middleNames: '',
+            postcode: '',
+            addressLine1: '',
+            addressLine2: '',
+            town: '',
+            county: '',
+            birthDay: '',
+            birthMonth: '',
+            birthYear: '',
+            email: '',
+        });
+    const [isManualReplacementAddress, setIsManualReplacementAddress] =
+        useState(false);
 
     // States for new steps
     const [notifyPeople, setNotifyPeople] = useState<'yes' | 'no' | null>(null);
-    const [lifeSustainingTreatment, setLifeSustainingTreatment] = useState<'yes' | 'no' | null>(null);
+    const [lifeSustainingTreatment, setLifeSustainingTreatment] = useState<
+        'yes' | 'no' | null
+    >(null);
     /** LP1F section 5 — when attorneys may act (property & both). */
-    const [whenAttorneysCanAct, setWhenAttorneysCanAct] = useState<'as_soon_registered' | 'only_without_capacity' | null>(null);
+    const [whenAttorneysCanAct, setWhenAttorneysCanAct] = useState<
+        'as_soon_registered' | 'only_without_capacity' | null
+    >(null);
     const [applicant, setApplicant] = useState<string>('');
     const [documentRecipient, setDocumentRecipient] = useState<string>('');
-    const [certificateChoice, setCertificateChoice] = useState<'yes' | 'no' | null>(null);
+    const [certificateChoice, setCertificateChoice] = useState<
+        'yes' | 'no' | null
+    >(null);
     const [attorneyActingTogether, setAttorneyActingTogether] = useState<
         '' | 'jointly_and_severally' | 'jointly' | 'mixed' | 'single_attorney'
     >('');
     const [preferencesText, setPreferencesText] = useState('');
     const [instructionsText, setInstructionsText] = useState('');
     const [peopleToNotifyRows, setPeopleToNotifyRows] = useState<
-        Array<{ id: string; title: string; firstName: string; lastName: string; addressLine1: string; postcode: string }>
+        Array<{
+            id: string;
+            title: string;
+            firstName: string;
+            lastName: string;
+            addressLine1: string;
+            postcode: string;
+        }>
     >([]);
     const [recipientOther, setRecipientOther] = useState({
         title: '',
@@ -259,7 +392,8 @@ export default function LpaCreate({ user }: Props) {
         signMonth: '',
         signYear: '',
     });
-    const [completeSignaturesOnPaper, setCompleteSignaturesOnPaper] = useState(false);
+    const [completeSignaturesOnPaper, setCompleteSignaturesOnPaper] =
+        useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [createdLpaCheckout, setCreatedLpaCheckout] = useState<{
@@ -285,9 +419,19 @@ export default function LpaCreate({ user }: Props) {
             case 1:
                 return Boolean(selectedDocumentOption);
             case 2:
-                return Boolean(donorDetails.firstName && donorDetails.lastName && donorDetails.birthDay && donorDetails.birthMonth && donorDetails.birthYear);
+                return Boolean(
+                    donorDetails.firstName &&
+                    donorDetails.lastName &&
+                    donorDetails.birthDay &&
+                    donorDetails.birthMonth &&
+                    donorDetails.birthYear,
+                );
             case 3:
-                return Boolean(contactDetails.addressLine1 && contactDetails.town && contactDetails.postcode);
+                return Boolean(
+                    contactDetails.addressLine1 &&
+                    contactDetails.town &&
+                    contactDetails.postcode,
+                );
             case 4:
                 return attorneys.length > 0;
             case 5:
@@ -305,7 +449,9 @@ export default function LpaCreate({ user }: Props) {
             }
             case 7: {
                 const needLife = usesLifeSustainingStep(selectedDocumentOption);
-                const needWhen = usesPropertyFinancialLpa(selectedDocumentOption);
+                const needWhen = usesPropertyFinancialLpa(
+                    selectedDocumentOption,
+                );
                 if (needLife && !lifeSustainingTreatment) {
                     return false;
                 }
@@ -324,7 +470,11 @@ export default function LpaCreate({ user }: Props) {
                     return (
                         peopleToNotifyRows.length > 0 &&
                         peopleToNotifyRows.every(
-                            (r) => r.firstName && r.lastName && r.addressLine1 && r.postcode,
+                            (r) =>
+                                r.firstName &&
+                                r.lastName &&
+                                r.addressLine1 &&
+                                r.postcode,
                         )
                     );
                 }
@@ -377,10 +527,18 @@ export default function LpaCreate({ user }: Props) {
                     Boolean(section9.donorTypedSignature) &&
                     Boolean(section9.witnessFullName) &&
                     Boolean(section9.witnessAddress) &&
-                    Boolean(section9.signDay && section9.signMonth && section9.signYear);
+                    Boolean(
+                        section9.signDay &&
+                        section9.signMonth &&
+                        section9.signYear,
+                    );
                 const s15Ok =
                     Boolean(section15.typedSignature) &&
-                    Boolean(section15.signDay && section15.signMonth && section15.signYear);
+                    Boolean(
+                        section15.signDay &&
+                        section15.signMonth &&
+                        section15.signYear,
+                    );
                 const deedsOk =
                     attorneyDeedRows.length > 0 &&
                     attorneyDeedRows.every(
@@ -417,19 +575,31 @@ export default function LpaCreate({ user }: Props) {
         setIsEditingWho(false);
     };
 
-    const handleDonorChange = (field: keyof typeof donorDetails, value: string): void => {
+    const handleDonorChange = (
+        field: keyof typeof donorDetails,
+        value: string,
+    ): void => {
         setDonorDetails((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleContactChange = (field: keyof typeof contactDetails, value: string): void => {
+    const handleContactChange = (
+        field: keyof typeof contactDetails,
+        value: string,
+    ): void => {
         setContactDetails((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleAttorneyChange = (field: keyof typeof currentAttorney, value: string): void => {
+    const handleAttorneyChange = (
+        field: keyof typeof currentAttorney,
+        value: string,
+    ): void => {
         setCurrentAttorney((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleReplacementAttorneyChange = (field: keyof typeof currentReplacementAttorney, value: string): void => {
+    const handleReplacementAttorneyChange = (
+        field: keyof typeof currentReplacementAttorney,
+        value: string,
+    ): void => {
         setCurrentReplacementAttorney((prev) => ({ ...prev, [field]: value }));
     };
 
@@ -444,7 +614,7 @@ export default function LpaCreate({ user }: Props) {
     const handleSaveAttorney = (): void => {
         const newAttorney = {
             ...currentAttorney,
-            id: Date.now().toString()
+            id: Date.now().toString(),
         };
         setAttorneys((prev) => [...prev, newAttorney]);
         setCurrentAttorney({
@@ -460,7 +630,7 @@ export default function LpaCreate({ user }: Props) {
             birthDay: '',
             birthMonth: '',
             birthYear: '',
-            email: ''
+            email: '',
         });
         setIsManualAddress(false);
         setShowAttorneyModal(false);
@@ -469,7 +639,7 @@ export default function LpaCreate({ user }: Props) {
     const handleSaveReplacementAttorney = (): void => {
         const newAttorney = {
             ...currentReplacementAttorney,
-            id: Date.now().toString()
+            id: Date.now().toString(),
         };
         setReplacementAttorneys((prev) => [...prev, newAttorney]);
         setCurrentReplacementAttorney({
@@ -485,7 +655,7 @@ export default function LpaCreate({ user }: Props) {
             birthDay: '',
             birthMonth: '',
             birthYear: '',
-            email: ''
+            email: '',
         });
         setIsManualReplacementAddress(false);
         setShowReplacementAttorneyModal(false);
@@ -547,14 +717,24 @@ export default function LpaCreate({ user }: Props) {
             const xsrfMatch = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
             const csrfToken = xsrfMatch
                 ? decodeURIComponent(xsrfMatch[1])
-                : (document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
+                : document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute('content') || '';
 
-            const attorneysPayload = attorneys.map(({ id: _id, ...rest }) => rest);
-            const replacementPayload = replacementAttorneys.map(({ id: _id, ...rest }) => rest);
+            const attorneysPayload = attorneys.map(
+                ({ id: _id, ...rest }) => rest,
+            );
+            const replacementPayload = replacementAttorneys.map(
+                ({ id: _id, ...rest }) => rest,
+            );
 
             const lp1hForm = {
                 attorney_acting: attorneyActingTogether,
-                when_attorneys_can_act: usesPropertyFinancialLpa(selectedDocumentOption) ? whenAttorneysCanAct : null,
+                when_attorneys_can_act: usesPropertyFinancialLpa(
+                    selectedDocumentOption,
+                )
+                    ? whenAttorneysCanAct
+                    : null,
                 preferences: preferencesText || null,
                 instructions: instructionsText || null,
                 people_to_notify:
@@ -563,14 +743,19 @@ export default function LpaCreate({ user }: Props) {
                         : [],
                 life_sustaining: usesLifeSustainingStep(selectedDocumentOption)
                     ? {
-                        donor_typed_signature: lifeSustainingSignBlock.donorTypedSignature,
+                        donor_typed_signature:
+                            lifeSustainingSignBlock.donorTypedSignature,
                         sign_day: lifeSustainingSignBlock.signDay,
                         sign_month: lifeSustainingSignBlock.signMonth,
                         sign_year: lifeSustainingSignBlock.signYear,
-                        witness_full_name: lifeSustainingSignBlock.witnessFullName,
-                        witness_address: lifeSustainingSignBlock.witnessAddress,
-                        witness_postcode: lifeSustainingSignBlock.witnessPostcode,
-                        witness_typed_signature: lifeSustainingSignBlock.witnessTypedSignature,
+                        witness_full_name:
+                            lifeSustainingSignBlock.witnessFullName,
+                        witness_address:
+                            lifeSustainingSignBlock.witnessAddress,
+                        witness_postcode:
+                            lifeSustainingSignBlock.witnessPostcode,
+                        witness_typed_signature:
+                            lifeSustainingSignBlock.witnessTypedSignature,
                     }
                     : null,
                 section_9: {
@@ -590,7 +775,8 @@ export default function LpaCreate({ user }: Props) {
                             last_name: certificateProvider.lastName,
                             address_line1: certificateProvider.addressLine1,
                             postcode: certificateProvider.postcode,
-                            typed_signature: certificateProvider.typedSignature,
+                            typed_signature:
+                                certificateProvider.typedSignature,
                             sign_day: certificateProvider.signDay,
                             sign_month: certificateProvider.signMonth,
                             sign_year: certificateProvider.signYear,
@@ -638,7 +824,7 @@ export default function LpaCreate({ user }: Props) {
                 headers: {
                     'Content-Type': 'application/json',
                     'X-XSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json',
+                    Accept: 'application/json',
                 },
                 credentials: 'same-origin',
                 body: JSON.stringify({
@@ -649,8 +835,11 @@ export default function LpaCreate({ user }: Props) {
                     attorneys: attorneysPayload,
                     can_view_documents: canViewDocuments === 'yes',
                     replacement_attorneys: replacementPayload,
-                    want_replacement_attorneys: wantReplacementAttorneys === 'yes',
-                    life_sustaining_treatment: usesLifeSustainingStep(selectedDocumentOption)
+                    want_replacement_attorneys:
+                        wantReplacementAttorneys === 'yes',
+                    life_sustaining_treatment: usesLifeSustainingStep(
+                        selectedDocumentOption,
+                    )
                         ? lifeSustainingTreatment === 'yes'
                         : null,
                     notify_people: notifyPeople === 'yes',
@@ -671,11 +860,15 @@ export default function LpaCreate({ user }: Props) {
                 });
                 setCurrentStep(13);
             } else {
-                setSubmitError(data.message || 'Failed to create LPA. Please try again.');
+                setSubmitError(
+                    data.message || 'Failed to create LPA. Please try again.',
+                );
             }
         } catch (error) {
             console.error('Error creating LPA:', error);
-            setSubmitError('An error occurred while creating the LPA. Please try again.');
+            setSubmitError(
+                'An error occurred while creating the LPA. Please try again.',
+            );
         } finally {
             setIsSubmitting(false);
         }
@@ -686,7 +879,9 @@ export default function LpaCreate({ user }: Props) {
             return;
         }
 
-        const redirectUrl = encodeURIComponent(`${window.location.origin}/lpas/${createdLpaCheckout.id}/thank-you`);
+        const redirectUrl = encodeURIComponent(
+            `${window.location.origin}/lpas/${createdLpaCheckout.id}/thank-you`,
+        );
         const checkoutUrl = `/checkout?amount=${createdLpaCheckout.amountPence}&product=${encodeURIComponent(createdLpaCheckout.product)}&redirect_url=${redirectUrl}`;
         window.location.href = checkoutUrl;
     };
@@ -728,11 +923,14 @@ export default function LpaCreate({ user }: Props) {
                 const stepRect = stepElement.getBoundingClientRect();
 
                 // Calculate the scroll position to center the active step
-                const scrollLeft = stepElement.offsetLeft - (containerRect.width / 2) + (stepRect.width / 2);
+                const scrollLeft =
+                    stepElement.offsetLeft -
+                    containerRect.width / 2 +
+                    stepRect.width / 2;
 
                 container.scrollTo({
                     left: scrollLeft,
-                    behavior: 'smooth'
+                    behavior: 'smooth',
                 });
             }
         }
@@ -744,7 +942,11 @@ export default function LpaCreate({ user }: Props) {
                 return;
             }
 
-            if (dropdownRef.current && event.target instanceof Node && !dropdownRef.current.contains(event.target)) {
+            if (
+                dropdownRef.current &&
+                event.target instanceof Node &&
+                !dropdownRef.current.contains(event.target)
+            ) {
                 setIsEditingWho(false);
             }
         };
@@ -762,7 +964,11 @@ export default function LpaCreate({ user }: Props) {
                 return;
             }
 
-            if (modalRef.current && event.target instanceof Node && !modalRef.current.contains(event.target)) {
+            if (
+                modalRef.current &&
+                event.target instanceof Node &&
+                !modalRef.current.contains(event.target)
+            ) {
                 handleCloseAttorneyModal();
             }
         };
@@ -780,7 +986,11 @@ export default function LpaCreate({ user }: Props) {
                 return;
             }
 
-            if (replacementModalRef.current && event.target instanceof Node && !replacementModalRef.current.contains(event.target)) {
+            if (
+                replacementModalRef.current &&
+                event.target instanceof Node &&
+                !replacementModalRef.current.contains(event.target)
+            ) {
                 handleCloseReplacementAttorneyModal();
             }
         };
@@ -831,67 +1041,115 @@ export default function LpaCreate({ user }: Props) {
             });
         });
         setAttorneyDeedRows((prev) => {
-            if (prev.length === nextRows.length && prev.every((p, i) => p.partyId === nextRows[i]?.partyId)) {
+            if (
+                prev.length === nextRows.length &&
+                prev.every((p, i) => p.partyId === nextRows[i]?.partyId)
+            ) {
                 return prev;
             }
 
             return nextRows.map((nr) => {
                 const existing = prev.find((p) => p.partyId === nr.partyId);
 
-                return existing ? { ...nr, ...existing, partyId: nr.partyId, roleLabel: nr.roleLabel } : nr;
+                return existing
+                    ? {
+                        ...nr,
+                        ...existing,
+                        partyId: nr.partyId,
+                        roleLabel: nr.roleLabel,
+                    }
+                    : nr;
             });
         });
     }, [attorneys, replacementAttorneys]);
 
     const renderStepContent = (): ReactElement => {
         if (currentStep === 13) {
-            const donorLabel = [donorDetails.title, donorDetails.firstName, donorDetails.middleNames, donorDetails.lastName]
+            const donorLabel = [
+                donorDetails.title,
+                donorDetails.firstName,
+                donorDetails.middleNames,
+                donorDetails.lastName,
+            ]
                 .filter(Boolean)
                 .join(' ');
-            const docLabel = selectedDocumentOption === 'property'
-                ? 'Property & financial affairs'
-                : selectedDocumentOption === 'both'
-                    ? 'Health & welfare and property & finance'
-                    : 'Health & welfare (LP1H)';
+            const docLabel =
+                selectedDocumentOption === 'property'
+                    ? 'Property & financial affairs'
+                    : selectedDocumentOption === 'both'
+                        ? 'Health & welfare and property & finance'
+                        : 'Health & welfare (LP1H)';
 
             return (
                 <div className="mx-auto max-w-3xl space-y-6">
                     <div className="rounded-2xl border border-slate-200 bg-white p-6 text-primary-800 shadow-sm sm:p-8">
-                        <h2 className="text-2xl font-bold text-primary-900">Review your LPA</h2>
+                        <h2 className="text-2xl font-bold text-primary-900">
+                            Review your LPA
+                        </h2>
                         <p className="mt-2 text-sm text-primary-600">
-                            Your application has been saved and a draft document prepared for our team. Complete secure payment to continue — you will receive a confirmation email with your answers and see a thank-you page with what happens next.
+                            Your application has been saved and a draft document
+                            prepared for our team. Complete secure payment to
+                            continue — you will receive a confirmation email
+                            with your answers and see a thank-you page with what
+                            happens next.
                         </p>
 
                         <dl className="mt-6 space-y-3 border-t border-slate-100 pt-6 text-sm">
                             <div className="flex flex-wrap justify-between gap-2">
-                                <dt className="font-medium text-primary-600">Document</dt>
-                                <dd className="text-right text-primary-900">{docLabel}</dd>
+                                <dt className="font-medium text-primary-600">
+                                    Document
+                                </dt>
+                                <dd className="text-right text-primary-900">
+                                    {docLabel}
+                                </dd>
                             </div>
                             <div className="flex flex-wrap justify-between gap-2">
-                                <dt className="font-medium text-primary-600">Donor</dt>
-                                <dd className="text-right text-primary-900">{donorLabel || '—'}</dd>
+                                <dt className="font-medium text-primary-600">
+                                    Donor
+                                </dt>
+                                <dd className="text-right text-primary-900">
+                                    {donorLabel || '—'}
+                                </dd>
                             </div>
                             <div className="flex flex-wrap justify-between gap-2">
-                                <dt className="font-medium text-primary-600">Attorneys</dt>
-                                <dd className="text-right text-primary-900">{attorneys.length}</dd>
+                                <dt className="font-medium text-primary-600">
+                                    Attorneys
+                                </dt>
+                                <dd className="text-right text-primary-900">
+                                    {attorneys.length}
+                                </dd>
                             </div>
                             {usesLifeSustainingStep(selectedDocumentOption) && (
                                 <div className="flex flex-wrap justify-between gap-2">
-                                    <dt className="font-medium text-primary-600">Life-sustaining treatment</dt>
-                                    <dd className="text-right text-primary-900">{lifeSustainingTreatment === 'yes' ? 'Attorneys may decide' : 'Doctors decide'}</dd>
+                                    <dt className="font-medium text-primary-600">
+                                        Life-sustaining treatment
+                                    </dt>
+                                    <dd className="text-right text-primary-900">
+                                        {lifeSustainingTreatment === 'yes'
+                                            ? 'Attorneys may decide'
+                                            : 'Doctors decide'}
+                                    </dd>
                                 </div>
                             )}
                         </dl>
 
                         {submitError && (
-                            <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{submitError}</p>
+                            <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                                {submitError}
+                            </p>
                         )}
                     </div>
 
                     <div className="rounded-2xl border border-primary-200 bg-primary-50/80 p-6 sm:p-8">
-                        <h3 className="text-lg font-semibold text-primary-900">Payment</h3>
+                        <h3 className="text-lg font-semibold text-primary-900">
+                            Payment
+                        </h3>
                         <p className="mt-2 text-sm text-primary-700">
-                            You will be redirected to our card checkout (Stripe). After payment succeeds, you will see a thank-you page and we will email you a full summary. Our team will contact you within 24 hours with next steps.
+                            You will be redirected to our card checkout
+                            (Stripe). After payment succeeds, you will see a
+                            thank-you page and we will email you a full summary.
+                            Our team will contact you within 24 hours with next
+                            steps.
                         </p>
                         <button
                             type="button"
@@ -902,7 +1160,10 @@ export default function LpaCreate({ user }: Props) {
                             Pay securely now
                         </button>
                         {!createdLpaCheckout && !isSubmitting && (
-                            <p className="mt-3 text-xs text-primary-600">Complete the previous step to create your draft before paying.</p>
+                            <p className="mt-3 text-xs text-primary-600">
+                                Complete the previous step to create your draft
+                                before paying.
+                            </p>
                         )}
                     </div>
                 </div>
@@ -914,26 +1175,44 @@ export default function LpaCreate({ user }: Props) {
                 <div className="space-y-5 rounded-2xl bg-white p-5 text-primary-800 shadow-md sm:space-y-6 sm:p-8 sm:pl-12 lg:shadow-lg">
                     <div className="space-y-4 text-left">
                         <h2 className="text-xl font-bold text-primary-900 sm:text-2xl lg:text-3xl">
-                            Who is the <span className="text-primary-500">Lasting Power of Attorney</span> for?
+                            Who is the{' '}
+                            <span className="text-primary-500">
+                                Lasting Power of Attorney
+                            </span>{' '}
+                            for?
                         </h2>
                         <p className="text-base text-primary-700">
-                            You have chosen to make documents for <span className="font-semibold text-primary-500">{getSelectionCopy()}.</span>
+                            You have chosen to make documents for{' '}
+                            <span className="font-semibold text-primary-500">
+                                {getSelectionCopy()}.
+                            </span>
                         </p>
                         <div className="space-y-2 text-sm text-primary-700 sm:text-base">
                             <p className="flex flex-wrap items-center gap-2">
-                                <span>If you have made a mistake and need these documents for someone else then</span>
-                                <span ref={dropdownRef} className="relative inline-flex">
+                                <span>
+                                    If you have made a mistake and need these
+                                    documents for someone else then
+                                </span>
+                                <span
+                                    ref={dropdownRef}
+                                    className="relative inline-flex"
+                                >
                                     <button
                                         type="button"
                                         className="font-semibold text-primary-500 underline decoration-2 underline-offset-2 transition hover:text-primary-600"
-                                        onClick={() => setIsEditingWho((prev) => !prev)}
+                                        onClick={() =>
+                                            setIsEditingWho((prev) => !prev)
+                                        }
                                         aria-haspopup="true"
                                         aria-expanded={isEditingWho}
                                     >
-                                        click here to change who these documents are for
+                                        click here to change who these documents
+                                        are for
                                     </button>
                                     <div
-                                        className={`absolute left-0 top-full z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-slate-100 transition duration-200 ease-out ${isEditingWho ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
+                                        className={`absolute top-full left-0 z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-xl ring-1 ring-slate-100 transition duration-200 ease-out ${isEditingWho
+                                                ? 'pointer-events-auto scale-100 opacity-100'
+                                                : 'pointer-events-none scale-95 opacity-0'
                                             }`}
                                     >
                                         {['Me', 'Mirror'].map((option) => (
@@ -941,65 +1220,102 @@ export default function LpaCreate({ user }: Props) {
                                                 key={option}
                                                 type="button"
                                                 onClick={() => {
-                                                    setSelectedWhoOption(option as 'Me' | 'Mirror');
+                                                    setSelectedWhoOption(
+                                                        option as
+                                                        | 'Me'
+                                                        | 'Mirror',
+                                                    );
                                                     setIsEditingWho(false);
                                                 }}
-                                                className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition first:rounded-t-xl last:rounded-b-xl hover:bg-primary-50 ${selectedWhoOption === option ? 'text-primary-600' : 'text-primary-700'
+                                                className={`flex w-full items-center justify-between px-4 py-2 text-left text-sm transition first:rounded-t-xl last:rounded-b-xl hover:bg-primary-50 ${selectedWhoOption === option
+                                                        ? 'text-primary-600'
+                                                        : 'text-primary-700'
                                                     }`}
                                             >
-                                                <span>{option === 'Mirror' ? 'Mirror' : 'Me'}</span>
-                                                {selectedWhoOption === option && <span className="text-primary-500">•</span>}
+                                                <span>
+                                                    {option === 'Mirror'
+                                                        ? 'Mirror'
+                                                        : 'Me'}
+                                                </span>
+                                                {selectedWhoOption ===
+                                                    option && (
+                                                        <span className="text-primary-500">
+                                                            •
+                                                        </span>
+                                                    )}
                                             </button>
                                         ))}
                                     </div>
                                 </span>
                             </p>
                         </div>
-                        <p className="text-base text-primary-700">Click the continue button to continue making Lasting Power of Attorney documents for yourself.</p>
+                        <p className="text-base text-primary-700">
+                            Click the continue button to continue making Lasting
+                            Power of Attorney documents for yourself.
+                        </p>
                     </div>
 
                     <div className="mt-6 rounded-lg border-l-4 border-primary-500 bg-primary-50 px-4 py-3">
-                        <p className="text-xs text-primary-600 sm:text-sm">💡 Need to change your answer later? You can always revisit this step.</p>
+                        <p className="text-xs text-primary-600 sm:text-sm">
+                            💡 Need to change your answer later? You can always
+                            revisit this step.
+                        </p>
                     </div>
                 </div>
             );
         }
 
-
-
         if (currentStep === 1) {
-            const selectedDocument = selectedDocumentOption ? documentOptions.find((opt) => opt.value === selectedDocumentOption) : null;
+            const selectedDocument = selectedDocumentOption
+                ? documentOptions.find(
+                    (opt) => opt.value === selectedDocumentOption,
+                )
+                : null;
 
             return (
                 <div className="space-y-5 rounded-2xl bg-white p-5 text-primary-800 shadow-md sm:space-y-6 sm:p-8 lg:shadow-lg">
-                    <div className="space-y-3 text-left max-w-3xl">
-                        <h2 className="text-xl font-bold text-primary-900 mb-4 sm:mb-6 sm:text-2xl lg:text-3xl">
-                            Which <span className="text-primary-500">Lasting Power of Attorney</span> documents do you need?
+                    <div className="max-w-3xl space-y-3 text-left">
+                        <h2 className="mb-4 text-xl font-bold text-primary-900 sm:mb-6 sm:text-2xl lg:text-3xl">
+                            Which{' '}
+                            <span className="text-primary-500">
+                                Lasting Power of Attorney
+                            </span>{' '}
+                            documents do you need?
                         </h2>
                         <p className="text-sm text-primary-600 sm:text-base">
-                            You need to choose which type of documents you want for yourself – select Health &amp; Welfare for health decisions, Property &amp; Finance for
-                            financial decisions, or choose both to stay fully protected.
+                            You need to choose which type of documents you want
+                            for yourself – select Health &amp; Welfare for
+                            health decisions, Property &amp; Finance for
+                            financial decisions, or choose both to stay fully
+                            protected.
                         </p>
                         <div className="flex items-start gap-2 rounded-xl border border-primary-200 bg-primary-50/70 px-3 py-2.5 text-sm text-primary-700 sm:gap-3 sm:px-4 sm:py-3">
                             <span className="mt-0.5 text-lg">💡</span>
                             <p className="font-medium">
-                                We strongly recommend taking both documents for peace of mind and the best protection.
+                                We strongly recommend taking both documents for
+                                peace of mind and the best protection.
                             </p>
                         </div>
                         <p className="text-base font-semibold text-primary-900 sm:text-lg">
-                            Which documents do <span className="text-primary-500">you</span> need?
+                            Which documents do{' '}
+                            <span className="text-primary-500">you</span> need?
                         </p>
                     </div>
-                    <div className="overflow-hidden rounded-xl text-center max-w-3xl border-2 border-slate-200 shadow-sm">
+                    <div className="max-w-3xl overflow-hidden rounded-xl border-2 border-slate-200 text-center shadow-sm">
                         {documentOptions.map((option, index) => {
-                            const isSelected = selectedDocumentOption === option.value;
+                            const isSelected =
+                                selectedDocumentOption === option.value;
 
                             return (
                                 <button
                                     key={option.value}
                                     type="button"
-                                    onClick={() => setSelectedDocumentOption(option.value)}
-                                    className={`flex w-full items-center justify-center gap-2 px-4 py-3 text-center text-sm font-semibold transition sm:px-6 sm:py-4 sm:text-base ${isSelected ? 'bg-primary-600 text-white' : 'bg-white text-primary-800 hover:bg-slate-50'
+                                    onClick={() =>
+                                        setSelectedDocumentOption(option.value)
+                                    }
+                                    className={`flex w-full items-center justify-center gap-2 px-4 py-3 text-center text-sm font-semibold transition sm:px-6 sm:py-4 sm:text-base ${isSelected
+                                            ? 'bg-primary-600 text-white'
+                                            : 'bg-white text-primary-800 hover:bg-slate-50'
                                         } ${index !== documentOptions.length - 1 ? 'border-b border-slate-200' : ''}`}
                                 >
                                     {option.title}
@@ -1009,7 +1325,11 @@ export default function LpaCreate({ user }: Props) {
                     </div>
                     {selectedDocument && (
                         <p className="text-base text-primary-600">
-                            You have chosen the <span className="font-semibold">{selectedDocument.title}</span>. Click Continue to review the donor details next.
+                            You have chosen the{' '}
+                            <span className="font-semibold">
+                                {selectedDocument.title}
+                            </span>
+                            . Click Continue to review the donor details next.
                         </p>
                     )}
                 </div>
@@ -1021,10 +1341,12 @@ export default function LpaCreate({ user }: Props) {
                 <div className="space-y-6 rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:space-y-8 sm:p-8">
                     <div className="space-y-2 text-left">
                         <h2 className="text-2xl font-semibold text-primary-900 sm:text-3xl">
-                            About <span className="text-primary-500">You</span> (The Donor)
+                            About <span className="text-primary-500">You</span>{' '}
+                            (The Donor)
                         </h2>
                         <p className="text-base text-primary-600">
-                            The "Donor" is the person appointing others to make decisions on their behalf and must be:
+                            The "Donor" is the person appointing others to make
+                            decisions on their behalf and must be:
                         </p>
                         <ul className="space-y-2 text-sm text-primary-700">
                             <li className="flex items-start gap-2">
@@ -1033,30 +1355,47 @@ export default function LpaCreate({ user }: Props) {
                             </li>
                             <li className="flex items-start gap-2">
                                 <span className="text-primary-500">✔</span>
-                                <span>Have mental capacity to make decisions at the time their Lasting Power of Attorney is made.</span>
+                                <span>
+                                    Have mental capacity to make decisions at
+                                    the time their Lasting Power of Attorney is
+                                    made.
+                                </span>
                             </li>
                         </ul>
                         <p className="text-sm text-primary-600">
-                            The Donor is the only one who can make decisions about their LPA and the people it should involve.
+                            The Donor is the only one who can make decisions
+                            about their LPA and the people it should involve.
                         </p>
                     </div>
 
                     <div className="space-y-6">
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 border-b border-primary-100 pb-2">
-                                <h3 className="text-xl font-semibold text-primary-900">Full legal name</h3>
+                                <h3 className="text-xl font-semibold text-primary-900">
+                                    Full legal name
+                                </h3>
                             </div>
                             <div className="grid gap-4 md:grid-cols-4">
                                 <div className="md:col-span-1">
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Title
+                                    </label>
                                     <div className="rounded-md border border-slate-200 bg-white px-3 py-2">
                                         <select
                                             className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
                                             value={donorDetails.title}
-                                            onChange={(event) => handleDonorChange('title', event.target.value)}
+                                            onChange={(event) =>
+                                                handleDonorChange(
+                                                    'title',
+                                                    event.target.value,
+                                                )
+                                            }
                                         >
                                             {donorTitleOptions.map((title) => (
-                                                <option key={title} value={title}>
+                                                <option
+                                                    key={title}
+                                                    value={title}
+                                                >
                                                     {title}
                                                 </option>
                                             ))}
@@ -1064,38 +1403,66 @@ export default function LpaCreate({ user }: Props) {
                                     </div>
                                 </div>
                                 <div className="md:col-span-1">
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">First name</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        First name
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.firstName}
-                                        onChange={(event) => handleDonorChange('firstName', event.target.value)}
+                                        onChange={(event) =>
+                                            handleDonorChange(
+                                                'firstName',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Last name</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Last name
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.lastName}
-                                        onChange={(event) => handleDonorChange('lastName', event.target.value)}
+                                        onChange={(event) =>
+                                            handleDonorChange(
+                                                'lastName',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Middle names (if any)</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Middle names (if any)
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.middleNames}
-                                        onChange={(event) => handleDonorChange('middleNames', event.target.value)}
+                                        onChange={(event) =>
+                                            handleDonorChange(
+                                                'middleNames',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Preferred name (optional)</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Preferred name (optional)
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.preferredName}
-                                        onChange={(event) => handleDonorChange('preferredName', event.target.value)}
+                                        onChange={(event) =>
+                                            handleDonorChange(
+                                                'preferredName',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
@@ -1103,17 +1470,26 @@ export default function LpaCreate({ user }: Props) {
                                 <button
                                     type="button"
                                     className="text-sm font-semibold text-primary-600 underline"
-                                    onClick={() => setShowOtherNames((prev) => !prev)}
+                                    onClick={() =>
+                                        setShowOtherNames((prev) => !prev)
+                                    }
                                 >
                                     Known by any other names? Click here
                                 </button>
                                 {showOtherNames && (
                                     <div>
-                                        <label className="mb-2 block text-sm font-medium text-primary-600">Other names (optional)</label>
+                                        <label className="mb-2 block text-sm font-medium text-primary-600">
+                                            Other names (optional)
+                                        </label>
                                         <input
                                             className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                             value={donorDetails.otherNames}
-                                            onChange={(event) => handleDonorChange('otherNames', event.target.value)}
+                                            onChange={(event) =>
+                                                handleDonorChange(
+                                                    'otherNames',
+                                                    event.target.value,
+                                                )
+                                            }
                                             placeholder="Add any other names you have been known by"
                                         />
                                     </div>
@@ -1123,40 +1499,63 @@ export default function LpaCreate({ user }: Props) {
 
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 border-b border-primary-100 pb-2">
-                                <h3 className="text-xl font-semibold text-primary-900">Date of birth</h3>
+                                <h3 className="text-xl font-semibold text-primary-900">
+                                    Date of birth
+                                </h3>
                             </div>
                             <div className="grid gap-4 md:grid-cols-3">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Day
+                                    </label>
                                     <input
                                         type="number"
                                         min="1"
                                         max="31"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthDay}
-                                        onChange={(event) => handleDonorChange('birthDay', event.target.value)}
+                                        onChange={(event) =>
+                                            handleDonorChange(
+                                                'birthDay',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Month
+                                    </label>
                                     <input
                                         type="number"
                                         min="1"
                                         max="12"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthMonth}
-                                        onChange={(event) => handleDonorChange('birthMonth', event.target.value)}
+                                        onChange={(event) =>
+                                            handleDonorChange(
+                                                'birthMonth',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Year
+                                    </label>
                                     <input
                                         type="number"
                                         min="1900"
                                         max={new Date().getFullYear()}
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={donorDetails.birthYear}
-                                        onChange={(event) => handleDonorChange('birthYear', event.target.value)}
+                                        onChange={(event) =>
+                                            handleDonorChange(
+                                                'birthYear',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
@@ -1167,61 +1566,111 @@ export default function LpaCreate({ user }: Props) {
         }
         if (currentStep === 3) {
             return (
-                <div className="space-y-6 rounded-2xl max-w-4xl bg-white p-4 text-primary-800 shadow-sm sm:space-y-8 sm:p-8">
+                <div className="max-w-4xl space-y-6 rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:space-y-8 sm:p-8">
                     <div className="text-left">
-                        <h2 className="text-2xl font-semibold text-center text-primary-900 sm:text-3xl">
-                            Your <span className="text-primary-500">contact details</span>
+                        <h2 className="text-center text-2xl font-semibold text-primary-900 sm:text-3xl">
+                            Your{' '}
+                            <span className="text-primary-500">
+                                contact details
+                            </span>
                         </h2>
-                        <p className="text-center text-sm text-primary-500 mt-2">Complete the donor information</p>
+                        <p className="mt-2 text-center text-sm text-primary-500">
+                            Complete the donor information
+                        </p>
                         <div className="mt-2 h-px w-full bg-primary-100" />
                     </div>
 
                     <div className="space-y-6">
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-primary-900">What's your address?</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">
+                                What's your address?
+                            </h3>
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 1</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Address Line 1
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.addressLine1}
-                                        onChange={(event) => handleContactChange('addressLine1', event.target.value)}
+                                        onChange={(event) =>
+                                            handleContactChange(
+                                                'addressLine1',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 2</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Address Line 2
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.addressLine2}
-                                        onChange={(event) => handleContactChange('addressLine2', event.target.value)}
+                                        onChange={(event) =>
+                                            handleContactChange(
+                                                'addressLine2',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Town</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Town
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.town}
-                                        onChange={(event) => handleContactChange('town', event.target.value)}
+                                        onChange={(event) =>
+                                            handleContactChange(
+                                                'town',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">County</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        County
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.county}
-                                        onChange={(event) => handleContactChange('county', event.target.value)}
+                                        onChange={(event) =>
+                                            handleContactChange(
+                                                'county',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Country</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Country
+                                    </label>
                                     <div className="rounded-md border border-slate-200 bg-white px-3 py-2">
                                         <select
                                             className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
                                             value={contactDetails.country}
-                                            onChange={(event) => handleContactChange('country', event.target.value)}
+                                            onChange={(event) =>
+                                                handleContactChange(
+                                                    'country',
+                                                    event.target.value,
+                                                )
+                                            }
                                         >
-                                            {['Bangladesh', 'United Kingdom', 'United States', 'Canada'].map((country) => (
-                                                <option key={country} value={country}>
+                                            {[
+                                                'Bangladesh',
+                                                'United Kingdom',
+                                                'United States',
+                                                'Canada',
+                                            ].map((country) => (
+                                                <option
+                                                    key={country}
+                                                    value={country}
+                                                >
                                                     {country}
                                                 </option>
                                             ))}
@@ -1229,56 +1678,86 @@ export default function LpaCreate({ user }: Props) {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        Postcode
+                                    </label>
                                     <input
                                         type="text"
                                         pattern="[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}"
                                         placeholder="e.g. SW1A 1AA"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.postcode}
-                                        onChange={(event) => handleContactChange('postcode', event.target.value)}
+                                        onChange={(event) =>
+                                            handleContactChange(
+                                                'postcode',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <h3 className="text-lg font-semibold text-primary-900">Contact Number</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">
+                                Contact Number
+                            </h3>
                             <div className="mt-4 grid gap-4 md:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">What's your mobile number?</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        What's your mobile number?
+                                    </label>
                                     <input
                                         type="tel"
                                         pattern="[0-9]{11}"
                                         placeholder="07xxxxxxxxx"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.mobile}
-                                        onChange={(event) => handleContactChange('mobile', event.target.value)}
+                                        onChange={(event) =>
+                                            handleContactChange(
+                                                'mobile',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-medium text-primary-600">What's your landline number?</label>
+                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                        What's your landline number?
+                                    </label>
                                     <input
                                         type="tel"
                                         pattern="[0-9]{11}"
                                         placeholder="01xxxxxxxxx"
                                         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                         value={contactDetails.landline}
-                                        onChange={(event) => handleContactChange('landline', event.target.value)}
+                                        onChange={(event) =>
+                                            handleContactChange(
+                                                'landline',
+                                                event.target.value,
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <h3 className="text-lg font-semibold text-primary-900">What's your email address?</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">
+                                What's your email address?
+                            </h3>
                             <div className="mt-3">
                                 <input
                                     type="email"
                                     placeholder="email@example.com"
                                     className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none"
                                     value={contactDetails.email}
-                                    onChange={(event) => handleContactChange('email', event.target.value)}
+                                    onChange={(event) =>
+                                        handleContactChange(
+                                            'email',
+                                            event.target.value,
+                                        )
+                                    }
                                 />
                             </div>
                         </div>
@@ -1292,50 +1771,101 @@ export default function LpaCreate({ user }: Props) {
                 <>
                     <div className="grid gap-6 lg:grid-cols-6 lg:gap-8">
                         {/* Main Content */}
-                        <div className="lg:col-span-3 space-y-6">
+                        <div className="space-y-6 lg:col-span-3">
                             <div className="rounded-2xl bg-white p-5 text-primary-800 shadow-md sm:p-6 lg:p-8 lg:shadow-lg">
-                                <h2 className="text-xl font-bold text-primary-900 mb-3 sm:mb-4 sm:text-2xl lg:text-3xl">Attorneys</h2>
+                                <h2 className="mb-3 text-xl font-bold text-primary-900 sm:mb-4 sm:text-2xl lg:text-3xl">
+                                    Attorneys
+                                </h2>
 
-                                <p className="text-sm text-primary-700 mb-5 sm:text-base sm:mb-6">
-                                    Attorneys are people a donor appoints to make decisions on their behalf, you need to choose at least one Attorney.
+                                <p className="mb-5 text-sm text-primary-700 sm:mb-6 sm:text-base">
+                                    Attorneys are people a donor appoints to
+                                    make decisions on their behalf, you need to
+                                    choose at least one Attorney.
                                 </p>
 
                                 <button
                                     type="button"
                                     onClick={handleAddAttorney}
-                                    className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary-300 bg-primary-50/30 px-4 py-3 text-primary-700 font-semibold transition hover:border-primary-500 hover:bg-primary-50 sm:px-6 sm:py-4"
+                                    className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary-300 bg-primary-50/30 px-4 py-3 font-semibold text-primary-700 transition hover:border-primary-500 hover:bg-primary-50 sm:px-6 sm:py-4"
                                 >
-                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                    <svg
+                                        className="h-5 w-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                                        />
                                     </svg>
                                     Add new attorney
                                 </button>
 
                                 {attorneys.length === 0 ? (
                                     <div className="mt-5 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 px-4 py-6 text-center text-sm text-primary-500 sm:mt-6 sm:px-5 sm:py-8">
-                                        <p className="font-medium">You haven't added any attorneys yet.</p>
-                                        <p className="mt-1 text-xs text-slate-500">Click "Add new attorney" to start.</p>
+                                        <p className="font-medium">
+                                            You haven't added any attorneys yet.
+                                        </p>
+                                        <p className="mt-1 text-xs text-slate-500">
+                                            Click "Add new attorney" to start.
+                                        </p>
                                     </div>
                                 ) : (
                                     <div className="mt-5 grid gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2">
                                         {attorneys.map((attorney) => (
-                                            <div key={attorney.id} className="rounded-xl border-2 border-slate-200 bg-linear-to-br from-white to-slate-50 p-4 shadow-sm transition hover:shadow-md sm:p-5">
+                                            <div
+                                                key={attorney.id}
+                                                className="rounded-xl border-2 border-slate-200 bg-linear-to-br from-white to-slate-50 p-4 shadow-sm transition hover:shadow-md sm:p-5"
+                                            >
                                                 <p className="text-base font-semibold text-primary-900">
-                                                    {attorney.title} {attorney.firstName} {attorney.middleNames} {attorney.lastName}
+                                                    {attorney.title}{' '}
+                                                    {attorney.firstName}{' '}
+                                                    {attorney.middleNames}{' '}
+                                                    {attorney.lastName}
                                                 </p>
                                                 <p className="mt-1 text-sm text-primary-600">
-                                                    Born: {attorney.birthDay || '--'}/{attorney.birthMonth || '--'}/{attorney.birthYear || '----'}
+                                                    Born:{' '}
+                                                    {attorney.birthDay || '--'}/
+                                                    {attorney.birthMonth ||
+                                                        '--'}
+                                                    /
+                                                    {attorney.birthYear ||
+                                                        '----'}
                                                 </p>
-                                                {(attorney.addressLine1 || attorney.postcode) && (
-                                                    <div className="mt-3 text-sm text-primary-600">
-                                                        <p>{attorney.addressLine1}</p>
-                                                        {attorney.addressLine2 && <p>{attorney.addressLine2}</p>}
-                                                        <p>
-                                                            {[attorney.town, attorney.county, attorney.postcode].filter(Boolean).join(', ')}
-                                                        </p>
-                                                    </div>
+                                                {(attorney.addressLine1 ||
+                                                    attorney.postcode) && (
+                                                        <div className="mt-3 text-sm text-primary-600">
+                                                            <p>
+                                                                {
+                                                                    attorney.addressLine1
+                                                                }
+                                                            </p>
+                                                            {attorney.addressLine2 && (
+                                                                <p>
+                                                                    {
+                                                                        attorney.addressLine2
+                                                                    }
+                                                                </p>
+                                                            )}
+                                                            <p>
+                                                                {[
+                                                                    attorney.town,
+                                                                    attorney.county,
+                                                                    attorney.postcode,
+                                                                ]
+                                                                    .filter(Boolean)
+                                                                    .join(', ')}
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                {attorney.email && (
+                                                    <p className="mt-3 text-sm text-primary-600">
+                                                        Email: {attorney.email}
+                                                    </p>
                                                 )}
-                                                {attorney.email && <p className="mt-3 text-sm text-primary-600">Email: {attorney.email}</p>}
                                             </div>
                                         ))}
                                     </div>
@@ -1346,32 +1876,75 @@ export default function LpaCreate({ user }: Props) {
                         {/* Sidebar */}
                         <div className="lg:col-span-2">
                             <div className="rounded-2xl bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-6">
-                                <h3 className="text-xl font-semibold text-primary-900 mb-4">Who can be an Attorney?</h3>
-                                <p className="text-sm text-primary-700 mb-4">The Attorney must be meet the following requirements:</p>
+                                <h3 className="mb-4 text-xl font-semibold text-primary-900">
+                                    Who can be an Attorney?
+                                </h3>
+                                <p className="mb-4 text-sm text-primary-700">
+                                    The Attorney must be meet the following
+                                    requirements:
+                                </p>
                                 <ul className="space-y-3">
                                     <li className="flex items-start gap-3">
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
-                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                            <svg
+                                                className="h-3 w-3"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M5 13l4 4L19 7"
+                                                />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-primary-700">Aged 18 or over.</span>
+                                        <span className="text-sm text-primary-700">
+                                            Aged 18 or over.
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
-                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                            <svg
+                                                className="h-3 w-3"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M5 13l4 4L19 7"
+                                                />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-primary-700">Have mental capacity to make decisions.</span>
+                                        <span className="text-sm text-primary-700">
+                                            Have mental capacity to make
+                                            decisions.
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
-                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                                            <svg
+                                                className="h-3 w-3"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-primary-700">Must not be bankrupt, or subject to a debt relief order.</span>
+                                        <span className="text-sm text-primary-700">
+                                            Must not be bankrupt, or subject to
+                                            a debt relief order.
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
@@ -1380,7 +1953,7 @@ export default function LpaCreate({ user }: Props) {
 
                     {/* Attorney Modal */}
                     {showAttorneyModal && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-0 sm:p-4">
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-0 backdrop-blur-sm sm:p-4">
                             <div
                                 ref={modalRef}
                                 className="relative flex h-full w-full max-w-2xl flex-col overflow-y-auto rounded-none bg-white shadow-2xl sm:h-[90vh] sm:max-h-[90vh] sm:rounded-xl"
@@ -1388,84 +1961,152 @@ export default function LpaCreate({ user }: Props) {
                                 <button
                                     type="button"
                                     onClick={handleCloseAttorneyModal}
-                                    className="absolute right-3 top-3 z-10 rounded-full p-1.5 text-white transition hover:bg-white/10 sm:right-4 sm:top-4"
+                                    className="absolute top-3 right-3 z-10 rounded-full p-1.5 text-white transition hover:bg-white/10 sm:top-4 sm:right-4"
                                     aria-label="Close"
                                 >
-                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    <svg
+                                        className="h-5 w-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
                                     </svg>
                                 </button>
 
                                 {/* Modal Header */}
                                 <div className="border-b border-slate-200 bg-primary-600 px-4 py-3 pr-12 sm:px-6 sm:py-4">
-                                    <h3 className="text-lg font-semibold text-white sm:text-xl">Add attorney</h3>
+                                    <h3 className="text-lg font-semibold text-white sm:text-xl">
+                                        Add attorney
+                                    </h3>
                                 </div>
 
                                 {/* Modal Body */}
-                                <div className="flex-1 overflow-y-auto p-4 space-y-6 sm:p-6">
+                                <div className="flex-1 space-y-6 overflow-y-auto p-4 sm:p-6">
                                     {/* Full Legal Name */}
                                     <div className="space-y-4">
-                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">Full legal name</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">
+                                            Full legal name
+                                        </h4>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                Title
+                                            </label>
                                             <div className="rounded-md border border-slate-300 bg-white px-3 py-2">
                                                 <select
                                                     className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
-                                                    value={currentAttorney.title}
-                                                    onChange={(e) => handleAttorneyChange('title', e.target.value)}
+                                                    value={
+                                                        currentAttorney.title
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleAttorneyChange(
+                                                            'title',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 >
-                                                    {donorTitleOptions.map((title) => (
-                                                        <option key={title} value={title}>
-                                                            {title}
-                                                        </option>
-                                                    ))}
+                                                    {donorTitleOptions.map(
+                                                        (title) => (
+                                                            <option
+                                                                key={title}
+                                                                value={title}
+                                                            >
+                                                                {title}
+                                                            </option>
+                                                        ),
+                                                    )}
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div className="grid gap-4 md:grid-cols-2">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">First Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    First Name
+                                                </label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentAttorney.firstName}
-                                                    onChange={(e) => handleAttorneyChange('firstName', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentAttorney.firstName
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleAttorneyChange(
+                                                            'firstName',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Last Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Last Name
+                                                </label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentAttorney.lastName}
-                                                    onChange={(e) => handleAttorneyChange('lastName', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentAttorney.lastName
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleAttorneyChange(
+                                                            'lastName',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                         </div>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-primary-600">Middle names (if any)</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                Middle names (if any)
+                                            </label>
                                             <input
-                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                value={currentAttorney.middleNames}
-                                                onChange={(e) => handleAttorneyChange('middleNames', e.target.value)}
+                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                value={
+                                                    currentAttorney.middleNames
+                                                }
+                                                onChange={(e) =>
+                                                    handleAttorneyChange(
+                                                        'middleNames',
+                                                        e.target.value,
+                                                    )
+                                                }
                                             />
                                         </div>
                                     </div>
 
                                     {/* Address */}
                                     <div className="space-y-4">
-                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their address?</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">
+                                            What's their address?
+                                        </h4>
 
                                         {!isManualAddress ? (
                                             <>
                                                 <div>
-                                                    <label className="mb-2 block text-sm text-primary-600">Enter postcode to search for address</label>
+                                                    <label className="mb-2 block text-sm text-primary-600">
+                                                        Enter postcode to search
+                                                        for address
+                                                    </label>
                                                     <div className="flex gap-3">
                                                         <input
-                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                            value={currentAttorney.postcode}
-                                                            onChange={(e) => handleAttorneyChange('postcode', e.target.value)}
+                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                            value={
+                                                                currentAttorney.postcode
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleAttorneyChange(
+                                                                    'postcode',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
                                                             placeholder="Enter postcode"
                                                         />
                                                         <button
@@ -1478,8 +2119,10 @@ export default function LpaCreate({ user }: Props) {
                                                 </div>
                                                 <button
                                                     type="button"
-                                                    onClick={() => setIsManualAddress(true)}
-                                                    className="text-sm font-medium text-primary-500 hover:text-primary-600 transition"
+                                                    onClick={() =>
+                                                        setIsManualAddress(true)
+                                                    }
+                                                    className="text-sm font-medium text-primary-500 transition hover:text-primary-600"
                                                 >
                                                     Enter address manually
                                                 </button>
@@ -1487,48 +2130,95 @@ export default function LpaCreate({ user }: Props) {
                                         ) : (
                                             <div className="space-y-4">
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 1</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                        Address Line 1
+                                                    </label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                        value={currentAttorney.addressLine1}
-                                                        onChange={(e) => handleAttorneyChange('addressLine1', e.target.value)}
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                        value={
+                                                            currentAttorney.addressLine1
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleAttorneyChange(
+                                                                'addressLine1',
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 2</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                        Address Line 2
+                                                    </label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                        value={currentAttorney.addressLine2}
-                                                        onChange={(e) => handleAttorneyChange('addressLine2', e.target.value)}
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                        value={
+                                                            currentAttorney.addressLine2
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleAttorneyChange(
+                                                                'addressLine2',
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                     />
                                                 </div>
                                                 <div className="grid gap-4 md:grid-cols-2">
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-primary-600">Town</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                            Town
+                                                        </label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                            value={currentAttorney.town}
-                                                            onChange={(e) => handleAttorneyChange('town', e.target.value)}
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                            value={
+                                                                currentAttorney.town
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleAttorneyChange(
+                                                                    'town',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-primary-600">County</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                            County
+                                                        </label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                            value={currentAttorney.county}
-                                                            onChange={(e) => handleAttorneyChange('county', e.target.value)}
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                            value={
+                                                                currentAttorney.county
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleAttorneyChange(
+                                                                    'county',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
                                                         />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                        Postcode
+                                                    </label>
                                                     <input
                                                         type="text"
                                                         pattern="[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}"
                                                         placeholder="e.g. SW1A 1AA"
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                        value={currentAttorney.postcode}
-                                                        onChange={(e) => handleAttorneyChange('postcode', e.target.value)}
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                        value={
+                                                            currentAttorney.postcode
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleAttorneyChange(
+                                                                'postcode',
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                     />
                                                 </div>
                                             </div>
@@ -1537,41 +2227,70 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Date of Birth */}
                                     <div className="space-y-4">
-                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their date of birth</h4>
-                                        <div className="grid gap-4 grid-cols-3">
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">
+                                            What's their date of birth
+                                        </h4>
+                                        <div className="grid grid-cols-3 gap-4">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Day
+                                                </label>
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     max="31"
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentAttorney.birthDay}
-                                                    onChange={(e) => handleAttorneyChange('birthDay', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentAttorney.birthDay
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleAttorneyChange(
+                                                            'birthDay',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     placeholder="DD"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Month
+                                                </label>
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     max="12"
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentAttorney.birthMonth}
-                                                    onChange={(e) => handleAttorneyChange('birthMonth', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentAttorney.birthMonth
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleAttorneyChange(
+                                                            'birthMonth',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     placeholder="MM"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Year
+                                                </label>
                                                 <input
                                                     type="number"
                                                     min="1900"
                                                     max={new Date().getFullYear()}
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentAttorney.birthYear}
-                                                    onChange={(e) => handleAttorneyChange('birthYear', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentAttorney.birthYear
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleAttorneyChange(
+                                                            'birthYear',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     placeholder="YYYY"
                                                 />
                                             </div>
@@ -1580,12 +2299,20 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Email */}
                                     <div className="space-y-4">
-                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their email address? (optional)</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">
+                                            What's their email address?
+                                            (optional)
+                                        </h4>
                                         <input
-                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
                                             type="email"
                                             value={currentAttorney.email}
-                                            onChange={(e) => handleAttorneyChange('email', e.target.value)}
+                                            onChange={(e) =>
+                                                handleAttorneyChange(
+                                                    'email',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="email@example.com"
                                         />
                                     </div>
@@ -1611,7 +2338,11 @@ export default function LpaCreate({ user }: Props) {
         // Step 5: LP1H Section 3 — how attorneys act + viewing legal documents
         if (currentStep === 5) {
             const actingOptions: Array<{
-                value: 'jointly_and_severally' | 'jointly' | 'mixed' | 'single_attorney';
+                value:
+                | 'jointly_and_severally'
+                | 'jointly'
+                | 'mixed'
+                | 'single_attorney';
                 label: string;
                 hint: string;
             }> = [
@@ -1640,37 +2371,51 @@ export default function LpaCreate({ user }: Props) {
             return (
                 <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:p-6 lg:p-8">
-                        <h2 className="text-xl font-semibold text-primary-900 mb-4 sm:mb-6 sm:text-2xl">
-                            Section 3: How should your <span className="text-cyan-500">attorneys</span> make decisions?
+                        <h2 className="mb-4 text-xl font-semibold text-primary-900 sm:mb-6 sm:text-2xl">
+                            Section 3: How should your{' '}
+                            <span className="text-cyan-500">attorneys</span>{' '}
+                            make decisions?
                         </h2>
                         <p className="mb-4 text-sm text-primary-700 sm:text-base">
-                            This matches LP1H and LP1F section 3. Tick one option only on the paper form; here, choose one below.
+                            This matches LP1H and LP1F section 3. Tick one
+                            option only on the paper form; here, choose one
+                            below.
                         </p>
                         <div className="space-y-2">
                             {actingOptions.map((opt) => (
                                 <button
                                     key={opt.value}
                                     type="button"
-                                    onClick={() => setAttorneyActingTogether(opt.value)}
+                                    onClick={() =>
+                                        setAttorneyActingTogether(opt.value)
+                                    }
                                     className={`w-full rounded-lg border px-4 py-3 text-left text-sm transition sm:text-base ${attorneyActingTogether === opt.value
-                                        ? 'border-primary-500 bg-primary-50 ring-1 ring-primary-400'
-                                        : 'border-slate-200 bg-white hover:border-slate-300'
+                                            ? 'border-primary-500 bg-primary-50 ring-1 ring-primary-400'
+                                            : 'border-slate-200 bg-white hover:border-slate-300'
                                         }`}
                                 >
-                                    <span className="font-semibold text-primary-900">{opt.label}</span>
-                                    <span className="mt-1 block text-xs text-primary-600 sm:text-sm">{opt.hint}</span>
+                                    <span className="font-semibold text-primary-900">
+                                        {opt.label}
+                                    </span>
+                                    <span className="mt-1 block text-xs text-primary-600 sm:text-sm">
+                                        {opt.hint}
+                                    </span>
                                 </button>
                             ))}
                         </div>
                     </div>
 
                     <div className="rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:p-6 lg:p-8">
-                        <h2 className="text-xl font-semibold text-primary-900 mb-4 sm:mb-6 sm:text-2xl">
-                            Can attorneys <span className="text-cyan-500">view your legal documents?</span>
+                        <h2 className="mb-4 text-xl font-semibold text-primary-900 sm:mb-6 sm:text-2xl">
+                            Can attorneys{' '}
+                            <span className="text-cyan-500">
+                                view your legal documents?
+                            </span>
                         </h2>
 
-                        <p className="text-base text-primary-700 mb-8">
-                            Are you happy for your Attorneys to view your legal documents if you lose mental capacity?
+                        <p className="mb-8 text-base text-primary-700">
+                            Are you happy for your Attorneys to view your legal
+                            documents if you lose mental capacity?
                         </p>
 
                         <div className="space-y-3">
@@ -1678,8 +2423,8 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 onClick={() => setCanViewDocuments('yes')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'yes'
-                                    ? 'bg-slate-700 text-white'
-                                    : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
+                                        ? 'bg-slate-700 text-white'
+                                        : 'border border-slate-300 bg-white text-primary-800 hover:bg-slate-50'
                                     }`}
                             >
                                 Yes - give the attorneys authority
@@ -1688,8 +2433,8 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 onClick={() => setCanViewDocuments('no')}
                                 className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${canViewDocuments === 'no'
-                                    ? 'bg-slate-700 text-white'
-                                    : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
+                                        ? 'bg-slate-700 text-white'
+                                        : 'border border-slate-300 bg-white text-primary-800 hover:bg-slate-50'
                                     }`}
                             >
                                 No - do not give the attorneys authority
@@ -1697,14 +2442,26 @@ export default function LpaCreate({ user }: Props) {
                         </div>
                     </div>
 
-                    <div className="rounded-xl bg-cyan-50/70 border border-cyan-200 p-4">
+                    <div className="rounded-xl border border-cyan-200 bg-cyan-50/70 p-4">
                         <button
                             type="button"
                             className="flex w-full items-center justify-between text-left"
                         >
-                            <span className="text-base font-semibold text-cyan-700">NEED HELP?</span>
-                            <svg className="h-5 w-5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            <span className="text-base font-semibold text-cyan-700">
+                                NEED HELP?
+                            </span>
+                            <svg
+                                className="h-5 w-5 text-cyan-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M19 9l-7 7-7-7"
+                                />
                             </svg>
                         </button>
                     </div>
@@ -1718,40 +2475,58 @@ export default function LpaCreate({ user }: Props) {
                 <>
                     <div className="grid gap-6 lg:grid-cols-6 lg:gap-8">
                         {/* Main Content */}
-                        <div className="lg:col-span-4 space-y-6">
+                        <div className="space-y-6 lg:col-span-4">
                             <div className="rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:p-6 lg:p-8">
-                                <h2 className="text-xl font-semibold text-primary-900 mb-4 sm:text-2xl">
-                                    Replacement <span className="text-cyan-500">Attorneys</span>
+                                <h2 className="mb-4 text-xl font-semibold text-primary-900 sm:text-2xl">
+                                    Replacement{' '}
+                                    <span className="text-cyan-500">
+                                        Attorneys
+                                    </span>
                                 </h2>
 
-                                <p className="text-primary-700 mb-4">
-                                    One or more replacement attorneys can be appointed, this is optional.
+                                <p className="mb-4 text-primary-700">
+                                    One or more replacement attorneys can be
+                                    appointed, this is optional.
                                 </p>
 
-                                <p className="text-primary-700 mb-6">
-                                    Replacement attorneys are people a donor appoints to make decisions on their behalf if one of their attorneys
-                                    can no longer make decisions on their behalf.
+                                <p className="mb-6 text-primary-700">
+                                    Replacement attorneys are people a donor
+                                    appoints to make decisions on their behalf
+                                    if one of their attorneys can no longer make
+                                    decisions on their behalf.
                                 </p>
 
                                 <div className="mb-6">
-                                    <h3 className="text-lg font-semibold text-primary-900 mb-4">Do you want any replacement attorneys?</h3>
+                                    <h3 className="mb-4 text-lg font-semibold text-primary-900">
+                                        Do you want any replacement attorneys?
+                                    </h3>
                                     <div className="space-y-3">
                                         <button
                                             type="button"
-                                            onClick={() => setWantReplacementAttorneys('no')}
-                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'no'
-                                                ? 'bg-slate-700 text-white'
-                                                : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
+                                            onClick={() =>
+                                                setWantReplacementAttorneys(
+                                                    'no',
+                                                )
+                                            }
+                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys ===
+                                                    'no'
+                                                    ? 'bg-slate-700 text-white'
+                                                    : 'border border-slate-300 bg-white text-primary-800 hover:bg-slate-50'
                                                 }`}
                                         >
                                             No
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => setWantReplacementAttorneys('yes')}
-                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys === 'yes'
-                                                ? 'bg-slate-700 text-white'
-                                                : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
+                                            onClick={() =>
+                                                setWantReplacementAttorneys(
+                                                    'yes',
+                                                )
+                                            }
+                                            className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${wantReplacementAttorneys ===
+                                                    'yes'
+                                                    ? 'bg-slate-700 text-white'
+                                                    : 'border border-slate-300 bg-white text-primary-800 hover:bg-slate-50'
                                                 }`}
                                         >
                                             Yes
@@ -1763,37 +2538,99 @@ export default function LpaCreate({ user }: Props) {
                                     <>
                                         <button
                                             type="button"
-                                            onClick={handleAddReplacementAttorney}
-                                            className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 text-primary-700 font-medium transition hover:border-primary-400 hover:bg-slate-50 mb-6"
+                                            onClick={
+                                                handleAddReplacementAttorney
+                                            }
+                                            className="mb-6 flex w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-300 bg-white px-6 py-4 font-medium text-primary-700 transition hover:border-primary-400 hover:bg-slate-50"
                                         >
-                                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                            <svg
+                                                className="h-5 w-5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                                                />
                                             </svg>
                                             Add replacement attorney
                                         </button>
 
                                         {replacementAttorneys.length > 0 && (
                                             <div className="grid gap-4 md:grid-cols-2">
-                                                {replacementAttorneys.map((attorney) => (
-                                                    <div key={attorney.id} className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                                                        <p className="text-base font-semibold text-primary-900">
-                                                            {attorney.title} {attorney.firstName} {attorney.middleNames} {attorney.lastName}
-                                                        </p>
-                                                        <p className="mt-1 text-sm text-primary-600">
-                                                            Born: {attorney.birthDay || '--'}/{attorney.birthMonth || '--'}/{attorney.birthYear || '----'}
-                                                        </p>
-                                                        {(attorney.addressLine1 || attorney.postcode) && (
-                                                            <div className="mt-3 text-sm text-primary-600">
-                                                                <p>{attorney.addressLine1}</p>
-                                                                {attorney.addressLine2 && <p>{attorney.addressLine2}</p>}
-                                                                <p>
-                                                                    {[attorney.town, attorney.county, attorney.postcode].filter(Boolean).join(', ')}
+                                                {replacementAttorneys.map(
+                                                    (attorney) => (
+                                                        <div
+                                                            key={attorney.id}
+                                                            className="rounded-xl border border-slate-200 bg-slate-50 p-5"
+                                                        >
+                                                            <p className="text-base font-semibold text-primary-900">
+                                                                {attorney.title}{' '}
+                                                                {
+                                                                    attorney.firstName
+                                                                }{' '}
+                                                                {
+                                                                    attorney.middleNames
+                                                                }{' '}
+                                                                {
+                                                                    attorney.lastName
+                                                                }
+                                                            </p>
+                                                            <p className="mt-1 text-sm text-primary-600">
+                                                                Born:{' '}
+                                                                {attorney.birthDay ||
+                                                                    '--'}
+                                                                /
+                                                                {attorney.birthMonth ||
+                                                                    '--'}
+                                                                /
+                                                                {attorney.birthYear ||
+                                                                    '----'}
+                                                            </p>
+                                                            {(attorney.addressLine1 ||
+                                                                attorney.postcode) && (
+                                                                    <div className="mt-3 text-sm text-primary-600">
+                                                                        <p>
+                                                                            {
+                                                                                attorney.addressLine1
+                                                                            }
+                                                                        </p>
+                                                                        {attorney.addressLine2 && (
+                                                                            <p>
+                                                                                {
+                                                                                    attorney.addressLine2
+                                                                                }
+                                                                            </p>
+                                                                        )}
+                                                                        <p>
+                                                                            {[
+                                                                                attorney.town,
+                                                                                attorney.county,
+                                                                                attorney.postcode,
+                                                                            ]
+                                                                                .filter(
+                                                                                    Boolean,
+                                                                                )
+                                                                                .join(
+                                                                                    ', ',
+                                                                                )}
+                                                                        </p>
+                                                                    </div>
+                                                                )}
+                                                            {attorney.email && (
+                                                                <p className="mt-3 text-sm text-primary-600">
+                                                                    Email:{' '}
+                                                                    {
+                                                                        attorney.email
+                                                                    }
                                                                 </p>
-                                                            </div>
-                                                        )}
-                                                        {attorney.email && <p className="mt-3 text-sm text-primary-600">Email: {attorney.email}</p>}
-                                                    </div>
-                                                ))}
+                                                            )}
+                                                        </div>
+                                                    ),
+                                                )}
                                             </div>
                                         )}
                                     </>
@@ -1803,41 +2640,109 @@ export default function LpaCreate({ user }: Props) {
 
                         {/* Sidebar */}
                         <div className="lg:col-span-2">
-                            <div className="rounded-2xl bg-white p-6 shadow-sm sticky top-6">
-                                <h3 className="text-xl font-semibold text-primary-900 mb-4">Who can be a Replacement Attorney?</h3>
-                                <p className="text-sm text-primary-700 mb-4">The replacement attorney must be meet the following requirements:</p>
+                            <div className="sticky top-6 rounded-2xl bg-white p-6 shadow-sm">
+                                <h3 className="mb-4 text-xl font-semibold text-primary-900">
+                                    Who can be a Replacement Attorney?
+                                </h3>
+                                <p className="mb-4 text-sm text-primary-700">
+                                    The replacement attorney must be meet the
+                                    following requirements:
+                                </p>
                                 <ul className="space-y-3">
                                     <li className="flex items-start gap-3">
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
-                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                            <svg
+                                                className="h-3 w-3"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M5 13l4 4L19 7"
+                                                />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-primary-700">Aged <span className="font-semibold">18 or over</span>.</span>
+                                        <span className="text-sm text-primary-700">
+                                            Aged{' '}
+                                            <span className="font-semibold">
+                                                18 or over
+                                            </span>
+                                            .
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600 flex-shrink-0 mt-0.5">
-                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                            <svg
+                                                className="h-3 w-3"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M5 13l4 4L19 7"
+                                                />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-primary-700">Have <span className="font-semibold">mental capacity</span> to make decisions.</span>
+                                        <span className="text-sm text-primary-700">
+                                            Have{' '}
+                                            <span className="font-semibold">
+                                                mental capacity
+                                            </span>{' '}
+                                            to make decisions.
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
-                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                                            <svg
+                                                className="h-3 w-3"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-primary-700">Must not be <span className="font-semibold">bankrupt</span>, or subject to a debt relief order.</span>
+                                        <span className="text-sm text-primary-700">
+                                            Must not be{' '}
+                                            <span className="font-semibold">
+                                                bankrupt
+                                            </span>
+                                            , or subject to a debt relief order.
+                                        </span>
                                     </li>
                                     <li className="flex items-start gap-3">
-                                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600 flex-shrink-0 mt-0.5">
-                                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+                                            <svg
+                                                className="h-3 w-3"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
                                             </svg>
                                         </span>
-                                        <span className="text-sm text-primary-700">Must not already be assigned as an <span className="font-semibold">Attorney</span></span>
+                                        <span className="text-sm text-primary-700">
+                                            Must not already be assigned as an{' '}
+                                            <span className="font-semibold">
+                                                Attorney
+                                            </span>
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
@@ -1846,92 +2751,162 @@ export default function LpaCreate({ user }: Props) {
 
                     {/* Replacement Attorney Modal */}
                     {showReplacementAttorneyModal && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-0 sm:p-4">
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-0 backdrop-blur-sm sm:p-4">
                             <div
                                 ref={replacementModalRef}
                                 className="relative flex h-full w-full max-w-2xl flex-col overflow-y-auto rounded-none bg-white shadow-2xl sm:h-[90vh] sm:max-h-[90vh] sm:rounded-xl"
                             >
                                 <button
                                     type="button"
-                                    onClick={handleCloseReplacementAttorneyModal}
-                                    className="absolute right-3 top-3 z-10 rounded-full p-1.5 text-white transition hover:bg-white/10 sm:right-4 sm:top-4"
+                                    onClick={
+                                        handleCloseReplacementAttorneyModal
+                                    }
+                                    className="absolute top-3 right-3 z-10 rounded-full p-1.5 text-white transition hover:bg-white/10 sm:top-4 sm:right-4"
                                     aria-label="Close"
                                 >
-                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    <svg
+                                        className="h-5 w-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
                                     </svg>
                                 </button>
 
                                 {/* Modal Header */}
                                 <div className="border-b border-slate-200 bg-primary-600 px-4 py-3 pr-12 sm:px-6 sm:py-4">
-                                    <h3 className="text-lg font-semibold text-white sm:text-xl">Add replacement attorney</h3>
+                                    <h3 className="text-lg font-semibold text-white sm:text-xl">
+                                        Add replacement attorney
+                                    </h3>
                                 </div>
 
                                 {/* Modal Body */}
-                                <div className="flex-1 overflow-y-auto p-4 space-y-6 sm:p-6 md:p-8 lg:p-10">
+                                <div className="flex-1 space-y-6 overflow-y-auto p-4 sm:p-6 md:p-8 lg:p-10">
                                     {/* Full Legal Name */}
                                     <div className="space-y-4">
-                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">Full legal name</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">
+                                            Full legal name
+                                        </h4>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-primary-600">Title</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                Title
+                                            </label>
                                             <div className="rounded-md border border-slate-300 bg-white px-3 py-2">
                                                 <select
                                                     className="w-full border-none bg-transparent text-sm text-primary-800 focus:outline-none"
-                                                    value={currentReplacementAttorney.title}
-                                                    onChange={(e) => handleReplacementAttorneyChange('title', e.target.value)}
+                                                    value={
+                                                        currentReplacementAttorney.title
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleReplacementAttorneyChange(
+                                                            'title',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 >
-                                                    {donorTitleOptions.map((title) => (
-                                                        <option key={title} value={title}>
-                                                            {title}
-                                                        </option>
-                                                    ))}
+                                                    {donorTitleOptions.map(
+                                                        (title) => (
+                                                            <option
+                                                                key={title}
+                                                                value={title}
+                                                            >
+                                                                {title}
+                                                            </option>
+                                                        ),
+                                                    )}
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div className="grid gap-4 md:grid-cols-2">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">First Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    First Name
+                                                </label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentReplacementAttorney.firstName}
-                                                    onChange={(e) => handleReplacementAttorneyChange('firstName', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentReplacementAttorney.firstName
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleReplacementAttorneyChange(
+                                                            'firstName',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Last Name</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Last Name
+                                                </label>
                                                 <input
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentReplacementAttorney.lastName}
-                                                    onChange={(e) => handleReplacementAttorneyChange('lastName', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentReplacementAttorney.lastName
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleReplacementAttorneyChange(
+                                                            'lastName',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                         </div>
 
                                         <div>
-                                            <label className="mb-2 block text-sm font-medium text-primary-600">Middle names (if any)</label>
+                                            <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                Middle names (if any)
+                                            </label>
                                             <input
-                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                value={currentReplacementAttorney.middleNames}
-                                                onChange={(e) => handleReplacementAttorneyChange('middleNames', e.target.value)}
+                                                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                value={
+                                                    currentReplacementAttorney.middleNames
+                                                }
+                                                onChange={(e) =>
+                                                    handleReplacementAttorneyChange(
+                                                        'middleNames',
+                                                        e.target.value,
+                                                    )
+                                                }
                                             />
                                         </div>
                                     </div>
 
                                     {/* Address */}
                                     <div className="space-y-4">
-                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">What's their address?</h4>
+                                        <h4 className="text-base font-semibold text-primary-900 sm:text-lg">
+                                            What's their address?
+                                        </h4>
 
                                         {!isManualReplacementAddress ? (
                                             <>
                                                 <div>
-                                                    <label className="mb-2 block text-sm text-primary-600">Enter postcode to search for address</label>
+                                                    <label className="mb-2 block text-sm text-primary-600">
+                                                        Enter postcode to search
+                                                        for address
+                                                    </label>
                                                     <div className="flex gap-3">
                                                         <input
-                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                            value={currentReplacementAttorney.postcode}
-                                                            onChange={(e) => handleReplacementAttorneyChange('postcode', e.target.value)}
+                                                            className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                            value={
+                                                                currentReplacementAttorney.postcode
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleReplacementAttorneyChange(
+                                                                    'postcode',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
                                                             placeholder="Enter postcode"
                                                         />
                                                         <button
@@ -1944,8 +2919,12 @@ export default function LpaCreate({ user }: Props) {
                                                 </div>
                                                 <button
                                                     type="button"
-                                                    onClick={() => setIsManualReplacementAddress(true)}
-                                                    className="text-sm font-medium text-primary-500 hover:text-primary-600 transition"
+                                                    onClick={() =>
+                                                        setIsManualReplacementAddress(
+                                                            true,
+                                                        )
+                                                    }
+                                                    className="text-sm font-medium text-primary-500 transition hover:text-primary-600"
                                                 >
                                                     Enter address manually
                                                 </button>
@@ -1953,48 +2932,95 @@ export default function LpaCreate({ user }: Props) {
                                         ) : (
                                             <div className="space-y-4">
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 1</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                        Address Line 1
+                                                    </label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                        value={currentReplacementAttorney.addressLine1}
-                                                        onChange={(e) => handleReplacementAttorneyChange('addressLine1', e.target.value)}
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                        value={
+                                                            currentReplacementAttorney.addressLine1
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleReplacementAttorneyChange(
+                                                                'addressLine1',
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                     />
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Address Line 2</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                        Address Line 2
+                                                    </label>
                                                     <input
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                        value={currentReplacementAttorney.addressLine2}
-                                                        onChange={(e) => handleReplacementAttorneyChange('addressLine2', e.target.value)}
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                        value={
+                                                            currentReplacementAttorney.addressLine2
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleReplacementAttorneyChange(
+                                                                'addressLine2',
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                     />
                                                 </div>
                                                 <div className="grid gap-4 md:grid-cols-2">
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-primary-600">Town</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                            Town
+                                                        </label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                            value={currentReplacementAttorney.town}
-                                                            onChange={(e) => handleReplacementAttorneyChange('town', e.target.value)}
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                            value={
+                                                                currentReplacementAttorney.town
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleReplacementAttorneyChange(
+                                                                    'town',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label className="mb-2 block text-sm font-medium text-primary-600">County</label>
+                                                        <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                            County
+                                                        </label>
                                                         <input
-                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                            value={currentReplacementAttorney.county}
-                                                            onChange={(e) => handleReplacementAttorneyChange('county', e.target.value)}
+                                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                            value={
+                                                                currentReplacementAttorney.county
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleReplacementAttorneyChange(
+                                                                    'county',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
                                                         />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label className="mb-2 block text-sm font-medium text-primary-600">Postcode</label>
+                                                    <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                        Postcode
+                                                    </label>
                                                     <input
                                                         type="text"
                                                         pattern="[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}"
                                                         placeholder="e.g. SW1A 1AA"
-                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                        value={currentReplacementAttorney.postcode}
-                                                        onChange={(e) => handleReplacementAttorneyChange('postcode', e.target.value)}
+                                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                        value={
+                                                            currentReplacementAttorney.postcode
+                                                        }
+                                                        onChange={(e) =>
+                                                            handleReplacementAttorneyChange(
+                                                                'postcode',
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                     />
                                                 </div>
                                             </div>
@@ -2003,41 +3029,70 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Date of Birth */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">What's their date of birth</h4>
-                                        <div className="grid gap-4 grid-cols-3">
+                                        <h4 className="text-lg font-semibold text-primary-900">
+                                            What's their date of birth
+                                        </h4>
+                                        <div className="grid grid-cols-3 gap-4">
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Day</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Day
+                                                </label>
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     max="31"
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentReplacementAttorney.birthDay}
-                                                    onChange={(e) => handleReplacementAttorneyChange('birthDay', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentReplacementAttorney.birthDay
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleReplacementAttorneyChange(
+                                                            'birthDay',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     placeholder="DD"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Month</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Month
+                                                </label>
                                                 <input
                                                     type="number"
                                                     min="1"
                                                     max="12"
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentReplacementAttorney.birthMonth}
-                                                    onChange={(e) => handleReplacementAttorneyChange('birthMonth', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentReplacementAttorney.birthMonth
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleReplacementAttorneyChange(
+                                                            'birthMonth',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     placeholder="MM"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-2 block text-sm font-medium text-primary-600">Year</label>
+                                                <label className="mb-2 block text-sm font-medium text-primary-600">
+                                                    Year
+                                                </label>
                                                 <input
                                                     type="number"
                                                     min="1900"
                                                     max={new Date().getFullYear()}
-                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
-                                                    value={currentReplacementAttorney.birthYear}
-                                                    onChange={(e) => handleReplacementAttorneyChange('birthYear', e.target.value)}
+                                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
+                                                    value={
+                                                        currentReplacementAttorney.birthYear
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleReplacementAttorneyChange(
+                                                            'birthYear',
+                                                            e.target.value,
+                                                        )
+                                                    }
                                                     placeholder="YYYY"
                                                 />
                                             </div>
@@ -2046,12 +3101,22 @@ export default function LpaCreate({ user }: Props) {
 
                                     {/* Email */}
                                     <div className="space-y-4">
-                                        <h4 className="text-lg font-semibold text-primary-900">What's their email address? (optional)</h4>
+                                        <h4 className="text-lg font-semibold text-primary-900">
+                                            What's their email address?
+                                            (optional)
+                                        </h4>
                                         <input
-                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                                            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-primary-800 focus:border-primary-400 focus:ring-1 focus:ring-primary-400 focus:outline-none"
                                             type="email"
-                                            value={currentReplacementAttorney.email}
-                                            onChange={(e) => handleReplacementAttorneyChange('email', e.target.value)}
+                                            value={
+                                                currentReplacementAttorney.email
+                                            }
+                                            onChange={(e) =>
+                                                handleReplacementAttorneyChange(
+                                                    'email',
+                                                    e.target.value,
+                                                )
+                                            }
                                             placeholder="email@example.com"
                                         />
                                     </div>
@@ -2060,7 +3125,9 @@ export default function LpaCreate({ user }: Props) {
                                     <div className="border-t border-slate-200 bg-slate-50 px-6 py-4">
                                         <button
                                             type="button"
-                                            onClick={handleSaveReplacementAttorney}
+                                            onClick={
+                                                handleSaveReplacementAttorney
+                                            }
                                             className="w-full rounded-md bg-primary-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-primary-600"
                                         >
                                             Save and continue
@@ -2074,60 +3141,79 @@ export default function LpaCreate({ user }: Props) {
             );
         }
 
-
-
         // Step 7: LP1H life-sustaining (health / both) + LP1F when attorneys may act (property / both)
         if (
             currentStep === 7 &&
-            (usesLifeSustainingStep(selectedDocumentOption) || usesPropertyFinancialLpa(selectedDocumentOption))
+            (usesLifeSustainingStep(selectedDocumentOption) ||
+                usesPropertyFinancialLpa(selectedDocumentOption))
         ) {
             return (
                 <div className="max-w-4xl space-y-8">
                     {usesLifeSustainingStep(selectedDocumentOption) && (
                         <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                            <h2 className="text-3xl font-semibold text-center text-primary-900 mb-8">
-                                Life-sustaining <span className="text-cyan-500">Treatment</span>
+                            <h2 className="mb-8 text-center text-3xl font-semibold text-primary-900">
+                                Life-sustaining{' '}
+                                <span className="text-cyan-500">Treatment</span>
                                 {selectedDocumentOption === 'both' && (
-                                    <span className="mt-2 block text-center text-base font-normal text-primary-600">(LP1H Section 5)</span>
+                                    <span className="mt-2 block text-center text-base font-normal text-primary-600">
+                                        (LP1H Section 5)
+                                    </span>
                                 )}
                             </h2>
 
-                            <div className="space-y-6 text-base text-primary-900 mb-8">
+                            <div className="mb-8 space-y-6 text-base text-primary-900">
                                 <p>
-                                    <span className="text-cyan-500">You</span> must choose what you want to happen if you needed medical help to keep you alive and you no longer had mental capacity.
+                                    <span className="text-cyan-500">You</span>{' '}
+                                    must choose what you want to happen if you
+                                    needed medical help to keep you alive and
+                                    you no longer had mental capacity.
                                 </p>
 
                                 <p>
-                                    If you choose YES and <span className="text-cyan-500">you</span> ever needed life-sustaining treatment but{' '}
-                                    <span className="text-cyan-500">cannot</span> make decisions, the attorneys can speak to doctors on your behalf as if they were <span className="text-cyan-500">you</span>.
+                                    If you choose YES and{' '}
+                                    <span className="text-cyan-500">you</span>{' '}
+                                    ever needed life-sustaining treatment but{' '}
+                                    <span className="text-cyan-500">
+                                        cannot
+                                    </span>{' '}
+                                    make decisions, the attorneys can speak to
+                                    doctors on your behalf as if they were{' '}
+                                    <span className="text-cyan-500">you</span>.
                                 </p>
 
                                 <p>
-                                    If you choose NO doctors will make decisions about life-sustaining treatment for <span className="text-cyan-500">you</span>.
+                                    If you choose NO doctors will make decisions
+                                    about life-sustaining treatment for{' '}
+                                    <span className="text-cyan-500">you</span>.
                                 </p>
                             </div>
 
                             <div className="space-y-4">
                                 <h3 className="text-lg font-semibold text-primary-900">
-                                    Do you want the attorneys to make decisions about life-sustaining treatment?
+                                    Do you want the attorneys to make decisions
+                                    about life-sustaining treatment?
                                 </h3>
                                 <div className="overflow-hidden rounded-md border border-slate-200">
                                     <button
                                         type="button"
-                                        onClick={() => setLifeSustainingTreatment('yes')}
+                                        onClick={() =>
+                                            setLifeSustainingTreatment('yes')
+                                        }
                                         className={`w-full px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'yes'
-                                            ? 'bg-slate-600 text-white'
-                                            : 'bg-white text-primary-800 hover:bg-slate-50'
+                                                ? 'bg-slate-600 text-white'
+                                                : 'bg-white text-primary-800 hover:bg-slate-50'
                                             }`}
                                     >
                                         Yes - give the attorneys authority
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => setLifeSustainingTreatment('no')}
+                                        onClick={() =>
+                                            setLifeSustainingTreatment('no')
+                                        }
                                         className={`w-full border-t border-slate-200 px-6 py-4 text-base font-medium transition ${lifeSustainingTreatment === 'no'
-                                            ? 'bg-slate-600 text-white'
-                                            : 'bg-white text-primary-800 hover:bg-slate-50'
+                                                ? 'bg-slate-600 text-white'
+                                                : 'bg-white text-primary-800 hover:bg-slate-50'
                                             }`}
                                     >
                                         No - do not give the attorneys authority
@@ -2139,38 +3225,68 @@ export default function LpaCreate({ user }: Props) {
 
                     {usesPropertyFinancialLpa(selectedDocumentOption) && (
                         <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                            <h2 className="text-2xl font-semibold text-primary-900 mb-2">
+                            <h2 className="mb-2 text-2xl font-semibold text-primary-900">
                                 When can your attorneys make decisions?
                             </h2>
-                            <p className="mb-1 text-sm font-medium text-primary-600">LP1F Section 5 — property and financial affairs</p>
+                            <p className="mb-1 text-sm font-medium text-primary-600">
+                                LP1F Section 5 — property and financial affairs
+                            </p>
                             <p className="mb-6 text-sm text-primary-700">
-                                Choose one. This matches the official LP1F form: either as soon as the LPA is registered (your attorneys still need your consent while you have capacity), or only when you do not have mental capacity.
+                                Choose one. This matches the official LP1F form:
+                                either as soon as the LPA is registered (your
+                                attorneys still need your consent while you have
+                                capacity), or only when you do not have mental
+                                capacity.
                             </p>
                             <div className="overflow-hidden rounded-md border border-slate-200">
                                 <button
                                     type="button"
-                                    onClick={() => setWhenAttorneysCanAct('as_soon_registered')}
-                                    className={`w-full px-6 py-4 text-left text-base font-medium transition ${whenAttorneysCanAct === 'as_soon_registered'
-                                        ? 'bg-slate-600 text-white'
-                                        : 'bg-white text-primary-800 hover:bg-slate-50'
+                                    onClick={() =>
+                                        setWhenAttorneysCanAct(
+                                            'as_soon_registered',
+                                        )
+                                    }
+                                    className={`w-full px-6 py-4 text-left text-base font-medium transition ${whenAttorneysCanAct ===
+                                            'as_soon_registered'
+                                            ? 'bg-slate-600 text-white'
+                                            : 'bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
-                                    <span className="block font-semibold">As soon as my LPA has been registered</span>
-                                    <span className={`mt-1 block text-sm ${whenAttorneysCanAct === 'as_soon_registered' ? 'text-slate-100' : 'text-primary-600'}`}>
-                                        (and also when you do not have mental capacity). Most people choose this — attorneys can help with practical matters with your agreement while you have capacity.
+                                    <span className="block font-semibold">
+                                        As soon as my LPA has been registered
+                                    </span>
+                                    <span
+                                        className={`mt-1 block text-sm ${whenAttorneysCanAct === 'as_soon_registered' ? 'text-slate-100' : 'text-primary-600'}`}
+                                    >
+                                        (and also when you do not have mental
+                                        capacity). Most people choose this —
+                                        attorneys can help with practical
+                                        matters with your agreement while you
+                                        have capacity.
                                     </span>
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setWhenAttorneysCanAct('only_without_capacity')}
-                                    className={`w-full border-t border-slate-200 px-6 py-4 text-left text-base font-medium transition ${whenAttorneysCanAct === 'only_without_capacity'
-                                        ? 'bg-slate-600 text-white'
-                                        : 'bg-white text-primary-800 hover:bg-slate-50'
+                                    onClick={() =>
+                                        setWhenAttorneysCanAct(
+                                            'only_without_capacity',
+                                        )
+                                    }
+                                    className={`w-full border-t border-slate-200 px-6 py-4 text-left text-base font-medium transition ${whenAttorneysCanAct ===
+                                            'only_without_capacity'
+                                            ? 'bg-slate-600 text-white'
+                                            : 'bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
-                                    <span className="block font-semibold">Only when I do not have mental capacity</span>
-                                    <span className={`mt-1 block text-sm ${whenAttorneysCanAct === 'only_without_capacity' ? 'text-slate-100' : 'text-primary-600'}`}>
-                                        The LPA is harder to use in practice because attorneys may need to prove lack of capacity each time.
+                                    <span className="block font-semibold">
+                                        Only when I do not have mental capacity
+                                    </span>
+                                    <span
+                                        className={`mt-1 block text-sm ${whenAttorneysCanAct === 'only_without_capacity' ? 'text-slate-100' : 'text-primary-600'}`}
+                                    >
+                                        The LPA is harder to use in practice
+                                        because attorneys may need to prove lack
+                                        of capacity each time.
                                     </span>
                                 </button>
                             </div>
@@ -2184,38 +3300,54 @@ export default function LpaCreate({ user }: Props) {
             return (
                 <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
-                            People to <span className="text-cyan-500">notify</span>
+                        <h2 className="mb-6 text-2xl font-semibold text-primary-900">
+                            People to{' '}
+                            <span className="text-cyan-500">notify</span>
                         </h2>
 
                         <div className="space-y-4 text-primary-700">
                             <p className="text-base">
-                                You can let people know that you're going to register this document. They can raise any concerns they have about the Lasting Powers of Attorney – for example, if there was any pressure or fraud in making it.
+                                You can let people know that you're going to
+                                register this document. They can raise any
+                                concerns they have about the Lasting Powers of
+                                Attorney – for example, if there was any
+                                pressure or fraud in making it.
                             </p>
 
                             <p className="text-base">
-                                When the document is registered, the person applying to register must send a notice to each 'person to notify'.
+                                When the document is registered, the person
+                                applying to register must send a notice to each
+                                'person to notify'.
                             </p>
 
                             <p className="text-base font-semibold">
-                                You can't put any of the attorneys or replacement attorneys here.
+                                You can't put any of the attorneys or
+                                replacement attorneys here.
                             </p>
 
                             <p className="text-base">
-                                People to notify can object to the document, but only for certain reasons, after that they are no longer involved in the Lasting Powers of Attorney.
+                                People to notify can object to the document, but
+                                only for certain reasons, after that they are no
+                                longer involved in the Lasting Powers of
+                                Attorney.
                             </p>
 
                             <p className="text-base">
-                                Choose people who care about your best interests and who would be willing to speak up if they were concerned.
+                                Choose people who care about your best interests
+                                and who would be willing to speak up if they
+                                were concerned.
                             </p>
 
                             <p className="text-base text-cyan-500">
-                                Most people choose 'No' and do not enter anyone here.
+                                Most people choose 'No' and do not enter anyone
+                                here.
                             </p>
                         </div>
 
                         <div className="mt-8">
-                            <h3 className="text-lg font-semibold text-primary-900 mb-4">Are there any people to notify?</h3>
+                            <h3 className="mb-4 text-lg font-semibold text-primary-900">
+                                Are there any people to notify?
+                            </h3>
                             <div className="space-y-3">
                                 <button
                                     type="button"
@@ -2224,8 +3356,8 @@ export default function LpaCreate({ user }: Props) {
                                         setPeopleToNotifyRows([]);
                                     }}
                                     className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${notifyPeople === 'no'
-                                        ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
+                                            ? 'bg-slate-700 text-white'
+                                            : 'border border-slate-300 bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
                                     No, there are no people to notify
@@ -2234,8 +3366,8 @@ export default function LpaCreate({ user }: Props) {
                                     type="button"
                                     onClick={() => setNotifyPeople('yes')}
                                     className={`w-full rounded-md px-6 py-4 text-base font-semibold transition ${notifyPeople === 'yes'
-                                        ? 'bg-slate-700 text-white'
-                                        : 'bg-white text-primary-800 border border-slate-300 hover:bg-slate-50'
+                                            ? 'bg-slate-700 text-white'
+                                            : 'border border-slate-300 bg-white text-primary-800 hover:bg-slate-50'
                                         }`}
                                 >
                                     Yes, there are people to notify
@@ -2245,90 +3377,175 @@ export default function LpaCreate({ user }: Props) {
 
                         {notifyPeople === 'yes' && (
                             <div className="mt-8 space-y-4 border-t border-slate-200 pt-6">
-                                <h3 className="text-lg font-semibold text-primary-900">Section 6 — People to notify (max 5)</h3>
+                                <h3 className="text-lg font-semibold text-primary-900">
+                                    Section 6 — People to notify (max 5)
+                                </h3>
                                 <p className="text-sm text-primary-600">
-                                    {'Use CAPITAL LETTERS on the paper LP1H. Enter each person\'s details below.'}
+                                    {
+                                        "Use CAPITAL LETTERS on the paper LP1H. Enter each person's details below."
+                                    }
                                 </p>
                                 {peopleToNotifyRows.map((row, idx) => (
-                                    <div key={row.id} className="rounded-lg border border-slate-200 bg-slate-50/80 p-4 space-y-3">
+                                    <div
+                                        key={row.id}
+                                        className="space-y-3 rounded-lg border border-slate-200 bg-slate-50/80 p-4"
+                                    >
                                         <div className="flex items-center justify-between">
-                                            <span className="text-sm font-semibold text-primary-800">Person {idx + 1}</span>
+                                            <span className="text-sm font-semibold text-primary-800">
+                                                Person {idx + 1}
+                                            </span>
                                             <button
                                                 type="button"
                                                 className="text-sm font-medium text-red-600 hover:text-red-700"
-                                                onClick={() => setPeopleToNotifyRows((prev) => prev.filter((r) => r.id !== row.id))}
+                                                onClick={() =>
+                                                    setPeopleToNotifyRows(
+                                                        (prev) =>
+                                                            prev.filter(
+                                                                (r) =>
+                                                                    r.id !==
+                                                                    row.id,
+                                                            ),
+                                                    )
+                                                }
                                             >
                                                 Remove
                                             </button>
                                         </div>
                                         <div className="grid gap-3 sm:grid-cols-3">
                                             <div>
-                                                <label className="mb-1 block text-xs font-medium text-primary-600">Title</label>
+                                                <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                    Title
+                                                </label>
                                                 <select
                                                     className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                     value={row.title}
                                                     onChange={(e) => {
-                                                        const v = e.target.value;
-                                                        setPeopleToNotifyRows((prev) =>
-                                                            prev.map((r) => (r.id === row.id ? { ...r, title: v } : r)),
+                                                        const v =
+                                                            e.target.value;
+                                                        setPeopleToNotifyRows(
+                                                            (prev) =>
+                                                                prev.map((r) =>
+                                                                    r.id ===
+                                                                        row.id
+                                                                        ? {
+                                                                            ...r,
+                                                                            title: v,
+                                                                        }
+                                                                        : r,
+                                                                ),
                                                         );
                                                     }}
                                                 >
                                                     <option value="">—</option>
-                                                    {donorTitleOptions.map((t) => (
-                                                        <option key={t} value={t}>{t}</option>
-                                                    ))}
+                                                    {donorTitleOptions.map(
+                                                        (t) => (
+                                                            <option
+                                                                key={t}
+                                                                value={t}
+                                                            >
+                                                                {t}
+                                                            </option>
+                                                        ),
+                                                    )}
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="mb-1 block text-xs font-medium text-primary-600">First names</label>
+                                                <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                    First names
+                                                </label>
                                                 <input
                                                     className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                     value={row.firstName}
                                                     onChange={(e) => {
-                                                        const v = e.target.value;
-                                                        setPeopleToNotifyRows((prev) =>
-                                                            prev.map((r) => (r.id === row.id ? { ...r, firstName: v } : r)),
+                                                        const v =
+                                                            e.target.value;
+                                                        setPeopleToNotifyRows(
+                                                            (prev) =>
+                                                                prev.map((r) =>
+                                                                    r.id ===
+                                                                        row.id
+                                                                        ? {
+                                                                            ...r,
+                                                                            firstName:
+                                                                                v,
+                                                                        }
+                                                                        : r,
+                                                                ),
                                                         );
                                                     }}
                                                 />
                                             </div>
                                             <div>
-                                                <label className="mb-1 block text-xs font-medium text-primary-600">Last name</label>
+                                                <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                    Last name
+                                                </label>
                                                 <input
                                                     className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                     value={row.lastName}
                                                     onChange={(e) => {
-                                                        const v = e.target.value;
-                                                        setPeopleToNotifyRows((prev) =>
-                                                            prev.map((r) => (r.id === row.id ? { ...r, lastName: v } : r)),
+                                                        const v =
+                                                            e.target.value;
+                                                        setPeopleToNotifyRows(
+                                                            (prev) =>
+                                                                prev.map((r) =>
+                                                                    r.id ===
+                                                                        row.id
+                                                                        ? {
+                                                                            ...r,
+                                                                            lastName:
+                                                                                v,
+                                                                        }
+                                                                        : r,
+                                                                ),
                                                         );
                                                     }}
                                                 />
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="mb-1 block text-xs font-medium text-primary-600">Address</label>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                Address
+                                            </label>
                                             <input
                                                 className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                 value={row.addressLine1}
                                                 onChange={(e) => {
                                                     const v = e.target.value;
-                                                    setPeopleToNotifyRows((prev) =>
-                                                        prev.map((r) => (r.id === row.id ? { ...r, addressLine1: v } : r)),
+                                                    setPeopleToNotifyRows(
+                                                        (prev) =>
+                                                            prev.map((r) =>
+                                                                r.id === row.id
+                                                                    ? {
+                                                                        ...r,
+                                                                        addressLine1:
+                                                                            v,
+                                                                    }
+                                                                    : r,
+                                                            ),
                                                     );
                                                 }}
                                             />
                                         </div>
                                         <div className="max-w-xs">
-                                            <label className="mb-1 block text-xs font-medium text-primary-600">Postcode</label>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                Postcode
+                                            </label>
                                             <input
                                                 className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                 value={row.postcode}
                                                 onChange={(e) => {
                                                     const v = e.target.value;
-                                                    setPeopleToNotifyRows((prev) =>
-                                                        prev.map((r) => (r.id === row.id ? { ...r, postcode: v } : r)),
+                                                    setPeopleToNotifyRows(
+                                                        (prev) =>
+                                                            prev.map((r) =>
+                                                                r.id === row.id
+                                                                    ? {
+                                                                        ...r,
+                                                                        postcode:
+                                                                            v,
+                                                                    }
+                                                                    : r,
+                                                            ),
                                                     );
                                                 }}
                                             />
@@ -2364,85 +3581,157 @@ export default function LpaCreate({ user }: Props) {
         }
         // Step 9: Application Information - Who is applying to register
         if (currentStep === 9) {
-            const selectedAttorney = applicant === 'attorneys' && attorneys.length > 0 ? attorneys[0] : null;
+            const selectedAttorney =
+                applicant === 'attorneys' && attorneys.length > 0
+                    ? attorneys[0]
+                    : null;
             const selectedDonor = donorDetails;
 
             return (
                 <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
-                            Who is <span className="text-cyan-500">applying to register?</span>
+                        <h2 className="mb-6 text-2xl font-semibold text-primary-900">
+                            Who is{' '}
+                            <span className="text-cyan-500">
+                                applying to register?
+                            </span>
                         </h2>
 
-                        <div className="space-y-4 text-primary-700 mb-8">
+                        <div className="mb-8 space-y-4 text-primary-700">
                             <p className="text-base">
-                                This document can't be used until it is registered by the Office of the Public Guardian (OPG).
+                                This document can't be used until it is
+                                registered by the Office of the Public Guardian
+                                (OPG).
                             </p>
 
                             <p className="text-base">
-                                Only the donor (<span className="text-cyan-500">You</span>) or one of the attorneys can apply to register this document.
+                                Only the donor (
+                                <span className="text-cyan-500">You</span>) or
+                                one of the attorneys can apply to register this
+                                document.
                             </p>
 
                             <p className="text-base">
-                                Select from the option below whether the donor (<span className="text-cyan-500">You</span>) is registering or one of the attorneys.
+                                Select from the option below whether the donor (
+                                <span className="text-cyan-500">You</span>) is
+                                registering or one of the attorneys.
                             </p>
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-primary-900">Who is applying to register?</h3>
+                            <h3 className="text-lg font-semibold text-primary-900">
+                                Who is applying to register?
+                            </h3>
                             <div className="rounded-md border border-slate-300 bg-white">
                                 <select
-                                    className="w-full border-none bg-transparent px-4 py-3 text-base text-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                                    className="w-full border-none bg-transparent px-4 py-3 text-base text-primary-800 focus:ring-2 focus:ring-primary-400 focus:outline-none"
                                     value={applicant}
-                                    onChange={(e) => setApplicant(e.target.value)}
+                                    onChange={(e) =>
+                                        setApplicant(e.target.value)
+                                    }
                                 >
-                                    <option value="">Choose from this list...</option>
+                                    <option value="">
+                                        Choose from this list...
+                                    </option>
                                     <option value="donor">Donor</option>
                                     <option value="attorneys">Attorneys</option>
                                 </select>
                             </div>
 
-                            {applicant === 'attorneys' && attorneys.length === 1 && selectedAttorney && (
-                                <div className="space-y-3">
-                                    <p className="text-sm text-primary-600">You only have one attorney, they have been automatically selected.</p>
-                                    <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
-                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="font-semibold">
-                                                {selectedAttorney.title} {selectedAttorney.firstName} {selectedAttorney.middleNames} {selectedAttorney.lastName}
-                                            </p>
-                                            <p className="text-sm">{selectedAttorney.email}</p>
-                                        </div>
-                                        <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                            </svg>
+                            {applicant === 'attorneys' &&
+                                attorneys.length === 1 &&
+                                selectedAttorney && (
+                                    <div className="space-y-3">
+                                        <p className="text-sm text-primary-600">
+                                            You only have one attorney, they
+                                            have been automatically selected.
+                                        </p>
+                                        <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
+                                                <svg
+                                                    className="h-6 w-6"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="font-semibold">
+                                                    {selectedAttorney.title}{' '}
+                                                    {selectedAttorney.firstName}{' '}
+                                                    {
+                                                        selectedAttorney.middleNames
+                                                    }{' '}
+                                                    {selectedAttorney.lastName}
+                                                </p>
+                                                <p className="text-sm">
+                                                    {selectedAttorney.email}
+                                                </p>
+                                            </div>
+                                            <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
+                                                <svg
+                                                    className="h-4 w-4 text-primary-600"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={3}
+                                                        d="M5 13l4 4L19 7"
+                                                    />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
 
                             {applicant === 'donor' && (
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
-                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                            <svg
+                                                className="h-6 w-6"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                    clipRule="evenodd"
+                                                />
                                             </svg>
                                         </div>
                                         <div className="flex-1">
                                             <p className="font-semibold">
-                                                {selectedDonor.title} {selectedDonor.firstName} {selectedDonor.middleNames} {selectedDonor.lastName}
+                                                {selectedDonor.title}{' '}
+                                                {selectedDonor.firstName}{' '}
+                                                {selectedDonor.middleNames}{' '}
+                                                {selectedDonor.lastName}
                                             </p>
-                                            <p className="text-sm">{contactDetails.email}</p>
+                                            <p className="text-sm">
+                                                {contactDetails.email}
+                                            </p>
                                         </div>
                                         <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            <svg
+                                                className="h-4 w-4 text-primary-600"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M5 13l4 4L19 7"
+                                                />
                                             </svg>
                                         </div>
                                     </div>
@@ -2456,80 +3745,153 @@ export default function LpaCreate({ user }: Props) {
 
         // Step 10: Application Information - Who should receive the document
         if (currentStep === 10) {
-            const selectedAttorney = documentRecipient === 'attorney' && attorneys.length > 0 ? attorneys[0] : null;
+            const selectedAttorney =
+                documentRecipient === 'attorney' && attorneys.length > 0
+                    ? attorneys[0]
+                    : null;
             const selectedDonor = donorDetails;
             return (
                 <div className="max-w-4xl space-y-6">
                     <div className="rounded-2xl bg-white p-8 text-primary-800 shadow-sm">
-                        <h2 className="text-2xl font-semibold text-primary-900 mb-6">
-                            Who should <span className="text-cyan-500">receive the document?</span>
+                        <h2 className="mb-6 text-2xl font-semibold text-primary-900">
+                            Who should{' '}
+                            <span className="text-cyan-500">
+                                receive the document?
+                            </span>
                         </h2>
 
                         <div className="space-y-6">
                             <p className="text-base text-primary-700">
-                                Once this document is registered with the Office of the Public Guardian (OPG) it will be sent to the person listed below.
+                                Once this document is registered with the Office
+                                of the Public Guardian (OPG) it will be sent to
+                                the person listed below.
                             </p>
 
                             <div className="space-y-4">
-                                <h3 className="text-lg font-semibold text-primary-900">Where should the registered document be sent?</h3>
+                                <h3 className="text-lg font-semibold text-primary-900">
+                                    Where should the registered document be
+                                    sent?
+                                </h3>
                                 <div className="rounded-md border border-slate-300 bg-white">
                                     <select
-                                        className="w-full border-none bg-transparent px-4 py-3 text-base text-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                                        className="w-full border-none bg-transparent px-4 py-3 text-base text-primary-800 focus:ring-2 focus:ring-primary-400 focus:outline-none"
                                         value={documentRecipient}
-                                        onChange={(e) => setDocumentRecipient(e.target.value)}
+                                        onChange={(e) =>
+                                            setDocumentRecipient(e.target.value)
+                                        }
                                     >
-                                        <option value="">Choose from this list...</option>
-                                        <option value="attorney">Attorney</option>
+                                        <option value="">
+                                            Choose from this list...
+                                        </option>
+                                        <option value="attorney">
+                                            Attorney
+                                        </option>
                                         <option value="donor">Donor</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
                                 {documentRecipient && (
-                                    <p className="text-sm text-cyan-500">Select the person who should receive the document</p>
+                                    <p className="text-sm text-cyan-500">
+                                        Select the person who should receive the
+                                        document
+                                    </p>
                                 )}
                             </div>
 
-                            {documentRecipient === 'attorney' && selectedAttorney && (
-                                <div className="space-y-3">
-                                    <p className="text-sm text-primary-600">You only have one attorney, they will receive the registered document.</p>
-                                    <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
-                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="font-semibold">
-                                                {selectedAttorney.title} {selectedAttorney.firstName} {selectedAttorney.middleNames} {selectedAttorney.lastName}
-                                            </p>
-                                            <p className="text-sm">{selectedAttorney.email}</p>
-                                        </div>
-                                        <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                            </svg>
+                            {documentRecipient === 'attorney' &&
+                                selectedAttorney && (
+                                    <div className="space-y-3">
+                                        <p className="text-sm text-primary-600">
+                                            You only have one attorney, they
+                                            will receive the registered
+                                            document.
+                                        </p>
+                                        <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
+                                                <svg
+                                                    className="h-6 w-6"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="font-semibold">
+                                                    {selectedAttorney.title}{' '}
+                                                    {selectedAttorney.firstName}{' '}
+                                                    {
+                                                        selectedAttorney.middleNames
+                                                    }{' '}
+                                                    {selectedAttorney.lastName}
+                                                </p>
+                                                <p className="text-sm">
+                                                    {selectedAttorney.email}
+                                                </p>
+                                            </div>
+                                            <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
+                                                <svg
+                                                    className="h-4 w-4 text-primary-600"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={3}
+                                                        d="M5 13l4 4L19 7"
+                                                    />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
 
                             {documentRecipient === 'donor' && (
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-4 rounded-lg bg-slate-400 p-4 text-white">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/30">
-                                            <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                                            <svg
+                                                className="h-6 w-6"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                                    clipRule="evenodd"
+                                                />
                                             </svg>
                                         </div>
                                         <div className="flex-1">
                                             <p className="font-semibold">
-                                                {selectedDonor.title} {selectedDonor.firstName} {selectedDonor.middleNames} {selectedDonor.lastName}
+                                                {selectedDonor.title}{' '}
+                                                {selectedDonor.firstName}{' '}
+                                                {selectedDonor.middleNames}{' '}
+                                                {selectedDonor.lastName}
                                             </p>
-                                            <p className="text-sm">{contactDetails.email}</p>
+                                            <p className="text-sm">
+                                                {contactDetails.email}
+                                            </p>
                                         </div>
                                         <div className="flex h-6 w-6 items-center justify-center rounded border-2 border-white bg-white">
-                                            <svg className="h-4 w-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                            <svg
+                                                className="h-4 w-4 text-primary-600"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={3}
+                                                    d="M5 13l4 4L19 7"
+                                                />
                                             </svg>
                                         </div>
                                     </div>
@@ -2538,60 +3900,109 @@ export default function LpaCreate({ user }: Props) {
 
                             {documentRecipient === 'other' && (
                                 <div className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-slate-50/80 p-4">
-                                    <h3 className="text-base font-semibold text-primary-900">Other recipient (LP1H section 13)</h3>
+                                    <h3 className="text-base font-semibold text-primary-900">
+                                        Other recipient (LP1H section 13)
+                                    </h3>
                                     <div className="grid gap-3 sm:grid-cols-2">
                                         <div>
-                                            <label className="mb-1 block text-xs font-medium text-primary-600">Title</label>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                Title
+                                            </label>
                                             <select
                                                 className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                 value={recipientOther.title}
-                                                onChange={(e) => setRecipientOther((p) => ({ ...p, title: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setRecipientOther((p) => ({
+                                                        ...p,
+                                                        title: e.target.value,
+                                                    }))
+                                                }
                                             >
                                                 <option value="">—</option>
                                                 {donorTitleOptions.map((t) => (
-                                                    <option key={t} value={t}>{t}</option>
+                                                    <option key={t} value={t}>
+                                                        {t}
+                                                    </option>
                                                 ))}
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="mb-1 block text-xs font-medium text-primary-600">Company (optional)</label>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                Company (optional)
+                                            </label>
                                             <input
                                                 className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                 value={recipientOther.company}
-                                                onChange={(e) => setRecipientOther((p) => ({ ...p, company: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setRecipientOther((p) => ({
+                                                        ...p,
+                                                        company: e.target.value,
+                                                    }))
+                                                }
                                             />
                                         </div>
                                         <div>
-                                            <label className="mb-1 block text-xs font-medium text-primary-600">First names</label>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                First names
+                                            </label>
                                             <input
                                                 className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                 value={recipientOther.firstName}
-                                                onChange={(e) => setRecipientOther((p) => ({ ...p, firstName: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setRecipientOther((p) => ({
+                                                        ...p,
+                                                        firstName:
+                                                            e.target.value,
+                                                    }))
+                                                }
                                             />
                                         </div>
                                         <div>
-                                            <label className="mb-1 block text-xs font-medium text-primary-600">Last name</label>
+                                            <label className="mb-1 block text-xs font-medium text-primary-600">
+                                                Last name
+                                            </label>
                                             <input
                                                 className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                                 value={recipientOther.lastName}
-                                                onChange={(e) => setRecipientOther((p) => ({ ...p, lastName: e.target.value }))}
+                                                onChange={(e) =>
+                                                    setRecipientOther((p) => ({
+                                                        ...p,
+                                                        lastName:
+                                                            e.target.value,
+                                                    }))
+                                                }
                                             />
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="mb-1 block text-xs font-medium text-primary-600">Address</label>
+                                        <label className="mb-1 block text-xs font-medium text-primary-600">
+                                            Address
+                                        </label>
                                         <input
                                             className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                             value={recipientOther.addressLine1}
-                                            onChange={(e) => setRecipientOther((p) => ({ ...p, addressLine1: e.target.value }))}
+                                            onChange={(e) =>
+                                                setRecipientOther((p) => ({
+                                                    ...p,
+                                                    addressLine1:
+                                                        e.target.value,
+                                                }))
+                                            }
                                         />
                                     </div>
                                     <div className="max-w-xs">
-                                        <label className="mb-1 block text-xs font-medium text-primary-600">Postcode</label>
+                                        <label className="mb-1 block text-xs font-medium text-primary-600">
+                                            Postcode
+                                        </label>
                                         <input
                                             className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                             value={recipientOther.postcode}
-                                            onChange={(e) => setRecipientOther((p) => ({ ...p, postcode: e.target.value }))}
+                                            onChange={(e) =>
+                                                setRecipientOther((p) => ({
+                                                    ...p,
+                                                    postcode: e.target.value,
+                                                }))
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -2599,14 +4010,23 @@ export default function LpaCreate({ user }: Props) {
 
                             {documentRecipient && (
                                 <div className="mt-8 space-y-3 border-t border-slate-200 pt-6">
-                                    <h3 className="text-base font-semibold text-primary-900">How should OPG contact that person? (section 13)</h3>
-                                    <p className="text-sm text-primary-600">You may choose more than one.</p>
+                                    <h3 className="text-base font-semibold text-primary-900">
+                                        How should OPG contact that person?
+                                        (section 13)
+                                    </h3>
+                                    <p className="text-sm text-primary-600">
+                                        You may choose more than one.
+                                    </p>
                                     <div className="flex flex-wrap gap-4">
                                         <label className="flex items-center gap-2 text-sm">
                                             <input
                                                 type="checkbox"
                                                 checked={recipientPrefPost}
-                                                onChange={(e) => setRecipientPrefPost(e.target.checked)}
+                                                onChange={(e) =>
+                                                    setRecipientPrefPost(
+                                                        e.target.checked,
+                                                    )
+                                                }
                                             />
                                             Post
                                         </label>
@@ -2614,7 +4034,11 @@ export default function LpaCreate({ user }: Props) {
                                             <input
                                                 type="checkbox"
                                                 checked={recipientPrefPhone}
-                                                onChange={(e) => setRecipientPrefPhone(e.target.checked)}
+                                                onChange={(e) =>
+                                                    setRecipientPrefPhone(
+                                                        e.target.checked,
+                                                    )
+                                                }
                                             />
                                             Phone
                                         </label>
@@ -2622,7 +4046,11 @@ export default function LpaCreate({ user }: Props) {
                                             <input
                                                 type="checkbox"
                                                 checked={recipientPrefEmail}
-                                                onChange={(e) => setRecipientPrefEmail(e.target.checked)}
+                                                onChange={(e) =>
+                                                    setRecipientPrefEmail(
+                                                        e.target.checked,
+                                                    )
+                                                }
                                             />
                                             Email
                                         </label>
@@ -2630,7 +4058,11 @@ export default function LpaCreate({ user }: Props) {
                                             <input
                                                 type="checkbox"
                                                 checked={recipientPrefWelsh}
-                                                onChange={(e) => setRecipientPrefWelsh(e.target.checked)}
+                                                onChange={(e) =>
+                                                    setRecipientPrefWelsh(
+                                                        e.target.checked,
+                                                    )
+                                                }
                                             />
                                             Welsh correspondence
                                         </label>
@@ -2647,33 +4079,50 @@ export default function LpaCreate({ user }: Props) {
         if (currentStep === 11) {
             return (
                 <div className="max-w-4xl space-y-6 rounded-2xl bg-white p-4 text-primary-800 shadow-sm sm:space-y-8 sm:p-6 lg:p-8">
-                    <div className="text-center space-y-3">
+                    <div className="space-y-3 text-center">
                         <h2 className="text-3xl font-semibold text-primary-900">
-                            The <span className="text-primary-500">Certificate Provider</span>
+                            The{' '}
+                            <span className="text-primary-500">
+                                Certificate Provider
+                            </span>
                         </h2>
                         <div className="mx-auto h-px w-full bg-slate-200" />
                     </div>
 
                     <p className="text-base text-primary-700">
-                        This person signs to confirm they have discussed the Lasting Power of Attorney with the Donor and that they are fully aware of what they are doing.
+                        This person signs to confirm they have discussed the
+                        Lasting Power of Attorney with the Donor and that they
+                        are fully aware of what they are doing.
                     </p>
 
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-primary-900">Do you want to choose your certificate provider now?</h3>
+                        <h3 className="text-lg font-semibold text-primary-900">
+                            Do you want to choose your certificate provider now?
+                        </h3>
                         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_30px_rgba(15,23,42,0.08)]">
                             {[
-                                { value: 'no', label: 'No, I will add them when I sign the documents' },
-                                { value: 'yes', label: 'Yes, I know the details now' }
+                                {
+                                    value: 'no',
+                                    label: 'No, I will add them when I sign the documents',
+                                },
+                                {
+                                    value: 'yes',
+                                    label: 'Yes, I know the details now',
+                                },
                             ].map((option, index) => (
                                 <button
                                     key={option.value}
                                     type="button"
-                                    onClick={() => setCertificateChoice(option.value as 'yes' | 'no')}
+                                    onClick={() =>
+                                        setCertificateChoice(
+                                            option.value as 'yes' | 'no',
+                                        )
+                                    }
                                     className={`w-full px-8 py-5 text-left text-base font-semibold transition ${certificateChoice === option.value
-                                        ? 'bg-slate-800 text-white'
-                                        : index === 0
-                                            ? 'bg-slate-900 text-white hover:bg-slate-800'
-                                            : 'bg-white text-primary-800 hover:bg-slate-50'
+                                            ? 'bg-slate-800 text-white'
+                                            : index === 0
+                                                ? 'bg-slate-900 text-white hover:bg-slate-800'
+                                                : 'bg-white text-primary-800 hover:bg-slate-50'
                                         } ${index === 0 ? 'border-b border-slate-200/70' : ''}`}
                                 >
                                     {option.label}
@@ -2684,86 +4133,157 @@ export default function LpaCreate({ user }: Props) {
 
                     {certificateChoice === 'yes' && (
                         <div className="mt-8 space-y-4 border-t border-slate-200 pt-6">
-                            <h3 className="text-lg font-semibold text-primary-900">Certificate provider details (section 10)</h3>
-                            <p className="text-sm text-primary-600">They cannot be an attorney on this LPA. Typed name below can stand in for a wet ink signature until you print the LP1H.</p>
+                            <h3 className="text-lg font-semibold text-primary-900">
+                                Certificate provider details (section 10)
+                            </h3>
+                            <p className="text-sm text-primary-600">
+                                They cannot be an attorney on this LPA. Typed
+                                name below can stand in for a wet ink signature
+                                until you print the LP1H.
+                            </p>
                             <div className="grid gap-3 sm:grid-cols-3">
                                 <div>
-                                    <label className="mb-1 block text-xs font-medium text-primary-600">Title</label>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">
+                                        Title
+                                    </label>
                                     <select
                                         className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={certificateProvider.title}
-                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, title: e.target.value }))}
+                                        onChange={(e) =>
+                                            setCertificateProvider((p) => ({
+                                                ...p,
+                                                title: e.target.value,
+                                            }))
+                                        }
                                     >
                                         <option value="">—</option>
                                         {donorTitleOptions.map((t) => (
-                                            <option key={t} value={t}>{t}</option>
+                                            <option key={t} value={t}>
+                                                {t}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="mb-1 block text-xs font-medium text-primary-600">First names</label>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">
+                                        First names
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={certificateProvider.firstName}
-                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, firstName: e.target.value }))}
+                                        onChange={(e) =>
+                                            setCertificateProvider((p) => ({
+                                                ...p,
+                                                firstName: e.target.value,
+                                            }))
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-1 block text-xs font-medium text-primary-600">Last name</label>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">
+                                        Last name
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={certificateProvider.lastName}
-                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, lastName: e.target.value }))}
+                                        onChange={(e) =>
+                                            setCertificateProvider((p) => ({
+                                                ...p,
+                                                lastName: e.target.value,
+                                            }))
+                                        }
                                     />
                                 </div>
                             </div>
                             <div>
-                                <label className="mb-1 block text-xs font-medium text-primary-600">Address</label>
+                                <label className="mb-1 block text-xs font-medium text-primary-600">
+                                    Address
+                                </label>
                                 <input
                                     className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={certificateProvider.addressLine1}
-                                    onChange={(e) => setCertificateProvider((p) => ({ ...p, addressLine1: e.target.value }))}
+                                    onChange={(e) =>
+                                        setCertificateProvider((p) => ({
+                                            ...p,
+                                            addressLine1: e.target.value,
+                                        }))
+                                    }
                                 />
                             </div>
                             <div className="max-w-xs">
-                                <label className="mb-1 block text-xs font-medium text-primary-600">Postcode</label>
+                                <label className="mb-1 block text-xs font-medium text-primary-600">
+                                    Postcode
+                                </label>
                                 <input
                                     className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={certificateProvider.postcode}
-                                    onChange={(e) => setCertificateProvider((p) => ({ ...p, postcode: e.target.value }))}
+                                    onChange={(e) =>
+                                        setCertificateProvider((p) => ({
+                                            ...p,
+                                            postcode: e.target.value,
+                                        }))
+                                    }
                                 />
                             </div>
                             <div>
-                                <label className="mb-1 block text-xs font-medium text-primary-600">Typed signature (full name as on the form)</label>
+                                <label className="mb-1 block text-xs font-medium text-primary-600">
+                                    Typed signature (full name as on the form)
+                                </label>
                                 <input
                                     className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={certificateProvider.typedSignature}
-                                    onChange={(e) => setCertificateProvider((p) => ({ ...p, typedSignature: e.target.value }))}
+                                    onChange={(e) =>
+                                        setCertificateProvider((p) => ({
+                                            ...p,
+                                            typedSignature: e.target.value,
+                                        }))
+                                    }
                                 />
                             </div>
                             <div className="grid max-w-md grid-cols-3 gap-2">
                                 <div>
-                                    <label className="mb-1 block text-xs font-medium text-primary-600">Day</label>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">
+                                        Day
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={certificateProvider.signDay}
-                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, signDay: e.target.value }))}
+                                        onChange={(e) =>
+                                            setCertificateProvider((p) => ({
+                                                ...p,
+                                                signDay: e.target.value,
+                                            }))
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-1 block text-xs font-medium text-primary-600">Month</label>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">
+                                        Month
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={certificateProvider.signMonth}
-                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, signMonth: e.target.value }))}
+                                        onChange={(e) =>
+                                            setCertificateProvider((p) => ({
+                                                ...p,
+                                                signMonth: e.target.value,
+                                            }))
+                                        }
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-1 block text-xs font-medium text-primary-600">Year</label>
+                                    <label className="mb-1 block text-xs font-medium text-primary-600">
+                                        Year
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={certificateProvider.signYear}
-                                        onChange={(e) => setCertificateProvider((p) => ({ ...p, signYear: e.target.value }))}
+                                        onChange={(e) =>
+                                            setCertificateProvider((p) => ({
+                                                ...p,
+                                                signYear: e.target.value,
+                                            }))
+                                        }
                                     />
                                 </div>
                             </div>
@@ -2775,8 +4295,15 @@ export default function LpaCreate({ user }: Props) {
 
         // Step 12: LP1H preferences, life-sustaining witness block, sections 9, 11, 15
         if (currentStep === 12) {
-            const updateDeedRow = (partyId: string, patch: Partial<(typeof attorneyDeedRows)[0]>): void => {
-                setAttorneyDeedRows((prev) => prev.map((r) => (r.partyId === partyId ? { ...r, ...patch } : r)));
+            const updateDeedRow = (
+                partyId: string,
+                patch: Partial<(typeof attorneyDeedRows)[0]>,
+            ): void => {
+                setAttorneyDeedRows((prev) =>
+                    prev.map((r) =>
+                        r.partyId === partyId ? { ...r, ...patch } : r,
+                    ),
+                );
             };
 
             return (
@@ -2788,43 +4315,71 @@ export default function LpaCreate({ user }: Props) {
                                 : 'LP1H / LP1F: preferences, instructions & signatures'}
                         </h2>
                         <p className="mt-2 text-sm text-primary-600">
-                            These fields mirror the official OPG forms (LP1H / LP1F, Aug 2025). Typed full names are collected as an electronic record; you will normally re-sign in ink on the paper form sent to you.
+                            These fields mirror the official OPG forms (LP1H /
+                            LP1F, Aug 2025). Typed full names are collected as
+                            an electronic record; you will normally re-sign in
+                            ink on the paper form sent to you.
                         </p>
                         <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
                             <input
                                 type="checkbox"
                                 className="mt-1"
                                 checked={completeSignaturesOnPaper}
-                                onChange={(e) => setCompleteSignaturesOnPaper(e.target.checked)}
+                                onChange={(e) =>
+                                    setCompleteSignaturesOnPaper(
+                                        e.target.checked,
+                                    )
+                                }
                             />
                             <span>
-                                <span className="font-semibold text-primary-900">I will complete wet ink signatures on the printed LP1H only.</span>
-                                <span className="mt-1 block text-sm text-primary-600">Tick this to skip the detailed signature fields below and continue.</span>
+                                <span className="font-semibold text-primary-900">
+                                    I will complete wet ink signatures on the
+                                    printed LP1H only.
+                                </span>
+                                <span className="mt-1 block text-sm text-primary-600">
+                                    Tick this to skip the detailed signature
+                                    fields below and continue.
+                                </span>
                             </span>
                         </label>
                     </div>
 
                     <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-                        <h3 className="text-lg font-semibold text-primary-900">Section 7 — Preferences & instructions (optional)</h3>
+                        <h3 className="text-lg font-semibold text-primary-900">
+                            Section 7 — Preferences & instructions (optional)
+                        </h3>
                         <div className="mt-4 space-y-3">
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-primary-700">Preferences</label>
+                                <label className="mb-1 block text-sm font-medium text-primary-700">
+                                    Preferences
+                                </label>
                                 <textarea
                                     rows={4}
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                                    placeholder={'Use words like "prefer" and "would like"…'}
+                                    placeholder={
+                                        'Use words like "prefer" and "would like"…'
+                                    }
                                     value={preferencesText}
-                                    onChange={(e) => setPreferencesText(e.target.value)}
+                                    onChange={(e) =>
+                                        setPreferencesText(e.target.value)
+                                    }
                                 />
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-medium text-primary-700">Instructions (your attorneys must follow valid instructions)</label>
+                                <label className="mb-1 block text-sm font-medium text-primary-700">
+                                    Instructions (your attorneys must follow
+                                    valid instructions)
+                                </label>
                                 <textarea
                                     rows={4}
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                                    placeholder={'Use words like "must" and "have to"…'}
+                                    placeholder={
+                                        'Use words like "must" and "have to"…'
+                                    }
                                     value={instructionsText}
-                                    onChange={(e) => setInstructionsText(e.target.value)}
+                                    onChange={(e) =>
+                                        setInstructionsText(e.target.value)
+                                    }
                                 />
                             </div>
                         </div>
@@ -2832,16 +4387,30 @@ export default function LpaCreate({ user }: Props) {
 
                     {usesLifeSustainingStep(selectedDocumentOption) && (
                         <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-                            <h3 className="text-lg font-semibold text-primary-900">Section 5 — Life-sustaining treatment (signature / witness)</h3>
-                            <p className="mt-1 text-sm text-primary-600">For the option you chose earlier, record how you would sign section 5 on LP1H page 6.</p>
+                            <h3 className="text-lg font-semibold text-primary-900">
+                                Section 5 — Life-sustaining treatment (signature
+                                / witness)
+                            </h3>
+                            <p className="mt-1 text-sm text-primary-600">
+                                For the option you chose earlier, record how you
+                                would sign section 5 on LP1H page 6.
+                            </p>
                             <div className="mt-4 space-y-3">
                                 <div>
-                                    <label className="mb-1 block text-sm font-medium">Donor typed name / mark</label>
+                                    <label className="mb-1 block text-sm font-medium">
+                                        Donor typed name / mark
+                                    </label>
                                     <input
                                         className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                                        value={lifeSustainingSignBlock.donorTypedSignature}
+                                        value={
+                                            lifeSustainingSignBlock.donorTypedSignature
+                                        }
                                         onChange={(e) =>
-                                            setLifeSustainingSignBlock((p) => ({ ...p, donorTypedSignature: e.target.value }))
+                                            setLifeSustainingSignBlock((p) => ({
+                                                ...p,
+                                                donorTypedSignature:
+                                                    e.target.value,
+                                            }))
                                         }
                                     />
                                 </div>
@@ -2850,45 +4419,89 @@ export default function LpaCreate({ user }: Props) {
                                         placeholder="DD"
                                         className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={lifeSustainingSignBlock.signDay}
-                                        onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, signDay: e.target.value }))}
+                                        onChange={(e) =>
+                                            setLifeSustainingSignBlock((p) => ({
+                                                ...p,
+                                                signDay: e.target.value,
+                                            }))
+                                        }
                                     />
                                     <input
                                         placeholder="MM"
                                         className="rounded-md border border-slate-300 px-2 py-2 text-sm"
-                                        value={lifeSustainingSignBlock.signMonth}
-                                        onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, signMonth: e.target.value }))}
+                                        value={
+                                            lifeSustainingSignBlock.signMonth
+                                        }
+                                        onChange={(e) =>
+                                            setLifeSustainingSignBlock((p) => ({
+                                                ...p,
+                                                signMonth: e.target.value,
+                                            }))
+                                        }
                                     />
                                     <input
                                         placeholder="YYYY"
                                         className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={lifeSustainingSignBlock.signYear}
-                                        onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, signYear: e.target.value }))}
+                                        onChange={(e) =>
+                                            setLifeSustainingSignBlock((p) => ({
+                                                ...p,
+                                                signYear: e.target.value,
+                                            }))
+                                        }
                                     />
                                 </div>
                                 <input
                                     placeholder="Witness full name"
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                                    value={lifeSustainingSignBlock.witnessFullName}
-                                    onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, witnessFullName: e.target.value }))}
+                                    value={
+                                        lifeSustainingSignBlock.witnessFullName
+                                    }
+                                    onChange={(e) =>
+                                        setLifeSustainingSignBlock((p) => ({
+                                            ...p,
+                                            witnessFullName: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <input
                                     placeholder="Witness address"
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                                    value={lifeSustainingSignBlock.witnessAddress}
-                                    onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, witnessAddress: e.target.value }))}
+                                    value={
+                                        lifeSustainingSignBlock.witnessAddress
+                                    }
+                                    onChange={(e) =>
+                                        setLifeSustainingSignBlock((p) => ({
+                                            ...p,
+                                            witnessAddress: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <input
                                     placeholder="Witness postcode"
                                     className="max-w-xs rounded-md border border-slate-300 px-3 py-2 text-sm"
-                                    value={lifeSustainingSignBlock.witnessPostcode}
-                                    onChange={(e) => setLifeSustainingSignBlock((p) => ({ ...p, witnessPostcode: e.target.value }))}
+                                    value={
+                                        lifeSustainingSignBlock.witnessPostcode
+                                    }
+                                    onChange={(e) =>
+                                        setLifeSustainingSignBlock((p) => ({
+                                            ...p,
+                                            witnessPostcode: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <input
                                     placeholder="Witness typed name"
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-                                    value={lifeSustainingSignBlock.witnessTypedSignature}
+                                    value={
+                                        lifeSustainingSignBlock.witnessTypedSignature
+                                    }
                                     onChange={(e) =>
-                                        setLifeSustainingSignBlock((p) => ({ ...p, witnessTypedSignature: e.target.value }))
+                                        setLifeSustainingSignBlock((p) => ({
+                                            ...p,
+                                            witnessTypedSignature:
+                                                e.target.value,
+                                        }))
                                     }
                                 />
                             </div>
@@ -2896,139 +4509,240 @@ export default function LpaCreate({ user }: Props) {
                     )}
 
                     <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-                        <h3 className="text-lg font-semibold text-primary-900">Section 9 — Donor signature & witness</h3>
+                        <h3 className="text-lg font-semibold text-primary-900">
+                            Section 9 — Donor signature & witness
+                        </h3>
                         <div className="mt-4 grid gap-3">
                             <input
                                 placeholder="Donor typed name / mark"
                                 className="rounded-md border border-slate-300 px-3 py-2 text-sm"
                                 value={section9.donorTypedSignature}
-                                onChange={(e) => setSection9((p) => ({ ...p, donorTypedSignature: e.target.value }))}
+                                onChange={(e) =>
+                                    setSection9((p) => ({
+                                        ...p,
+                                        donorTypedSignature: e.target.value,
+                                    }))
+                                }
                             />
                             <div className="grid max-w-md grid-cols-3 gap-2">
                                 <input
                                     placeholder="DD"
                                     className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={section9.signDay}
-                                    onChange={(e) => setSection9((p) => ({ ...p, signDay: e.target.value }))}
+                                    onChange={(e) =>
+                                        setSection9((p) => ({
+                                            ...p,
+                                            signDay: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <input
                                     placeholder="MM"
                                     className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={section9.signMonth}
-                                    onChange={(e) => setSection9((p) => ({ ...p, signMonth: e.target.value }))}
+                                    onChange={(e) =>
+                                        setSection9((p) => ({
+                                            ...p,
+                                            signMonth: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <input
                                     placeholder="YYYY"
                                     className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={section9.signYear}
-                                    onChange={(e) => setSection9((p) => ({ ...p, signYear: e.target.value }))}
+                                    onChange={(e) =>
+                                        setSection9((p) => ({
+                                            ...p,
+                                            signYear: e.target.value,
+                                        }))
+                                    }
                                 />
                             </div>
                             <input
                                 placeholder="Witness full name"
                                 className="rounded-md border border-slate-300 px-3 py-2 text-sm"
                                 value={section9.witnessFullName}
-                                onChange={(e) => setSection9((p) => ({ ...p, witnessFullName: e.target.value }))}
+                                onChange={(e) =>
+                                    setSection9((p) => ({
+                                        ...p,
+                                        witnessFullName: e.target.value,
+                                    }))
+                                }
                             />
                             <input
                                 placeholder="Witness address"
                                 className="rounded-md border border-slate-300 px-3 py-2 text-sm"
                                 value={section9.witnessAddress}
-                                onChange={(e) => setSection9((p) => ({ ...p, witnessAddress: e.target.value }))}
+                                onChange={(e) =>
+                                    setSection9((p) => ({
+                                        ...p,
+                                        witnessAddress: e.target.value,
+                                    }))
+                                }
                             />
                             <input
                                 placeholder="Witness postcode"
                                 className="max-w-xs rounded-md border border-slate-300 px-3 py-2 text-sm"
                                 value={section9.witnessPostcode}
-                                onChange={(e) => setSection9((p) => ({ ...p, witnessPostcode: e.target.value }))}
+                                onChange={(e) =>
+                                    setSection9((p) => ({
+                                        ...p,
+                                        witnessPostcode: e.target.value,
+                                    }))
+                                }
                             />
                         </div>
                     </div>
 
                     <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-                        <h3 className="text-lg font-semibold text-primary-900">Section 11 — Each attorney & replacement (deed signature)</h3>
+                        <h3 className="text-lg font-semibold text-primary-900">
+                            Section 11 — Each attorney & replacement (deed
+                            signature)
+                        </h3>
                         {attorneyDeedRows.length === 0 && (
-                            <p className="text-sm text-primary-600">Add attorneys (and optional replacements) in the earlier steps.</p>
+                            <p className="text-sm text-primary-600">
+                                Add attorneys (and optional replacements) in the
+                                earlier steps.
+                            </p>
                         )}
                         {attorneyDeedRows.map((row) => (
-                            <div key={row.partyId} className="mt-4 space-y-2 border-t border-slate-100 pt-4 first:mt-0 first:border-t-0 first:pt-0">
-                                <p className="text-sm font-semibold text-primary-800">{row.roleLabel}</p>
+                            <div
+                                key={row.partyId}
+                                className="mt-4 space-y-2 border-t border-slate-100 pt-4 first:mt-0 first:border-t-0 first:pt-0"
+                            >
+                                <p className="text-sm font-semibold text-primary-800">
+                                    {row.roleLabel}
+                                </p>
                                 <input
                                     placeholder="Typed signature (full name)"
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
                                     value={row.typedSignature}
-                                    onChange={(e) => updateDeedRow(row.partyId, { typedSignature: e.target.value })}
+                                    onChange={(e) =>
+                                        updateDeedRow(row.partyId, {
+                                            typedSignature: e.target.value,
+                                        })
+                                    }
                                 />
                                 <div className="grid max-w-md grid-cols-3 gap-2">
                                     <input
                                         placeholder="DD"
                                         className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={row.signDay}
-                                        onChange={(e) => updateDeedRow(row.partyId, { signDay: e.target.value })}
+                                        onChange={(e) =>
+                                            updateDeedRow(row.partyId, {
+                                                signDay: e.target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         placeholder="MM"
                                         className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={row.signMonth}
-                                        onChange={(e) => updateDeedRow(row.partyId, { signMonth: e.target.value })}
+                                        onChange={(e) =>
+                                            updateDeedRow(row.partyId, {
+                                                signMonth: e.target.value,
+                                            })
+                                        }
                                     />
                                     <input
                                         placeholder="YYYY"
                                         className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                         value={row.signYear}
-                                        onChange={(e) => updateDeedRow(row.partyId, { signYear: e.target.value })}
+                                        onChange={(e) =>
+                                            updateDeedRow(row.partyId, {
+                                                signYear: e.target.value,
+                                            })
+                                        }
                                     />
                                 </div>
                                 <input
                                     placeholder="Witness full name"
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
                                     value={row.witnessFullName}
-                                    onChange={(e) => updateDeedRow(row.partyId, { witnessFullName: e.target.value })}
+                                    onChange={(e) =>
+                                        updateDeedRow(row.partyId, {
+                                            witnessFullName: e.target.value,
+                                        })
+                                    }
                                 />
                                 <input
                                     placeholder="Witness address"
                                     className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
                                     value={row.witnessAddress}
-                                    onChange={(e) => updateDeedRow(row.partyId, { witnessAddress: e.target.value })}
+                                    onChange={(e) =>
+                                        updateDeedRow(row.partyId, {
+                                            witnessAddress: e.target.value,
+                                        })
+                                    }
                                 />
                                 <input
                                     placeholder="Witness postcode"
                                     className="max-w-xs rounded-md border border-slate-300 px-3 py-2 text-sm"
                                     value={row.witnessPostcode}
-                                    onChange={(e) => updateDeedRow(row.partyId, { witnessPostcode: e.target.value })}
+                                    onChange={(e) =>
+                                        updateDeedRow(row.partyId, {
+                                            witnessPostcode: e.target.value,
+                                        })
+                                    }
                                 />
                             </div>
                         ))}
                     </div>
 
                     <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-                        <h3 className="text-lg font-semibold text-primary-900">Section 15 — Person applying to register the LPA</h3>
-                        <p className="text-sm text-primary-600">Same person as in section 12 on the paper form (donor or attorney applying).</p>
-                        <div className="mt-4 grid gap-3 max-w-lg">
+                        <h3 className="text-lg font-semibold text-primary-900">
+                            Section 15 — Person applying to register the LPA
+                        </h3>
+                        <p className="text-sm text-primary-600">
+                            Same person as in section 12 on the paper form
+                            (donor or attorney applying).
+                        </p>
+                        <div className="mt-4 grid max-w-lg gap-3">
                             <input
                                 placeholder="Typed name / mark"
                                 className="rounded-md border border-slate-300 px-3 py-2 text-sm"
                                 value={section15.typedSignature}
-                                onChange={(e) => setSection15((p) => ({ ...p, typedSignature: e.target.value }))}
+                                onChange={(e) =>
+                                    setSection15((p) => ({
+                                        ...p,
+                                        typedSignature: e.target.value,
+                                    }))
+                                }
                             />
                             <div className="grid grid-cols-3 gap-2">
                                 <input
                                     placeholder="DD"
                                     className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={section15.signDay}
-                                    onChange={(e) => setSection15((p) => ({ ...p, signDay: e.target.value }))}
+                                    onChange={(e) =>
+                                        setSection15((p) => ({
+                                            ...p,
+                                            signDay: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <input
                                     placeholder="MM"
                                     className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={section15.signMonth}
-                                    onChange={(e) => setSection15((p) => ({ ...p, signMonth: e.target.value }))}
+                                    onChange={(e) =>
+                                        setSection15((p) => ({
+                                            ...p,
+                                            signMonth: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <input
                                     placeholder="YYYY"
                                     className="rounded-md border border-slate-300 px-2 py-2 text-sm"
                                     value={section15.signYear}
-                                    onChange={(e) => setSection15((p) => ({ ...p, signYear: e.target.value }))}
+                                    onChange={(e) =>
+                                        setSection15((p) => ({
+                                            ...p,
+                                            signYear: e.target.value,
+                                        }))
+                                    }
                                 />
                             </div>
                         </div>
@@ -3039,8 +4753,13 @@ export default function LpaCreate({ user }: Props) {
 
         return (
             <div className="rounded-2xl bg-white p-8 text-primary-700 shadow-sm">
-                <p className="text-lg font-semibold text-primary-900">Step unavailable</p>
-                <p className="mt-2 text-sm text-primary-500">Please use the step indicator above or go back and continue in order.</p>
+                <p className="text-lg font-semibold text-primary-900">
+                    Step unavailable
+                </p>
+                <p className="mt-2 text-sm text-primary-500">
+                    Please use the step indicator above or go back and continue
+                    in order.
+                </p>
             </div>
         );
     };
@@ -3052,39 +4771,66 @@ export default function LpaCreate({ user }: Props) {
                     <div className="space-y-6">
                         {/* Updated Stepper Design */}
                         <div className="pb-6 sm:pb-8">
-                            <div ref={stepperContainerRef} className="relative overflow-x-auto pb-2 scrollbar-hide">
+                            <div
+                                ref={stepperContainerRef}
+                                className="scrollbar-hide relative overflow-x-auto pb-2"
+                            >
                                 {/* Connecting Line */}
-                                <div className="absolute inset-x-0 top-4 mx-auto hidden h-0.5 bg-linear-to-r from-slate-200 via-slate-300 to-slate-200 md:block" style={{ width: 'calc(100% - 100px)', left: '50px' }} aria-hidden="true" />
+                                <div
+                                    className="absolute inset-x-0 top-4 mx-auto hidden h-0.5 bg-linear-to-r from-slate-200 via-slate-300 to-slate-200 md:block"
+                                    style={{
+                                        width: 'calc(100% - 100px)',
+                                        left: '50px',
+                                    }}
+                                    aria-hidden="true"
+                                />
 
                                 {/* Steps */}
                                 <div className="relative flex min-w-max items-start justify-between gap-1 px-2 sm:gap-2 md:gap-0 md:px-0">
                                     {stepperSteps.map((step, index) => {
-                                        const isActive = activeStepperIndex === index;
-                                        const isCompleted = activeStepperIndex > index;
+                                        const isActive =
+                                            activeStepperIndex === index;
+                                        const isCompleted =
+                                            activeStepperIndex > index;
 
                                         return (
                                             <div
                                                 key={`${step.key}-${index}`}
-                                                ref={(el) => { stepRefs.current[index] = el; }}
+                                                ref={(el) => {
+                                                    stepRefs.current[index] =
+                                                        el;
+                                                }}
                                                 className="flex flex-col items-center text-center"
                                                 style={{ minWidth: '75px' }}
                                             >
                                                 {/* Circle Indicator */}
                                                 <div
                                                     className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full border-2 bg-white shadow-sm transition-all duration-300 sm:h-7 sm:w-7 md:h-8 md:w-8 ${isActive
-                                                        ? 'border-primary-500 shadow-lg shadow-primary-500/30 ring-4 ring-primary-100'
-                                                        : isCompleted
-                                                            ? 'border-primary-400 bg-primary-50'
-                                                            : 'border-slate-300'
+                                                            ? 'border-primary-500 shadow-lg ring-4 shadow-primary-500/30 ring-primary-100'
+                                                            : isCompleted
+                                                                ? 'border-primary-400 bg-primary-50'
+                                                                : 'border-slate-300'
                                                         }`}
                                                 >
                                                     {isCompleted ? (
-                                                        <svg className="h-3 w-3 text-primary-500 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                        <svg
+                                                            className="h-3 w-3 text-primary-500 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={3}
+                                                                d="M5 13l4 4L19 7"
+                                                            />
                                                         </svg>
                                                     ) : (
                                                         <span
-                                                            className={`h-2.5 w-2.5 rounded-full transition-all duration-300 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 ${isActive ? 'bg-primary-500 shadow-sm' : 'bg-slate-300'
+                                                            className={`h-2.5 w-2.5 rounded-full transition-all duration-300 sm:h-3 sm:w-3 md:h-3.5 md:w-3.5 ${isActive
+                                                                    ? 'bg-primary-500 shadow-sm'
+                                                                    : 'bg-slate-300'
                                                                 }`}
                                                         />
                                                     )}
@@ -3092,7 +4838,11 @@ export default function LpaCreate({ user }: Props) {
 
                                                 {/* Step Title */}
                                                 <p
-                                                    className={`mt-2 max-w-17.5 text-[9px] font-semibold leading-tight transition-colors duration-300 sm:mt-2.5 sm:max-w-20 sm:text-[10px] md:mt-3 md:max-w-none md:text-xs ${isActive ? 'text-primary-700' : isCompleted ? 'text-primary-600' : 'text-slate-400'
+                                                    className={`mt-2 max-w-17.5 text-[9px] leading-tight font-semibold transition-colors duration-300 sm:mt-2.5 sm:max-w-20 sm:text-[10px] md:mt-3 md:max-w-none md:text-xs ${isActive
+                                                            ? 'text-primary-700'
+                                                            : isCompleted
+                                                                ? 'text-primary-600'
+                                                                : 'text-slate-400'
                                                         }`}
                                                 >
                                                     {step.title}
@@ -3121,7 +4871,11 @@ export default function LpaCreate({ user }: Props) {
                                 type="button"
                                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary-500 px-5 py-2.5 text-sm font-semibold text-primary-600 transition hover:bg-primary-500 hover:text-white disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                                 onClick={() => handleStepChange('prev')}
-                                disabled={currentStep === 0 || currentStep === 13 || isSubmitting}
+                                disabled={
+                                    currentStep === 0 ||
+                                    currentStep === 13 ||
+                                    isSubmitting
+                                }
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -3131,21 +4885,48 @@ export default function LpaCreate({ user }: Props) {
                                     type="button"
                                     className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:bg-primary-600 disabled:pointer-events-none disabled:opacity-50 sm:w-auto"
                                     onClick={() => handleStepChange('next')}
-                                    disabled={!canAdvanceFromStep(currentStep) || isSubmitting}
+                                    disabled={
+                                        !canAdvanceFromStep(currentStep) ||
+                                        isSubmitting
+                                    }
                                 >
                                     {isSubmitting ? (
                                         <>
-                                            <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            <svg
+                                                className="h-4 w-4 animate-spin"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <circle
+                                                    className="opacity-25"
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke="currentColor"
+                                                    strokeWidth="4"
+                                                ></circle>
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                ></path>
                                             </svg>
-                                            Creating LPA & Generating PDF...
+                                            Creating LPA...
                                         </>
                                     ) : (
                                         <>
                                             {currentStep === 12
                                                 ? 'Create draft & continue'
-                                                : ([5, 6, 8, 9, 10, 11].includes(currentStep) || (currentStep === 7 && (usesLifeSustainingStep(selectedDocumentOption) || usesPropertyFinancialLpa(selectedDocumentOption))))
+                                                : [5, 6, 8, 9, 10, 11].includes(
+                                                    currentStep,
+                                                ) ||
+                                                    (currentStep === 7 &&
+                                                        (usesLifeSustainingStep(
+                                                            selectedDocumentOption,
+                                                        ) ||
+                                                            usesPropertyFinancialLpa(
+                                                                selectedDocumentOption,
+                                                            )))
                                                     ? 'Save and continue'
                                                     : 'Continue'}
                                             <ArrowRight className="h-4 w-4" />

@@ -10,7 +10,6 @@ interface Lpa {
     is_draft: boolean;
     paid_at: string | null;
     amount: string;
-    pdf_path: string | null;
     created_at: string;
     donor_details: {
         title?: string;
@@ -33,10 +32,8 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
             ? 'Health & Welfare + Property & Financial Affairs'
             : 'Health & Welfare';
 
-    const registrarFee = lpa.document_type === 'both' ? 18400 : 9200;
-    const amountBeforeVat = amount - registrarFee;
-    const baseAmount = amountBeforeVat / 1.2;
-    const vatAmount = amountBeforeVat - baseAmount;
+    const baseAmount = amount / 1.2;
+    const vatAmount = amount - baseAmount;
 
     const donorName = [
         lpa.donor_details?.title,
@@ -149,17 +146,13 @@ export default function LpaShow({ lpa, hasPaid, product, amount }: Props) {
                                         <span className="text-primary-600">VAT (20%)</span>
                                         <span className="font-medium text-primary-800">£{(vatAmount / 100).toFixed(2)}</span>
                                     </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-primary-600">Register fee (OPG)</span>
-                                        <span className="font-medium text-primary-800">£{(registrarFee / 100).toFixed(2)}</span>
-                                    </div>
                                     <div className="flex justify-between border-t border-slate-300 pt-2 font-semibold">
                                         <span className="text-primary-900">Total</span>
                                         <span className="text-primary-900">£{(amount / 100).toFixed(2)}</span>
                                     </div>
                                 </div>
                                 <p className="mt-3 text-xs text-primary-500">
-                                    The £92 register fee is mandatory for registration with the Office of Public Guardian.{' '}
+                                    The Office of the Public Guardian charges a separate £92 registration fee per LPA, payable directly to the OPG when you submit your forms for registration.{' '}
                                     <a
                                         href="https://www.gov.uk/power-of-attorney/register"
                                         target="_blank"

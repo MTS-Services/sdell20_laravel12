@@ -12,10 +12,10 @@ export function LpaPricingSection() {
                     <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-500">Flat pricing</span>
                     <p className="mt-4 text-2xl font-semibold text-primary-900">£99 per LPA (excl. VAT) with specialist review.</p>
                     <p className="mt-2 text-sm text-primary-600">
-                        20% VAT is calculated and shown clearly at checkout. Each LPA also includes the £92 mandatory OPG register fee. Order both Health &amp; Welfare and Property &amp; Finance LPAs for £198 (excl. VAT) before VAT and OPG fees.
+                        20% VAT is calculated and shown clearly at checkout. Order both Health &amp; Welfare and Property &amp; Finance LPAs for £198 (excl. VAT).
                     </p>
                     <p className="mt-3 text-xs text-primary-500">
-                        The £92 register fee is mandatory for registration with the Office of Public Guardian.{' '}
+                        The Office of the Public Guardian charges a separate £92 registration fee per LPA, paid directly to the OPG when you submit your forms.{' '}
                         <a
                             href="https://www.gov.uk/power-of-attorney/register"
                             target="_blank"

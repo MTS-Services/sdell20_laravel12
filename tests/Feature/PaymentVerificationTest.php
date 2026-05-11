@@ -124,7 +124,7 @@ test('payment verification returns correct amount for each product', function ()
     $response = $this->actingAs($user)->postJson('/payment/verify', [
         'product' => 'lpa_property',
     ]);
-    $response->assertJsonFragment(['amount' => 19400]);
+    $response->assertJsonFragment(['amount' => 11880]);
 });
 
 test('user model hasPaymentFor returns true for matching product', function () {
@@ -164,8 +164,8 @@ test('payment model forProduct scope filters correctly', function () {
 test('payment product enum returns correct values', function () {
     expect(PaymentProduct::SingleWill->amountInPence())->toBe(7800);
     expect(PaymentProduct::MirrorWill->amountInPence())->toBe(9000);
-    expect(PaymentProduct::LpaProperty->amountInPence())->toBe(19400);
-    expect(PaymentProduct::LpaHealth->amountInPence())->toBe(19400);
+    expect(PaymentProduct::LpaProperty->amountInPence())->toBe(11880);
+    expect(PaymentProduct::LpaHealth->amountInPence())->toBe(11880);
 
     expect(PaymentProduct::SingleWill->isWill())->toBeTrue();
     expect(PaymentProduct::MirrorWill->isWill())->toBeTrue();

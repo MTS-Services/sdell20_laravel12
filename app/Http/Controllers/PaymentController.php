@@ -9,7 +9,6 @@ use App\Http\Requests\Payment\CreatePaymentIntentRequest;
 use App\Http\Requests\Payment\SelectPlanRequest;
 use App\Mail\PaymentCompletedEmail;
 use App\Models\Payment;
-use App\Services\LpaPdfService;
 use App\Services\Payment\PaymentIntentClientInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -212,7 +211,7 @@ class PaymentController extends Controller
     }
 
     /**
-     * If the payment is for an LPA product, mark the associated LPA as paid and regenerate PDF.
+     * If the payment is for an LPA product, mark the associated LPA as paid.
      */
     private function fulfillLpaPayment(Payment $payment, $user): void
     {
@@ -236,9 +235,6 @@ class PaymentController extends Controller
 
         if ($lpa) {
             $lpa->markAsPaid($payment->stripe_payment_intent_id);
-
-            $pdfService = app(LpaPdfService::class);
-            $pdfService->removeDraftWatermark($lpa);
         }
     }
 }

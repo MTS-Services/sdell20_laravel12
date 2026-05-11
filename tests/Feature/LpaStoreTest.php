@@ -83,6 +83,8 @@ it('stores a health lpa with full answers and returns checkout metadata', functi
     expect($lpa->attorneys)->toHaveCount(1);
     expect($lpa->life_sustaining_treatment)->toBeTrue();
     expect($lpa->lp1h_form['attorney_acting'] ?? null)->toBe('jointly_and_severally');
+    expect($lpa->pdf_path)->toBeNull();
+    expect($lpa->pdf_generated_at)->toBeNull();
 });
 
 it('stores a property lpa with LP1F section 5 timing in lp1h_form', function (): void {

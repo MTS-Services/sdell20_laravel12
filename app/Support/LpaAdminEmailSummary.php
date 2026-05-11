@@ -77,14 +77,6 @@ class LpaAdminEmailSummary
             'rows' => self::lp1hFormRows($lpa->lp1h_form ?? []),
         ];
 
-        $sections[] = [
-            'title' => '9. Files',
-            'rows' => self::rows([
-                'PDF path (storage)' => $lpa->pdf_path,
-                'PDF generated at' => $lpa->pdf_generated_at?->format('d M Y H:i'),
-            ]),
-        ];
-
         return array_values(array_filter($sections, fn(array $s): bool => count($s['rows']) > 0));
     }
 
