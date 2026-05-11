@@ -194,15 +194,12 @@ function calculatePriceBreakdown(product: string | null, totalAmount: number) {
         return null;
     }
 
-    const registrarFee = product === 'lpa_both' ? 18400 : (isLpa ? 9200 : 0);
-    const amountBeforeVat = totalAmount - registrarFee;
-    const baseAmount = Math.round(amountBeforeVat / 1.20);
-    const vatAmount = amountBeforeVat - baseAmount;
+    const baseAmount = Math.round(totalAmount / 1.20);
+    const vatAmount = totalAmount - baseAmount;
 
     return {
         baseAmount,
         vatAmount,
-        registrarFee,
         totalAmount,
         isLpa,
         isWill,
@@ -237,12 +234,6 @@ function PriceBreakdown({ product, amount }: { product: string | null; amount: n
                     <span className="text-primary-600">VAT (20%)</span>
                     <span className="font-medium text-primary-800">£{(breakdown.vatAmount / 100).toFixed(2)}</span>
                 </div>
-                {breakdown.isLpa && (
-                    <div className="flex justify-between">
-                        <span className="text-primary-600">Register fee (OPG)</span>
-                        <span className="font-medium text-primary-800">£{(breakdown.registrarFee / 100).toFixed(2)}</span>
-                    </div>
-                )}
                 <div className="flex justify-between border-t border-slate-300 pt-2 font-semibold">
                     <span className="text-primary-900">Total</span>
                     <span className="text-primary-900">£{(breakdown.totalAmount / 100).toFixed(2)}</span>
@@ -250,7 +241,7 @@ function PriceBreakdown({ product, amount }: { product: string | null; amount: n
             </div>
             {breakdown.isLpa && (
                 <p className="mt-3 text-xs text-primary-500">
-                    The £92 register fee is mandatory for registration with the Office of Public Guardian.{' '}
+                    The Office of the Public Guardian charges a separate £92 registration fee per LPA, payable directly to the OPG when you submit your forms for registration.{' '}
                     <a
                         href="https://www.gov.uk/power-of-attorney/register"
                         target="_blank"
@@ -272,6 +263,7 @@ export default function Checkout({
     product = null,
     redirectUrl = null,
 }: CheckoutProps) {
+
     const [clientSecret, setClientSecret] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [paymentSucceeded, setPaymentSucceeded] = useState(false);

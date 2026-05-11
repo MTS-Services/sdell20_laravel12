@@ -55,7 +55,7 @@ test('confirm payment validates payment_intent_id is required', function () {
 });
 
 test('select plan requires authentication', function () {
-    $response = $this->postJson(route('payment.select-plan'), ['amount' => 19400]);
+    $response = $this->postJson(route('payment.select-plan'), ['amount' => 11880]);
 
     $response->assertUnauthorized();
 });
@@ -93,7 +93,7 @@ test('create intent stores payment record with pending status', function () {
     $fakeIntent = (object) [
         'id' => 'pi_fake_'.uniqid(),
         'client_secret' => 'pi_fake_secret_'.uniqid(),
-        'amount' => 19400,
+        'amount' => 11880,
         'currency' => 'gbp',
         'status' => 'requires_payment_method',
     ];
@@ -101,16 +101,16 @@ test('create intent stores payment record with pending status', function () {
     $this->mock(PaymentIntentClientInterface::class, function ($mock) use ($fakeIntent) {
         $mock->shouldReceive('create')
             ->once()
-            ->with(\Mockery::on(fn (array $params) => $params['amount'] === 19400 && $params['currency'] === 'gbp'))
+            ->with(\Mockery::on(fn (array $params) => $params['amount'] === 11880 && $params['currency'] === 'gbp'))
             ->andReturn($fakeIntent);
     });
 
-    $this->actingAs($user)->postJson('/payment/intent', ['amount' => 19400]);
+    $this->actingAs($user)->postJson('/payment/intent', ['amount' => 11880]);
 
     expect(Payment::query()->where('user_id', $user->id)->count())->toBe(1);
     $payment = Payment::query()->where('user_id', $user->id)->first();
     expect($payment->stripe_payment_intent_id)->toBe($fakeIntent->id)
-        ->and($payment->amount)->toBe(19400)
+        ->and($payment->amount)->toBe(11880)
         ->and($payment->currency)->toBe('gbp')
         ->and($payment->status)->toBe(PaymentStatus::Pending);
 });
@@ -120,14 +120,14 @@ test('create intent updates existing payment when payment_id provided', function
     $payment = Payment::factory()->create([
         'user_id' => $user->id,
         'stripe_payment_intent_id' => null,
-        'amount' => 19400,
+        'amount' => 11880,
         'currency' => 'gbp',
         'status' => PaymentStatus::Pending,
     ]);
     $fakeIntent = (object) [
         'id' => 'pi_linked_'.uniqid(),
         'client_secret' => 'pi_secret_'.uniqid(),
-        'amount' => 19400,
+        'amount' => 11880,
         'currency' => 'gbp',
         'status' => 'requires_payment_method',
     ];
@@ -137,7 +137,7 @@ test('create intent updates existing payment when payment_id provided', function
     });
 
     $this->actingAs($user)->postJson('/payment/intent', [
-        'amount' => 19400,
+        'amount' => 11880,
         'payment_id' => $payment->id,
     ]);
 

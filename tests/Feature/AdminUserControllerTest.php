@@ -21,9 +21,10 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.index'));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Index')
-            ->has('users.data', 6)
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Index')
+                ->has('users.data', 6)
         );
     }
 
@@ -51,8 +52,9 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.create'));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Create')
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Create')
         );
     }
 
@@ -152,12 +154,15 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.edit', $user));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Edit')
-            ->has('user', fn ($user) => $user
-                ->where('name', 'Edit Me')
-                ->etc()
-            )
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Edit')
+                ->has(
+                    'user',
+                    fn($user) => $user
+                        ->where('name', 'Edit Me')
+                        ->etc()
+                )
         );
     }
 
@@ -316,10 +321,11 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.index', ['role' => 'admin']));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Index')
-            ->where('currentFilter', 'admin')
-            ->has('users.data', 4)
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Index')
+                ->where('currentFilter', 'admin')
+                ->has('users.data', 4)
         );
     }
 
@@ -332,10 +338,11 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.index', ['role' => 'user']));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Index')
-            ->where('currentFilter', 'user')
-            ->has('users.data', 5)
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Index')
+                ->where('currentFilter', 'user')
+                ->has('users.data', 5)
         );
     }
 
@@ -347,10 +354,11 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.index'));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Index')
-            ->has('users.data', 15)
-            ->has('users.links')
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Index')
+                ->has('users.data', 15)
+                ->has('users.links')
         );
     }
 
@@ -377,12 +385,13 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.index'));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Index')
-            ->where('users.data.0.id', $target->id)
-            ->where('users.data.0.payments_count', 2)
-            ->where('users.data.0.wills_count', 1)
-            ->where('users.data.0.lpas_count', 1)
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Index')
+                ->where('users.data.0.id', $target->id)
+                ->where('users.data.0.payments_count', 2)
+                ->where('users.data.0.wills_count', 1)
+                ->where('users.data.0.lpas_count', 1)
         );
     }
 
@@ -398,14 +407,15 @@ class AdminUserControllerTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.users.details', $target));
 
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('backend/Admin/Users/Details')
-            ->where('user.id', $target->id)
-            ->where('activity.payments_count', 1)
-            ->where('activity.payments_succeeded_count', 1)
-            ->has('payments', 1)
-            ->has('wills', 0)
-            ->has('lpas', 0)
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Details')
+                ->where('user.id', $target->id)
+                ->where('activity.payments_count', 1)
+                ->where('activity.payments_succeeded_count', 1)
+                ->has('payments', 1)
+                ->has('wills', 0)
+                ->has('lpas', 0)
         );
     }
 
@@ -444,27 +454,49 @@ class AdminUserControllerTest extends TestCase
         $response->assertDownload();
     }
 
-    public function test_admin_can_download_lpa_pdf_for_user(): void
+    public function test_admin_can_view_user_lpa_submitted_details(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
         $owner = User::factory()->create();
-        $lpa = Lpa::create([
+        Lpa::create([
             'user_id' => $owner->id,
             'who_for' => 'Me',
             'document_type' => 'property',
             'status' => 'draft',
-            'donor_details' => [],
-            'contact_details' => [],
-            'attorneys' => [['name' => 'Attorney One']],
+            'donor_details' => [
+                'title' => 'Mr',
+                'firstName' => 'Pat',
+                'lastName' => 'Smith',
+            ],
+            'contact_details' => [
+                'addressLine1' => '9 Bank Rd',
+                'town' => 'Manchester',
+                'postcode' => 'M1 1AA',
+                'email' => 'pat@example.com',
+            ],
+            'attorneys' => [[
+                'firstName' => 'Alex',
+                'lastName' => 'Lee',
+                'email' => 'alex@example.com',
+            ]],
+            'lp1h_form' => [
+                'when_attorneys_can_act' => 'as_soon_registered',
+            ],
         ]);
 
-        $response = $this->actingAs($admin)->get(route('admin.users.lpas.pdf', [
-            'user' => $owner,
-            'lpa' => $lpa,
-        ]));
+        $response = $this->actingAs($admin)->get(route('admin.users.details', $owner));
 
         $response->assertOk();
-        $response->assertDownload();
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('backend/Admin/Users/Details')
+                ->has('lpas', 1)
+                ->where('lpas.0.summary_sections.1.title', '2. Donor (section 1)')
+                ->where('lpas.0.summary_sections.1.rows.1.value', 'Pat')
+                ->where('lpas.0.summary_sections.2.rows.1.value', 'pat@example.com')
+                ->where('lpas.0.summary_sections.3.rows.0.value', 'Alex Lee')
+                ->where('lpas.0.summary_sections.7.rows.0.value', 'As soon as the LPA is registered (and when the donor lacks mental capacity)')
+        );
     }
 
     public function test_admin_cannot_download_will_pdf_when_document_belongs_to_another_user(): void
@@ -530,7 +562,7 @@ class AdminUserControllerTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function test_admin_can_preview_lpa_pdf_for_user(): void
+    public function test_admin_lpa_pdf_routes_are_removed(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
         $owner = User::factory()->create();
@@ -544,12 +576,11 @@ class AdminUserControllerTest extends TestCase
             'attorneys' => [['name' => 'Attorney']],
         ]);
 
-        $response = $this->actingAs($admin)->get(route('admin.users.lpas.pdf.preview', [
-            'user' => $owner,
-            'lpa' => $lpa,
-        ]));
+        $downloadResponse = $this->actingAs($admin)->get("/admin/users/{$owner->id}/lpas/{$lpa->id}/pdf");
+        $previewResponse = $this->actingAs($admin)->get("/admin/users/{$owner->id}/lpas/{$lpa->id}/pdf/preview");
 
-        $response->assertSuccessful();
+        $downloadResponse->assertNotFound();
+        $previewResponse->assertNotFound();
     }
 
     public function test_non_admin_cannot_preview_user_will_pdf(): void

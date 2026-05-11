@@ -34,16 +34,17 @@ enum PaymentProduct: string
     /**
      * Base amount in pence (before VAT and registrar fees).
      *
-     * Client pricing (ex VAT): single will £65, mirror £75, each LPA £85 (£170 for both types combined).
+     * Client pricing (ex VAT): single will £65, mirror £75, each LPA £99 (£198 for both types combined).
+     * The £92 OPG registration fee is paid by the client directly to the Office of the Public Guardian and is not collected here.
      */
     public function baseAmountInPence(): int
     {
         return match ($this) {
             self::SingleWill => 6500,
             self::MirrorWill => 7500,
-            self::LpaProperty => 8500,
-            self::LpaHealth => 8500,
-            self::LpaBoth => 17000,
+            self::LpaProperty => 9900,
+            self::LpaHealth => 9900,
+            self::LpaBoth => 19800,
             self::WillWritingPlatform => 99500,
             self::ProbateReferral => 35000,
         };
@@ -62,18 +63,12 @@ enum PaymentProduct: string
     }
 
     /**
-     * Registrar fee in pence (£92 per LPA for Office of Public Guardian).
+     * Registrar fee in pence collected through this checkout.
+     *
+     * The Office of the Public Guardian's £92 registration fee is paid by the client directly to the OPG, so it is not collected here.
      */
     public function registrarFeeInPence(): int
     {
-        if ($this === self::LpaBoth) {
-            return 18400;
-        }
-
-        if ($this->isLpa()) {
-            return 9200;
-        }
-
         return 0;
     }
 
