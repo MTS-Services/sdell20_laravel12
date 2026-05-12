@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendMailDeliveryConfirmationToSlack;
 use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Observers\BlogCategoryObserver;
@@ -10,8 +11,10 @@ use App\Services\Payment\PaymentIntentClientInterface;
 use App\Services\Payment\StripePaymentIntentClient;
 use App\Services\TwilioService;
 use Carbon\CarbonImmutable;
+use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -40,6 +43,8 @@ class AppServiceProvider extends ServiceProvider
 
         Blog::observe(BlogObserver::class);
         BlogCategory::observe(BlogCategoryObserver::class);
+
+        Event::listen(MessageSent::class, SendMailDeliveryConfirmationToSlack::class);
     }
 
     protected function configureDefaults(): void

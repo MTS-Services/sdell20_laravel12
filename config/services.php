@@ -32,6 +32,12 @@ return [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+            'webhook_url' => env('SLACK_WEBHOOK_URL'),
+            'mail_delivery_alerts' => (bool) env('SLACK_MAIL_DELIVERY_ALERTS', true),
+            'mail_delivery_alert_mailables' => array_values(array_filter(array_map(
+                'trim',
+                explode(',', (string) env('SLACK_MAIL_DELIVERY_ALERT_MAILABLES', ''))
+            ))),
         ],
     ],
 
@@ -51,7 +57,7 @@ return [
         'from_us' => env('TWILIO_FROM_US'),
     ],
     'google' => [
-        'api_key'  => env('GOOGLE_PLACES_API_KEY'),
+        'api_key' => env('GOOGLE_PLACES_API_KEY'),
         'place_id' => env('GOOGLE_PLACE_ID'),
     ],
 

@@ -115,4 +115,38 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | LPA completed (paid) — admin copy of full application summary
+    |--------------------------------------------------------------------------
+    |
+    | Customer receives LpaCompletedEmail to their account; this address gets
+    | LpaCompletedAdminEmail. Optional comma-separated CC list.
+    |
+    */
+
+    'lpa_completed_admin_address' => env('LPA_COMPLETED_ADMIN_MAIL', 'dellysean39@gmail.com'),
+
+    'lpa_completed_admin_cc' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('LPA_COMPLETED_ADMIN_CC', 'clara.martinez@onlinewillwrite.online,team@onlinewillwrite.online'))
+    ))),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Will completed (paid) — admin summary email
+    |--------------------------------------------------------------------------
+    |
+    | Customer receives WillCompletedEmail; this address receives WillCompletedAdminEmail.
+    | Optional comma-separated CC list. Defaults match LPA if env is unset.
+    |
+    */
+
+    'will_completed_admin_address' => env('WILL_COMPLETED_ADMIN_MAIL') ?: env('LPA_COMPLETED_ADMIN_MAIL', 'dellysean39@gmail.com'),
+
+    'will_completed_admin_cc' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) (env('WILL_COMPLETED_ADMIN_CC') ?: env('LPA_COMPLETED_ADMIN_CC', 'clara.martinez@onlinewillwrite.online,team@onlinewillwrite.online')))
+    ))),
+
 ];

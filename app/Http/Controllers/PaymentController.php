@@ -152,8 +152,9 @@ class PaymentController extends Controller
             Payment::query()->whereKey($payment->getKey())->update(['status' => $status]);
 
             if ($status->isComplete() && ! $wasCompleted) {
+                $completedPayment = $payment->fresh(['user']);
                 Mail::to($request->user())->queue(
-                    (new PaymentCompletedEmail($payment->fresh()))->delay(now()->addSecond())
+                    (new PaymentCompletedEmail($completedPayment))->delay(now()->addSecond())
                 );
             }
 
