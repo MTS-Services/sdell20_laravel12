@@ -136,25 +136,38 @@ const PrintDownloadStep: React.FC<PrintDownloadStepProps> = ({ data, willType = 
                 });
 
                 if (response.ok) {
-                    const result = await response.json();
+                    const result = await response.json() as {
+                        paid?: boolean;
+                        payment_id?: number;
+                    };
                     const isPaid = result.paid === true;
                     setHasPaid(isPaid);
 
-                    // If payment is verified, update the Will record to mark as paid
-                    if (isPaid && result.payment_id) {
-                        await fetch(`/wills/${savedWillId}/payment`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                'X-XSRF-TOKEN': getCsrfToken(),
-                            },
-                            credentials: 'same-origin',
-                            body: JSON.stringify({
-                                payment_reference: String(result.payment_id),
-                                payment_method: 'stripe',
-                            }),
-                        });
+                    // One checkout payment may only fulfill one Will — avoid re-posting when savedWillId changes
+                    // (e.g. stale session id vs new draft) after this browser session already applied the payment.
+                    if (isPaid && result.payment_id != null && typeof window !== 'undefined') {
+                        const fulfillmentKey = `will_payment_fulfilled_${String(result.payment_id)}`;
+                        const alreadyFulfilled = window.sessionStorage.getItem(fulfillmentKey) === '1';
+
+                        if (!alreadyFulfilled) {
+                            const payResponse = await fetch(`/wills/${savedWillId}/payment`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-XSRF-TOKEN': getCsrfToken(),
+                                },
+                                credentials: 'same-origin',
+                                body: JSON.stringify({
+                                    payment_reference: String(result.payment_id),
+                                    payment_method: 'stripe',
+                                }),
+                            });
+
+                            if (payResponse.ok) {
+                                window.sessionStorage.setItem(fulfillmentKey, '1');
+                            }
+                        }
                     }
                 }
             } catch {

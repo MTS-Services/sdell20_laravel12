@@ -69,7 +69,7 @@ class WillController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create Will: '.$e->getMessage(),
+                'message' => 'Failed to create Will: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -127,7 +127,7 @@ class WillController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to save Will: '.$e->getMessage(),
+                'message' => 'Failed to save Will: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -195,7 +195,7 @@ class WillController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to regenerate PDF: '.$e->getMessage(),
+                'message' => 'Failed to regenerate PDF: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -209,11 +209,43 @@ class WillController extends Controller
             'payment_method' => 'required|string',
         ]);
 
+        $paymentReference = $validated['payment_reference'];
+
+        $paymentAlreadyUsedOnAnotherWill = Will::query()
+            ->where('user_id', $will->user_id)
+            ->where('id', '!=', $will->id)
+            ->where('payment_reference', $paymentReference)
+            ->whereNotNull('paid_at')
+            ->exists();
+
+        if ($paymentAlreadyUsedOnAnotherWill) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This payment has already been applied to another Will for your account.',
+            ], 422);
+        }
+
         try {
             DB::beginTransaction();
 
-            // Mark as paid and remove draft status
-            $will->markAsPaid($validated['payment_reference']);
+            if ($will->fresh()->isPaid()) {
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Payment already processed.',
+                    'data' => [
+                        'will_id' => $will->id,
+                        'is_draft' => false,
+                        'status' => 'completed',
+                        'paid_at' => $will->paid_at,
+                    ],
+                ]);
+            }
+
+            // Mark as paid and remove draft status (idempotent at DB layer for concurrent requests)
+            $will->markAsPaid($paymentReference);
+            $will->refresh();
 
             // Regenerate PDF without draft watermark
             $this->pdfService->removeDraftWatermark($will);
@@ -235,7 +267,7 @@ class WillController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Payment processing failed: '.$e->getMessage(),
+                'message' => 'Payment processing failed: ' . $e->getMessage(),
             ], 500);
         }
     }

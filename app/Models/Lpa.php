@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Mail\LpaCompletedAdminEmail;
 use App\Mail\LpaCompletedEmail;
+use App\Notifications\LpaMarkedPaidSlackNotification;
+use App\Support\OperationsSlack;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -81,9 +83,19 @@ class Lpa extends Model
         Mail::to($customerEmail)->queue(
             (new LpaCompletedEmail($lpa))->delay(now()->addSeconds(4))
         );
-        Mail::to('clara.martinez@onlinewillwrite.online')
-            ->cc(['team@onlinewillwrite.online', 'dellysean39@gmail.com'])
-            ->queue((new LpaCompletedAdminEmail($lpa))->delay(now()->addSeconds(12)));
+
+        $adminAddress = config('mail.lpa_completed_admin_address');
+        $adminCc = config('mail.lpa_completed_admin_cc', []);
+
+        if (is_string($adminAddress) && $adminAddress !== '') {
+            $pending = Mail::to($adminAddress);
+            if (is_array($adminCc) && $adminCc !== []) {
+                $pending->cc($adminCc);
+            }
+            $pending->queue((new LpaCompletedAdminEmail($lpa))->delay(now()->addSeconds(12)));
+        }
+
+        OperationsSlack::notify(new LpaMarkedPaidSlackNotification($lpa));
     }
 
     public function isPropertyAndFinance(): bool

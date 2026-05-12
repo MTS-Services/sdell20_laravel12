@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Mail\WillCompletedAdminEmail;
+use App\Mail\WillCompletedEmail;
+use App\Notifications\WillMarkedPaidSlackNotification;
+use App\Support\OperationsSlack;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\WillCompletedEmail;
 
 class Will extends Model
 {
@@ -68,18 +71,48 @@ class Will extends Model
 
     public function markAsPaid(string $paymentReference): void
     {
-        $wasDraft = $this->is_draft;
+        $updated = static::query()
+            ->whereKey($this->getKey())
+            ->where('is_draft', true)
+            ->update([
+                'is_draft' => false,
+                'status' => 'completed',
+                'paid_at' => now(),
+                'payment_reference' => $paymentReference,
+            ]);
 
-        $this->update([
-            'is_draft' => false,
-            'status' => 'completed',
-            'paid_at' => now(),
-            'payment_reference' => $paymentReference,
-        ]);
-
-        if ($wasDraft) {
-            Mail::to($this->user->email)->send(new WillCompletedEmail($this));
+        if ($updated === 0) {
+            return;
         }
+
+        $will = $this->fresh(['user']);
+        if ($will === null || $will->user === null || ! filled($will->user->email)) {
+            return;
+        }
+
+        $customerEmail = $will->user->email;
+
+        /*
+         * Stagger sends: sandbox providers (e.g. Mailtrap free tier) often enforce "emails per second".
+         * Payment flow may queue other mailables in the same request, so multiple messages
+         * must not hit SMTP in the same second.
+         */
+        Mail::to($customerEmail)->queue(
+            (new WillCompletedEmail($will))->delay(now()->addSeconds(4))
+        );
+
+        $adminAddress = config('mail.will_completed_admin_address');
+        $adminCc = config('mail.will_completed_admin_cc', []);
+
+        if (is_string($adminAddress) && $adminAddress !== '') {
+            $pending = Mail::to($adminAddress);
+            if (is_array($adminCc) && $adminCc !== []) {
+                $pending->cc($adminCc);
+            }
+            $pending->queue((new WillCompletedAdminEmail($will))->delay(now()->addSeconds(12)));
+        }
+
+        OperationsSlack::notify(new WillMarkedPaidSlackNotification($will));
     }
 
     public function isSingleWill(): bool
