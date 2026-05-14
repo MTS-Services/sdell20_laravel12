@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Mail\ContactClaraMail;
 use App\Models\SeoPage;
+use App\Notifications\ContactFormSubmittedSlackNotification;
 use App\Services\BlogService;
 use App\Services\GoogleReviewService;
+use App\Support\OperationsSlack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +77,14 @@ class FrontendController extends Controller
         Mail::to('clara.martinez@onlinewillwrite.online')
             ->cc(['team@willwrite.online', 'dellysean39@gmail.com'])
             ->send(new ContactClaraMail($validated));
+
+        OperationsSlack::notify(new ContactFormSubmittedSlackNotification(
+            firstName: $validated['firstName'],
+            lastName: $validated['lastName'],
+            email: $validated['email'],
+            phone: $validated['phone'],
+            message: $validated['message'] ?? null,
+        ), 'contact');
 
         return back()->with('success', 'Message sent successfully!');
     }

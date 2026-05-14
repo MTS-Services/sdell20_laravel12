@@ -112,7 +112,7 @@ class Will extends Model
             $pending->queue((new WillCompletedAdminEmail($will))->delay(now()->addSeconds(12)));
         }
 
-        OperationsSlack::notify(new WillMarkedPaidSlackNotification($will));
+        OperationsSlack::notify(new WillMarkedPaidSlackNotification($will), 'will');
     }
 
     public function isSingleWill(): bool

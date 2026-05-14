@@ -95,7 +95,7 @@ class Lpa extends Model
             $pending->queue((new LpaCompletedAdminEmail($lpa))->delay(now()->addSeconds(12)));
         }
 
-        OperationsSlack::notify(new LpaMarkedPaidSlackNotification($lpa));
+        OperationsSlack::notify(new LpaMarkedPaidSlackNotification($lpa), 'lpa');
     }
 
     public function isPropertyAndFinance(): bool

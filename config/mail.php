@@ -125,11 +125,11 @@ return [
     |
     */
 
-    'lpa_completed_admin_address' => env('LPA_COMPLETED_ADMIN_MAIL', 'dellysean39@gmail.com'),
+    'lpa_completed_admin_address' => env('LPA_COMPLETED_ADMIN_MAIL', 'd22509384@gmail.com'),
 
     'lpa_completed_admin_cc' => array_values(array_filter(array_map(
         'trim',
-        explode(',', (string) env('LPA_COMPLETED_ADMIN_CC', 'clara.martinez@onlinewillwrite.online,team@onlinewillwrite.online'))
+        explode(',', (string) env('LPA_COMPLETED_ADMIN_CC', 'd22509384@gmail.com'))
     ))),
 
     /*
@@ -142,11 +142,11 @@ return [
     |
     */
 
-    'will_completed_admin_address' => env('WILL_COMPLETED_ADMIN_MAIL') ?: env('LPA_COMPLETED_ADMIN_MAIL', 'dellysean39@gmail.com'),
+    'will_completed_admin_address' => env('WILL_COMPLETED_ADMIN_MAIL') ?: env('LPA_COMPLETED_ADMIN_MAIL', 'd22509384@gmail.com'),
 
     'will_completed_admin_cc' => array_values(array_filter(array_map(
         'trim',
-        explode(',', (string) (env('WILL_COMPLETED_ADMIN_CC') ?: env('LPA_COMPLETED_ADMIN_CC', 'clara.martinez@onlinewillwrite.online,team@onlinewillwrite.online')))
+        explode(',', (string) (env('WILL_COMPLETED_ADMIN_CC') ?: env('LPA_COMPLETED_ADMIN_CC', 'd22509384@gmail.com')))
     ))),
 
 ];
