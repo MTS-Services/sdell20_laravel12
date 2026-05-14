@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Will;
 use App\Support\OperationsSlack;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
@@ -18,10 +19,60 @@ class WillMarkedPaidSlackNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return OperationsSlack::isConfigured() ? ['slack'] : [];
+        $channels = [];
+
+        if (OperationsSlack::isConfigured()) {
+            $channels[] = 'slack';
+        }
+
+        if (OperationsSlack::mirrorEmail() !== null) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     public function toSlack(object $notifiable): SlackMessage
+    {
+        [$customerLine, $paymentStatus, $price, $paidAt, $ref, $willType] = $this->summaryFields();
+        $will = $this->will;
+
+        return (new SlackMessage)
+            ->text("Will #{$will->getKey()} ({$willType}) submitted — {$customerLine}")
+            ->headerBlock('Wills Submitted')
+            ->contextBlock(function (ContextBlock $block): void {
+                $block->text('Customer completion email and admin summary email have been queued.');
+            })
+            ->sectionBlock(function (SectionBlock $block) use ($will, $paymentStatus, $price, $customerLine, $paidAt, $ref, $willType): void {
+                $block->field("*Payment status*\n{$paymentStatus}")->markdown();
+                $block->field("*Price*\n{$price}")->markdown();
+                $block->field("*Will ID*\n#{$will->getKey()} ({$willType})")->markdown();
+                $block->field("*Customer*\n{$customerLine}")->markdown();
+                $block->field("*Paid at*\n{$paidAt}")->markdown();
+                $block->field("*Payment reference*\n`{$ref}`")->markdown();
+            });
+    }
+
+    public function toMail(object $notifiable): MailMessage
+    {
+        [$customerLine, $paymentStatus, $price, $paidAt, $ref, $willType] = $this->summaryFields();
+        $will = $this->will;
+
+        return (new MailMessage)
+            ->subject("[Slack mirror] Wills Submitted #{$will->getKey()} ({$willType}) — {$customerLine}")
+            ->line('Wills Submitted (mirrored from Slack).')
+            ->line("Customer: {$customerLine}")
+            ->line("Will ID: #{$will->getKey()} ({$willType})")
+            ->line("Payment status: {$paymentStatus}")
+            ->line("Price: {$price}")
+            ->line("Paid at: {$paidAt}")
+            ->line("Payment reference: {$ref}");
+    }
+
+    /**
+     * @return array{0:string,1:string,2:string,3:string,4:string,5:string}
+     */
+    private function summaryFields(): array
     {
         $will = $this->will->loadMissing('user');
         $user = $will->user;
@@ -39,19 +90,6 @@ class WillMarkedPaidSlackNotification extends Notification
         $ref = $will->payment_reference ?? '—';
         $willType = $will->isSingleWill() ? 'Single' : 'Mirror';
 
-        return (new SlackMessage)
-            ->text("Will #{$will->getKey()} ({$willType}) paid and completed — {$customerLine}")
-            ->headerBlock('Will payment completed')
-            ->contextBlock(function (ContextBlock $block): void {
-                $block->text('Customer completion email and admin summary email have been queued.');
-            })
-            ->sectionBlock(function (SectionBlock $block) use ($will, $paymentStatus, $price, $customerLine, $paidAt, $ref, $willType): void {
-                $block->field("*Payment status*\n{$paymentStatus}")->markdown();
-                $block->field("*Price*\n{$price}")->markdown();
-                $block->field("*Will ID*\n#{$will->getKey()} ({$willType})")->markdown();
-                $block->field("*Customer*\n{$customerLine}")->markdown();
-                $block->field("*Paid at*\n{$paidAt}")->markdown();
-                $block->field("*Payment reference*\n`{$ref}`")->markdown();
-            });
+        return [$customerLine, $paymentStatus, $price, $paidAt, $ref, $willType];
     }
 }

@@ -9,7 +9,9 @@ use App\Http\Requests\Payment\CreatePaymentIntentRequest;
 use App\Http\Requests\Payment\SelectPlanRequest;
 use App\Mail\PaymentCompletedEmail;
 use App\Models\Payment;
+use App\Notifications\PaymentSubmittedSlackNotification;
 use App\Services\Payment\PaymentIntentClientInterface;
+use App\Support\OperationsSlack;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -155,6 +157,11 @@ class PaymentController extends Controller
                 $completedPayment = $payment->fresh(['user']);
                 Mail::to($request->user())->queue(
                     (new PaymentCompletedEmail($completedPayment))->delay(now()->addSecond())
+                );
+
+                OperationsSlack::notify(
+                    new PaymentSubmittedSlackNotification($completedPayment),
+                    'payment'
                 );
             }
 

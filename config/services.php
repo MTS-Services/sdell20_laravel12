@@ -38,6 +38,23 @@ return [
                 'trim',
                 explode(',', (string) env('SLACK_MAIL_DELIVERY_ALERT_MAILABLES', ''))
             ))),
+            /*
+             * Per-action Slack channels. Each accepts a channel id (e.g. C0123456789),
+             * channel name (e.g. #lpa-submissions) or a channel-specific incoming webhook URL.
+             * Use a different value per key so contact / LPA / will / payment alerts stay in separate channels.
+             * When blank for a key, that action uses the bot default channel first, then webhook_url.
+             */
+            'channels' => [
+                'lpa' => env('SLACK_CHANNEL_LPA'),
+                'will' => env('SLACK_CHANNEL_WILL'),
+                'contact' => env('SLACK_CHANNEL_CONTACT'),
+                'payment' => env('SLACK_CHANNEL_PAYMENT'),
+            ],
+            /*
+             * Mirror every operations Slack notification to this email address as well.
+             * Leave blank to disable the email mirror.
+             */
+            'mirror_email' => env('SLACK_NOTIFICATIONS_MIRROR_EMAIL'),
         ],
     ],
 
