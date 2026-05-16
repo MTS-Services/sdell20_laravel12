@@ -3,7 +3,7 @@ import { router } from '@inertiajs/react';
 
 const heroContent = {
     image: 'https://images.pexels.com/photos/4069291/pexels-photo-4069291.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    heading: 'Make a Will and Update an Existing Will',
+    heading: 'Make a Will Online',
     intro:
         'Need a Will? Or is it time to update the one you already have? Online Will Write lets you create a brand new Will or refresh your existing one quickly, securely, and entirely online.',
     changePrompt: 'Life changes quickly. Since making your Will, has there been:',

@@ -1,0 +1,24 @@
+<?php
+
+it('keeps the LPA landing hero title as agreed with the client', function (): void {
+    $path = resource_path('js/components/frontend/lpa/lpa-start-application-section.tsx');
+
+    expect(file_exists($path))->toBeTrue();
+    expect(file_get_contents($path))->toContain('Power of Attorney Online');
+});
+
+it('keeps the Will writing hero titles as agreed with the client', function (): void {
+    $bannerPath = resource_path('js/components/frontend/home/banner.tsx');
+    $heroPath = resource_path('js/components/frontend/will-writing/will-writing-hero-section.tsx');
+
+    expect(file_get_contents($bannerPath))->toContain('Make a Will Online');
+    expect(file_get_contents($heroPath))->toContain('Make a Will Online');
+});
+
+it('serves the LPA and Will writing marketing pages', function (): void {
+    $this->get(route('lpa'))->assertOk()->assertInertia(fn($page) => $page
+        ->component('frontend/lpa'));
+
+    $this->get(route('will-writing'))->assertOk()->assertInertia(fn($page) => $page
+        ->component('frontend/will-writing'));
+});

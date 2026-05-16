@@ -229,7 +229,7 @@ const bannerContent: Record<BannerVariant, BannerContent> = {
     will: {
         heroImage: WILL_HERO_IMG,
         imageAlt: 'Customer planning their Will at home',
-        h1: 'Make a Will and Update an Existing Will',
+        h1: 'Make a Will Online',
         h2: 'Keep your wishes legally clear when life changes.',
         bodyParagraphs: [
             'Need a new Will or an update? Create or refresh yours quickly and securely with step-by-step guidance.',
