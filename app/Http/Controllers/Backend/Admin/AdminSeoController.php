@@ -23,8 +23,8 @@ class AdminSeoController extends Controller
             ['route_name' => 'contact', 'page_name' => 'Contact', 'path' => '/contact'],
             ['route_name' => 'will-writing', 'page_name' => 'Will Writing', 'path' => '/will-writing'],
             ['route_name' => 'will-writing.start', 'page_name' => 'Will Writing Start', 'path' => '/will-writing/start'],
-            ['route_name' => 'lpa', 'page_name' => 'LPA', 'path' => '/lpa'],
-            ['route_name' => 'lpa.start', 'page_name' => 'LPA Start', 'path' => '/lpa/start'],
+            ['route_name' => 'lpa', 'page_name' => 'LPA', 'path' => '/power-of-attorney-online'],
+            ['route_name' => 'lpa.start', 'page_name' => 'LPA Start', 'path' => '/power-of-attorney-online/start'],
             ['route_name' => 'probate', 'page_name' => 'Probate', 'path' => '/probate'],
             ['route_name' => 'privacy', 'page_name' => 'Privacy Policy', 'path' => '/privacy-policy'],
             ['route_name' => 'terms', 'page_name' => 'Terms & Conditions', 'path' => '/terms-and-conditions'],
@@ -79,4 +79,3 @@ class AdminSeoController extends Controller
             ->with('success', 'SEO meta updated successfully!');
     }
 }
-
