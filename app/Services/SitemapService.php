@@ -3,21 +3,21 @@
 namespace App\Services;
 
 use App\Models\Blog;
-use Spatie\Sitemap\Sitemap;
-use Spatie\Sitemap\Tags\Url;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 class SitemapService
 {
-
     protected string $sitemapPath;
 
     public function __construct()
     {
         $this->sitemapPath = public_path('sitemap.xml');
     }
+
     public function generate(): Sitemap
     {
         $sitemap = Sitemap::create();
@@ -32,8 +32,8 @@ class SitemapService
         $sitemap->add(Url::create('/contact'));
         $sitemap->add(Url::create('/will-writing'));
         $sitemap->add(Url::create('/will-writing/start'));
-        $sitemap->add(Url::create('/lpa'));
-        $sitemap->add(Url::create('/lpa/start'));
+        $sitemap->add(Url::create('/power-of-attorney-online'));
+        $sitemap->add(Url::create('/power-of-attorney-online/start'));
         $sitemap->add(Url::create('/probate'));
         $sitemap->add(Url::create('/privacy-policy'));
         $sitemap->add(Url::create('/terms-and-conditions'));
@@ -70,7 +70,7 @@ class SitemapService
 
             $sitemap->writeToFile($this->sitemapPath);
         } catch (\Exception $e) {
-            Log::info("Sitemap Add Error: " . $e->getMessage());
+            Log::info('Sitemap Add Error: ' . $e->getMessage());
         }
     }
 }

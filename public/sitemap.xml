@@ -19,10 +19,10 @@
     <loc>http://127.0.0.1:8000/will-writing/start</loc>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/lpa</loc>
+    <loc>http://127.0.0.1:8000/power-of-attorney-online</loc>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/lpa/start</loc>
+    <loc>http://127.0.0.1:8000/power-of-attorney-online/start</loc>
             </url>
     <url>
     <loc>http://127.0.0.1:8000/probate</loc>
