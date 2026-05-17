@@ -11,12 +11,20 @@ type StepOption = {
     value: string;
 };
 
+/** Matches Power of Attorney Online marketing section (`bg-primary-700`). */
+const lpaStepSurface = 'min-h-screen bg-primary-700 px-3 py-10 sm:px-6 sm:py-16 md:px-10 md:py-20 lg:px-0';
+const lpaStepHighlight = 'text-primary-300';
+const lpaStepTitle = 'text-xl font-semibold leading-7 text-white sm:text-2xl md:text-3xl lg:text-3xl lg:leading-9';
+const lpaStepBody = 'text-xs leading-5 text-primary-100 sm:text-sm md:text-base lg:text-base lg:leading-6';
+const lpaStepBackLink =
+    'inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-primary-200 transition hover:text-white sm:text-base md:text-lg';
+
 const PartnerAdultQuestion: React.FC = () => (
     <>
         <span>Are you and your partner both </span>
-        <span className="text-lpa-step">over 18</span>
+        <span className={lpaStepHighlight}>over 18</span>
         <span> and have </span>
-        <span className="text-lpa-step">mental capacity</span>
+        <span className={lpaStepHighlight}>mental capacity</span>
         <span> to make decisions?</span>
     </>
 );
@@ -24,16 +32,16 @@ const PartnerAdultQuestion: React.FC = () => (
 const PartnerRegionQuestion: React.FC = () => (
     <>
         <span>Do you and your partner both live in </span>
-        <span className="text-lpa-step">England or Wales?</span>
+        <span className={lpaStepHighlight}>England or Wales?</span>
     </>
 );
 
 const SinglePersonAdultQuestion: React.FC = () => (
     <>
         <span>Is the person who these documents are for </span>
-        <span className="text-lpa-step">over 18</span>
+        <span className={lpaStepHighlight}>over 18</span>
         <span> years old and has </span>
-        <span className="text-lpa-step">mental capacity</span>
+        <span className={lpaStepHighlight}>mental capacity</span>
         <span> to make decisions?</span>
     </>
 );
@@ -41,16 +49,16 @@ const SinglePersonAdultQuestion: React.FC = () => (
 const SinglePersonRegionQuestion: React.FC = () => (
     <>
         <span>Does the person the documents are for live in </span>
-        <span className="text-lpa-step">England or Wales?</span>
+        <span className={lpaStepHighlight}>England or Wales?</span>
     </>
 );
 
 const MultiPersonAdultQuestion: React.FC = () => (
     <>
         <span>Are all the people who these documents are for </span>
-        <span className="text-lpa-step">over 18</span>
+        <span className={lpaStepHighlight}>over 18</span>
         <span> years old and have </span>
-        <span className="text-lpa-step">mental capacity</span>
+        <span className={lpaStepHighlight}>mental capacity</span>
         <span> to make decisions?</span>
     </>
 );
@@ -58,7 +66,7 @@ const MultiPersonAdultQuestion: React.FC = () => (
 const MultiPersonRegionQuestion: React.FC = () => (
     <>
         <span>Do all the people who these documents are for live in </span>
-        <span className="text-lpa-step">England or Wales?</span>
+        <span className={lpaStepHighlight}>England or Wales?</span>
     </>
 );
 
@@ -188,7 +196,7 @@ const highlightQuestion = (question: string, highlight?: string): React.ReactNod
 
     return parts.map((part, index) =>
         part.match(regex) ? (
-            <span key={`${part}-${index}`} className="text-lpa-step">
+            <span key={`${part}-${index}`} className={lpaStepHighlight}>
                 {part}
             </span>
         ) : (
@@ -207,9 +215,9 @@ const OptionButton: React.FC<{
         onClick={onClick}
         className={[
             'w-full cursor-pointer rounded border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-primary-700 sm:px-6 sm:py-3 lg:px-8 lg:py-4 lg:text-base',
-            'shadow-[0_2px_8px_rgba(15,23,42,0.12)] transition duration-300 hover:bg-blue-600 hover:text-white',
-            'hover:border-slate-300 hover:shadow-[0_3px_10px_rgba(15,23,42,0.14)]',
-            selected ? 'border-primary-400 text-primary-600' : '',
+            'shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition duration-300 hover:border-primary-300 hover:bg-primary-600 hover:text-white',
+            'hover:shadow-[0_3px_12px_rgba(0,0,0,0.3)]',
+            selected ? 'border-primary-400 bg-primary-50 text-primary-800' : '',
         ].join(' ')}
     >
         {label}
@@ -360,15 +368,15 @@ const LpaStartPage: React.FC = () => {
                     fallbackKeywords="lasting power of attorney, lpa, power of attorney"
                 />
                 <StepsHeader />
-                <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                <section className="min-h-screen bg-primary-700 px-4 py-20 sm:px-6">
                     <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
                         <div className="flex justify-center">
-                            <img src={underageIllustration} alt="Age requirement" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
+                            <img src={underageIllustration} alt="Age requirement" className="h-20 w-20 rounded-full border border-white/20 bg-white object-cover" />
                         </div>
 
                         <div className="space-y-4">
-                            <h1 className="text-2xl font-semibold text-primary-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
-                            <div className="space-y-3 text-sm text-primary-600 lg:text-base">
+                            <h1 className="text-2xl font-semibold text-white lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                            <div className="space-y-3 text-sm text-primary-100 lg:text-base">
                                 <p>You have said the people this document is for are not over 18 or do not have the mental capacity to make decisions.</p>
                                 <p>The specialist document is for adults 18 years or over and able to make decisions and understand what this document is for.</p>
                                 <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
@@ -419,7 +427,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition duration-300 hover:text-lpa-step lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-200 transition duration-300 hover:text-white lg:text-base"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -440,18 +448,18 @@ const LpaStartPage: React.FC = () => {
                     fallbackKeywords="lasting power of attorney, lpa, power of attorney"
                 />
                 <StepsHeader />
-                <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                <section className="min-h-screen bg-primary-700 px-4 py-20 sm:px-6">
                     <div className="mx-auto w-full max-w-2xl space-y-8 ">
                         <div className="flex justify-center">
-                            <img src={regionalIllustration} alt="Region confirmation" className="h-20 w-20 rounded-full border border-slate-200 bg-white object-cover" />
+                            <img src={regionalIllustration} alt="Region confirmation" className="h-20 w-20 rounded-full border border-white/20 bg-white object-cover" />
                         </div>
 
                         <div className="space-y-4">
-                            <h1 className="text-2xl font-semibold text-primary-900 lg:text-3xl">
+                            <h1 className="text-2xl font-semibold text-white lg:text-3xl">
                                 Confirm you wish to continue outside of{' '}
-                                <span className="text-primary-600">England or Wales?</span>
+                                <span className={lpaStepHighlight}>England or Wales?</span>
                             </h1>
-                            <div className="space-y-3 text-sm text-primary-600 lg:text-base">
+                            <div className="space-y-3 text-sm text-primary-100 lg:text-base">
                                 <p>Some countries will accept a notarised power of attorney.</p>
                                 <p>You will need to register the power of attorney with the Office of the Public Guardian first, which takes approx 16-20 weeks.</p>
                                 <p>You can then take the document to be notarised.</p>
@@ -463,7 +471,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleRegionalProceed}
-                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-primary-800 shadow-md transition duration-300 hover:-translate-y-1 hover:text-lpa-step hover:shadow-lg lg:w-auto"
+                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-primary-800 shadow-md transition duration-300 hover:-translate-y-1 hover:border-primary-300 hover:bg-primary-600 hover:text-white hover:shadow-lg lg:w-auto"
                             >
                                 I understand and wish to proceed
                             </button>
@@ -480,7 +488,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition duration-300 hover:text-primary-900 lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-200 transition duration-300 hover:text-white lg:text-base"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -501,15 +509,15 @@ const LpaStartPage: React.FC = () => {
                     fallbackKeywords="lasting power of attorney, lpa, power of attorney"
                 />
                 <StepsHeader />
-                <section className="min-h-screen bg-primary-50 px-4 py-20 sm:px-6">
+                <section className="min-h-screen bg-primary-700 px-4 py-20 sm:px-6">
                     <div className="mx-auto w-full max-w-2xl space-y-8 text-center">
                         <div className="flex justify-center">
-                            <img src={regionalIllustration} alt="Region restriction" className="h-20 w-20 rounded-full border border-slate-200 bg-primary-50 object-cover" />
+                            <img src={regionalIllustration} alt="Region restriction" className="h-20 w-20 rounded-full border border-white/20 bg-white object-cover" />
                         </div>
 
                         <div className="space-y-4">
-                            <h1 className="text-2xl font-semibold text-primary-900 lg:text-3xl">Sorry, we can&apos;t continue</h1>
-                            <div className="space-y-3 text-sm text-primary-600 lg:text-base">
+                            <h1 className="text-2xl font-semibold text-white lg:text-3xl">Sorry, we can&apos;t continue</h1>
+                            <div className="space-y-3 text-sm text-primary-100 lg:text-base">
                                 <p>You have said that the people this document is for do not live in England or Wales.</p>
                                 <p>Unfortunately this means that you can&apos;t use our online service to get a Lasting Power of Attorney in place. If you answered this question incorrectly then please click the &quot;Back&quot; button.</p>
                             </div>
@@ -557,7 +565,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-600 transition duration-300 hover:text-primary-900 lg:text-base"
+                                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-200 transition duration-300 hover:text-white lg:text-base"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                                 Back
@@ -577,24 +585,20 @@ const LpaStartPage: React.FC = () => {
                 fallbackKeywords="lasting power of attorney, lpa, power of attorney"
             />
             <StepsHeader />
-            <section className="min-h-screen bg-primary-50 px-3 py-10 sm:px-6 sm:py-16 md:px-10 md:py-20 lg:px-0">
+            <section className={lpaStepSurface}>
                 <div className="mx-auto w-full max-w-2xl md:max-w-3xl lg:max-w-2xl">
-                    <div className="mb-4 sm:mb-0 h-1.5 w-full rounded-full bg-slate-200 sm:hidden">
-                        <div className="h-full rounded-full bg-primary-500 transition-[width] duration-300" style={{ width: `${progress}%` }} />
+                    <div className="mb-4 h-1.5 w-full rounded-full bg-white/20 sm:mb-0 sm:hidden">
+                        <div className="h-full rounded-full bg-primary-300 transition-[width] duration-300" style={{ width: `${progress}%` }} />
                     </div>
 
                     <div className="space-y-4 sm:space-y-6 md:space-y-8">
                         <Illustration src={currentStep.illustrationSrc} icon={currentStep.icon} />
 
                         <div className="space-y-3 text-left sm:space-y-4 md:space-y-5">
-                            <h1 className="text-xl font-semibold leading-7 text-primary-900 sm:text-2xl md:text-3xl lg:text-3xl lg:leading-9">
-                                {renderQuestion()}
-                            </h1>
+                            <h1 className={lpaStepTitle}>{renderQuestion()}</h1>
 
                             {currentStep.description ? (
-                                <p className="max-w-2xl text-xs leading-5 text-primary-600 sm:text-sm md:text-base lg:text-base lg:leading-6">
-                                    {currentStep.description}
-                                </p>
+                                <p className={lpaStepBody}>{currentStep.description}</p>
                             ) : null}
                         </div>
 
@@ -656,7 +660,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleBack}
-                                className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-primary-600 transition hover:text-lpa-step sm:text-base md:text-lg"
+                                className="inline-flex cursor-pointer items-center gap-2 py-2 text-sm font-medium text-primary-200 transition hover:text-white sm:text-base md:text-lg"
                             >
                                 <ArrowLeft className="h-4 w-4" />
                             </button>
