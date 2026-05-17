@@ -7,6 +7,13 @@ it('keeps the LPA landing hero title as agreed with the client', function (): vo
     expect(file_get_contents($path))->toContain('Power of Attorney Online');
 });
 
+it('uses dark blue branding on the LPA multi-step start flow', function (): void {
+    $path = resource_path('js/pages/frontend/lpa-start.tsx');
+
+    expect(file_get_contents($path))->toContain('bg-primary-700');
+    expect(file_get_contents($path))->not->toContain('bg-primary-50 px-3 py-10');
+});
+
 it('keeps the Will writing hero titles as agreed with the client', function (): void {
     $bannerPath = resource_path('js/components/frontend/home/banner.tsx');
     $heroPath = resource_path('js/components/frontend/will-writing/will-writing-hero-section.tsx');
