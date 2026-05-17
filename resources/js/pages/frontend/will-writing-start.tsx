@@ -837,7 +837,7 @@ const WillCreationWizard: React.FC = () => {
                             onClick={handleCreateDocument}
                             disabled={!willData.personalInfo.maritalStatus}
                             className={`w-full px-7 py-3.5 rounded-lg text-base font-bold uppercase tracking-wide transition-all duration-200 ${willData.personalInfo.maritalStatus
-                                ? 'bg-secondary text-white hover:bg-blue-700 cursor-pointer shadow-md'
+                                ? 'bg-brand-cta text-white hover:bg-brand-cta-hover cursor-pointer shadow-md'
                                 : 'bg-muted text-muted-foreground cursor-not-allowed'
                                 }`}
                         >

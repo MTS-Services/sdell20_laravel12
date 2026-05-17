@@ -287,7 +287,7 @@ export default function Feedback() {
                                     href={googleWriteReviewUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pr-2 pl-5 transition-all hover:bg-blue-700 hover:shadow-lg"
+                                    className="group flex items-center gap-3 rounded-full bg-brand-cta py-2 pr-2 pl-5 transition-all hover:bg-brand-cta-hover hover:shadow-lg"
                                 >
                                     <span className="flex flex-col font-ubuntu text-xl leading-tight font-semibold text-white">
                                         Write a Review

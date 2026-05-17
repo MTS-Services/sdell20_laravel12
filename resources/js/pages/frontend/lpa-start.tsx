@@ -215,7 +215,7 @@ const OptionButton: React.FC<{
         onClick={onClick}
         className={[
             'w-full cursor-pointer rounded border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-primary-700 sm:px-6 sm:py-3 lg:px-8 lg:py-4 lg:text-base',
-            'shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition duration-300 hover:border-primary-300 hover:bg-primary-600 hover:text-white',
+            'shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition duration-300 hover:border-brand-cta hover:bg-brand-cta hover:text-white',
             'hover:shadow-[0_3px_12px_rgba(0,0,0,0.3)]',
             selected ? 'border-primary-400 bg-primary-50 text-primary-800' : '',
         ].join(' ')}
@@ -471,7 +471,7 @@ const LpaStartPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleRegionalProceed}
-                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-primary-800 shadow-md transition duration-300 hover:-translate-y-1 hover:border-primary-300 hover:bg-primary-600 hover:text-white hover:shadow-lg lg:w-auto"
+                                className="w-full cursor-pointer border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-primary-800 shadow-md transition duration-300 hover:-translate-y-1 hover:border-brand-cta hover:bg-brand-cta hover:text-white hover:shadow-lg lg:w-auto"
                             >
                                 I understand and wish to proceed
                             </button>
@@ -648,7 +648,7 @@ const LpaStartPage: React.FC = () => {
 
                                     <Link
                                         href={route('register')}
-                                        className="mt-4 inline-flex w-full items-center justify-center rounded bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 hover:text-white sm:mt-6 sm:py-3 md:text-base lg:py-4 lg:text-base"
+                                        className="mt-4 inline-flex w-full items-center justify-center rounded bg-brand-cta px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-cta-hover hover:text-white sm:mt-6 sm:py-3 md:text-base lg:py-4 lg:text-base"
                                     >
                                         Continue online
                                     </Link>

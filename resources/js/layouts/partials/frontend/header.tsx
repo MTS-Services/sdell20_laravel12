@@ -478,7 +478,7 @@ export function FrontendHeader() {
                     <div className="hidden items-center gap-3 xl:flex">
                         <Link
                             href={route('lpa')}
-                            className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
+                            className="group flex items-center gap-3 rounded-full bg-brand-cta py-2 pl-5 pr-2 transition-all hover:bg-brand-cta-hover hover:shadow-lg"
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-xs font-bold tracking-wide xl:text-sm">
@@ -499,7 +499,7 @@ export function FrontendHeader() {
 
                         <Link
                             href={route('login')}
-                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700"
+                            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-cta text-white transition-colors hover:bg-brand-cta-hover"
                         >
                             <User className="h-5 w-5" />
                         </Link>
@@ -513,7 +513,7 @@ export function FrontendHeader() {
                         {/* CTA pill */}
                         <Link
                             href={route('lpa.start')}
-                            className="group hidden items-center gap-1 rounded-full bg-blue-600 py-1.5 pl-3 pr-1.5 transition-all hover:bg-blue-700 sm:flex"
+                            className="group hidden items-center gap-1 rounded-full bg-brand-cta py-1.5 pl-3 pr-1.5 transition-all hover:bg-brand-cta-hover sm:flex"
                         >
                             <span className="flex flex-col leading-tight text-white">
                                 <span className="text-[10px] font-bold tracking-wide">
@@ -644,7 +644,7 @@ export function FrontendHeader() {
                                 <Link
                                     href={route('lpa.start')}
                                     onClick={closeMobile}
-                                    className="flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-3.5 font-sans text-sm font-bold text-white transition hover:bg-blue-700"
+                                    className="flex items-center justify-center gap-2 rounded-full bg-brand-cta px-5 py-3.5 font-sans text-sm font-bold text-white transition hover:bg-brand-cta-hover"
                                 >
                                     <span>Create Your LPA Now &ndash; &pound;99 + VAT per LPA</span>
                                     <ChevronRight className="h-4 w-4" />

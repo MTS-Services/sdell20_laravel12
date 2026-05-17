@@ -11,6 +11,7 @@ import React from 'react';
 
 import { RevealMotion, revealStagger } from '@/components/frontend/reveal-motion';
 import { useReveal } from '@/hooks/use-reveal';
+import { brandCtaClasses } from '@/lib/brand-button';
 import { cn } from '@/lib/utils';
 
 const readyItems: { title: string; icon: LucideIcon }[] = [
@@ -31,7 +32,10 @@ export function CreateLpaCta({
         <Link
             href={route('lpa.start')}
             className={cn(
-                'group inline-flex items-center gap-3 rounded-full bg-blue-600 py-2.5 pl-6 pr-2 text-sm font-bold tracking-wide text-white transition-all hover:bg-blue-700 hover:shadow-lg md:text-base',
+                cn(
+                    'group inline-flex items-center gap-3 rounded-full py-2.5 pl-6 pr-2 text-sm font-bold tracking-wide transition-all hover:shadow-lg md:text-base',
+                    brandCtaClasses,
+                ),
                 className,
             )}
         >

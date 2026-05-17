@@ -64,7 +64,7 @@ export function TeamSection() {
                             </p>
                             <a
                                 href="mailto:support@willwrite.online"
-                                className="mt-4 inline-flex items-center justify-center rounded-full border border-blue-600 px-6 py-3 text-sm font-semibold text-blue-600 shadow-lg transition hover:bg-blue-600 hover:text-white"
+                                className="mt-4 inline-flex items-center justify-center rounded-full border border-brand-cta px-6 py-3 text-sm font-semibold text-brand-cta shadow-lg transition hover:bg-brand-cta hover:text-white"
                             >
                                 Schedule a build review
                             </a>
