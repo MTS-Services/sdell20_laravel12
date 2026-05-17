@@ -30,7 +30,7 @@ export function LpaPlanningSection() {
                     </p>
                     <Link
                         href={route('lpa.start')}
-                        className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-800 animate-fadeInUp"
+                        className="inline-flex w-fit items-center gap-2 rounded-full bg-brand-cta px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-cta-hover animate-fadeInUp"
                         style={{ animationDelay: '150ms' }}
                     >
                         Let's get started

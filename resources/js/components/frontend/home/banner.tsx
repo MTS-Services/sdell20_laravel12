@@ -96,7 +96,7 @@ function RatingStars({ rating, idBase }: { rating: number; idBase: string }) {
 }
 
 const heroCtaClassName =
-    'inline-flex items-center justify-center rounded-full border border-primary-600 bg-blue-600 px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-transparent hover:text-primary-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40';
+    'inline-flex items-center justify-center rounded-full border border-brand-navy bg-brand-cta px-10 py-4 text-sm font-semibold text-white shadow-lg shadow-black/30 transition hover:bg-brand-cta-hover focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40';
 
 export type BannerVariant = 'lpa' | 'will';
 

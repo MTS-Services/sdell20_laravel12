@@ -229,6 +229,12 @@
   --cream: #f8f6f0;
   --sand: #e8e4d9;
   --lpa-step: #4DA8DA;
+  /* powerofattorneyonline.co.uk button palette */
+  --brand-cta: #FF5966;
+  --brand-cta-hover: #e84855;
+  --brand-navy: #001E45;
+  --brand-navy-hover: #001535;
+  --brand-panel: #233d5e;
 }
 
 /* Custom scrollbar for feedback card */
@@ -341,6 +347,11 @@
   --color-chart-5: var(--chart-5);
   --color-cream: var(--cream);
   --color-sand: var(--sand);
+  --color-brand-cta: var(--brand-cta);
+  --color-brand-cta-hover: var(--brand-cta-hover);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-hover: var(--brand-navy-hover);
+  --color-brand-panel: var(--brand-panel);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

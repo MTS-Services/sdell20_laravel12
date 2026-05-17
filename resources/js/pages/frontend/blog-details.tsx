@@ -180,7 +180,7 @@ export default function BlogDetails({ blog, recentBlogsFromSameCategory }: Props
                                         <div className="flex items-center justify-center gap-3 lg:flex">
                                             <Link
                                                 href={route('lpa.start')}
-                                                className="group flex items-center gap-3 rounded-full bg-blue-600 py-2 pl-5 pr-2 transition-all hover:bg-blue-700 hover:shadow-lg"
+                                                className="group flex items-center gap-3 rounded-full bg-brand-cta py-2 pl-5 pr-2 transition-all hover:bg-brand-cta-hover hover:shadow-lg"
                                             >
                                                 <span className="flex flex-col leading-tight text-white font-ubuntu">
                                                     <span className="text-xs font-ubuntu">

@@ -14,6 +14,13 @@ it('uses dark blue branding on the LPA multi-step start flow', function (): void
     expect(file_get_contents($path))->not->toContain('bg-primary-50 px-3 py-10');
 });
 
+it('uses powerofattorneyonline.co.uk CTA button colors on LPA components', function (): void {
+    $ctaPath = resource_path('js/components/frontend/lpa/lpa-start-application-section.tsx');
+
+    expect(file_get_contents($ctaPath))->toContain('brandCtaClasses');
+    expect(file_get_contents($ctaPath))->not->toContain('bg-blue-600');
+});
+
 it('keeps the Will writing hero titles as agreed with the client', function (): void {
     $bannerPath = resource_path('js/components/frontend/home/banner.tsx');
     $heroPath = resource_path('js/components/frontend/will-writing/will-writing-hero-section.tsx');

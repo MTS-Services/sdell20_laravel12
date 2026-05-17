@@ -127,7 +127,7 @@ export function ContactConsultationSection() {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full rounded-full bg-brand-cta px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-cta-hover disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isSubmitting ? 'Sending...' : 'Send Message to Clara'}
                             </button>
