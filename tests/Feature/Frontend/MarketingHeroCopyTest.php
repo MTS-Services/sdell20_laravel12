@@ -21,6 +21,18 @@ it('uses powerofattorneyonline.co.uk CTA button colors on LPA components', funct
     expect(file_get_contents($ctaPath))->not->toContain('bg-blue-600');
 });
 
+it('matches the announcement bar color to CTA buttons in site headers', function (): void {
+    $frontendHeader = resource_path('js/layouts/partials/frontend/header.tsx');
+    $userHeader = resource_path('js/layouts/partials/user/header.tsx');
+
+    foreach ([$frontendHeader, $userHeader] as $path) {
+        $contents = file_get_contents($path);
+
+        expect($contents)->toContain('bg-brand-cta');
+        expect($contents)->not->toContain('bg-blue-600');
+    }
+});
+
 it('keeps the Will writing hero titles as agreed with the client', function (): void {
     $bannerPath = resource_path('js/components/frontend/home/banner.tsx');
     $heroPath = resource_path('js/components/frontend/will-writing/will-writing-hero-section.tsx');
