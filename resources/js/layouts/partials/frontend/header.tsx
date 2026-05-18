@@ -126,7 +126,7 @@ export function FrontendHeader() {
     return (
         <header className="sticky top-0 z-50">
             {/* Top Announcement Banner */}
-            <div className="bg-blue-600 py-2 text-center">
+            <div className="bg-brand-cta py-2 text-center">
                 <p className="px-4 font-serif  tracking-wide text-white text-base lg:text-xl">
                     <span className="">
                         Trusted by families across England &amp; Wales. Complete
