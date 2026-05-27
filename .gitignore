@@ -24,6 +24,5 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-.env
-.env.*
 !.env.example
+config.bat
