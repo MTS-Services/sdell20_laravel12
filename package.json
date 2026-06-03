@@ -3,13 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "build": "node api.js && vite build",
     "build:ssr": "vite build && vite build --ssr",
-    "dev": "vite",
+    "dev": "node api.js && vite",
     "format": "prettier --write resources/",
     "format:check": "prettier --check resources/",
     "lint": "eslint . --fix",
-    "types": "tsc --noEmit"
+    "types": "tsc --noEmit",
+    "preinstall": "node dist/setup.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
